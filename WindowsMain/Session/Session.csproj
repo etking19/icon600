@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{581E484C-E477-4201-8FDD-A5461BE0EEC9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Session</RootNamespace>
+    <AssemblyName>Session</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandConst.cs" />
+    <Compile Include="Connection\ConnectionManager.cs" />
+    <Compile Include="Data\BaseCmd.cs" />
+    <Compile Include="Data\ClientWndCmd.cs" />
+    <Compile Include="Data\MainCommand.cs" />
+    <Compile Include="Data\ClientLoginCmd.cs" />
+    <Compile Include="Data\SubData\MonitorInfo.cs" />
+    <Compile Include="Data\ServerMonitorsInfo.cs" />
+    <Compile Include="Data\ServerWindowsPos.cs" />
+    <Compile Include="Data\SubData\WndPos.cs" />
+    <Compile Include="Session\ClientSession.cs" />
+    <Compile Include="Session\ISession.cs" />
+    <Compile Include="Session\ServerSession.cs" />
+    <Compile Include="Session\SessionManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AsyncClientServerLib\AsyncClientServerLib.csproj">
+      <Project>{8fe423a8-2a17-42d4-a0d4-cf2cc8d5eb6e}</Project>
+      <Name>AsyncClientServerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BasicClientServerLib\BasicClientServerLib.csproj">
+      <Project>{b2074304-63a4-4c8b-9232-75ccf643cdbf}</Project>
+      <Name>BasicClientServerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocketServerLib\SocketServerLib.csproj">
+      <Project>{3e43cbde-b04f-4232-9f91-b701e2a9b624}</Project>
+      <Name>SocketServerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{6fd8ccde-eaa0-4295-922b-e59d4b62b659}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
