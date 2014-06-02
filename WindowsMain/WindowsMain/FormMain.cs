@@ -119,6 +119,7 @@ namespace WindowsMain
                 connectionDic.Remove(userId);
             }
 
+
             List<MonitorInfo> monitors = new List<MonitorInfo>();
             foreach (Windows.WindowsMgr.DisplayInfo info in _WndsMgr.GetScreens())
             {
