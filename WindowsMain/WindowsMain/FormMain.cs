@@ -2,9 +2,13 @@
 using Session.Connection;
 using Session.Data;
 using Session.Data.SubData;
+using Sqlite.Data;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Utils.Windows;
@@ -17,6 +21,7 @@ namespace WindowsMain
     {
         private Windows.WindowsMgr _WndsMgr = new Windows.WindowsMgr();
         private ConnectionManager connectionMgr = new ConnectionManager();
+        private List<string> connectedClients = new List<string>();
 
         /// <summary>
         /// string = client's user id
@@ -40,28 +45,28 @@ namespace WindowsMain
             {
                 Trace.WriteLine(string.Format("left {0}, top {1}, width {2} height {3}", info.WorkArea.Left, info.MonitorArea.Top, info.ScreenWidth, info.ScreenHeight));
             }
-            // Sqlite.Helper.GetInstance().Initialize("iCon600DB.sqlite");
+            
+            Sqlite.Helper.GetInstance().Initialize("iCon600DB.sqlite");
+            Sqlite.Helper.GetInstance().CreateTable(new User());
 
-           // User user = new User();
-           // //Sqlite.Helper.getInstance().createTable(user);
+            User newUser = new User { mUsername = "username", mPassword = "password"};
+            // Sqlite.Helper.getInstance().updateData(newUser);
+            try
+            {
+                Sqlite.Helper.GetInstance().AddData(newUser);
+            }
+            catch (Exception)
+            {
 
-           // User newUser = new User("test", "12534");
-           //// Sqlite.Helper.getInstance().updateData(newUser);
-           // try
-           // {
-           //     Sqlite.Helper.GetInstance().AddData(newUser);
-           // }
-           // catch (Exception)
-           // {
-
-           //     Trace.WriteLine("error");
-           // }
-           // Sqlite.Helper.GetInstance().UpdateData(newUser);
-           // //Sqlite.Helper.getInstance().removeData(newUser);
+                Trace.WriteLine("error");
+            }
+            Sqlite.Helper.GetInstance().UpdateData(newUser);
+            //Sqlite.Helper.getInstance().removeData(newUser);
         }
 
         protected override void OnClosed(EventArgs e)
         {
+            Sqlite.Helper.GetInstance().Shutdown();
             _WndsMgr.StopMonitor();
             connectionMgr.StopServer();
             base.OnClosed(e);
@@ -112,13 +117,49 @@ namespace WindowsMain
             SetReceivedText(Environment.NewLine + String.Format("client login with username: {0}, password: {1}", data.username, data.password));
 
             // get the login status matches with database
-            ManualResetEvent resetEvt;
-            if (connectionDic.TryGetValue(userId, out resetEvt))
+            bool matchedUserData = false;
+            DataTable dataTable = Sqlite.Helper.GetInstance().ReadData(new User());
+            foreach (DataRow dataRow in dataTable.Rows)
             {
-                resetEvt.Set();
-                connectionDic.Remove(userId);
+                string username = dataRow["username"].ToString();
+                string password = dataRow["password"].ToString();
+
+                SetReceivedText(Environment.NewLine + String.Format("database username: {0}, password: {1}", username, password));
+
+                if (username.CompareTo(data.username) == 0 &&
+                    password.CompareTo(data.password) == 0)
+                {
+                    // found matched username and password
+                    matchedUserData = true;
+                    break;
+                }
             }
 
+            if (matchedUserData == false)
+            {
+                // let the disconnection event timeout
+                return;
+            }
+
+            connectedClients.Add(userId);
+
+            ManualResetEvent resetEvt;
+            foreach(KeyValuePair<string, ManualResetEvent> pair in connectionDic)
+            {
+                SetReceivedText(Environment.NewLine + String.Format("data in connectionDic, userId: {0}", pair.Key));
+            }
+
+            if (connectionDic.TryGetValue(userId, out resetEvt))
+            {
+                SetReceivedText(Environment.NewLine + String.Format("reset event with user id: {0}", userId));
+                resetEvt.Set();
+                if(connectionDic.Remove(userId) == false)
+                {
+                    SetReceivedText(Environment.NewLine + String.Format("failed to remove userId from connectionDic: {0}", userId));
+                }
+            }
+
+            SetReceivedText(Environment.NewLine + String.Format("send monitor info with userId: {0}", userId));
 
             List<MonitorInfo> monitors = new List<MonitorInfo>();
             foreach (Windows.WindowsMgr.DisplayInfo info in _WndsMgr.GetScreens())
@@ -133,39 +174,112 @@ namespace WindowsMain
             }
 
             ServerMonitorsInfo monitorCmd = new ServerMonitorsInfo { monitorAttributes = monitors };
-            connectionMgr.SendData((int)CommandConst.MainCommandServer.ServerMonitorsInfo,
+            connectionMgr.BroadcastMessage((int)CommandConst.MainCommandServer.ServerMonitorsInfo,
                 (int)CommandConst.SubCmdServerMonitorsInfo.MonitorList, monitorCmd);
         }
 
         void handleClientControl(int subId, string cmdData)
         {
-            ClientWndCmd data = deserialize.Deserialize<ClientWndCmd>(cmdData);
-            if(data == null)
+            switch(subId)
+            {
+                case (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes:
+                    handleWndCommand(cmdData);
+                    break;
+                case (int)CommandConst.SubCmdClientControlInfo.Mouse:
+                    handleMouseCommand(cmdData);
+                    break;
+                case (int)CommandConst.SubCmdClientControlInfo.Keyboard:
+                    handleKeyboardCommand(cmdData);
+                    break;
+            }
+
+        }
+
+        void handleMouseCommand(string cmdData)
+        {
+            ClientMouseCmd mouseData = deserialize.Deserialize<ClientMouseCmd>(cmdData);
+            if (mouseData == null)
             {
                 return;
             }
 
-            switch(data.CommandType)
+            InputConstants.MOUSEINPUT mouseInput = new InputConstants.MOUSEINPUT();
+            mouseInput.dx = mouseData.data.dx;
+            mouseInput.dy = mouseData.data.dy;
+            mouseInput.mouseData = mouseData.data.mouseData;
+            mouseInput.dwFlags = mouseData.data.dwFlags;
+            mouseInput.time = mouseData.data.time;
+            mouseInput.dwExtraInfo = UIntPtr.Zero;
+
+
+            // create input object
+            InputConstants.INPUT input = new InputConstants.INPUT();
+            input.type = InputConstants.MOUSE;
+            input.mi = mouseInput;
+
+            // send input to Windows
+            
+            InputConstants.INPUT[] inputArray = new InputConstants.INPUT[] { input };
+            uint result = NativeMethods.SendInput(1, inputArray, System.Runtime.InteropServices.Marshal.SizeOf(input));
+            Trace.WriteLine(String.Format("Send input result: {1},{2}, flags:{3}, send:{0}", result, mouseInput.dx, mouseInput.dy, mouseInput.dwFlags));
+        }
+
+        void handleKeyboardCommand(string cmdData)
+        {
+            ClientKeyboardCmd keyboardData = deserialize.Deserialize<ClientKeyboardCmd>(cmdData);
+            if (keyboardData == null)
+            {
+                return;
+            }
+
+            InputConstants.KEYBOARDINPUT keyboardInput = new InputConstants.KEYBOARDINPUT();
+            keyboardInput.wScan = keyboardData.data.wScan;
+            keyboardInput.wVk = keyboardData.data.wVk;
+            keyboardInput.dwFlags = keyboardData.data.dwFlags;
+            keyboardInput.time = keyboardData.data.time;
+            keyboardInput.dwExtraInfo = IntPtr.Zero;
+
+            // create input object
+            InputConstants.INPUT input = new InputConstants.INPUT();
+            input.type = InputConstants.KEYBOARD;
+            input.ki = keyboardInput;
+
+            // send input to Windows
+            InputConstants.INPUT[] inputArray = new InputConstants.INPUT[] { input };
+            uint result = NativeMethods.SendInput(1, inputArray, System.Runtime.InteropServices.Marshal.SizeOf(input));
+        }
+
+        void handleWndCommand(string cmdData)
+        {
+            ClientWndCmd data = deserialize.Deserialize<ClientWndCmd>(cmdData);
+            if (data == null)
+            {
+                return;
+            }
+
+            switch (data.CommandType)
             {
                 case ClientWndCmd.CommandId.EMinimize:
-                    User32.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWMINIMIZED);
+                    NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWMINIMIZED);
                     break;
                 case ClientWndCmd.CommandId.EMaximize:
-                    User32.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWMAXIMIZED);
-                    User32.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, 0, 0, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_NOSIZE));
+                    NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWMAXIMIZED);
+                    //User32.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.ERelocation:
-                    User32.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, data.PositionX, data.PositionY, 0, 0, (Int32)(Constant.SWP_NOSIZE));
+                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, data.PositionX, data.PositionY, 0, 0, (Int32)(Constant.SWP_NOSIZE));
+                    //User32.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.EResize:
-                    User32.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, data.Width, data.Height, (Int32)Constant.SWP_NOMOVE);
+                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, data.Width, data.Height, (Int32)Constant.SWP_NOMOVE);
+                    //User32.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.ERestore:
-                    User32.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWNORMAL);
-                    User32.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, 0, 0, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_NOSIZE));
+                    NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWNORMAL);
+                    //User32.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.EClose:
-                    User32.SendMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                    NativeMethods.SendMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                     break;
                 default:
                     break;
@@ -175,6 +289,7 @@ namespace WindowsMain
         void GetInstance_EvtClientDisconnected(string userId)
         {
             SetReceivedText(Environment.NewLine + String.Format("Client disconnected with userId: {0}", userId));
+            connectedClients.Remove(userId);
         }
 
         void GetInstance_EvtClientConnected(string userId)
@@ -193,26 +308,42 @@ namespace WindowsMain
         {
             WindowsMain.Server.ThreadClientLogin clientLogin = stateInfo as WindowsMain.Server.ThreadClientLogin;
 
-            if(clientLogin.ResetEvt.WaitOne(1000))
+            try
             {
-                return;
+                if (clientLogin.ResetEvt.WaitOne(5000))
+                {
+                    return;
+                }
             }
+            catch (Exception e)
+            {
+                SetReceivedText(Environment.NewLine + String.Format("exception in disconnection thread: {0}", e));
+            }
+
+            SetReceivedText(Environment.NewLine + String.Format("disconnection thread exit, userId: {0}", clientLogin.Id));
             connectionMgr.RemoveClient(clientLogin.Id);
             connectionDic.Remove(clientLogin.Id);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int portOpened = connectionMgr.StartServer(12000, 12050);
+            int portOpened = connectionMgr.StartServer(Int32.Parse(startPort.Text), Int32.Parse(endPort.Text));
 
             output.AppendText(Environment.NewLine + "Server port opened: " + portOpened.ToString());
-
-            _WndsMgr.EvtApplicationWndChanged += new Windows.WindowsMgr.OnApplicationWndChanged(_WndsMgr_EvtApplicationChanged);
-            _WndsMgr.StartMonitor();
-            
+            if (portOpened != -1)
+            {
+                _WndsMgr.EvtApplicationWndChanged += new Windows.WindowsMgr.OnApplicationWndChanged(_WndsMgr_EvtApplicationChanged);
+                _WndsMgr.StartMonitor();
+            }
         }
+
         void _WndsMgr_EvtApplicationChanged(List<Windows.WindowsMgr.WndAttributes> wndAttributes)
         {
+            if (connectedClients.Count == 0)
+            {
+                return;
+            }
+
             ServerWindowsPos windowsPos = new ServerWindowsPos();
 
             List<WndPos> windowList = new List<WndPos>();
@@ -231,8 +362,8 @@ namespace WindowsMain
 
             try
             {
-                connectionMgr.SendData((int)CommandConst.MainCommandServer.ServerWindowsInfo, 
-                    (int)CommandConst.SubCmdServerWindowsInfo.WindowsList, windowsPos);
+                connectionMgr.SendData((int)CommandConst.MainCommandServer.ServerWindowsInfo,
+                    (int)CommandConst.SubCmdServerWindowsInfo.WindowsList, windowsPos, new List<string>(connectedClients));
             }
             catch (Exception e)
             {
@@ -243,13 +374,27 @@ namespace WindowsMain
 
         private void stopServer_Click(object sender, EventArgs e)
         {
+            connectedClients.Clear();
             connectionMgr.StopServer();
             _WndsMgr.StopMonitor();
         }
 
-
-        private void sendMsg_Click(object sender, EventArgs e)
+        private void addDB_Click(object sender, EventArgs e)
         {
+            User user = new User { mUsername = username.Text, mPassword=password.Text};
+            Sqlite.Helper.GetInstance().AddData(user);
+        }
+
+        private void removeDB_Click(object sender, EventArgs e)
+        {
+            User user = new User { mUsername = username.Text };
+            Sqlite.Helper.GetInstance().RemoveData(user);
+        }
+
+        private void updateDB_Click(object sender, EventArgs e)
+        {
+            User user = new User { mUsername = username.Text, mPassword = password.Text };
+            Sqlite.Helper.GetInstance().UpdateData(user);
         }
     }
 }

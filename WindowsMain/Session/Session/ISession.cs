@@ -6,13 +6,14 @@ namespace Session.Session
 {
     public abstract class ISession
     {
-        public abstract void start();
+        public abstract bool start();
         public abstract void stop();
 
         public abstract bool isStarted();
 
         public abstract int getPortNumber();
 
-        public abstract void sendMessage(byte[] data);
+        public abstract void broadcastMessage(byte[] data);
+        public abstract void sendMessage(byte[] data, List<string> desireReceivers);
     }
 }

@@ -26,10 +26,5 @@ namespace Session.Data
 
         public int Width { get; set; }
         public int Height { get; set; }
-
-        public override string getCommandString()
-        {
-            return serializer.Serialize(this);
-        }
     }
 }

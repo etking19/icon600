@@ -18,9 +18,9 @@ namespace Session.Session
             return _Session;
         }
 
-        public void StartSession()
+        public bool StartSession()
         {
-            _Session.start();
+            return _Session.start();
         }
 
         public void StopSession()
@@ -33,9 +33,24 @@ namespace Session.Session
             return _Session.isStarted();
         }
 
-        public void SendMessage(string data)
+        public void BroadcastMessage(string data)
         {
-            _Session.sendMessage(Utils.StringEncoding.ConvertStringToBytes(data));
+            _Session.broadcastMessage(Utils.StringEncoding.ConvertStringToBytes(data));
+        }
+
+        public void SendMessage(string data, List<string> desireReceiver)
+        {
+            ServerSession serverSession = _Session as ServerSession;
+
+            if (serverSession != null)
+            {
+                serverSession.sendMessage(Utils.StringEncoding.ConvertStringToBytes(data), desireReceiver);
+            }
+            else
+            {
+                _Session.broadcastMessage(Utils.StringEncoding.ConvertStringToBytes(data));
+            }
+            
         }
     }
 }

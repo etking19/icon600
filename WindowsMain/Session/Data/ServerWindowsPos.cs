@@ -10,10 +10,5 @@ namespace Session.Data
     public class ServerWindowsPos : BaseCmd
     {
         public List<WndPos> windowsAttributes { get; set; }
-
-        public override string getCommandString()
-        {
-            return serializer.Serialize(this);
-        }
     }
 }

@@ -25,6 +25,10 @@ namespace CustomWinForm
         public event OnRestored onDelegateRestoredEvt;
         public event OnClosed onDelegateClosedEvt;
 
+        public delegate void OnMouseMove(CustomWinForm sender, MouseEventArgs e);
+
+        public event OnMouseMove onMouseMoveEvt;
+
         public int Id { get; private set;}
 
         private Int32 style;
@@ -34,7 +38,7 @@ namespace CustomWinForm
             set 
             { 
                 style = value;
-                UpdateStyles(); 
+                UpdateStyles();
             } 
         }
 
@@ -48,13 +52,7 @@ namespace CustomWinForm
         public void SetWindowName(string name)
         {
             // change the caption of the window
-            User32.SendMessage(this.Handle, Constant.WM_SETTEXT, (IntPtr)name.Length, name);
-        }
-
-        private IntPtr MakeLParam(int LoWord, int HiWord)
-        {
-            int i = (HiWord << 16) | (LoWord & 0xffff);
-            return new IntPtr(i);
+            NativeMethods.SendMessage(this.Handle, Constant.WM_SETTEXT, (IntPtr)name.Length, name);
         }
 
         private void onSizeChangedEvt(object sender, EventArgs e)
@@ -62,7 +60,6 @@ namespace CustomWinForm
             if (onDelegateSizeChangedEvt != null)
             {
                 onDelegateSizeChangedEvt(this, this.Size);
-                Trace.WriteLine(String.Format("Size changed: {0},{1}", this.Size.Width, this.Size.Height));
             }        
         }
 
@@ -122,14 +119,11 @@ namespace CustomWinForm
                         break;
                 }
             }
-            else if ((UInt32)m.Msg == Constant.WM_ACTIVATEAPP)
-            {
-                bool activated = ((Int32)m.WParam != 0);
-                Trace.WriteLine(String.Format("activation {0}", activated));
-            }
             else if (m.Msg == Constant.WM_NCHITTEST)
             {
+                // to allow move by clicking the window's body
                 base.WndProc(ref m);
+
                 if ((int)m.Result == 1)
                 {
                     m.Result = (IntPtr)2;
@@ -138,7 +132,7 @@ namespace CustomWinForm
                 return;
             }
 
-            //Trace.WriteLine(String.Format("message: {0}", m.Msg));
+            //Trace.WriteLine(String.Format("message: {0}", (UInt32)m.Msg));
             base.WndProc(ref m);
         }
     }

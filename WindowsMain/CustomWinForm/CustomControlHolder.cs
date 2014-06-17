@@ -66,6 +66,24 @@ namespace CustomWinForm
             this.ReferenceYPos = relativeYPos;
         }
 
+        Point getActualPoint(int x, int y)
+        {
+            int actualX = (int)Math.Round((float)x / mScaleX) + ReferenceXPos;
+            int actualY = (int)Math.Round((float)y / mScaleY) + ReferenceYPos;
+
+            return new Point(actualX, actualY);
+        }
+
+        Point getRelativePoint(int x, int y)
+        {
+            double referenceX = x - ReferenceXPos;
+            double referenceY = y - ReferenceYPos;
+            int actualX = (int)Math.Round(referenceX * mScaleX);
+            int actualY = (int)Math.Round(referenceY * mScaleY);
+
+            return new Point(actualX, actualY);
+        }
+
         public int AddControl(ControlAttributes controlAttr)
         {
             int id = Guid.NewGuid().GetHashCode();
@@ -76,12 +94,10 @@ namespace CustomWinForm
             this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
             mControlsDic.Add(id, winForm);
 
+            winForm.Style = controlAttr.Style;
+
             // set size and pos after add
-            double referenceX = controlAttr.Xpos - ReferenceXPos;
-            double referenceY = controlAttr.Ypos - ReferenceYPos;
-            int actualX = (int)Math.Round(referenceX * mScaleX);
-            int actualY = (int)Math.Round(referenceY * mScaleY);
-            winForm.Location = new Point(actualX, actualY);
+            winForm.Location = getRelativePoint(controlAttr.Xpos, controlAttr.Ypos);
 
             winForm.Size = new Size((int)controlAttr.Width, (int)controlAttr.Height);
             winForm.Scale(new SizeF(mScaleX, mScaleY));
@@ -104,9 +120,6 @@ namespace CustomWinForm
             if (onDelegateSizeChangedEvt != null)
             {
                 Size actualSize = new Size((int)Math.Round((float)size.Width / mScaleX), (int)Math.Round((float)size.Height / mScaleY));
-
-                Trace.WriteLine(String.Format("Delegate size changed: formSize:{0},{1}, actualSize: {2},{3}, scale:{4},{5}",
-                    size.Width, size.Height, actualSize.Width, actualSize.Height, mScaleX, mScaleY));
                 onDelegateSizeChangedEvt(winForm.Id, actualSize);
             }
         }
@@ -123,9 +136,8 @@ namespace CustomWinForm
         {
             if (onDelegatePosChangedEvt != null)
             {
-                int actualX = (int)Math.Round((float)xPos / mScaleX) + ReferenceXPos;
-                int actualY = (int)Math.Round((float)yPos / mScaleY) + ReferenceYPos;
-                onDelegatePosChangedEvt(winForm.Id, actualX, actualY);
+                Point actual = getActualPoint(xPos, yPos);
+                onDelegatePosChangedEvt(winForm.Id, actual.X, actual.Y);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using BasicClientServerLib.Client;
 using BasicClientServerLib.Message;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Session.Session
@@ -31,7 +32,7 @@ namespace Session.Session
             _Client = new BasicSocketClient();
         }
 
-        public override void start()
+        public override bool start()
         {
             //Adding event handling methods for the client
             _Client.ReceiveMessageEvent += new SocketServerLib.SocketHandler.ReceiveMessageDelegate(_Client_DataReceived);
@@ -39,10 +40,22 @@ namespace Session.Session
             _Client.CloseConnectionEvent += new SocketServerLib.SocketHandler.SocketConnectionDelegate(_Client_Disconnected);
 
             System.Net.IPAddress targetIP;
-            if(System.Net.IPAddress.TryParse(_HostIP, out targetIP))
+            if(System.Net.IPAddress.TryParse(_HostIP, out targetIP) == false)
+            {
+                return false;
+            }
+
+            try
             {
                 _Client.Connect(new System.Net.IPEndPoint(targetIP, _HostPort));
             }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+                return false;
+            }
+
+            return true;
         }
 
         void _Client_DataReceived(SocketServerLib.SocketHandler.AbstractTcpSocketClientHandler handler, SocketServerLib.Message.AbstractMessage message)
@@ -85,10 +98,15 @@ namespace Session.Session
             return _HostPort;
         }
 
-        public override void sendMessage(byte[] data)
+        public override void broadcastMessage(byte[] data)
         {
             BasicMessage message = new BasicMessage(this._Guid, data);
             _Client.SendAsync(message);
+        }
+
+        public override void sendMessage(byte[] data, List<string> desireReceiver)
+        {
+            broadcastMessage(data);
         }
     }
 }

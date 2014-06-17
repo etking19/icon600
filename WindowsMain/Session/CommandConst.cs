@@ -38,6 +38,8 @@ namespace Session
         public enum SubCmdClientControlInfo
         {
             WindowsAttributes = 0,
+            Mouse,
+            Keyboard,
         }
     }
 }

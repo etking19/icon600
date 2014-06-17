@@ -38,6 +38,7 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "CustomWinForm";
             this.Size = new System.Drawing.Size(248, 248);
             this.LocationChanged += new System.EventHandler(this.onLocationChanged);

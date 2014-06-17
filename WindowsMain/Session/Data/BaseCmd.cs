@@ -1,10 +1,13 @@
 ﻿
 namespace Session.Data
 {
-    public abstract class BaseCmd
+    public class BaseCmd : ICommand
     {
         protected System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-        public abstract string getCommandString();
+        public override string getCommandString()
+        {
+            return serializer.Serialize(this);
+        }
     }
 }

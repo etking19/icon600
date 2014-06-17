@@ -18,7 +18,7 @@ namespace WindowsMain
 
             Action action = new Action(StartClient);
 
-            for (int a = 0; a < 2; a++ )
+            for (int a = 0; a < 1; a++ )
             {
                 Task.Factory.StartNew(action);
             }

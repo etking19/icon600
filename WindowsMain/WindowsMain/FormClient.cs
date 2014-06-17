@@ -11,8 +11,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Utils.Hooks;
 using Utils.Windows;
 using WindowsMain.Client;
 using WindowsMain.Comparer;
@@ -32,6 +34,9 @@ namespace WindowsMain
         private delegate void DelegateWindow(WndPos wndPos);
         private delegate void DelegateEvt();
 
+        MouseHook mouseHook = new MouseHook();
+        KeyboardHook keyboardHook = new KeyboardHook();
+
         public FormClient()
         {
             InitializeComponent();
@@ -40,8 +45,6 @@ namespace WindowsMain
             mHolder.Location = new Point(0, 0);
             mHolder.Size = layoutPanel.Size;
             mHolder.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-
-            layoutPanel.ControlAdded += layoutPanel_ControlAdded;
 
             connectionMgr.EvtConnected += connectionMgr_EvtConnected;
             connectionMgr.EvtDisconnected += connectionMgr_EvtDisconnected;
@@ -53,7 +56,11 @@ namespace WindowsMain
             mHolder.onDelegatePosChangedEvt += mHolder_onDelegatePosChangedEvt;
             mHolder.onDelegateRestoredEvt += mHolder_onDelegateRestoredEvt;
             mHolder.onDelegateSizeChangedEvt += mHolder_onDelegateSizeChangedEvt;
+
+            mouseHook.HookInvoked += mouseHook_HookInvoked;
+            keyboardHook.HookInvoked += keyboardHook_HookInvoked;
         }
+
 
         void mHolder_onDelegateMinimizedEvt(int id)
         {
@@ -64,7 +71,7 @@ namespace WindowsMain
                 wndCommand.CommandType = ClientWndCmd.CommandId.EMinimize;
                 wndCommand.Id = wndId;
 
-                connectionMgr.SendData(
+                connectionMgr.BroadcastMessage(
                     (int)CommandConst.MainCommandClient.ClientControlInfo,
                     (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
                     wndCommand);
@@ -83,7 +90,7 @@ namespace WindowsMain
                 wndCommand.Width = newSize.Width;
                 wndCommand.Height = newSize.Height;
 
-                connectionMgr.SendData(
+                connectionMgr.BroadcastMessage(
                     (int)CommandConst.MainCommandClient.ClientControlInfo,
                     (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
                     wndCommand);
@@ -99,7 +106,7 @@ namespace WindowsMain
                 wndCommand.CommandType = ClientWndCmd.CommandId.ERestore;
                 wndCommand.Id = wndId;
 
-                connectionMgr.SendData(
+                connectionMgr.BroadcastMessage(
                     (int)CommandConst.MainCommandClient.ClientControlInfo,
                     (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
                     wndCommand);
@@ -117,7 +124,7 @@ namespace WindowsMain
                 wndCommand.PositionX = xPos;
                 wndCommand.PositionY = yPos;
 
-                connectionMgr.SendData(
+                connectionMgr.BroadcastMessage(
                     (int)CommandConst.MainCommandClient.ClientControlInfo,
                     (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
                     wndCommand);
@@ -133,7 +140,7 @@ namespace WindowsMain
                 wndCommand.CommandType = ClientWndCmd.CommandId.EMaximize;
                 wndCommand.Id = wndId;
 
-                connectionMgr.SendData(
+                connectionMgr.BroadcastMessage(
                     (int)CommandConst.MainCommandClient.ClientControlInfo,
                     (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
                     wndCommand);
@@ -149,7 +156,7 @@ namespace WindowsMain
                 wndCommand.CommandType = ClientWndCmd.CommandId.EClose;
                 wndCommand.Id = wndId;
 
-                connectionMgr.SendData(
+                connectionMgr.BroadcastMessage(
                     (int)CommandConst.MainCommandClient.ClientControlInfo,
                     (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
                     wndCommand);
@@ -162,7 +169,6 @@ namespace WindowsMain
             {
                 case CommandConst.MainCommandServer.ServerWindowsInfo:
                     // windows data
-                    Trace.WriteLine("server windows info received");
                     handleWindowsData(subId, commandData);
                     break;
                 case CommandConst.MainCommandServer.ServerMonitorsInfo:
@@ -184,15 +190,16 @@ namespace WindowsMain
             mHolder.RemoveAllControls();
             applicationList.Clear();
             mWindowsDic.Clear();
+            minimizedWndComboBox.Items.Clear();
         }
 
         void connectionMgr_EvtConnected()
         {
             ClientLoginCmd loginCmd = new ClientLoginCmd();
-            loginCmd.username = "testing";
-            loginCmd.password = "123456";
+            loginCmd.username = username.Text;
+            loginCmd.password = password.Text;
 
-            connectionMgr.SendData((int)CommandConst.MainCommandClient.ClientLoginInfo, 0, loginCmd);
+            connectionMgr.BroadcastMessage((int)CommandConst.MainCommandClient.ClientLoginInfo, 0, loginCmd);
         }
 
         private void connect_Click(object sender, EventArgs e)
@@ -200,9 +207,118 @@ namespace WindowsMain
             connectionMgr.StartClient(hostIp.Text, Convert.ToInt32(hostPort.Text));
         }
 
+        void keyboardHook_HookInvoked(object sender, KeyboardHook.KeyboardHookEventArgs data)
+        {
+            if (captureKeyboard.Checked == false)
+            {
+                return;
+            }
+
+            Trace.WriteLine(String.Format("keyboard code:{2}, vk:{0}, scan:{1}, wParam:{3}, flag:{4}", data.lParam.vkCode, data.lParam.scanCode, data.code, data.wParam, data.lParam.flags));
+            if (data.wParam == Constant.WM_KEYDOWN)
+            {
+                // only handle keydown and keyup events, reference: http://msdn.microsoft.com/en-us/library/windows/desktop/ms646271(v=vs.85).aspx
+                data.lParam.flags = 0;
+            }
+            else
+            {
+                data.lParam.flags = 0x0002;
+            }
+
+            ClientKeyboardCmd keyboardCmd = new ClientKeyboardCmd();
+            keyboardCmd.data = new ClientKeyboardCmd.KeyboardData
+            {
+                wVk = (UInt16)data.lParam.vkCode,
+                wScan = (UInt16)data.lParam.scanCode,
+                time = data.lParam.time,
+                dwFlags = (UInt32)data.lParam.flags,
+                dwExtraInfo = 0
+            };
+
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.ClientControlInfo,
+                (int)CommandConst.SubCmdClientControlInfo.Keyboard,
+                keyboardCmd);
+        }
+
+        void mouseHook_HookInvoked(object sender, MouseHook.MouseHookEventArgs arg)
+        {
+            if (captureMouse.Checked == false)
+            {
+                return;
+            }
+
+            if (arg.lParam.flags == 1)
+            {
+                // do not handle injected mouse event
+                return;
+            }
+
+            int offsetTop = (this.Size.Height - this.ClientSize.Height);
+            int offsetWidth = (this.Size.Width - this.ClientSize.Width) / 2;
+
+            int relativeX = arg.lParam.pt.x - this.Location.X - offsetTop - layoutPanel.Bounds.X - mHolder.Bounds.X;
+            int relativeY = arg.lParam.pt.y - this.Location.Y - offsetWidth - layoutPanel.Bounds.Y - mHolder.Bounds.Y;
+
+            if (relativeX < 0 ||
+                relativeY < 0 ||
+                relativeX > mHolder.Bounds.Width ||
+                relativeY > mHolder.Bounds.Height)
+            {
+                // not in client bound
+                Trace.WriteLine("mouse not in client area");
+                return;
+            }
+
+            float relativePosX = (float)relativeX / (float)mHolder.Width * 65535.0f;
+            float relativePosY = (float)relativeY / (float)mHolder.Height * 65535.0f;
+
+            Trace.WriteLine(String.Format("mouse {0},{1}, flags:{2}, mouseData:{3}", relativePosX, relativePosY, arg.lParam.flags, arg.lParam.mouseData));
+            UInt32 actualFlags = InputConstants.MOUSEEVENTF_MOVE | InputConstants.MOUSEEVENTF_ABSOLUTE | InputConstants.MOUSEEVENTF_VIRTUALDESK;
+            switch(arg.wParam.ToInt32())
+            {
+                case (Int32)InputConstants.WM_LBUTTONDOWN:
+                    actualFlags = InputConstants.MOUSEEVENTF_LEFTDOWN;
+                    break;
+                case (Int32)InputConstants.WM_LBUTTONUP:
+                    actualFlags = InputConstants.MOUSEEVENTF_LEFTUP;
+                    break;
+                case (Int32)InputConstants.WM_MOUSEWHEEL:
+                case (Int32)InputConstants.WM_MOUSEHWHEEL:
+                    actualFlags = InputConstants.MOUSEEVENTF_WHEEL;
+                    break;
+                case (Int32)InputConstants.WM_RBUTTONDOWN:
+                    actualFlags = InputConstants.MOUSEEVENTF_RIGHTDOWN;
+                    break;
+                case (Int32)InputConstants.WM_RBUTTONUP:
+                    actualFlags = InputConstants.MOUSEEVENTF_RIGHTUP;
+                    break;
+                default:
+                    break;
+            }
+
+            ClientMouseCmd mouseCmd = new ClientMouseCmd();
+            mouseCmd.data = new ClientMouseCmd.MouseData 
+            {
+                dx = (int)relativePosX,
+                dy = (int)relativePosY,
+                mouseData = arg.lParam.mouseData,
+                dwFlags = actualFlags,
+                time = 0,
+                dwExtraInfo = 0
+            };
+
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.ClientControlInfo,
+                (int)CommandConst.SubCmdClientControlInfo.Mouse,
+                mouseCmd);
+        }
+
+
         private void disconnect_Click(object sender, EventArgs e)
         {
             connectionMgr.StopClient();
+            connectionMgr_EvtDisconnected();
         }
 
         void handleMonitorsData(int subId, string commandData)
@@ -336,10 +452,6 @@ namespace WindowsMain
                 //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
                 ChangeWindowZOrder(windows);
             }
-        }
-
-        void layoutPanel_ControlAdded(object sender, ControlEventArgs e)
-        {
         }
 
         private void AddWindow(WndPos wndPos)
@@ -509,10 +621,34 @@ namespace WindowsMain
             wndCommand.CommandType = ClientWndCmd.CommandId.ERestore;
             wndCommand.Id = comboBox.Id;
 
-            connectionMgr.SendData(
+            connectionMgr.BroadcastMessage(
                 (int)CommandConst.MainCommandClient.ClientControlInfo,
                 (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
                 wndCommand);
+        }
+
+        private void captureKeyboard_CheckedChanged(object sender, EventArgs e)
+        {
+            if(captureKeyboard.Checked)
+            {
+                keyboardHook.StartHook(0);
+            }
+            else
+            {
+                keyboardHook.StopHook();
+            }
+        }
+
+        private void captureMouse_CheckedChanged(object sender, EventArgs e)
+        {
+            if (captureMouse.Checked)
+            {
+                mouseHook.StartHook(AppDomain.GetCurrentThreadId());
+            }
+            else
+            {
+                mouseHook.StopHook();
+            }
         }
     }
 }

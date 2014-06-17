@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Session.Data;
 using System.Runtime.CompilerServices;
 using Utils;
+using System.Collections.Generic;
 
 namespace Session.Connection
 {
@@ -51,8 +52,12 @@ namespace Session.Connection
 
             _SessionMgr = new SessionManager(serverSession);
 
-            _SessionMgr.StartSession();
-            return port;
+            if(_SessionMgr.StartSession())
+            {
+                return port;
+            }
+
+            return -1;
         }
 
         void serverSession_DataReceived(string ID, byte[] Data)
@@ -118,12 +123,12 @@ namespace Session.Connection
             serverSession.RemoveClient(userId);
         }
 
-        public void StartClient(string hostIP, int hostPort)
+        public bool StartClient(string hostIP, int hostPort)
         {
             if (_SessionMgr != null &&
                 IsStarted())
             {
-                return;
+                return false;
             }
 
             ClientSession clientSession = new ClientSession(hostIP, hostPort, Utils.StringEncoding.RandomString(10));
@@ -132,7 +137,7 @@ namespace Session.Connection
             clientSession.DataReceived += new ClientSession.DataReceivedEventHandler(clientSession_DataReceived);
             
             _SessionMgr = new SessionManager(clientSession);
-            _SessionMgr.StartSession();
+            return _SessionMgr.StartSession();
         }
 
 
@@ -191,7 +196,7 @@ namespace Session.Connection
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void SendData(int mainId, int subId, BaseCmd cmdObj)
+        public void BroadcastMessage(int mainId, int subId, BaseCmd cmdObj)
         {
             if (IsStarted() == false)
             {
@@ -204,7 +209,24 @@ namespace Session.Connection
             command.data = cmdObj.getCommandString();
 
             string message = serializer.Serialize(command);
-            _SessionMgr.SendMessage(message);
+            _SessionMgr.BroadcastMessage(message);
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void SendData(int mainId, int subId, BaseCmd cmdObj, List<string> desireReceiver)
+        {
+            if (IsStarted() == false)
+            {
+                return;
+            }
+
+            MainCommand command = new MainCommand();
+            command.mainCommandId = mainId;
+            command.subCommandId = subId;
+            command.data = cmdObj.getCommandString();
+
+            string message = serializer.Serialize(command);
+            _SessionMgr.SendMessage(message, desireReceiver);
         }
 
         public bool IsStarted()

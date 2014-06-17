@@ -38,15 +38,15 @@
             this.removeDB = new System.Windows.Forms.Button();
             this.addDB = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.TextBox();
-            this.msgBox = new System.Windows.Forms.TextBox();
-            this.sendMsg = new System.Windows.Forms.Button();
+            this.startPort = new System.Windows.Forms.TextBox();
+            this.endPort = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // startServer
             // 
-            this.startServer.Location = new System.Drawing.Point(12, 25);
+            this.startServer.Location = new System.Drawing.Point(12, 51);
             this.startServer.Name = "startServer";
             this.startServer.Size = new System.Drawing.Size(75, 23);
             this.startServer.TabIndex = 0;
@@ -60,6 +60,7 @@
             this.username.Name = "username";
             this.username.Size = new System.Drawing.Size(100, 20);
             this.username.TabIndex = 3;
+            this.username.Text = "username";
             // 
             // password
             // 
@@ -67,9 +68,12 @@
             this.password.Name = "password";
             this.password.Size = new System.Drawing.Size(100, 20);
             this.password.TabIndex = 4;
+            this.password.Text = "password";
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.endPort);
+            this.panel1.Controls.Add(this.startPort);
             this.panel1.Controls.Add(this.stopServer);
             this.panel1.Controls.Add(this.startServer);
             this.panel1.Location = new System.Drawing.Point(28, 12);
@@ -79,7 +83,7 @@
             // 
             // stopServer
             // 
-            this.stopServer.Location = new System.Drawing.Point(93, 25);
+            this.stopServer.Location = new System.Drawing.Point(93, 51);
             this.stopServer.Name = "stopServer";
             this.stopServer.Size = new System.Drawing.Size(75, 23);
             this.stopServer.TabIndex = 6;
@@ -94,7 +98,7 @@
             this.panel2.Controls.Add(this.removeDB);
             this.panel2.Controls.Add(this.addDB);
             this.panel2.Controls.Add(this.username);
-            this.panel2.Location = new System.Drawing.Point(25, 196);
+            this.panel2.Location = new System.Drawing.Point(28, 107);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(253, 100);
             this.panel2.TabIndex = 6;
@@ -107,6 +111,7 @@
             this.updateDB.TabIndex = 6;
             this.updateDB.Text = "Update";
             this.updateDB.UseVisualStyleBackColor = true;
+            this.updateDB.Click += new System.EventHandler(this.updateDB_Click);
             // 
             // removeDB
             // 
@@ -116,6 +121,7 @@
             this.removeDB.TabIndex = 5;
             this.removeDB.Text = "Remove";
             this.removeDB.UseVisualStyleBackColor = true;
+            this.removeDB.Click += new System.EventHandler(this.removeDB_Click);
             // 
             // addDB
             // 
@@ -125,6 +131,7 @@
             this.addDB.TabIndex = 4;
             this.addDB.Text = "Add";
             this.addDB.UseVisualStyleBackColor = true;
+            this.addDB.Click += new System.EventHandler(this.addDB_Click);
             // 
             // output
             // 
@@ -135,31 +142,27 @@
             this.output.Size = new System.Drawing.Size(314, 513);
             this.output.TabIndex = 7;
             // 
-            // msgBox
+            // startPort
             // 
-            this.msgBox.Location = new System.Drawing.Point(25, 316);
-            this.msgBox.Multiline = true;
-            this.msgBox.Name = "msgBox";
-            this.msgBox.Size = new System.Drawing.Size(249, 89);
-            this.msgBox.TabIndex = 8;
+            this.startPort.Location = new System.Drawing.Point(12, 14);
+            this.startPort.Name = "startPort";
+            this.startPort.Size = new System.Drawing.Size(100, 20);
+            this.startPort.TabIndex = 7;
+            this.startPort.Text = "10000";
             // 
-            // sendMsg
+            // endPort
             // 
-            this.sendMsg.Location = new System.Drawing.Point(28, 412);
-            this.sendMsg.Name = "sendMsg";
-            this.sendMsg.Size = new System.Drawing.Size(75, 23);
-            this.sendMsg.TabIndex = 9;
-            this.sendMsg.Text = "send";
-            this.sendMsg.UseVisualStyleBackColor = true;
-            this.sendMsg.Click += new System.EventHandler(this.sendMsg_Click);
+            this.endPort.Location = new System.Drawing.Point(129, 14);
+            this.endPort.Name = "endPort";
+            this.endPort.Size = new System.Drawing.Size(100, 20);
+            this.endPort.TabIndex = 8;
+            this.endPort.Text = "10010";
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(626, 537);
-            this.Controls.Add(this.sendMsg);
-            this.Controls.Add(this.msgBox);
             this.Controls.Add(this.output);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
@@ -167,6 +170,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -186,8 +190,8 @@
         private System.Windows.Forms.Button addDB;
         private System.Windows.Forms.Button stopServer;
         private System.Windows.Forms.TextBox output;
-        private System.Windows.Forms.TextBox msgBox;
-        private System.Windows.Forms.Button sendMsg;
+        private System.Windows.Forms.TextBox endPort;
+        private System.Windows.Forms.TextBox startPort;
     }
 }
 

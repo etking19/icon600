@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Utils.Windows
 {
-    public class User32
+    public class NativeMethods
     {
         public delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData);      // EnumDisplayMonitors
         public delegate bool EnumDelegate(IntPtr hWnd, int lParam);         // EnumDesktopWindows
@@ -36,6 +36,8 @@ namespace Utils.Windows
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = CCHILDREN_TITLEBAR + 1)]
             public uint[] rgstate;
         }
+
+        
 
         [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -91,8 +93,12 @@ namespace Utils.Windows
 
         [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern int SetWindowLong(IntPtr hWnd, Int32 nIndex, Int32 dwNewLong);
-    
-    
-    
+
+        [DllImport("User32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("User32.dll")]
+        public static extern UInt32 SendInput(UInt32 nInputs, Utils.Windows.InputConstants.INPUT[] pInputs, Int32 cbSize);
     }
 }

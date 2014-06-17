@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data.SQLite;
 using Sqlite.Data;
+using System.Diagnostics;
+using System.Data;
 
 namespace Sqlite
 {
@@ -11,6 +13,7 @@ namespace Sqlite
         private SQLiteConnection m_dbConnection;
 
         private static Helper sSQLiteHelper;
+        private const string DB_PASSWORD = "123$%^";
 
         private Helper()
         {
@@ -25,49 +28,107 @@ namespace Sqlite
             return sSQLiteHelper;
         }
 
-        public void Initialize(string dbName)
+        public bool Initialize(string dbName)
         {
-            m_dbConnection = new SQLiteConnection(String.Format("{0}{1}{2}", "Data Source=", dbName, ";Version=3;"));
+            //m_dbConnection = new SQLiteConnection(String.Format("Data Source={0}; Version=3; Synchronous=Full; Password={1}", dbName, DB_PASSWORD));
+            m_dbConnection = new SQLiteConnection(String.Format("Data Source={0}; Version=3; Synchronous=Full", dbName));
 
             try
             {
                 m_dbConnection.Open();
             }
-            catch (System.Data.SQLite.SQLiteException)
+            catch (System.Data.SQLite.SQLiteException e)
             {
+                Trace.WriteLine(e);
+                return false;
             }
+
+            return true;
         }
 
-        public void CreateTable(ISqlData data)
+        public void Shutdown()
         {
-            SQLiteCommand command = new SQLiteCommand(data.GetCreateCommand(), m_dbConnection);
-            command.ExecuteNonQuery();
+            m_dbConnection.Close();
         }
 
-        public void AddData(ISqlData data)
+        public bool CreateTable(ISqlData data)
         {
-            SQLiteCommand command = new SQLiteCommand(data.GetAddCommand(), m_dbConnection);
-            command.ExecuteNonQuery();
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(data.GetCreateCommand(), m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+                return false;
+            }
+
+            return true;
         }
 
-        public void RemoveData(ISqlData data)
+        public bool AddData(ISqlData data)
         {
-            SQLiteCommand command = new SQLiteCommand(data.GetRemoveCommand(), m_dbConnection);
-            command.ExecuteNonQuery();
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(data.GetAddCommand(), m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+                return false;
+            }
+            return true;
         }
 
-        public void UpdateData(ISqlData data)
+        public bool RemoveData(ISqlData data)
         {
-            SQLiteCommand command = new SQLiteCommand(data.GetUpdateDataCommand(), m_dbConnection);
-            command.ExecuteNonQuery();
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(data.GetRemoveCommand(), m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+                return false;
+            }
+            return true;
         }
 
-        public SQLiteDataReader ReadData(ISqlData data)
+        public bool UpdateData(ISqlData data)
         {
-            SQLiteCommand command = new SQLiteCommand(data.GetQueryCommand(), m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(data.GetUpdateDataCommand(), m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+                return false;
+            }
 
-            return reader;
+            return true;
+        }
+
+        public DataTable ReadData(ISqlData data)
+        {
+            SQLiteDataAdapter ad = null;
+            DataTable dt = new DataTable();
+            try
+            {
+                SQLiteCommand command = new SQLiteCommand(data.GetQueryCommand(), m_dbConnection);
+                ad = new SQLiteDataAdapter(command);
+                ad.Fill(dt); //fill the datasource
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+            }
+
+            return dt;
         }
     }
 }

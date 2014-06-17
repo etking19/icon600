@@ -3,6 +3,7 @@ using BasicClientServerLib.Server;
 using SocketServerLib.Server;
 using SocketServerLib.SocketHandler;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 
@@ -29,7 +30,7 @@ namespace Session.Session
             _Server = new BasicSocketServer();
         }
 
-        public override void start()
+        public override bool start()
         {
             //Adding event handling methods, to handle the server messages
             _Server.ReceiveMessageEvent += new SocketServerLib.SocketHandler.ReceiveMessageDelegate(Server_DataReceived);
@@ -38,17 +39,37 @@ namespace Session.Session
 
             try
             {
-                _Server.Init(new IPEndPoint(IPAddress.Loopback, _ListeningPort));
+                _Server.Init(new IPEndPoint(IPAddress.Any, _ListeningPort));
                 _Server.StartUp();
                 isServerStarted = true;
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e);
+                return false;
             }
             
+            return true;
         }
 
+        private IPAddress GetLocalAddr()
+        {
+            const string InterNetwork = @"InterNetwork";
+
+            IPAddress localAddr = IPAddress.Any;
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+            foreach (IPAddress ipAddr in host.AddressList)
+            {
+                if (ipAddr.AddressFamily.ToString() == InterNetwork)
+                {
+                    localAddr = ipAddr;
+                    //break;
+                }
+            }
+
+            return localAddr;
+        }
 
         void Server_DataReceived(SocketServerLib.SocketHandler.AbstractTcpSocketClientHandler handler, SocketServerLib.Message.AbstractMessage message)
         {
@@ -91,7 +112,7 @@ namespace Session.Session
             return _ListeningPort;
         }
 
-        public override void sendMessage(byte[] data)
+        public override void broadcastMessage(byte[] data)
         {
             ClientInfo[] clientList = _Server.GetClientList();
             foreach (ClientInfo client in clientList)
@@ -99,6 +120,23 @@ namespace Session.Session
                 AbstractTcpSocketClientHandler clientHandler = client.TcpSocketClientHandler;
                 BasicMessage message = new BasicMessage(_ServerGuid, data);
                 clientHandler.SendAsync(message);
+            }
+        }
+
+        public override void sendMessage(byte[] data, List<string> desireReceiver)
+        {
+            ClientInfo[] clientList = _Server.GetClientList();
+            foreach (ClientInfo client in clientList)
+            {
+                AbstractTcpSocketClientHandler clientHandler = client.TcpSocketClientHandler;
+                foreach (string receiver in desireReceiver)
+                {
+                    if (clientHandler.GetHashCode().ToString().CompareTo(receiver) == 0)
+                    {
+                        BasicMessage message = new BasicMessage(_ServerGuid, data);
+                        clientHandler.SendAsync(message);
+                    }
+                }
             }
         }
 

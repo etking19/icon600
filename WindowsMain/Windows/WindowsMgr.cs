@@ -34,8 +34,8 @@ namespace Windows
             public string Availability { get; set; }
             public int ScreenHeight { get; set; }
             public int ScreenWidth { get; set; }
-            public Utils.Windows.User32.Rect MonitorArea { get; set; }
-            public Utils.Windows.User32.Rect WorkArea { get; set; }
+            public Utils.Windows.NativeMethods.Rect MonitorArea { get; set; }
+            public Utils.Windows.NativeMethods.Rect WorkArea { get; set; }
         }
 
         public WindowsMgr()
@@ -99,12 +99,12 @@ namespace Windows
         public List<DisplayInfo> GetScreens()
         {
             List<DisplayInfo> col = new List<DisplayInfo>();
-            User32.MonitorEnumProc testDelegate = new User32.MonitorEnumProc(
-                delegate(IntPtr hMonitor, IntPtr hdcMonitor, ref User32.Rect lprcMonitor, IntPtr dwData)
+            NativeMethods.MonitorEnumProc testDelegate = new NativeMethods.MonitorEnumProc(
+                delegate(IntPtr hMonitor, IntPtr hdcMonitor, ref NativeMethods.Rect lprcMonitor, IntPtr dwData)
                 {
-                    User32.MonitorInfo mi = new User32.MonitorInfo();
+                    NativeMethods.MonitorInfo mi = new NativeMethods.MonitorInfo();
                     mi.size = (uint)Marshal.SizeOf(mi);
-                    bool success = User32.GetMonitorInfo(hMonitor, ref mi);
+                    bool success = NativeMethods.GetMonitorInfo(hMonitor, ref mi);
                     if (success)
                     {
                         DisplayInfo di = new DisplayInfo();
@@ -117,7 +117,7 @@ namespace Windows
                     }
                     return true;
                 });
-            User32.EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, testDelegate, IntPtr.Zero);
+            NativeMethods.EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, testDelegate, IntPtr.Zero);
             return col;
         }
 

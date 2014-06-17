@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sqlite.Data
 {
@@ -15,25 +11,9 @@ namespace Sqlite.Data
         private string mAddCommand = "INSERT INTO {0} (username, password) VALUES ('{1}', '{2}')";
         private string mQueryCommand = "SELECT * FROM {0}";
         private string mUpdateCommand = "UPDATE {0} SET password = '{1}' WHERE username = '{2}';";
-        
-        private string mUsername;
-        private string mPassword;
 
-        public User()
-        {
-
-        }
-
-        public User(string username, string password)
-        {
-            mUsername = username;
-            mPassword = password;
-        }
-
-        public User(string usernameToBeRemove)
-        {
-            mUsername = usernameToBeRemove;
-        }
+        public string mUsername { get; set; }
+        public string mPassword { get; set; }
 
         string ISqlData.GetAddCommand()
         {
