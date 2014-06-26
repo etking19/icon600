@@ -34,7 +34,7 @@ namespace Utils.Hooks
             // Create an instance of HookProc.
             hookProc = new HProc(KeyboardHookProc);
 
-            hHook = SetWindowsHookEx((int)HookId.WH_KEYBOARD_LL, hookProc, IntPtr.Zero, 0);
+            hHook = SetWindowsHookEx((int)HookId.WH_KEYBOARD_LL, hookProc, IntPtr.Zero, threadId);
             return IsHooking();
         }
 

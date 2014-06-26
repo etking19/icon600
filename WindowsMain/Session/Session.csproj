@@ -65,6 +65,7 @@
     <Compile Include="Connection\ConnectionManager.cs" />
     <Compile Include="Data\BaseCmd.cs" />
     <Compile Include="Data\ClientKeyboardCmd.cs" />
+    <Compile Include="Data\ClientMaintenanceCmd.cs" />
     <Compile Include="Data\ClientMouseCmd.cs" />
     <Compile Include="Data\ClientWndCmd.cs" />
     <Compile Include="Data\ICommand.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Data\SubData\WndPos.cs" />
     <Compile Include="Session\ClientSession.cs" />
     <Compile Include="Session\ISession.cs" />
+    <Compile Include="Session\KeepAlive.cs" />
     <Compile Include="Session\ServerSession.cs" />
     <Compile Include="Session\SessionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

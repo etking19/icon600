@@ -40,6 +40,7 @@ namespace Session
             WindowsAttributes = 0,
             Mouse,
             Keyboard,
+            Maintenance,
         }
     }
 }

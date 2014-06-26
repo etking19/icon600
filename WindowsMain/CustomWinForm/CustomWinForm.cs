@@ -31,6 +31,10 @@ namespace CustomWinForm
 
         public int Id { get; private set;}
 
+        // used to control the actual size and relative size scaling issue
+        public Size ActualSize { get; set; }
+        public Point ActualPos { get; set; }
+
         private Int32 style;
         public Int32 Style 
         { 

@@ -14,7 +14,7 @@ namespace Windows
 
         private List<WndAttributes> _CurrentActiveWnds = new List<WndAttributes>();
         private MonitorWorker worker = new MonitorWorker();
-        private Thread workerThread;
+        private Thread workerThread = null;
 
         public struct WndAttributes
         {
@@ -38,14 +38,6 @@ namespace Windows
             public Utils.Windows.NativeMethods.Rect WorkArea { get; set; }
         }
 
-        public WindowsMgr()
-        {
-            worker = new MonitorWorker();
-            workerThread = new Thread(worker.DoWork);
-
-            worker.EvtWndAttributes += new MonitorWorker.OnWndAttribute(MonitorWorker_onWndAttributes);
-        }
-
         ~WindowsMgr()
         {
             if (IsMonitoring())
@@ -61,6 +53,10 @@ namespace Windows
                 return;
             }
 
+            worker = new MonitorWorker();
+            worker.EvtWndAttributes += new MonitorWorker.OnWndAttribute(MonitorWorker_onWndAttributes);
+
+            workerThread = new Thread(worker.DoWork);
             workerThread.Start();
             while (!workerThread.IsAlive) ;
         }
@@ -73,11 +69,12 @@ namespace Windows
             }
             worker.RequestStop();
             workerThread.Join();
+            workerThread = null;
         }
 
         public bool IsMonitoring()
         {
-            return workerThread.IsAlive;
+            return (workerThread != null && workerThread.IsAlive);
         }
 
         public List<WndAttributes> getAllVisibleApps()

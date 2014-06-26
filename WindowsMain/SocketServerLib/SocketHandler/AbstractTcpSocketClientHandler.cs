@@ -191,7 +191,14 @@ namespace SocketServerLib.SocketHandler
                 this.socket.SendTimeout = value;
             }
         }
-        
+
+        public bool Connected
+        {
+            get
+            {
+                return this.socket.Connected;
+            }
+        }
         #endregion
 
         #region Methods to raise events
@@ -578,8 +585,8 @@ namespace SocketServerLib.SocketHandler
             if (this.socket != null && this.socket.Connected)
             {
                 this.socket.Close();
-                this.OnCloseConnection(this);
             }
+            this.OnCloseConnection(this);
         }
 
         #region IDisposable Members

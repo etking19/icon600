@@ -107,6 +107,7 @@ namespace Session.Connection
             serverSession.OnClientConnection -= serverSession_OnClientConnection;
             serverSession.LostConnection -= serverSession_LostConnection;
             serverSession.DataReceived -= serverSession_DataReceived;
+            serverSession.Dispose();
 
             _SessionMgr.StopSession();
             _SessionMgr = null;

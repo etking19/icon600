@@ -46,7 +46,11 @@ namespace WindowsMain
                 Trace.WriteLine(string.Format("left {0}, top {1}, width {2} height {3}", info.WorkArea.Left, info.MonitorArea.Top, info.ScreenWidth, info.ScreenHeight));
             }
             
-            Sqlite.Helper.GetInstance().Initialize("iCon600DB.sqlite");
+            // TODO: get the path to store the database 
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create);
+            //System.IO.DirectoryInfo directoryInfo = System.IO.Directory.CreateDirectory(appDataPath + "\\icon6000");
+
+            Sqlite.Helper.GetInstance().Initialize(appDataPath + "\\icon6000\\iCon600DB.sqlite");
             Sqlite.Helper.GetInstance().CreateTable(new User());
 
             User newUser = new User { mUsername = "username", mPassword = "password"};
@@ -62,6 +66,13 @@ namespace WindowsMain
             }
             Sqlite.Helper.GetInstance().UpdateData(newUser);
             //Sqlite.Helper.getInstance().removeData(newUser);
+
+            // check for license
+            System.IO.DriveInfo[] driveInfoList = System.IO.DriveInfo.GetDrives();
+            foreach (System.IO.DriveInfo drive in driveInfoList)
+            {
+                Trace.WriteLine(String.Format("drive name: {0}", drive.RootDirectory));
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -191,10 +202,53 @@ namespace WindowsMain
                 case (int)CommandConst.SubCmdClientControlInfo.Keyboard:
                     handleKeyboardCommand(cmdData);
                     break;
+                case (int)CommandConst.SubCmdClientControlInfo.Maintenance:
+                    handleMaintenanceCommand(cmdData);
+                    break;
             }
 
         }
 
+        void handleMaintenanceCommand(string cmdData)
+        {
+            ClientMaintenanceCmd maintenaceCmd = deserialize.Deserialize<ClientMaintenanceCmd>(cmdData);
+            if (maintenaceCmd == null)
+            {
+                return;
+            }
+
+            switch (maintenaceCmd.CommandType)
+            {
+                case ClientMaintenanceCmd.CommandId.EShutdown:
+                    DoExitWindow(Constant.EWX_SHUTDOWN);
+                    break;
+                case ClientMaintenanceCmd.CommandId.EReboot:
+                    DoExitWindow(Constant.EWX_REBOOT);
+                    break;
+                case ClientMaintenanceCmd.CommandId.ELogOff:
+                    DoExitWindow(Constant.EWX_LOGOFF);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        bool DoExitWindow(int exitCode)
+        {
+            bool result;
+            Utils.Windows.NativeMethods.TokPriv1Luid tp;
+            IntPtr hproc = Utils.Windows.NativeMethods.GetCurrentProcess();
+            IntPtr htok = IntPtr.Zero;
+            result = Utils.Windows.NativeMethods.OpenProcessToken(hproc, Constant.TOKEN_ADJUST_PRIVILEGES | Constant.TOKEN_QUERY, ref htok);
+            tp.Count = 1;
+            tp.Luid = 0;
+            tp.Attr = Constant.SE_PRIVILEGE_ENABLED;
+            result &= Utils.Windows.NativeMethods.LookupPrivilegeValue(null, Constant.SE_SHUTDOWN_NAME, ref tp.Luid);
+            result &= Utils.Windows.NativeMethods.AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+            result &= Utils.Windows.NativeMethods.ExitWindowsEx(exitCode, 0);
+
+            return result;
+        }
         void handleMouseCommand(string cmdData)
         {
             ClientMouseCmd mouseData = deserialize.Deserialize<ClientMouseCmd>(cmdData);
@@ -264,22 +318,25 @@ namespace WindowsMain
                     break;
                 case ClientWndCmd.CommandId.EMaximize:
                     NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWMAXIMIZED);
-                    //User32.SetForegroundWindow(new IntPtr(data.Id));
+                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.ERelocation:
                     NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, data.PositionX, data.PositionY, 0, 0, (Int32)(Constant.SWP_NOSIZE));
-                    //User32.SetForegroundWindow(new IntPtr(data.Id));
+                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.EResize:
                     NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, data.Width, data.Height, (Int32)Constant.SWP_NOMOVE);
-                    //User32.SetForegroundWindow(new IntPtr(data.Id));
+                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.ERestore:
                     NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWNORMAL);
-                    //User32.SetForegroundWindow(new IntPtr(data.Id));
+                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.EClose:
                     NativeMethods.SendMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                    break;
+                case ClientWndCmd.CommandId.ESetForeground:
+                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 default:
                     break;

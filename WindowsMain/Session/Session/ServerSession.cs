@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 
 namespace Session.Session
 {
-    public class ServerSession : ISession
+    public class ServerSession : ISession, IDisposable
     {
         public delegate void DataReceivedEventHandler(string ID, byte[] Data);
         public delegate void LostConnectionEventHandler(string id);
@@ -24,10 +25,43 @@ namespace Session.Session
         private Guid _ServerGuid = Guid.NewGuid();
         private bool isServerStarted = false;
 
+        private KeepAlive keepAliveWorker = new KeepAlive();
+        private Thread workerThread = null;
+
         public ServerSession(int listeningPort)
         {
             _ListeningPort = listeningPort;
             _Server = new BasicSocketServer();
+
+            keepAliveWorker.EvtSocketCheck += keepAliveWorker_EvtSocketCheck;
+            workerThread = new Thread(keepAliveWorker.DoWork);
+            workerThread.Start();
+            while (!workerThread.IsAlive) ;
+        }
+
+        void keepAliveWorker_EvtSocketCheck(object sender)
+        {
+            if (_Server == null)
+            {
+                return;
+            }
+
+            if (isServerStarted == false)
+            {
+                return;
+            }
+
+            ClientInfo[] clientList = _Server.GetClientList();
+            foreach (ClientInfo client in clientList)
+            {
+                AbstractTcpSocketClientHandler clientHandler = client.TcpSocketClientHandler;
+
+                if (clientHandler.Connected == false)
+                {
+                    Trace.WriteLine(String.Format("Disconnected: {0}", clientHandler.GetHashCode().ToString()));
+                    clientHandler.Close();
+                }
+            }
         }
 
         public override bool start()
@@ -89,6 +123,7 @@ namespace Session.Session
 
         void Server_onConnection(AbstractTcpSocketClientHandler handler)
         {
+            handler.KeepAlive = true;
             if(OnClientConnection != null)
             {
                 OnClientConnection(handler.GetHashCode().ToString());
@@ -119,7 +154,14 @@ namespace Session.Session
             {
                 AbstractTcpSocketClientHandler clientHandler = client.TcpSocketClientHandler;
                 BasicMessage message = new BasicMessage(_ServerGuid, data);
-                clientHandler.SendAsync(message);
+                try
+                {
+                    clientHandler.SendAsync(message);
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine(String.Format("failed to send data :{0}", clientHandler.GetHashCode().ToString()));
+                }
             }
         }
 
@@ -134,7 +176,15 @@ namespace Session.Session
                     if (clientHandler.GetHashCode().ToString().CompareTo(receiver) == 0)
                     {
                         BasicMessage message = new BasicMessage(_ServerGuid, data);
-                        clientHandler.SendAsync(message);
+                        try
+                        {
+                            clientHandler.SendAsync(message);
+                        }
+                        catch (Exception)
+                        {
+                            Trace.WriteLine(String.Format("failed to send data :{0}", receiver));
+                        }
+                        
                     }
                 }
             }
@@ -151,6 +201,12 @@ namespace Session.Session
                     break;
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            keepAliveWorker.RequestStop();
+            workerThread.Join();
         }
     }
 }

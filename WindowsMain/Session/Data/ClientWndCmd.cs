@@ -16,6 +16,7 @@ namespace Session.Data
             ERestore,
             ERelocation,
             EResize,
+            ESetForeground,
         }
 
         public CommandId CommandType { get; set; }

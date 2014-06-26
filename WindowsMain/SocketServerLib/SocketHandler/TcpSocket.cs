@@ -34,7 +34,7 @@ namespace SocketServerLib.SocketHandler
         {
             get
             {
-                return (bool)this.socket.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive);
+                return ((int)this.socket.GetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive) == 1);
             }
             set
             {
@@ -75,7 +75,22 @@ namespace SocketServerLib.SocketHandler
         {
             get
             {
-                return this.socket.Connected;
+                //// reference: http://stackoverflow.com/questions/2661764/how-to-check-if-a-socket-is-connected-disconnected-in-c
+                //bool part1 = this.socket.Poll(1000, SelectMode.SelectRead);
+                //bool part2 = (this.socket.Available == 0);
+                //if (part1 & part2)
+                //    return false;
+                //else
+                //    return true;
+                try
+                {
+                    return !(this.socket.Poll(1000, SelectMode.SelectRead) && this.socket.Available == 0);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                
             }
         }
 

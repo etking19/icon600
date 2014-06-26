@@ -39,6 +39,10 @@
             this.username = new System.Windows.Forms.TextBox();
             this.captureKeyboard = new System.Windows.Forms.CheckBox();
             this.captureMouse = new System.Windows.Forms.CheckBox();
+            this.applicationsListbox = new System.Windows.Forms.ListBox();
+            this.shutdownBtn = new System.Windows.Forms.Button();
+            this.rebootBtn = new System.Windows.Forms.Button();
+            this.logOffBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,19 +87,20 @@
             this.layoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.layoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.layoutPanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.layoutPanel.Location = new System.Drawing.Point(12, 153);
             this.layoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.layoutPanel.Name = "layoutPanel";
-            this.layoutPanel.Size = new System.Drawing.Size(472, 298);
+            this.layoutPanel.Size = new System.Drawing.Size(505, 371);
             this.layoutPanel.TabIndex = 4;
             // 
             // minimizedWndComboBox
             // 
             this.minimizedWndComboBox.FormattingEnabled = true;
-            this.minimizedWndComboBox.Location = new System.Drawing.Point(270, 126);
+            this.minimizedWndComboBox.Location = new System.Drawing.Point(520, 153);
             this.minimizedWndComboBox.Name = "minimizedWndComboBox";
-            this.minimizedWndComboBox.Size = new System.Drawing.Size(121, 21);
+            this.minimizedWndComboBox.Size = new System.Drawing.Size(294, 21);
             this.minimizedWndComboBox.TabIndex = 5;
             this.minimizedWndComboBox.SelectedIndexChanged += new System.EventHandler(this.minimizedWndComboBox_SelectedIndexChanged);
             // 
@@ -151,11 +156,53 @@
             this.captureMouse.UseVisualStyleBackColor = true;
             this.captureMouse.CheckedChanged += new System.EventHandler(this.captureMouse_CheckedChanged);
             // 
+            // applicationsListbox
+            // 
+            this.applicationsListbox.FormattingEnabled = true;
+            this.applicationsListbox.Location = new System.Drawing.Point(520, 179);
+            this.applicationsListbox.Name = "applicationsListbox";
+            this.applicationsListbox.Size = new System.Drawing.Size(294, 342);
+            this.applicationsListbox.TabIndex = 9;
+            // 
+            // shutdownBtn
+            // 
+            this.shutdownBtn.Location = new System.Drawing.Point(279, 91);
+            this.shutdownBtn.Name = "shutdownBtn";
+            this.shutdownBtn.Size = new System.Drawing.Size(75, 23);
+            this.shutdownBtn.TabIndex = 10;
+            this.shutdownBtn.Text = "shutdown";
+            this.shutdownBtn.UseVisualStyleBackColor = true;
+            this.shutdownBtn.Click += new System.EventHandler(this.shutdownBtn_Click);
+            // 
+            // rebootBtn
+            // 
+            this.rebootBtn.Location = new System.Drawing.Point(360, 91);
+            this.rebootBtn.Name = "rebootBtn";
+            this.rebootBtn.Size = new System.Drawing.Size(75, 23);
+            this.rebootBtn.TabIndex = 11;
+            this.rebootBtn.Text = "reboot";
+            this.rebootBtn.UseVisualStyleBackColor = true;
+            this.rebootBtn.Click += new System.EventHandler(this.rebootBtn_Click);
+            // 
+            // logOffBtn
+            // 
+            this.logOffBtn.Location = new System.Drawing.Point(442, 91);
+            this.logOffBtn.Name = "logOffBtn";
+            this.logOffBtn.Size = new System.Drawing.Size(75, 23);
+            this.logOffBtn.TabIndex = 12;
+            this.logOffBtn.Text = "log off";
+            this.logOffBtn.UseVisualStyleBackColor = true;
+            this.logOffBtn.Click += new System.EventHandler(this.logOffBtn_Click);
+            // 
             // FormClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(500, 464);
+            this.ClientSize = new System.Drawing.Size(826, 537);
+            this.Controls.Add(this.logOffBtn);
+            this.Controls.Add(this.rebootBtn);
+            this.Controls.Add(this.shutdownBtn);
+            this.Controls.Add(this.applicationsListbox);
             this.Controls.Add(this.captureMouse);
             this.Controls.Add(this.captureKeyboard);
             this.Controls.Add(this.minimizedWndComboBox);
@@ -164,6 +211,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormClient";
             this.Text = "Client";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.onFormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -184,5 +232,9 @@
         private System.Windows.Forms.TextBox username;
         private System.Windows.Forms.CheckBox captureKeyboard;
         private System.Windows.Forms.CheckBox captureMouse;
+        private System.Windows.Forms.ListBox applicationsListbox;
+        private System.Windows.Forms.Button shutdownBtn;
+        private System.Windows.Forms.Button rebootBtn;
+        private System.Windows.Forms.Button logOffBtn;
     }
 }

@@ -96,14 +96,14 @@ namespace CustomWinForm
 
             winForm.Style = controlAttr.Style;
 
-            // set size and pos after add
-            winForm.Location = getRelativePoint(controlAttr.Xpos, controlAttr.Ypos);
-
             winForm.Size = new Size((int)controlAttr.Width, (int)controlAttr.Height);
+            winForm.ActualSize = new Size((int)controlAttr.Width, (int)controlAttr.Height);
             winForm.Scale(new SizeF(mScaleX, mScaleY));
 
-            winForm.MinimumSize = new System.Drawing.Size(1, 1);
-
+            // set size and pos after add
+            winForm.ActualPos = new Point(controlAttr.Xpos, controlAttr.Ypos);
+            winForm.Location = getRelativePoint(controlAttr.Xpos, controlAttr.Ypos);
+            
             // register the event callback
             winForm.onDelegateClosedEvt += winForm_onDelegateClosedEvt;
             winForm.onDelegateMaximizedEvt += winForm_onDelegateMaximizedEvt;
@@ -119,7 +119,9 @@ namespace CustomWinForm
         {
             if (onDelegateSizeChangedEvt != null)
             {
+                Trace.WriteLine(String.Format("delegate {0} size changed: {1}", winForm.Name, size));
                 Size actualSize = new Size((int)Math.Round((float)size.Width / mScaleX), (int)Math.Round((float)size.Height / mScaleY));
+                winForm.ActualSize = actualSize;
                 onDelegateSizeChangedEvt(winForm.Id, actualSize);
             }
         }
@@ -128,6 +130,7 @@ namespace CustomWinForm
         {
             if (onDelegateRestoredEvt != null)
             {
+                Trace.WriteLine(String.Format("delegate {0} restore", winForm.Name));
                 onDelegateRestoredEvt(winForm.Id);
             }
         }
@@ -136,7 +139,14 @@ namespace CustomWinForm
         {
             if (onDelegatePosChangedEvt != null)
             {
+                
                 Point actual = getActualPoint(xPos, yPos);
+                if (actual.Equals(winForm.ActualPos))
+                {
+                    return;
+                }
+                Trace.WriteLine(String.Format("delegate {0} pos changed: {1},{2}", winForm.Name, xPos, yPos));
+                winForm.ActualPos = actual;
                 onDelegatePosChangedEvt(winForm.Id, actual.X, actual.Y);
             }
         }
@@ -189,9 +199,23 @@ namespace CustomWinForm
             CustomWinForm control;
             if (mControlsDic.TryGetValue(id, out control))
             {
+                Trace.WriteLine(String.Format("ChangeControlSize {0} {1}", control.Name, newSize));
+                if (control.ActualSize.Equals(newSize))
+                {
+                    // callback from server on size changed
+                    return;
+                }
+
+                if ((control.Style & Constant.WS_MINIMIZE) != 0)
+                {
+                    Trace.WriteLine("in minimize state, ignore sizing");
+                    return;
+                }
+
                 Size ratioSize = new Size((int)Math.Round((float)newSize.Width * mScaleX), 
                     (int)Math.Round((float)newSize.Height * mScaleY));
 
+                control.ActualSize = newSize;
                 control.Size = ratioSize;
             }
         }
@@ -201,8 +225,16 @@ namespace CustomWinForm
              CustomWinForm control;
              if (mControlsDic.TryGetValue(id, out control))
              {
+                 if (control.ActualPos.Equals(newPos))
+                 {
+                     return;
+                 }
+
+                 control.ActualPos = newPos;
                  Point ratioPoint = new Point((int)Math.Round((float)(newPos.X - ReferenceXPos) * mScaleX),
                     (int)Math.Round((float)(newPos.Y - ReferenceYPos) * mScaleY));
+
+                 Trace.WriteLine(String.Format("ChangeControlPos {0} {1}", control.Name, ratioPoint));
                  control.Location = ratioPoint;
              }
         }

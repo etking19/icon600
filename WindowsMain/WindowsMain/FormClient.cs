@@ -36,7 +36,7 @@ namespace WindowsMain
 
         MouseHook mouseHook = new MouseHook();
         KeyboardHook keyboardHook = new KeyboardHook();
-
+        
         public FormClient()
         {
             InitializeComponent();
@@ -59,8 +59,34 @@ namespace WindowsMain
 
             mouseHook.HookInvoked += mouseHook_HookInvoked;
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
+
+            applicationsListbox.DataSource = applicationList;
+            applicationsListbox.DisplayMember = "name";
+            applicationsListbox.ValueMember = "id";
+            applicationsListbox.ClearSelected();
+            applicationsListbox.SelectedIndexChanged += applicationsListbox_SelectedIndexChanged;
         }
 
+        void applicationsListbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListBox listBox = (ListBox)sender;
+            WndPos item = (WndPos)applicationsListbox.SelectedItem;
+            if (item != null)
+            {
+                int wndId = item.id;
+                applicationsListbox.ClearSelected();
+
+                // send to server for setting it to foreground
+                ClientWndCmd wndCommand = new ClientWndCmd();
+                wndCommand.CommandType = ClientWndCmd.CommandId.ESetForeground;
+                wndCommand.Id = wndId;
+
+                connectionMgr.BroadcastMessage(
+                    (int)CommandConst.MainCommandClient.ClientControlInfo,
+                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    wndCommand);                
+            }
+        }
 
         void mHolder_onDelegateMinimizedEvt(int id)
         {
@@ -189,6 +215,7 @@ namespace WindowsMain
 
             mHolder.RemoveAllControls();
             applicationList.Clear();
+            refreshApplicationList();
             mWindowsDic.Clear();
             minimizedWndComboBox.Items.Clear();
         }
@@ -408,17 +435,18 @@ namespace WindowsMain
 
            // Trace.WriteLine(String.Format("add:{0}, remove:{1}, modified:{2}, totalNow:{3}", addedQuery.Count.ToString(), removedQuery.Count.ToString(), modifiedQuery.Count.ToString(), applicationList.Count.ToString()));
 
-
+            bool refreshAppList = false;
             foreach (WndPos windows in addedQuery)
             {
                 Trace.WriteLine(String.Format("Added - name:{5} id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
-
+                refreshAppList |= true;
                 AddWindow(windows);
             }
 
             foreach (WndPos windows in removedQuery)
             {
                 Trace.WriteLine(String.Format("Removed - name:{5}  id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
+                refreshAppList |= true;
                 RemoveWindow(windows);
             }
 
@@ -451,6 +479,11 @@ namespace WindowsMain
             {
                 //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
                 ChangeWindowZOrder(windows);
+            }
+
+            if (refreshAppList)
+            {
+                refreshApplicationList();
             }
         }
 
@@ -643,12 +676,62 @@ namespace WindowsMain
         {
             if (captureMouse.Checked)
             {
-                mouseHook.StartHook(AppDomain.GetCurrentThreadId());
+                mouseHook.StartHook(0);
             }
             else
             {
                 mouseHook.StopHook();
             }
+        }
+
+        private void onFormClosing(object sender, FormClosingEventArgs e)
+        {
+            keyboardHook.StopHook();
+            mouseHook.StopHook();
+
+            connectionMgr.StopClient();
+        }
+
+        private void refreshApplicationList()
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateEvt(refreshApplicationList));
+                return;
+            }
+
+            if (applicationsListbox.SelectedIndex != -1)
+            {
+                return;
+            }
+            applicationsListbox.DataSource = null;
+            applicationsListbox.DataSource = applicationList;
+            applicationsListbox.DisplayMember = "name";
+            applicationsListbox.ValueMember = "id";
+        }
+
+        private void shutdownBtn_Click(object sender, EventArgs e)
+        {
+            sendMaintenanceCmd(ClientMaintenanceCmd.CommandId.EShutdown);
+        }
+
+        private void rebootBtn_Click(object sender, EventArgs e)
+        {
+            sendMaintenanceCmd(ClientMaintenanceCmd.CommandId.EReboot);
+        }
+
+        private void logOffBtn_Click(object sender, EventArgs e)
+        {
+            sendMaintenanceCmd(ClientMaintenanceCmd.CommandId.ELogOff);
+        }
+
+        void sendMaintenanceCmd(ClientMaintenanceCmd.CommandId id)
+        {
+            ClientMaintenanceCmd command = new ClientMaintenanceCmd { CommandType = id };
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.ClientControlInfo,
+                (int)CommandConst.SubCmdClientControlInfo.Maintenance,
+                command);
         }
     }
 }

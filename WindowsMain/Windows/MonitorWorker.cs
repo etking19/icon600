@@ -12,7 +12,7 @@ namespace Windows
         public delegate void OnWndAttribute(List<Windows.WindowsMgr.WndAttributes> wndAttributes);
         public event OnWndAttribute EvtWndAttributes;
 
-        private volatile bool _shouldStop;
+        private volatile bool _shouldStop = false;
         private List<Windows.WindowsMgr.WndAttributes> wndList = new List<Windows.WindowsMgr.WndAttributes>();
         
         public void DoWork()
