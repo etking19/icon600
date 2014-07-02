@@ -36,7 +36,12 @@ namespace WindowsMain
 
         MouseHook mouseHook = new MouseHook();
         KeyboardHook keyboardHook = new KeyboardHook();
-        
+
+        private const int VNC_PORTSTART = 5800;
+        private const int VNC_PORTSTOP = 5810;
+
+        private VncMarshall.Server vncServer = new VncMarshall.Server();
+
         public FormClient()
         {
             InitializeComponent();
@@ -218,6 +223,8 @@ namespace WindowsMain
             refreshApplicationList();
             mWindowsDic.Clear();
             minimizedWndComboBox.Items.Clear();
+
+            vncServer.StopServer();
         }
 
         void connectionMgr_EvtConnected()
@@ -346,6 +353,8 @@ namespace WindowsMain
         {
             connectionMgr.StopClient();
             connectionMgr_EvtDisconnected();
+
+            vncServer.StopServer();
         }
 
         void handleMonitorsData(int subId, string commandData)
@@ -690,6 +699,8 @@ namespace WindowsMain
             mouseHook.StopHook();
 
             connectionMgr.StopClient();
+
+            vncServer.StopServer();
         }
 
         private void refreshApplicationList()
@@ -731,6 +742,33 @@ namespace WindowsMain
             connectionMgr.BroadcastMessage(
                 (int)CommandConst.MainCommandClient.ClientControlInfo,
                 (int)CommandConst.SubCmdClientControlInfo.Maintenance,
+                command);
+        }
+
+        private void startVNC_Click(object sender, EventArgs e)
+        {
+            int portNumber = Utils.Socket.getUnusedPort(VNC_PORTSTART, VNC_PORTSTOP);
+
+            // start vnc server
+            vncServer.StartServer(portNumber);
+
+            // send signal to server to indicate vnc server info
+            ClientVncCmd command = new ClientVncCmd { PortNumber = portNumber, IpAddress=Utils.Socket.LocalIPAddress() };
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.ClientVncInfo,
+                (int)CommandConst.SubCmdVncInfo.Start,
+                command);
+        }
+
+        private void stopVNC_Click(object sender, EventArgs e)
+        {
+            vncServer.StopServer();
+
+            // send signal to server to indicate vnc server info
+            ClientVncCmd command = new ClientVncCmd();
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.ClientVncInfo,
+                (int)CommandConst.SubCmdVncInfo.Stop,
                 command);
         }
     }

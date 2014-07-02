@@ -30,6 +30,9 @@ namespace WindowsMain
         private Dictionary<string, ManualResetEvent> connectionDic = new Dictionary<string, ManualResetEvent>();
 
         private System.Web.Script.Serialization.JavaScriptSerializer deserialize = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+        private VncMarshall.Client vncClient = new VncMarshall.Client();
+
         public FormMain()
         {
             InitializeComponent();
@@ -80,6 +83,8 @@ namespace WindowsMain
             Sqlite.Helper.GetInstance().Shutdown();
             _WndsMgr.StopMonitor();
             connectionMgr.StopServer();
+            vncClient.StopClient();
+
             base.OnClosed(e);
         }
 
@@ -111,10 +116,51 @@ namespace WindowsMain
                 case (int)CommandConst.MainCommandClient.ClientControlInfo:
                     handleClientControl(subId, cmdData);
                     break;
+                case (int)CommandConst.MainCommandClient.ClientVncInfo:
+                    handleClientVnc(userId, subId, cmdData);
+                    break;
                 default:
                     SetReceivedText(Environment.NewLine + String.Format("Data received with userId: {0}, message: {1}", userId, cmdData));
                     break;
             }
+        }
+
+        void handleClientVnc(string userId, int subId, string cmdData)
+        {
+            switch(subId)
+            {
+                case (int)CommandConst.SubCmdVncInfo.Start:
+                    startVncClientCmd(cmdData);
+                    break;
+                case (int)CommandConst.SubCmdVncInfo.Stop:
+                    stopVncClientCmd(cmdData);
+                    break;
+                default:
+                    break;
+            }
+
+            
+        }
+
+        void startVncClientCmd(string cmdData)
+        {
+            ClientVncCmd data = deserialize.Deserialize<ClientVncCmd>(cmdData);
+            if (data == null)
+            {
+                return;
+            }
+
+            SetReceivedText(Environment.NewLine + String.Format("client vnc starts: {0}:{1}", data.IpAddress, data.PortNumber));
+
+            // start the vnc client to connect
+            vncClient.StartClient(data.IpAddress, data.PortNumber);
+        }
+
+        void stopVncClientCmd(string cmdData)
+        {
+            SetReceivedText(Environment.NewLine + String.Format("client vnc stopped"));
+
+            vncClient.StopClient();
         }
 
         void handleClientLogin(string userId, int subId, string cmdData)
@@ -452,6 +498,16 @@ namespace WindowsMain
         {
             User user = new User { mUsername = username.Text, mPassword = password.Text };
             Sqlite.Helper.GetInstance().UpdateData(user);
+        }
+
+        private void startVncClient_Click(object sender, EventArgs e)
+        {
+            //vncClient.StartClient();
+        }
+
+        private void stopVncClient_Click(object sender, EventArgs e)
+        {
+            //vncClient.StopClient();
         }
     }
 }

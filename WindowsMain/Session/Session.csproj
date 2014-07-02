@@ -67,6 +67,7 @@
     <Compile Include="Data\ClientKeyboardCmd.cs" />
     <Compile Include="Data\ClientMaintenanceCmd.cs" />
     <Compile Include="Data\ClientMouseCmd.cs" />
+    <Compile Include="Data\ClientVncCmd.cs" />
     <Compile Include="Data\ClientWndCmd.cs" />
     <Compile Include="Data\ICommand.cs" />
     <Compile Include="Data\MainCommand.cs" />

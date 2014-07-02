@@ -18,6 +18,7 @@ namespace Session
         {
             ClientLoginInfo = 1000,
             ClientControlInfo = 1001,
+            ClientVncInfo = 1002,
         }
 
         public enum SubCmdServerWindowsInfo
@@ -41,6 +42,12 @@ namespace Session
             Mouse,
             Keyboard,
             Maintenance,
+        }
+
+        public enum SubCmdVncInfo
+        {
+            Start = 0,
+            Stop,
         }
     }
 }

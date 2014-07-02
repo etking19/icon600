@@ -43,6 +43,8 @@
             this.shutdownBtn = new System.Windows.Forms.Button();
             this.rebootBtn = new System.Windows.Forms.Button();
             this.logOffBtn = new System.Windows.Forms.Button();
+            this.startVNC = new System.Windows.Forms.Button();
+            this.stopVNC = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -194,11 +196,33 @@
             this.logOffBtn.UseVisualStyleBackColor = true;
             this.logOffBtn.Click += new System.EventHandler(this.logOffBtn_Click);
             // 
+            // startVNC
+            // 
+            this.startVNC.Location = new System.Drawing.Point(441, 32);
+            this.startVNC.Name = "startVNC";
+            this.startVNC.Size = new System.Drawing.Size(75, 23);
+            this.startVNC.TabIndex = 13;
+            this.startVNC.Text = "Start VNC";
+            this.startVNC.UseVisualStyleBackColor = true;
+            this.startVNC.Click += new System.EventHandler(this.startVNC_Click);
+            // 
+            // stopVNC
+            // 
+            this.stopVNC.Location = new System.Drawing.Point(523, 32);
+            this.stopVNC.Name = "stopVNC";
+            this.stopVNC.Size = new System.Drawing.Size(75, 23);
+            this.stopVNC.TabIndex = 14;
+            this.stopVNC.Text = "Stop VNC";
+            this.stopVNC.UseVisualStyleBackColor = true;
+            this.stopVNC.Click += new System.EventHandler(this.stopVNC_Click);
+            // 
             // FormClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(826, 537);
+            this.Controls.Add(this.stopVNC);
+            this.Controls.Add(this.startVNC);
             this.Controls.Add(this.logOffBtn);
             this.Controls.Add(this.rebootBtn);
             this.Controls.Add(this.shutdownBtn);
@@ -236,5 +260,7 @@
         private System.Windows.Forms.Button shutdownBtn;
         private System.Windows.Forms.Button rebootBtn;
         private System.Windows.Forms.Button logOffBtn;
+        private System.Windows.Forms.Button startVNC;
+        private System.Windows.Forms.Button stopVNC;
     }
 }

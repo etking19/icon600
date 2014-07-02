@@ -149,6 +149,10 @@
       <Project>{6fd8ccde-eaa0-4295-922b-e59d4b62b659}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VncMarshall\VncMarshall.csproj">
+      <Project>{4ace2501-2b2f-4b6a-9e40-385f31183313}</Project>
+      <Name>VncMarshall</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Windows\Windows.csproj">
       <Project>{4637c643-bf92-44dc-a506-718929a4d67f}</Project>
       <Name>Windows</Name>

@@ -32,14 +32,16 @@
             this.username = new System.Windows.Forms.TextBox();
             this.password = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.endPort = new System.Windows.Forms.TextBox();
+            this.startPort = new System.Windows.Forms.TextBox();
             this.stopServer = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.updateDB = new System.Windows.Forms.Button();
             this.removeDB = new System.Windows.Forms.Button();
             this.addDB = new System.Windows.Forms.Button();
             this.output = new System.Windows.Forms.TextBox();
-            this.startPort = new System.Windows.Forms.TextBox();
-            this.endPort = new System.Windows.Forms.TextBox();
+            this.startVncClient = new System.Windows.Forms.Button();
+            this.stopVncClient = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -80,6 +82,22 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(253, 77);
             this.panel1.TabIndex = 5;
+            // 
+            // endPort
+            // 
+            this.endPort.Location = new System.Drawing.Point(129, 14);
+            this.endPort.Name = "endPort";
+            this.endPort.Size = new System.Drawing.Size(100, 20);
+            this.endPort.TabIndex = 8;
+            this.endPort.Text = "10010";
+            // 
+            // startPort
+            // 
+            this.startPort.Location = new System.Drawing.Point(12, 14);
+            this.startPort.Name = "startPort";
+            this.startPort.Size = new System.Drawing.Size(100, 20);
+            this.startPort.TabIndex = 7;
+            this.startPort.Text = "10000";
             // 
             // stopServer
             // 
@@ -142,27 +160,33 @@
             this.output.Size = new System.Drawing.Size(314, 513);
             this.output.TabIndex = 7;
             // 
-            // startPort
+            // startVncClient
             // 
-            this.startPort.Location = new System.Drawing.Point(12, 14);
-            this.startPort.Name = "startPort";
-            this.startPort.Size = new System.Drawing.Size(100, 20);
-            this.startPort.TabIndex = 7;
-            this.startPort.Text = "10000";
+            this.startVncClient.Location = new System.Drawing.Point(40, 238);
+            this.startVncClient.Name = "startVncClient";
+            this.startVncClient.Size = new System.Drawing.Size(75, 23);
+            this.startVncClient.TabIndex = 8;
+            this.startVncClient.Text = "Start VNC";
+            this.startVncClient.UseVisualStyleBackColor = true;
+            this.startVncClient.Click += new System.EventHandler(this.startVncClient_Click);
             // 
-            // endPort
+            // stopVncClient
             // 
-            this.endPort.Location = new System.Drawing.Point(129, 14);
-            this.endPort.Name = "endPort";
-            this.endPort.Size = new System.Drawing.Size(100, 20);
-            this.endPort.TabIndex = 8;
-            this.endPort.Text = "10010";
+            this.stopVncClient.Location = new System.Drawing.Point(121, 238);
+            this.stopVncClient.Name = "stopVncClient";
+            this.stopVncClient.Size = new System.Drawing.Size(75, 23);
+            this.stopVncClient.TabIndex = 9;
+            this.stopVncClient.Text = "Stop VNC";
+            this.stopVncClient.UseVisualStyleBackColor = true;
+            this.stopVncClient.Click += new System.EventHandler(this.stopVncClient_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(626, 537);
+            this.Controls.Add(this.stopVncClient);
+            this.Controls.Add(this.startVncClient);
             this.Controls.Add(this.output);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
@@ -192,6 +216,8 @@
         private System.Windows.Forms.TextBox output;
         private System.Windows.Forms.TextBox endPort;
         private System.Windows.Forms.TextBox startPort;
+        private System.Windows.Forms.Button startVncClient;
+        private System.Windows.Forms.Button stopVncClient;
     }
 }
 
