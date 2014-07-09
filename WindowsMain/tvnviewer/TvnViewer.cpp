@@ -28,104 +28,106 @@
 #include "resource.h"
 
 TvnViewer::TvnViewer(HINSTANCE appInstance, const TCHAR *windowClassName,
-                     const TCHAR *viewerWindowClassName)
-: WindowsApplication(appInstance, windowClassName),
-  m_viewerWindowClassName(viewerWindowClassName),
-  m_conListener(0),
-  m_hAccelTable(0),
-  m_logWriter(ViewerConfig::getInstance()->getLogger()),
-  m_isListening(false)
+	const TCHAR *viewerWindowClassName)
+	: WindowsApplication(appInstance, windowClassName),
+	m_viewerWindowClassName(viewerWindowClassName),
+	m_conListener(0),
+	m_hAccelTable(0),
+	m_logWriter(ViewerConfig::getInstance()->getLogger()),
+	m_isListening(false)
 {
-  m_logWriter.info(_T("Init WinSock 2.1"));
-  WindowsSocket::startup(2, 1);
-  registerViewerWindowClass();
+	m_logWriter.info(_T("Init WinSock 2.1"));
+	WindowsSocket::startup(2, 1);
+	registerViewerWindowClass();
 
-  m_configurationDialog.setListenerOfUpdate(this);
+	m_configurationDialog.setListenerOfUpdate(this);
 
-  // working with accelerator
-  ResourceLoader *rLoader = ResourceLoader::getInstance();
-  m_hAccelTable = rLoader->loadAccelerator(IDR_ACCEL_APP_KEYS);
+	// working with accelerator
+	ResourceLoader *rLoader = ResourceLoader::getInstance();
+	m_hAccelTable = rLoader->loadAccelerator(IDR_ACCEL_APP_KEYS);
 
-  m_trayIcon = new ControlTrayIcon(this);
-  m_loginDialog = new LoginDialog(this);
+	m_trayIcon = new ControlTrayIcon(this);
+	m_loginDialog = new LoginDialog(this);
 }
 
 TvnViewer::~TvnViewer()
 {
-  m_logWriter.info(_T("Viewer collector: destroy all instances"));
-  m_instances.destroyAllInstances();
+	m_logWriter.info(_T("Viewer collector: destroy all instances"));
+	m_instances.destroyAllInstances();
 
-  delete m_loginDialog;
-  delete m_trayIcon;
+	delete m_loginDialog;
+	delete m_trayIcon;
 
-  unregisterViewerWindowClass();
+	unregisterViewerWindowClass();
 
-  m_logWriter.info(_T("Shutdown WinSock"));
-  WindowsSocket::cleanup();
+	m_logWriter.info(_T("Shutdown WinSock"));
+	WindowsSocket::cleanup();
 }
 
 void TvnViewer::startListeningServer(const int listeningPort)
 {
-  try {
-    if (m_conListener != 0) {
-      throw Exception(_T("Listening Server already started"));
-    }
-    m_conListener = new ConnectionListener(this, listeningPort);
-  } catch (const Exception &ex) {
-    m_isListening = false;
-    m_logWriter.error(_T("Error in start listening: %s"), ex.getMessage());
-    MessageBox(0,
-               StringTable::getString(IDS_ERROR_START_LISTENING),
-               ProductNames::VIEWER_PRODUCT_NAME,
-               MB_OK | MB_ICONERROR);
-  }
+	try {
+		if (m_conListener != 0) {
+			throw Exception(_T("Listening Server already started"));
+		}
+		m_conListener = new ConnectionListener(this, listeningPort);
+	}
+	catch (const Exception &ex) {
+		m_isListening = false;
+		m_logWriter.error(_T("Error in start listening: %s"), ex.getMessage());
+		MessageBox(0,
+			StringTable::getString(IDS_ERROR_START_LISTENING),
+			ProductNames::VIEWER_PRODUCT_NAME,
+			MB_OK | MB_ICONERROR);
+	}
 }
 
 void TvnViewer::stopListeningServer()
 {
-  try {
-    if (m_conListener != 0) {
-      delete m_conListener;
-    }
-  } catch (const Exception &ex) {
-    m_logWriter.error(_T("Error of delete m_conListener: %s"), ex.getMessage());
-  }
-  m_conListener = 0;
+	try {
+		if (m_conListener != 0) {
+			delete m_conListener;
+		}
+	}
+	catch (const Exception &ex) {
+		m_logWriter.error(_T("Error of delete m_conListener: %s"), ex.getMessage());
+	}
+	m_conListener = 0;
 }
 
 void TvnViewer::restartListeningServer()
 {
-  if (m_isListening) {
-    UINT16 newListenPort = ViewerConfig::getInstance()->getListenPort();
-    if (m_conListener->getBindPort() != newListenPort) {
-      stopListeningServer();
-      // FIXME: remove this parameter.
-      startListeningServer(newListenPort);
-    }
-  }
+	if (m_isListening) {
+		UINT16 newListenPort = ViewerConfig::getInstance()->getListenPort();
+		if (m_conListener->getBindPort() != newListenPort) {
+			stopListeningServer();
+			// FIXME: remove this parameter.
+			startListeningServer(newListenPort);
+		}
+	}
 }
 
 void TvnViewer::startListening(const int listeningPort)
 {
-  if (m_isListening) {
-    _ASSERT(true);
-    return;
-  }
-  m_isListening = true;
+	if (m_isListening) {
+		_ASSERT(true);
+		return;
+	}
+	m_isListening = true;
 
-  startListeningServer(listeningPort);
-  m_trayIcon->showIcon();
+	startListeningServer(listeningPort);
+	m_trayIcon->showIcon();
 }
 
 void TvnViewer::stopListening()
 {
-  if (m_isListening) {
-    m_trayIcon->hide();
-    stopListeningServer();
+	if (m_isListening) {
+		m_trayIcon->hide();
+		stopListeningServer();
 
-    m_isListening = false;
-    m_loginDialog->setListening(false);
-  }
+		m_isListening = false;
+		m_loginDialog->setListening(false);
+	}
 }
 
 void TvnViewer::addInstance(ViewerInstance *viewerInstance)

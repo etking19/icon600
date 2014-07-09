@@ -121,9 +121,16 @@ namespace CustomWinForm
             {
                 Trace.WriteLine(String.Format("delegate {0} size changed: {1}", winForm.Name, size));
                 Size actualSize = new Size((int)Math.Round((float)size.Width / mScaleX), (int)Math.Round((float)size.Height / mScaleY));
+                if (actualSize.Equals(winForm.ActualSize))
+                {
+                    Trace.WriteLine("same size");
+                    return;
+                }
+
+                Trace.WriteLine(String.Format("different size {0}", actualSize));
                 winForm.ActualSize = actualSize;
                 onDelegateSizeChangedEvt(winForm.Id, actualSize);
-            }
+            } 
         }
 
         void winForm_onDelegateRestoredEvt(CustomWinForm winForm)
@@ -206,16 +213,17 @@ namespace CustomWinForm
                     return;
                 }
 
+                Size ratioSize = new Size((int)Math.Round((float)newSize.Width * mScaleX), 
+                    (int)Math.Round((float)newSize.Height * mScaleY));
+
+                control.ActualSize = newSize;
+
                 if ((control.Style & Constant.WS_MINIMIZE) != 0)
                 {
                     Trace.WriteLine("in minimize state, ignore sizing");
                     return;
                 }
 
-                Size ratioSize = new Size((int)Math.Round((float)newSize.Width * mScaleX), 
-                    (int)Math.Round((float)newSize.Height * mScaleY));
-
-                control.ActualSize = newSize;
                 control.Size = ratioSize;
             }
         }

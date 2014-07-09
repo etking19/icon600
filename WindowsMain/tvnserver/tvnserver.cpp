@@ -89,7 +89,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   StringStorage firstKey(_T(""));
 
-
   try {
     WinCommandLineArgs args(lpCmdLine);
     parser.parse(format,  sizeof(format) / sizeof(CommandLineFormat), &args);

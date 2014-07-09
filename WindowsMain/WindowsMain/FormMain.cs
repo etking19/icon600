@@ -153,7 +153,7 @@ namespace WindowsMain
             SetReceivedText(Environment.NewLine + String.Format("client vnc starts: {0}:{1}", data.IpAddress, data.PortNumber));
 
             // start the vnc client to connect
-            vncClient.StartClient(data.IpAddress, data.PortNumber);
+            vncClient.StartClient(data.IpAddress, data.PortNumber, new VncMarshall.Client.WindowsAttributes { PosX = 100, PosY = 100, Width = 200, Height = 160 });
         }
 
         void stopVncClientCmd(string cmdData)

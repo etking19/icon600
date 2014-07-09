@@ -46,111 +46,111 @@ class LoginDialog;
 class TvnViewer : public WindowsApplication
 {
 public:
-  TvnViewer(HINSTANCE appInstance,
-            const TCHAR *windowClassName,
-            const TCHAR *viewerWindowClassName);
-  virtual ~TvnViewer();
+	TvnViewer(HINSTANCE appInstance,
+		const TCHAR *windowClassName,
+		const TCHAR *viewerWindowClassName);
+	virtual ~TvnViewer();
 
-  //
-  // show login dialog
-  //
-  void showLoginDialog();
+	//
+	// show login dialog
+	//
+	void showLoginDialog();
 
-  //
-  // show options for listening mode
-  //
-  void showListeningOptions();
+	//
+	// show options for listening mode
+	//
+	void showListeningOptions();
 
-  //
-  // show dialog "About of Viewer"
-  //
+	//
+	// show dialog "About of Viewer"
+	//
 
-  void showAboutViewer();
+	void showAboutViewer();
 
-  //
-  // show dialog with configuration of viewer
-  //
-  void showConfiguration();
+	//
+	// show dialog with configuration of viewer
+	//
+	void showConfiguration();
 
-  // newConnection(...) and startListening(...) always do copy of params (StringStorage,
-  // ConnectionData and ConnectionConfig). After call this function can free memory
-  // with hostName, connectionData, connectionConfig
-  void newListeningConnection();
-  void newConnection(const StringStorage *hostName, const ConnectionConfig *connectionConfig);
-  void newConnection(const ConnectionData *conData, const ConnectionConfig *connectionConfig);
-  void startListening(int listeningPort);
-  void stopListening();
+	// newConnection(...) and startListening(...) always do copy of params (StringStorage,
+	// ConnectionData and ConnectionConfig). After call this function can free memory
+	// with hostName, connectionData, connectionConfig
+	void newListeningConnection();
+	void newConnection(const StringStorage *hostName, const ConnectionConfig *connectionConfig);
+	void newConnection(const ConnectionData *conData, const ConnectionConfig *connectionConfig);
+	void startListening(int listeningPort);
+	void stopListening();
 
-  // Inherited from WindowsApplication
-  void registerWindowClass(WNDCLASS *wndClass);
-  static LRESULT CALLBACK wndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
-  virtual void createWindow(const TCHAR *className);
-  int processMessages();
+	// Inherited from WindowsApplication
+	void registerWindowClass(WNDCLASS *wndClass);
+	static LRESULT CALLBACK wndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	virtual void createWindow(const TCHAR *className);
+	int processMessages();
 
 public:
-  // this message must sended after accepted new listening-connection
-  static const int WM_USER_NEW_LISTENING = WM_USER + 1;
+	// this message must sended after accepted new listening-connection
+	static const int WM_USER_NEW_LISTENING = WM_USER + 1;
 
-  // this message need send if you need show login dialog
-  static const int WM_USER_SHOW_LOGIN_DIALOG = WM_USER + 2;
+	// this message need send if you need show login dialog
+	static const int WM_USER_SHOW_LOGIN_DIALOG = WM_USER + 2;
 
-  // this message need send if you need show configuration dialog
-  static const int WM_USER_CONFIGURATION = WM_USER + 3;
+	// this message need send if you need show configuration dialog
+	static const int WM_USER_CONFIGURATION = WM_USER + 3;
 
-  // this message need send if you need show about dialog
-  static const int WM_USER_ABOUT = WM_USER + 4;
+	// this message need send if you need show about dialog
+	static const int WM_USER_ABOUT = WM_USER + 4;
 
-  // This message need send if you need reconnect to host.
-  // LPARAM contained pointer to ConnectionData.
-  static const int WM_USER_RECONNECT = WM_USER + 5;
+	// This message need send if you need reconnect to host.
+	// LPARAM contained pointer to ConnectionData.
+	static const int WM_USER_RECONNECT = WM_USER + 5;
 
-  // This message need send if config is changed.
-  static const int WM_USER_CONFIGURATION_RELOAD = WM_USER + 6;
+	// This message need send if config is changed.
+	static const int WM_USER_CONFIGURATION_RELOAD = WM_USER + 6;
 
-  // This timer is used for deleting dead instances of viewer.
-  static const int TIMER_DELETE_DEAD_INSTANCE = 1;
-  static const int TIMER_DELETE_DEAD_INSTANCE_DELAY = 50;
+	// This timer is used for deleting dead instances of viewer.
+	static const int TIMER_DELETE_DEAD_INSTANCE = 1;
+	static const int TIMER_DELETE_DEAD_INSTANCE_DELAY = 50;
 
 protected:
-  void startListeningServer(const int listeningPort);
-  void stopListeningServer();
-  void restartListeningServer();
+	void startListeningServer(const int listeningPort);
+	void stopListeningServer();
+	void restartListeningServer();
 
-  void registerViewerWindowClass();
-  void unregisterViewerWindowClass();
-  static LRESULT CALLBACK wndProcViewer(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	void registerViewerWindowClass();
+	void unregisterViewerWindowClass();
+	static LRESULT CALLBACK wndProcViewer(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-  void runInstance(ConnectionData *conData, const ConnectionConfig *config);
-  void runInstance(const StringStorage *hostName, const ConnectionConfig *config);
+	void runInstance(ConnectionData *conData, const ConnectionConfig *config);
+	void runInstance(const StringStorage *hostName, const ConnectionConfig *config);
 
-  // This method return true, if login dialog is visible.
-  bool isVisibleLoginDialog() const;
+	// This method return true, if login dialog is visible.
+	bool isVisibleLoginDialog() const;
 
-  bool onTimer(WPARAM idTimer);
+	bool onTimer(WPARAM idTimer);
 
-  ViewerCollector m_instances;
+	ViewerCollector m_instances;
 
-  // class name of viewer-window
-  StringStorage m_viewerWindowClassName;
+	// class name of viewer-window
+	StringStorage m_viewerWindowClassName;
 
-  HACCEL m_hAccelTable;
+	HACCEL m_hAccelTable;
 
 private:
-  void addInstance(ViewerInstance *viewerInstance);
+	void addInstance(ViewerInstance *viewerInstance);
 
-  bool m_isListening;
-  
-  LogWriter m_logWriter;
+	bool m_isListening;
 
-  AboutDialog m_aboutDialog;
-  ConfigurationDialog m_configurationDialog;
-  OptionsDialog m_optionsDialog;
+	LogWriter m_logWriter;
 
-  LoginDialog *m_loginDialog;
-  ControlTrayIcon *m_trayIcon;
-  ConnectionListener *m_conListener;
+	AboutDialog m_aboutDialog;
+	ConfigurationDialog m_configurationDialog;
+	OptionsDialog m_optionsDialog;
 
-  WNDCLASS m_viewerWndClass;
+	LoginDialog *m_loginDialog;
+	ControlTrayIcon *m_trayIcon;
+	ConnectionListener *m_conListener;
+
+	WNDCLASS m_viewerWndClass;
 };
 
 #endif

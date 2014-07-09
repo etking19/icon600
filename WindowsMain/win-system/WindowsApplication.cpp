@@ -45,41 +45,42 @@ WindowsApplication::~WindowsApplication()
 
 int WindowsApplication::run()
 {
-  WNDCLASS wndClass;
-  registerWindowClass(&wndClass);
-  createWindow(wndClass.lpszClassName);
-  try {
-    return processMessages();
-  } catch (...) {
-    return 1;
-  }
+	WNDCLASS wndClass;
+	registerWindowClass(&wndClass);
+	createWindow(wndClass.lpszClassName);
+	try {
+		return processMessages();
+	}
+	catch (...) {
+		return 1;
+	}
 }
 
 int WindowsApplication::processMessages()
 {
-  MSG msg;
-  BOOL ret;
-  while ((ret = GetMessage(&msg, NULL, 0, 0)) != 0) {
-    if (ret < 0) {
-      return 1;
-    }
-    if (!processDialogMessage(&msg)) {
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
-    }
-  }
+	MSG msg;
+	BOOL ret;
+	while ((ret = GetMessage(&msg, NULL, 0, 0)) != 0) {
+		if (ret < 0) {
+			return 1;
+		}
+		if (!processDialogMessage(&msg)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
 
-  return (int)msg.wParam;
+	return (int)msg.wParam;
 }
 
 void WindowsApplication::createWindow(const TCHAR *className)
 {
-  m_mainWindow = CreateWindow(className,
-                              0, 0,
-                              0, 0, 0, 0,
-                              HWND_MESSAGE, 0,
-                              m_appInstance,
-                              0);
+	m_mainWindow = CreateWindow(className,
+		0, 0,
+		0, 0, 0, 0,
+		HWND_MESSAGE, 0,
+		m_appInstance,
+		0);
 }
 
 void WindowsApplication::registerWindowClass(WNDCLASS *wndClass)
@@ -96,12 +97,12 @@ void WindowsApplication::registerWindowClass(WNDCLASS *wndClass)
 
 void WindowsApplication::shutdown()
 {
-  PostMessage(m_mainWindow, WM_CLOSE, 0, 0);
+	PostMessage(m_mainWindow, WM_CLOSE, 0, 0);
 }
 
 void WindowsApplication::postMessage(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  PostMessage(m_mainWindow, message, wParam, lParam);
+	PostMessage(m_mainWindow, message, wParam, lParam);
 }
 
 void WindowsApplication::addModelessDialog(HWND dialogWindow)

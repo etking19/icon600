@@ -30,66 +30,74 @@
 #include "ViewerCmdLine.h"
 #include "util/ResourceLoader.h"
 
-int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE,
-                       LPTSTR lpCmdLine, int nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE, LPTSTR lpCmdLine, int nCmdShow)
 {
-  ViewerSettingsManager::initInstance(RegistryPaths::VIEWER_PATH);
-  SettingsManager *sm = ViewerSettingsManager::getInstance();
+	ViewerSettingsManager::initInstance(RegistryPaths::VIEWER_PATH);
+	SettingsManager *sm = ViewerSettingsManager::getInstance();
 
-  ViewerConfig config(RegistryPaths::VIEWER_PATH);
-  config.loadFromStorage(sm);
+	ViewerConfig config(RegistryPaths::VIEWER_PATH);
+	config.loadFromStorage(sm);
 
-  try {
-    config.initLog(LogNames::LOG_DIR_NAME, LogNames::VIEWER_LOG_FILE_STUB_NAME);
-  } catch (...) {
-  }
+	try {
+		config.initLog(LogNames::LOG_DIR_NAME, LogNames::VIEWER_LOG_FILE_STUB_NAME);
+	}
+	catch (...) {
+	}
 
-  LogWriter logWriter(config.getLogger());
+	LogWriter logWriter(config.getLogger());
 
-  // resource-loader initialization
-  ResourceLoader resourceLoader(hInstance);
+	// resource-loader initialization
+	ResourceLoader resourceLoader(hInstance);
 
-  logWriter.debug(_T("main()"));
-  logWriter.debug(_T("loading settings from storage completed"));
-  logWriter.debug(_T("Log initialization completed"));
+	logWriter.debug(_T("main()"));
+	logWriter.debug(_T("loading settings from storage completed"));
+	logWriter.debug(_T("Log initialization completed"));
 
-  ConnectionConfig conConf;
-  ConnectionData condata;
-  bool isListening = false;
-  ViewerCmdLine cmd(&condata, &conConf, &config, &isListening);
+	ConnectionConfig conConf;
+	ConnectionData condata;
+	bool isListening = false;
+	ViewerCmdLine cmd(&condata, &conConf, &config, &isListening);
 
-  int result = 0;
-  try {
-    cmd.parse();
-    TvnViewer tvnViewer(hInstance,
-                        ApplicationNames::WINDOW_CLASS_NAME,
-                        WindowNames::TVN_WINDOW_CLASS_NAME);
-    if (isListening) {
-      // FIXME: set listening connection options.
-      tvnViewer.startListening(ConnectionListener::DEFAULT_PORT);
-    } else if (!condata.isEmpty()) {
-      tvnViewer.newConnection(&condata, &conConf);
-    } else {
-      tvnViewer.showLoginDialog();
-    }
-    result = tvnViewer.run();
-  } catch (const CommandLineFormatException &exception) {
-    StringStorage strError(exception.getMessage());
-    MessageBox(0,
-               strError.getString(),
-               ProductNames::VIEWER_PRODUCT_NAME,
-               MB_OK | MB_ICONERROR);
-    return 0;
-  } catch (const CommandLineFormatHelp &) {
-    cmd.onHelp();
-    return 0;
-  } catch (const Exception &ex) {
-    MessageBox(0,
-               StringTable::getString(IDS_UNKNOWN_ERROR_IN_VIEWER),
-               ProductNames::VIEWER_PRODUCT_NAME,
-               MB_OK | MB_ICONERROR);
-    logWriter.debug(ex.getMessage());
-  }
+	int result = 0;
+	try 
+	{
+		cmd.parse();
+		TvnViewer tvnViewer(hInstance,
+			ApplicationNames::WINDOW_CLASS_NAME,
+			WindowNames::TVN_WINDOW_CLASS_NAME);
+		if (isListening) {
+			// FIXME: set listening connection options.
+			tvnViewer.startListening(ConnectionListener::DEFAULT_PORT);
+		}
+		else if (!condata.isEmpty()) {
+			tvnViewer.newConnection(&condata, &conConf);
+		}
+		else {
+			tvnViewer.showLoginDialog();
+		}
 
-  return result;
+		result = tvnViewer.run();
+	}
+	catch (const CommandLineFormatException &exception) 
+	{
+		StringStorage strError(exception.getMessage());
+		MessageBox(0,
+			strError.getString(),
+			ProductNames::VIEWER_PRODUCT_NAME,
+			MB_OK | MB_ICONERROR);
+		return 0;
+	}
+	catch (const CommandLineFormatHelp &) {
+		cmd.onHelp();
+		return 0;
+	}
+	catch (const Exception &ex) {
+		MessageBox(0,
+			StringTable::getString(IDS_UNKNOWN_ERROR_IN_VIEWER),
+			ProductNames::VIEWER_PRODUCT_NAME,
+			MB_OK | MB_ICONERROR);
+		logWriter.debug(ex.getMessage());
+	}
+
+	return result;
 }

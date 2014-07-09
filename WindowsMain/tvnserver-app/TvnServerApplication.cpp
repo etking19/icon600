@@ -53,56 +53,61 @@ TvnServerApplication::~TvnServerApplication()
 
 int TvnServerApplication::run()
 {
-  // FIXME: May be an unhandled exception.
-  // Check wrong command line and situation when we need to show help.
+	// FIXME: May be an unhandled exception.
+	// Check wrong command line and situation when we need to show help.
 
-  try {
-    ServerCommandLine parser;
-    WinCommandLineArgs cmdArgs(m_commandLine.getString());
-    if (!parser.parse(&cmdArgs) || parser.showHelp()) {
-      throw Exception(_T("Wrong command line argument"));
-    }
-  } catch (...) {
-    TvnServerHelp::showUsage();
-    return 0;
-  }
+	try {
+		ServerCommandLine parser;
+		WinCommandLineArgs cmdArgs(m_commandLine.getString());
+		if (!parser.parse(&cmdArgs) || parser.showHelp()) {
+			throw Exception(_T("Wrong command line argument"));
+		}
+	}
+	catch (...) {
+		TvnServerHelp::showUsage();
+		return 0;
+	}
 
-  // Reject 2 instances of TightVNC server application.
+	// Reject 2 instances of TightVNC server application.
 
-  GlobalMutex *appInstanceMutex;
+	GlobalMutex *appInstanceMutex;
 
-  try {
-    appInstanceMutex = new GlobalMutex(
-      ServerApplicationNames::SERVER_INSTANCE_MUTEX_NAME, false, true);
-  } catch (...) {
-    MessageBox(0,
-               StringTable::getString(IDS_SERVER_ALREADY_RUNNING),
-               StringTable::getString(IDS_MBC_TVNSERVER), MB_OK | MB_ICONEXCLAMATION);
-    return 1;
-  }
+	try {
+		appInstanceMutex = new GlobalMutex(
+			ServerApplicationNames::SERVER_INSTANCE_MUTEX_NAME, false, true);
+	}
+	catch (...) {
+		MessageBox(0,
+			StringTable::getString(IDS_SERVER_ALREADY_RUNNING),
+			StringTable::getString(IDS_MBC_TVNSERVER), MB_OK | MB_ICONEXCLAMATION);
+		return 1;
+	}
 
-  // Start TightVNC server and TightVNC control application.
-  try {
-    m_tvnServer = new TvnServer(false, m_newConnectionEvents, this, &m_fileLogger);
-    m_tvnServer->addListener(this);
-    m_tvnControlRunner = new WsConfigRunner(&m_fileLogger);
+	// Start TightVNC server and TightVNC control application.
+	try {
 
-    int exitCode = WindowsApplication::run();
+		m_tvnServer = new TvnServer(false, m_newConnectionEvents, this, &m_fileLogger);
+		m_tvnServer->addListener(this);
+		m_tvnControlRunner = new WsConfigRunner(&m_fileLogger);
 
-    delete m_tvnControlRunner;
-    m_tvnServer->removeListener(this);
-    delete m_tvnServer;
-    delete appInstanceMutex;
-    return exitCode;
-  } catch (Exception &e) {
-    // FIXME: Move string to resource
-    StringStorage message;
-    message.format(_T("Couldn't run the server: %s"), e.getMessage());
-    MessageBox(0,
-               message.getString(),
-               _T("Server error"), MB_OK | MB_ICONEXCLAMATION);
-    return 1;
-  }
+		int exitCode = WindowsApplication::run();
+
+		delete m_tvnControlRunner;
+		m_tvnServer->removeListener(this);
+		delete m_tvnServer;
+		delete appInstanceMutex;
+
+		return exitCode;
+	}
+	catch (Exception &e) {
+		// FIXME: Move string to resource
+		StringStorage message;
+		message.format(_T("Couldn't run the server: %s"), e.getMessage());
+		MessageBox(0,
+			message.getString(),
+			_T("Server error"), MB_OK | MB_ICONEXCLAMATION);
+		return 1;
+	}
 }
 
 void TvnServerApplication::onTvnServerShutdown()

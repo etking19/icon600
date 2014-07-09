@@ -250,67 +250,69 @@ void ViewerWindow::changeCursor(int type)
 
 bool ViewerWindow::onSysCommand(WPARAM wParam, LPARAM lParam)
 {
-  return onCommand(wParam, lParam);
+	return onCommand(wParam, lParam);
 }
 
 bool ViewerWindow::onMessage(UINT message, WPARAM wParam, LPARAM lParam)
 {
-  switch (message) {
-  case WM_SIZING:
-    m_sizeIsChanged = true;
-    return false;
-  case WM_NCDESTROY:
-    m_stopped = true;
-    return true;
-  case WM_USER_STOP:
-    SendMessage(m_hWnd, WM_DESTROY, 0, 0);
-    return true;
-  case WM_USER_FS_WARNING:
-    return onFsWarning();
-  case WM_CLOSE:
-    return onClose();
-  case WM_DESTROY:
-    return onDestroy();
-  case WM_CREATE:
-    return onCreate((LPCREATESTRUCT) lParam);
-  case WM_SIZE:
-    return onSize(wParam, lParam);
-  case WM_USER_AUTH_ERROR:
-    return onAuthError(wParam);
-  case WM_USER_ERROR:
-    return onError();
-  case WM_USER_DISCONNECT:
-    return onDisconnect();
-  case WM_ACTIVATE:
-    if ((LOWORD(wParam) == WA_ACTIVE || LOWORD(wParam) == WA_CLICKACTIVE) && m_isFullScr) {
-      try {
-        // Registration of keyboard hook.
-        m_winHooks.registerKeyboardHook(this);
-        // Switching off ignoring win key.
-        m_dsktWnd.setWinKeyIgnore(false);
-      } catch (Exception &e) {
-        m_logWriter.error(_T("%s"), e.getMessage());
-      }
-    } else if (LOWORD(wParam) == WA_INACTIVE && m_isFullScr) {
-      // Unregistration of keyboard hook.
-      m_winHooks.unregisterKeyboardHook(this);
-      // Switching on ignoring win key.
-      m_dsktWnd.setWinKeyIgnore(true);
-    }
-    return true;
-  case WM_SETFOCUS:
-    return onFocus(wParam);
-  case WM_ERASEBKGND:
-    return onEraseBackground((HDC)wParam);
-  case WM_KILLFOCUS:
-    return onKillFocus(wParam);
-  case WM_TIMER:
-    return onTimer(wParam);
-  case WM_DISPLAYCHANGE:
-    adjustWindowSize();
+	switch (message) {
+	case WM_SIZING:
+		m_sizeIsChanged = true;
+		return false;
+	case WM_NCDESTROY:
+		m_stopped = true;
+		return true;
+	case WM_USER_STOP:
+		SendMessage(m_hWnd, WM_DESTROY, 0, 0);
+		return true;
+	case WM_USER_FS_WARNING:
+		return onFsWarning();
+	case WM_CLOSE:
+		return onClose();
+	case WM_DESTROY:
+		return onDestroy();
+	case WM_CREATE:
+		return onCreate((LPCREATESTRUCT)lParam);
+	case WM_SIZE:
+		return onSize(wParam, lParam);
+	case WM_USER_AUTH_ERROR:
+		return onAuthError(wParam);
+	case WM_USER_ERROR:
+		return onError();
+	case WM_USER_DISCONNECT:
+		return onDisconnect();
+	case WM_ACTIVATE:
+		if ((LOWORD(wParam) == WA_ACTIVE || LOWORD(wParam) == WA_CLICKACTIVE) && m_isFullScr) {
+			try {
+				// Registration of keyboard hook.
+				m_winHooks.registerKeyboardHook(this);
+				// Switching off ignoring win key.
+				m_dsktWnd.setWinKeyIgnore(false);
+			}
+			catch (Exception &e) {
+				m_logWriter.error(_T("%s"), e.getMessage());
+			}
+		}
+		else if (LOWORD(wParam) == WA_INACTIVE && m_isFullScr) {
+			// Unregistration of keyboard hook.
+			m_winHooks.unregisterKeyboardHook(this);
+			// Switching on ignoring win key.
+			m_dsktWnd.setWinKeyIgnore(true);
+		}
+		return true;
+	case WM_SETFOCUS:
+		return onFocus(wParam);
+	case WM_ERASEBKGND:
+		return onEraseBackground((HDC)wParam);
+	case WM_KILLFOCUS:
+		return onKillFocus(wParam);
+	case WM_TIMER:
+		return onTimer(wParam);
+	case WM_DISPLAYCHANGE:
+		adjustWindowSize();
 
-  }
-  return false;
+	}
+	return false;
 }
 
 bool ViewerWindow::onEraseBackground(HDC hdc) 
@@ -964,14 +966,15 @@ void ViewerWindow::showWindow()
 
 bool ViewerWindow::onDisconnect()
 {
-  MessageBox(getHWnd(),
-             m_disconnectMessage.getString(),
-             formatWindowName().getString(),
-             MB_OK);
+	// TEWONG: No need confirmation dialog
+	//MessageBox(getHWnd(),
+	//           m_disconnectMessage.getString(),
+	//           formatWindowName().getString(),
+	//           MB_OK);
 
-  m_dsktWnd.destroyWindow();
-  destroyWindow();
-  return true;
+	m_dsktWnd.destroyWindow();
+	destroyWindow();
+	return true;
 }
 
 bool ViewerWindow::onAuthError(WPARAM wParam)
@@ -1222,29 +1225,31 @@ StringStorage ViewerWindow::formatWindowName() const
 
 LRESULT ViewerWindow::onHookProc(int code, WPARAM wParam, LPARAM lParam)
 {
-  KBDLLHOOKSTRUCT *str = (KBDLLHOOKSTRUCT*) lParam;
-  // Ignoring of CapsLock, NumLock, ScrollLock, Control (Ctrl key), Menu (Alt key), Shift (shift key).
-  if (str->vkCode != VK_CAPITAL && str->vkCode != VK_NUMLOCK && str->vkCode != VK_SCROLL &&
-      str->vkCode != VK_LCONTROL && str->vkCode != VK_RCONTROL &&
-      str->vkCode != VK_LMENU && str->vkCode != VK_RMENU &&
-      str->vkCode != VK_LSHIFT && str->vkCode != VK_RSHIFT) {
-    // Set the repeat count for the current message bits.
-    LPARAM newLParam = 1;
-    // Set the scan code bits. 
-    newLParam |= (str->scanCode & 0xf) << 16;
-    // Set the extended key bit.
-    newLParam |= (str->flags & LLKHF_EXTENDED) << 24;
-    // Set the context code bit.
-    newLParam |= ((str->flags & LLKHF_ALTDOWN) > 0) << 29;
-    // Set the transition state bit.
-    newLParam |= ((str->flags & LLKHF_UP) > 0) << 31;
-    if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) {
-      PostMessage(m_dsktWnd.getHWnd(), wParam, str->vkCode, newLParam);
-    } else if (wParam == WM_KEYUP || wParam == WM_SYSKEYUP) {
-      PostMessage(m_dsktWnd.getHWnd(), wParam, str->vkCode, newLParam);
-    }
-    return true;
-  } else {
-    return false;
-  }
+	KBDLLHOOKSTRUCT *str = (KBDLLHOOKSTRUCT*)lParam;
+	// Ignoring of CapsLock, NumLock, ScrollLock, Control (Ctrl key), Menu (Alt key), Shift (shift key).
+	if (str->vkCode != VK_CAPITAL && str->vkCode != VK_NUMLOCK && str->vkCode != VK_SCROLL &&
+		str->vkCode != VK_LCONTROL && str->vkCode != VK_RCONTROL &&
+		str->vkCode != VK_LMENU && str->vkCode != VK_RMENU &&
+		str->vkCode != VK_LSHIFT && str->vkCode != VK_RSHIFT) {
+		// Set the repeat count for the current message bits.
+		LPARAM newLParam = 1;
+		// Set the scan code bits. 
+		newLParam |= (str->scanCode & 0xf) << 16;
+		// Set the extended key bit.
+		newLParam |= (str->flags & LLKHF_EXTENDED) << 24;
+		// Set the context code bit.
+		newLParam |= ((str->flags & LLKHF_ALTDOWN) > 0) << 29;
+		// Set the transition state bit.
+		newLParam |= ((str->flags & LLKHF_UP) > 0) << 31;
+		if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN) {
+			PostMessage(m_dsktWnd.getHWnd(), wParam, str->vkCode, newLParam);
+		}
+		else if (wParam == WM_KEYUP || wParam == WM_SYSKEYUP) {
+			PostMessage(m_dsktWnd.getHWnd(), wParam, str->vkCode, newLParam);
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
 }

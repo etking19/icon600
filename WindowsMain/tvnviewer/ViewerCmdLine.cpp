@@ -51,7 +51,6 @@ const TCHAR ViewerCmdLine::MOUSE_SWAP[] = _T("mouseswap");
 const TCHAR ViewerCmdLine::JPEG_IMAGE_QUALITY[] = _T("jpegimagequality");
 const TCHAR ViewerCmdLine::COMPRESSION_LEVEL[] = _T("compressionlevel");
 
-
 const TCHAR ViewerCmdLine::YES[] = _T("yes");
 const TCHAR ViewerCmdLine::NO[] = _T("no");
 const TCHAR ViewerCmdLine::AUTO[] = _T("auto");
@@ -76,96 +75,98 @@ ViewerCmdLine::ViewerCmdLine(ConnectionData *conData,
 
 bool ViewerCmdLine::processCmdLine(const CmdLineOption *cmdLines, size_t lenCmdLineOption)
 {
-  if (m_wpcl.getOptionsCount()) {
-    int countRecog = 0;
+	if (m_wpcl.getOptionsCount()) {
+		int countRecog = 0;
 
-    for (size_t i = 0; i < lenCmdLineOption; i++) {
-       StringStorage strOut;
+		for (size_t i = 0; i < lenCmdLineOption; i++) {
+			StringStorage strOut;
 
-       for (size_t j = 0; j < m_wpcl.getOptionsCount(); j++) {
-         m_wpcl.getOption(j , &strOut);
+			for (size_t j = 0; j < m_wpcl.getOptionsCount(); j++) {
+				m_wpcl.getOption(j, &strOut);
 
-         if (strOut == cmdLines[i].keyName) {
-           countRecog++;
-         }
-       }
-       if (m_wpcl.findOptionValue(cmdLines[i].keyName, &strOut)) {
-         m_options[cmdLines[i].keyName] = strOut; 
-       }
-    }
-    if (countRecog != m_wpcl.getOptionsCount()) {
-      return false;
-    }
-  }
-  return true;
+				if (strOut == cmdLines[i].keyName) {
+					countRecog++;
+				}
+			}
+			if (m_wpcl.findOptionValue(cmdLines[i].keyName, &strOut)) {
+				m_options[cmdLines[i].keyName] = strOut;
+			}
+		}
+		if (countRecog != m_wpcl.getOptionsCount()) {
+			return false;
+		}
+	}
+	return true;
 }
 
 void ViewerCmdLine::parse()
 {
-  const CmdLineOption options[] = {
-    HELP,
-    HELP_SHORT,
-    OPTIONS_FILE,
-    LISTEN,
-    HOST,
-    PORT,
-    PASSWORD,
-    SHOW_CONTROLS,
-    VIEW_ONLY,
-    USE_CLIPBOARD,
-    SCALE,
-    FULL_SCREEN,
-    WARN_FULL_SCREEN,
-    ENCODING,
-    COPY_RECT,
-    MOUSE_CURSOR,
-    MOUSE_LOCAL,
-    MOUSE_SWAP,
-    JPEG_IMAGE_QUALITY,
-    COMPRESSION_LEVEL
-  };
+	const CmdLineOption options[] = {
+		HELP,
+		HELP_SHORT,
+		OPTIONS_FILE,
+		LISTEN,
+		HOST,
+		PORT,
+		PASSWORD,
+		SHOW_CONTROLS,
+		VIEW_ONLY,
+		USE_CLIPBOARD,
+		SCALE,
+		FULL_SCREEN,
+		WARN_FULL_SCREEN,
+		ENCODING,
+		COPY_RECT,
+		MOUSE_CURSOR,
+		MOUSE_LOCAL,
+		MOUSE_SWAP,
+		JPEG_IMAGE_QUALITY,
+		COMPRESSION_LEVEL,
+	};
 
-  if (!processCmdLine(&options[0], sizeof(options) / sizeof(CmdLineOption))) {
-    throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
-  }
+	if (!processCmdLine(&options[0], sizeof(options) / sizeof(CmdLineOption))) {
+		throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
+	}
 
-  // If options "help" is present, then show "Help dialog" and exit.
-  if (isHelpPresent()) {
-    throw CommandLineFormatHelp();
-  }
+	// If options "help" is present, then show "Help dialog" and exit.
+	if (isHelpPresent()) {
+		throw CommandLineFormatHelp();
+	}
 
 
-  if (m_wpcl.getArgumentsCount() > 2) {
-    throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
-  }
+	if (m_wpcl.getArgumentsCount() > 2) {
+		throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
+	}
 
-  if (m_wpcl.getArgumentsCount() > 1) {
-    if (isPresent(ViewerCmdLine::HOST)) {
-      throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
-    }
-  }
+	if (m_wpcl.getArgumentsCount() > 1) {
+		if (isPresent(ViewerCmdLine::HOST)) {
+			throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
+		}
+	}
 
-  if (isPresent(ViewerCmdLine::OPTIONS_FILE)) {
-    parseOptionsFile();
-  } else if (isPresent(ViewerCmdLine::LISTEN)) {
-      *m_isListening = true;
-  } else if (!parseHost()) {
-      throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
-  }
-  parsePassword();
-  parseEncoding();
-  parseMouseShape();
-  parseMouseCursor();
-  parseScale();
-  parseFullScreen();
-  parseCompressionLevel();
-  parseWarnFullScr();
-  parseMouseSwap();
-  parseUseClipboard();
-  parseShowControl();
-  parseCopyRect();
-  parseViewOnly();
-  parseJpegImageQuality();
+	if (isPresent(ViewerCmdLine::OPTIONS_FILE)) {
+		parseOptionsFile();
+	}
+	else if (isPresent(ViewerCmdLine::LISTEN)) {
+		*m_isListening = true;
+	}
+	else if (!parseHost()) {
+		throw CommandLineFormatException(StringTable::getString(IDS_ERROR_COMMAND_LINE));
+	}
+	parsePassword();
+	parseEncoding();
+	parseMouseShape();
+	parseMouseCursor();
+	parseScale();
+	parseFullScreen();
+	parseCompressionLevel();
+	parseWarnFullScr();
+	parseMouseSwap();
+	parseUseClipboard();
+	parseShowControl();
+	parseCopyRect();
+	parseViewOnly();
+	parseJpegImageQuality();
 }
 
 void ViewerCmdLine::onHelp()
@@ -177,23 +178,23 @@ void ViewerCmdLine::onHelp()
 
 bool ViewerCmdLine::isHelpPresent()
 {
-  for (size_t i = 0; i < m_wpcl.getArgumentsCount(); i++) {
-    StringStorage argument;
-    if (m_wpcl.getArgument(i, &argument)) {
-      if (argument.isEqualTo(HELP_ARG))
-        return true;
-      if (argument.isEqualTo(HELP_ARG_SHORT))
-        return true;
-      if (argument.isEqualTo(HELP_ARG_QUESTION))
-        return true;
-    }
-  }
+	for (size_t i = 0; i < m_wpcl.getArgumentsCount(); i++) {
+		StringStorage argument;
+		if (m_wpcl.getArgument(i, &argument)) {
+			if (argument.isEqualTo(HELP_ARG))
+				return true;
+			if (argument.isEqualTo(HELP_ARG_SHORT))
+				return true;
+			if (argument.isEqualTo(HELP_ARG_QUESTION))
+				return true;
+		}
+	}
 
-  if (isPresent(HELP))
-    return true;
-  if (isPresent(HELP_SHORT))
-    return true;
-  return false;
+	if (isPresent(HELP))
+		return true;
+	if (isPresent(HELP_SHORT))
+		return true;
+	return false;
 }
 
 bool ViewerCmdLine::isPresent(const TCHAR *keyName)

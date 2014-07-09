@@ -37,8 +37,8 @@ namespace WindowsMain
         MouseHook mouseHook = new MouseHook();
         KeyboardHook keyboardHook = new KeyboardHook();
 
-        private const int VNC_PORTSTART = 5800;
-        private const int VNC_PORTSTOP = 5810;
+        private const int VNC_PORTSTART = 8800;
+        private const int VNC_PORTSTOP = 8810;
 
         private VncMarshall.Server vncServer = new VncMarshall.Server();
 
@@ -750,7 +750,7 @@ namespace WindowsMain
             int portNumber = Utils.Socket.getUnusedPort(VNC_PORTSTART, VNC_PORTSTOP);
 
             // start vnc server
-            vncServer.StartServer(portNumber);
+            vncServer.StartServer(portNumber, new VncMarshall.Server.SharingAttributes { ShareMode=VncMarshall.Server.SharingMode.ShareRect, PosLeft=0, PosTop=0, PosRight=100, PosBottom=100});
 
             // send signal to server to indicate vnc server info
             ClientVncCmd command = new ClientVncCmd { PortNumber = portNumber, IpAddress=Utils.Socket.LocalIPAddress() };

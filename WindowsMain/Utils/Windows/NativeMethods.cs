@@ -55,7 +55,7 @@ namespace Utils.Windows
         [DllImport("User32.dll", EntryPoint = "EnumDesktopWindows", ExactSpelling = false, CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool EnumDesktopWindows(IntPtr hDesktop, EnumDelegate lpEnumCallbackFunction, IntPtr lParam);
 
-        [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr FindWindow(string strClassName, string strWindowName);
 
         [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
