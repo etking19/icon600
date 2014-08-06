@@ -1,9 +1,4 @@
-﻿using Session.Data.SubData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace WindowsMain.Client
 {
@@ -11,7 +6,7 @@ namespace WindowsMain.Client
     {
         public int Id { get; set; }
         public String Text { get; set; }
-        public WndPos Data { get; set; }
+        public Client.Model.WindowsModel Data { get; set; }
 
         public override string ToString()
         {

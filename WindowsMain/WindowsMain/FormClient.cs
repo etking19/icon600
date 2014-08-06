@@ -21,26 +21,25 @@ using WindowsMain.Comparer;
 
 namespace WindowsMain
 {
-    public partial class FormClient : Form
+    public partial class FormClient : Form, IClient
     {
         private ConnectionManager connectionMgr = new ConnectionManager();
-        private System.Web.Script.Serialization.JavaScriptSerializer deserialize = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-        private List<WndPos> applicationList = new List<WndPos>();
+        private List<Client.Model.WindowsModel> applicationList = new List<Client.Model.WindowsModel>();
         private CustomControlHolder mHolder = new CustomControlHolder(new Size(0, 0), Int32.MinValue, Int32.MinValue);
 
         private Dictionary<int, int> mWindowsDic = new Dictionary<int, int>();
 
-        private delegate void DelegateWindow(WndPos wndPos);
+        private delegate void DelegateWindow(Client.Model.WindowsModel wndPos);
         private delegate void DelegateEvt();
 
         MouseHook mouseHook = new MouseHook();
         KeyboardHook keyboardHook = new KeyboardHook();
 
-        private const int VNC_PORTSTART = 8800;
-        private const int VNC_PORTSTOP = 8810;
-
         private VncMarshall.Server vncServer = new VncMarshall.Server();
+        private Client.ClientCmdMgr clienCmdMgr;
+
+        private int UserId = -1;
 
         public FormClient()
         {
@@ -66,10 +65,13 @@ namespace WindowsMain
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
 
             applicationsListbox.DataSource = applicationList;
-            applicationsListbox.DisplayMember = "name";
-            applicationsListbox.ValueMember = "id";
+            applicationsListbox.DisplayMember = "DisplayName";      // map to WindowsModel.DisplayName
+            applicationsListbox.ValueMember = "WindowsId";        // map to WindowsModel.WindowsId
             applicationsListbox.ClearSelected();
             applicationsListbox.SelectedIndexChanged += applicationsListbox_SelectedIndexChanged;
+
+            // initialize command manager
+            clienCmdMgr = new ClientCmdMgr(this);
         }
 
         void applicationsListbox_SelectedIndexChanged(object sender, EventArgs e)
@@ -87,8 +89,8 @@ namespace WindowsMain
                 wndCommand.Id = wndId;
 
                 connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ClientControlInfo,
-                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    (int)CommandConst.MainCommandClient.ControlInfo,
+                    (int)CommandConst.SubCommandClient.WindowsAttributes,
                     wndCommand);                
             }
         }
@@ -103,8 +105,8 @@ namespace WindowsMain
                 wndCommand.Id = wndId;
 
                 connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ClientControlInfo,
-                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    (int)CommandConst.MainCommandClient.ControlInfo,
+                    (int)CommandConst.SubCommandClient.WindowsAttributes,
                     wndCommand);
             }
             
@@ -122,8 +124,8 @@ namespace WindowsMain
                 wndCommand.Height = newSize.Height;
 
                 connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ClientControlInfo,
-                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    (int)CommandConst.MainCommandClient.ControlInfo,
+                    (int)CommandConst.SubCommandClient.WindowsAttributes,
                     wndCommand);
             }
         }
@@ -138,8 +140,8 @@ namespace WindowsMain
                 wndCommand.Id = wndId;
 
                 connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ClientControlInfo,
-                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    (int)CommandConst.MainCommandClient.ControlInfo,
+                    (int)CommandConst.SubCommandClient.WindowsAttributes,
                     wndCommand);
             }
         }
@@ -156,8 +158,8 @@ namespace WindowsMain
                 wndCommand.PositionY = yPos;
 
                 connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ClientControlInfo,
-                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    (int)CommandConst.MainCommandClient.ControlInfo,
+                    (int)CommandConst.SubCommandClient.WindowsAttributes,
                     wndCommand);
             }
         }
@@ -172,8 +174,8 @@ namespace WindowsMain
                 wndCommand.Id = wndId;
 
                 connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ClientControlInfo,
-                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    (int)CommandConst.MainCommandClient.ControlInfo,
+                    (int)CommandConst.SubCommandClient.WindowsAttributes,
                     wndCommand);
             }
         }
@@ -188,26 +190,16 @@ namespace WindowsMain
                 wndCommand.Id = wndId;
 
                 connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ClientControlInfo,
-                    (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                    (int)CommandConst.MainCommandClient.ControlInfo,
+                    (int)CommandConst.SubCommandClient.WindowsAttributes,
                     wndCommand);
             }
         }
 
         void connectionMgr_EvtServerDataReceived(int mainId, int subId, string commandData)
         {
-            switch ((CommandConst.MainCommandServer)mainId)
-            {
-                case CommandConst.MainCommandServer.ServerWindowsInfo:
-                    // windows data
-                    handleWindowsData(subId, commandData);
-                    break;
-                case CommandConst.MainCommandServer.ServerMonitorsInfo:
-                    handleMonitorsData(subId, commandData);
-                    break;
-                default:
-                    break;
-            }
+            // server user id undefined = "0"
+            clienCmdMgr.ExeCommand("0", mainId, subId, commandData);
         }
 
         void connectionMgr_EvtDisconnected()
@@ -230,10 +222,30 @@ namespace WindowsMain
         void connectionMgr_EvtConnected()
         {
             ClientLoginCmd loginCmd = new ClientLoginCmd();
-            loginCmd.username = username.Text;
-            loginCmd.password = password.Text;
+            loginCmd.Username = username.Text;
+            loginCmd.Password = password.Text;
 
-            connectionMgr.BroadcastMessage((int)CommandConst.MainCommandClient.ClientLoginInfo, 0, loginCmd);
+            // get the VNC status, if there is VNC server installed, get the ip address and port shared
+            int port;
+            if((port = VncMarshall.VncRegistryHelper.GetServerPort()) != -1)
+            {
+                loginCmd.VncServerPort = port;
+                loginCmd.VncServerIp = Utils.Socket.LocalIPAddress();
+            }
+
+            // get how many monitors attached to this PC
+            List<MonitorInfo> monitorList = new List<MonitorInfo>();
+            foreach(WindowsHelper.MonitorInfo info in Utils.Windows.WindowsHelper.GetMonitorList())
+            {
+                monitorList.Add(new MonitorInfo { 
+                    LeftPos = info.WorkArea.Left, 
+                    TopPos = info.WorkArea.Top, 
+                    RightPos = info.WorkArea.Right, 
+                    BottomPos = info.WorkArea.Bottom });
+            }
+            loginCmd.MonitorsInfo = monitorList;
+
+            connectionMgr.BroadcastMessage((int)CommandConst.MainCommandClient.LoginInfo, (int)CommandConst.SubCommandClient.Credential, loginCmd);
         }
 
         private void connect_Click(object sender, EventArgs e)
@@ -270,8 +282,8 @@ namespace WindowsMain
             };
 
             connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ClientControlInfo,
-                (int)CommandConst.SubCmdClientControlInfo.Keyboard,
+                (int)CommandConst.MainCommandClient.ControlInfo,
+                (int)CommandConst.SubCommandClient.Keyboard,
                 keyboardCmd);
         }
 
@@ -343,8 +355,8 @@ namespace WindowsMain
             };
 
             connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ClientControlInfo,
-                (int)CommandConst.SubCmdClientControlInfo.Mouse,
+                (int)CommandConst.MainCommandClient.ControlInfo,
+                (int)CommandConst.SubCommandClient.Mouse,
                 mouseCmd);
         }
 
@@ -357,146 +369,7 @@ namespace WindowsMain
             vncServer.StopServer();
         }
 
-        void handleMonitorsData(int subId, string commandData)
-        {
-            switch ((CommandConst.SubCmdServerMonitorsInfo)subId)
-            {
-                case CommandConst.SubCmdServerMonitorsInfo.MonitorList:
-                    ServerMonitorsInfo data = deserialize.Deserialize<ServerMonitorsInfo>(commandData);
-                    if (data == null)
-                    {
-                        return;
-                    }
-
-                    int minPosX = 0;
-                    int minPosY = 0;
-                    int maxPosX = 0;
-                    int maxPosY = 0;
-                    foreach(MonitorInfo monitor in data.monitorAttributes)
-                    {
-                        minPosX = Math.Min(monitor.leftPos, minPosX);
-                        minPosY = Math.Min(monitor.topPos, minPosY);
-
-                        maxPosX = Math.Max(monitor.rightPos, maxPosX);
-                        maxPosY = Math.Max(monitor.bottomPos, maxPosY);
-                    }
-
-                    mHolder.MaxSize = new Size(maxPosX - minPosX, maxPosY - minPosY);
-                    mHolder.ReferenceXPos = minPosX;
-                    mHolder.ReferenceYPos = minPosY;
-
-                    break;
-            }
-        }
-
-
-        void handleWindowsData(int subId, string commandData)
-        {
-            switch(subId)
-            {
-                case (int)CommandConst.SubCmdServerWindowsInfo.WindowsList:
-                    // windows application's positions
-                    handleWindowsAppPos(commandData);
-                    break;
-            }
-        }
-
-        void handleWindowsAppPos(string commandData)
-        {
-            ServerWindowsPos data = deserialize.Deserialize<ServerWindowsPos>(commandData);
-            if (data == null)
-            {
-                return;
-            }
-
-            // find difference with current list and updated list
-
-             List<WndPos> tempList = new List<WndPos>(data.windowsAttributes);
-
-            // 1. find the windows that newly added
-            List<WndPos> addedQuery = data.windowsAttributes.Except(applicationList, new WndObjComparer()).ToList();
-
-            // 2. find the windows that removed
-            List<WndPos> removedQuery = applicationList.Except(data.windowsAttributes, new WndObjComparer()).ToList();
-
-            // 3. find the windows with attributes changed
-            foreach (WndPos windows in addedQuery)
-            {
-                // remove the additional objects in list
-                data.windowsAttributes.Remove(windows);
-            }
-
-            foreach (WndPos windows in removedQuery)
-            {
-                // remove the additional objects in list
-                applicationList.Remove(windows);
-            }
-
-            // compare the remaining list, these lists should contain the same object's id and count
-            List<WndPos> modifiedNameQuery = data.windowsAttributes.Except(applicationList, new WndNameComparer()).ToList();
-            List<WndPos> modifiedPosQuery = data.windowsAttributes.Except(applicationList, new WndPosComparer()).ToList();
-            List<WndPos> modifiedSizeQuery = data.windowsAttributes.Except(applicationList, new WndSizeComparer()).ToList();
-            List<WndPos> modifiedStyleQuery = data.windowsAttributes.Except(applicationList, new WndStyleComparer()).ToList();
-
-            // save the updated list
-            applicationList.Clear();
-            applicationList.AddRange(tempList);
-
-           // Trace.WriteLine(String.Format("add:{0}, remove:{1}, modified:{2}, totalNow:{3}", addedQuery.Count.ToString(), removedQuery.Count.ToString(), modifiedQuery.Count.ToString(), applicationList.Count.ToString()));
-
-            bool refreshAppList = false;
-            foreach (WndPos windows in addedQuery)
-            {
-                Trace.WriteLine(String.Format("Added - name:{5} id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
-                refreshAppList |= true;
-                AddWindow(windows);
-            }
-
-            foreach (WndPos windows in removedQuery)
-            {
-                Trace.WriteLine(String.Format("Removed - name:{5}  id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
-                refreshAppList |= true;
-                RemoveWindow(windows);
-            }
-
-            foreach (WndPos windows in modifiedNameQuery)
-            {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
-                ChangeWindowName(windows);
-            }
-
-            foreach (WndPos windows in modifiedPosQuery)
-            {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
-                ChangeWindowPos(windows);
-            }
-
-            foreach (WndPos windows in modifiedStyleQuery)
-            {
-                // NOTE: must set style then only set size as maximize state will not shown in the entire screen
-                ChangeWindowStyle(windows);
-            }
-
-            foreach (WndPos windows in modifiedSizeQuery)
-            {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
-                ChangeWindowSize(windows);
-            }
-
-            // update entire list z-order
-            foreach (WndPos windows in applicationList)
-            {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
-                ChangeWindowZOrder(windows);
-            }
-
-            if (refreshAppList)
-            {
-                refreshApplicationList();
-            }
-        }
-
-        private void AddWindow(WndPos wndPos)
+        private void AddWindow(Client.Model.WindowsModel wndPos)
         {
             if (this.InvokeRequired)
             {
@@ -506,25 +379,25 @@ namespace WindowsMain
 
 
             int wndId = mHolder.AddControl(new CustomWinForm.CustomControlHolder.ControlAttributes {
-                WindowName = wndPos.name, 
-                Xpos = wndPos.posX, 
-                Ypos = wndPos.posY, 
-                Width = wndPos.width, 
-                Height = wndPos.height,
-                Style = wndPos.style,
+                WindowName = wndPos.DisplayName, 
+                Xpos = wndPos.PosLeft, 
+                Ypos = wndPos.PosTop, 
+                Width = wndPos.Width, 
+                Height = wndPos.Height,
+                Style = wndPos.Style,
                 ZOrder = wndPos.ZOrder
             });
 
-            mWindowsDic.Add(wndPos.id, wndId);
+            mWindowsDic.Add(wndPos.WindowsId, wndId);
 
             // check if the control was minimized
-            if ((wndPos.style & Constant.WS_MINIMIZE) != 0)
+            if ((wndPos.Style & Constant.WS_MINIMIZE) != 0)
             {
-                AddMinimizedWindow(wndPos.id, wndPos);
+                AddMinimizedWindow(wndPos.WindowsId, wndPos);
             }
         }
 
-        private void RemoveWindow(WndPos wndPos)
+        private void RemoveWindow(Client.Model.WindowsModel wndPos)
         {
             if (this.InvokeRequired)
             {
@@ -533,16 +406,16 @@ namespace WindowsMain
             }
 
             int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.id, out wndId))
+            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
             {
                 mHolder.RemoveControl(wndId);
-                mWindowsDic.Remove(wndPos.id);
+                mWindowsDic.Remove(wndPos.WindowsId);
 
-                RemoveMinimizedWindow(wndPos.id);
+                RemoveMinimizedWindow(wndPos.WindowsId);
             }
         }
 
-        private void ChangeWindowName(WndPos wndPos)
+        private void ChangeWindowName(Client.Model.WindowsModel wndPos)
         {
             if (this.InvokeRequired)
             {
@@ -551,14 +424,14 @@ namespace WindowsMain
             }
 
             int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.id, out wndId))
+            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
             {
-                mHolder.ChangeControlName(wndId, wndPos.name);
+                mHolder.ChangeControlName(wndId, wndPos.DisplayName);
             }
 
         }
 
-        private void ChangeWindowPos(WndPos wndPos)
+        private void ChangeWindowPos(Client.Model.WindowsModel wndPos)
         {
             if (this.InvokeRequired)
             {
@@ -567,13 +440,13 @@ namespace WindowsMain
             }
 
             int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.id, out wndId))
+            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
             {
-                mHolder.ChangeControlPos(wndId, new Point(wndPos.posX, wndPos.posY));
+                mHolder.ChangeControlPos(wndId, new Point(wndPos.PosLeft, wndPos.PosTop));
             }
         }
 
-        private void ChangeWindowSize(WndPos wndPos)
+        private void ChangeWindowSize(Client.Model.WindowsModel wndPos)
         {
             if (this.InvokeRequired)
             {
@@ -582,13 +455,13 @@ namespace WindowsMain
             }
 
             int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.id, out wndId))
+            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
             {
-                mHolder.ChangeControlSize(wndId, new Size(wndPos.width, wndPos.height));
+                mHolder.ChangeControlSize(wndId, new Size(wndPos.Width, wndPos.Height));
             }
         }
 
-        private void ChangeWindowStyle(WndPos wndPos)
+        private void ChangeWindowStyle(Client.Model.WindowsModel wndPos)
         {
             if (this.InvokeRequired)
             {
@@ -597,24 +470,24 @@ namespace WindowsMain
             }
 
             int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.id, out wndId))
+            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
             {
-                mHolder.ChangeControlStyle(wndId, wndPos.style);
+                mHolder.ChangeControlStyle(wndId, wndPos.Style);
 
                 // check if the control was minimized
-                if ((wndPos.style & Constant.WS_MINIMIZE) != 0)
+                if ((wndPos.Style & Constant.WS_MINIMIZE) != 0)
                 {
-                    AddMinimizedWindow(wndPos.id, wndPos);
+                    AddMinimizedWindow(wndPos.WindowsId, wndPos);
                 }
                 else
                 {
-                    RemoveMinimizedWindow(wndPos.id);
+                    RemoveMinimizedWindow(wndPos.WindowsId);
                 }
 
             }
         }
 
-        private void ChangeWindowZOrder(WndPos wndPos)
+        private void ChangeWindowZOrder(Client.Model.WindowsModel wndPos)
         {
             if (this.InvokeRequired)
             {
@@ -623,21 +496,20 @@ namespace WindowsMain
             }
 
             int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.id, out wndId))
+            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
             {
                 mHolder.ChangeControlZOrder(wndId, wndPos.ZOrder);
             }
         }
 
-        private void AddMinimizedWindow(int id, WndPos data)
+        private void AddMinimizedWindow(int id, Client.Model.WindowsModel data)
         {
             MinimizeComboBox comboBox = new MinimizeComboBox();
             comboBox.Id = id;
-            comboBox.Text = data.name;
+            comboBox.Text = data.DisplayName;
             comboBox.Data = data;
 
             minimizedWndComboBox.Items.Add(comboBox);
-
         }
 
         private void RemoveMinimizedWindow(int id)
@@ -664,8 +536,8 @@ namespace WindowsMain
             wndCommand.Id = comboBox.Id;
 
             connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ClientControlInfo,
-                (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes,
+                (int)CommandConst.MainCommandClient.ControlInfo,
+                (int)CommandConst.SubCommandClient.WindowsAttributes,
                 wndCommand);
         }
 
@@ -717,8 +589,8 @@ namespace WindowsMain
             }
             applicationsListbox.DataSource = null;
             applicationsListbox.DataSource = applicationList;
-            applicationsListbox.DisplayMember = "name";
-            applicationsListbox.ValueMember = "id";
+            applicationsListbox.DisplayMember = "DisplayName";
+            applicationsListbox.ValueMember = "WindowsId";
         }
 
         private void shutdownBtn_Click(object sender, EventArgs e)
@@ -740,36 +612,157 @@ namespace WindowsMain
         {
             ClientMaintenanceCmd command = new ClientMaintenanceCmd { CommandType = id };
             connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ClientControlInfo,
-                (int)CommandConst.SubCmdClientControlInfo.Maintenance,
+                (int)CommandConst.MainCommandClient.ControlInfo,
+                (int)CommandConst.SubCommandClient.Maintenance,
                 command);
         }
 
         private void startVNC_Click(object sender, EventArgs e)
         {
-            int portNumber = Utils.Socket.getUnusedPort(VNC_PORTSTART, VNC_PORTSTOP);
+            //int portNumber = Utils.Socket.getUnusedPort(VNC_PORTSTART, VNC_PORTSTOP);
 
-            // start vnc server
-            vncServer.StartServer(portNumber, new VncMarshall.Server.SharingAttributes { ShareMode=VncMarshall.Server.SharingMode.ShareRect, PosLeft=0, PosTop=0, PosRight=100, PosBottom=100});
+            //// start vnc server
+            //vncServer.StartServer(portNumber, new VncMarshall.Server.SharingAttributes { ShareMode=VncMarshall.Server.SharingMode.ShareRect, PosLeft=0, PosTop=0, PosRight=100, PosBottom=100});
 
-            // send signal to server to indicate vnc server info
-            ClientVncCmd command = new ClientVncCmd { PortNumber = portNumber, IpAddress=Utils.Socket.LocalIPAddress() };
-            connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ClientVncInfo,
-                (int)CommandConst.SubCmdVncInfo.Start,
-                command);
+            //// send signal to server to indicate vnc server info
+            //ClientVncCmd command = new ClientVncCmd { PortNumber = portNumber, IpAddress=Utils.Socket.LocalIPAddress() };
+            //connectionMgr.BroadcastMessage(
+            //    (int)CommandConst.MainCommandClient.ClientVncInfo,
+            //    (int)CommandConst.SubCmdVncInfo.Start,
+            //    command);
         }
 
         private void stopVNC_Click(object sender, EventArgs e)
         {
-            vncServer.StopServer();
+            //vncServer.StopServer();
 
-            // send signal to server to indicate vnc server info
-            ClientVncCmd command = new ClientVncCmd();
-            connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ClientVncInfo,
-                (int)CommandConst.SubCmdVncInfo.Stop,
-                command);
+            //// send signal to server to indicate vnc server info
+            //ClientVncCmd command = new ClientVncCmd();
+            //connectionMgr.BroadcastMessage(
+            //    (int)CommandConst.MainCommandClient.ClientVncInfo,
+            //    (int)CommandConst.SubCmdVncInfo.Stop,
+            //    command);
+        }
+
+        public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout)
+        {
+            mHolder.MaxSize = new Size(layout.DesktopLayout.Width, layout.DesktopLayout.Height);
+            mHolder.ReferenceXPos = layout.DesktopLayout.PosLeft;
+            mHolder.ReferenceYPos = layout.DesktopLayout.PosTop;
+
+            // TODO: 
+            // 1. keep the user info
+            UserId = user.UserId;
+            // 2. drawn the matrix layout
+        }
+
+        public void RefreshAppList(IList<Client.Model.ApplicationModel> appList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RefreshWndList(IList<Client.Model.WindowsModel> wndsList)
+        {
+            // find difference with current list and updated list
+
+            List<Client.Model.WindowsModel> tempList = new List<Client.Model.WindowsModel>(wndsList);
+
+            // 1. find the windows that newly added
+            List<Client.Model.WindowsModel> addedQuery = tempList.Except(applicationList, new WndObjComparer()).ToList();
+
+            // 2. find the windows that removed
+            List<Client.Model.WindowsModel> removedQuery = applicationList.Except(tempList, new WndObjComparer()).ToList();
+
+            // 3. find the windows with attributes changed
+            foreach (Client.Model.WindowsModel windows in addedQuery)
+            {
+                // remove the additional objects in list
+                wndsList.Remove(windows);
+            }
+
+            foreach (Client.Model.WindowsModel windows in removedQuery)
+            {
+                // remove the additional objects in list
+                wndsList.Remove(windows);
+            }
+
+            // compare the remaining list, these lists should contain the same object's id and count
+            List<Client.Model.WindowsModel> modifiedNameQuery = wndsList.Except(applicationList, new WndNameComparer()).ToList();
+            List<Client.Model.WindowsModel> modifiedPosQuery = wndsList.Except(applicationList, new WndPosComparer()).ToList();
+            List<Client.Model.WindowsModel> modifiedSizeQuery = wndsList.Except(applicationList, new WndSizeComparer()).ToList();
+            List<Client.Model.WindowsModel> modifiedStyleQuery = wndsList.Except(applicationList, new WndStyleComparer()).ToList();
+
+            // save the updated list
+            applicationList.Clear();
+            applicationList.AddRange(tempList);
+
+            // Trace.WriteLine(String.Format("add:{0}, remove:{1}, modified:{2}, totalNow:{3}", addedQuery.Count.ToString(), removedQuery.Count.ToString(), modifiedQuery.Count.ToString(), applicationList.Count.ToString()));
+
+            bool refreshAppList = false;
+            foreach (Client.Model.WindowsModel windows in addedQuery)
+            {
+                //Trace.WriteLine(String.Format("Added - name:{5} id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
+                refreshAppList |= true;
+                AddWindow(windows);
+            }
+
+            foreach (Client.Model.WindowsModel windows in removedQuery)
+            {
+                //Trace.WriteLine(String.Format("Removed - name:{5}  id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
+                refreshAppList |= true;
+                RemoveWindow(windows);
+            }
+
+            foreach (Client.Model.WindowsModel windows in modifiedNameQuery)
+            {
+                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
+                ChangeWindowName(windows);
+            }
+
+            foreach (Client.Model.WindowsModel windows in modifiedPosQuery)
+            {
+                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
+                ChangeWindowPos(windows);
+            }
+
+            foreach (Client.Model.WindowsModel windows in modifiedStyleQuery)
+            {
+                // NOTE: must set style then only set size as maximize state will not shown in the entire screen
+                ChangeWindowStyle(windows);
+            }
+
+            foreach (Client.Model.WindowsModel windows in modifiedSizeQuery)
+            {
+                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
+                ChangeWindowSize(windows);
+            }
+
+            // update entire list z-order
+            foreach (Client.Model.WindowsModel windows in applicationList)
+            {
+                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
+                ChangeWindowZOrder(windows);
+            }
+
+            if (refreshAppList)
+            {
+                refreshApplicationList();
+            }
+        }
+
+        public void RefreshVncList(IList<Client.Model.VncModel> vncList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RefreshPresetList(IList<Client.Model.PresetModel> presetList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RefreshMaintenanceStatus(Client.Model.UserPriviledgeModel privilegde)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,28 +1,37 @@
 ﻿using System;
 
-namespace Sqlite.Data
+namespace Database.Data
 {
     public class User : ISqlData
     {
-        private const string TABLE_NAME = "clients";
+        public const string TABLE_NAME = "users";
 
-        private string mCreateCommand = "CREATE TABLE {0} (username VARCHAR(20) PRIMARY KEY, password VARCHAR(20))";
-        private string mRemoveCommand = "DELETE FROM {0} WHERE username = '{1}'";
-        private string mAddCommand = "INSERT INTO {0} (username, password) VALUES ('{1}', '{2}')";
-        private string mQueryCommand = "SELECT * FROM {0}";
-        private string mUpdateCommand = "UPDATE {0} SET password = '{1}' WHERE username = '{2}';";
+        public const string USER_ID = "user_id";
+        public const string LABEL = "label";
+        public const string USERNAME = "username";
+        public const string PASSWORD = "password";
+        public const string GROUP_ID = "group_id";
 
-        public string mUsername { get; set; }
-        public string mPassword { get; set; }
+        public int id { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+
+        public string label { get; set; }
+
+        public int group { get; set; }
 
         string ISqlData.GetAddCommand()
         {
-            return String.Format(mAddCommand, TABLE_NAME, mUsername, mPassword);
+            string query = "INSERT INTO {0} ({1}, {2}, {3}, {4}) VALUES ('{5}', '{6}', '{7}', {8})";
+            return String.Format(query, TABLE_NAME,
+                LABEL, USERNAME, PASSWORD, GROUP_ID,
+                label, username, password, group);
         }
 
         string ISqlData.GetRemoveCommand()
         {
-            return String.Format(mRemoveCommand, TABLE_NAME, mUsername);
+            string query = "DELETE FROM {0} WHERE {1}={2}";
+            return String.Format(query, TABLE_NAME, USER_ID, id);
         }
 
         public string GetTableName()
@@ -32,19 +41,24 @@ namespace Sqlite.Data
 
         public string GetCreateCommand()
         {
-            return String.Format(mCreateCommand, TABLE_NAME);
+            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY AUTOINCREMENT, {2} VARCHAR(100) UNIQUE NOT NULL, {3} VARCHAR(100) NOT NULL, {4} VARCHAR(100) NOT NULL, {5} INTEGER, FOREIGN KEY({5}) REFERENCES {6}({7}) ON DELETE CASCADE)";
+            return String.Format(query, TABLE_NAME, USER_ID, USERNAME, PASSWORD, LABEL, GROUP_ID, Group.TABLE_NAME, Group.GROUP_ID);
         }
-
 
         public string GetQueryCommand()
         {
-            return String.Format(mQueryCommand, TABLE_NAME);
+            string query = "SELECT * FROM {0}";
+            return String.Format(query, TABLE_NAME);
         }
-
 
         public string GetUpdateDataCommand()
         {
-            return String.Format(mUpdateCommand, TABLE_NAME, mPassword, mUsername);
+            string query = "UPDATE {0} SET {1}='{2}', {3}='{4}', {5}='{6}' WHERE {7}={8};";
+            return String.Format(query, TABLE_NAME, 
+                PASSWORD, password, 
+                LABEL, label, 
+                USERNAME, username,
+                USER_ID, id);
         }
     }
 }

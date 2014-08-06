@@ -1,5 +1,5 @@
 ﻿
-namespace Sqlite.Data
+namespace Database.Data
 {
     public interface ISqlData
     {

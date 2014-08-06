@@ -16,15 +16,20 @@ namespace WindowsMain
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Action action = new Action(StartClient);
-
-            for (int a = 0; a < 1; a++ )
+            if (Properties.Settings.Default.ShowClient)
             {
-                Task.Factory.StartNew(action);
-            }
-            
+                Action action = new Action(StartClient);
 
-            Application.Run(new FormMain());
+                for (int a = 0; a < 1; a++ )
+                {
+                    Task.Factory.StartNew(action);
+                }
+            }
+
+            if (Properties.Settings.Default.ShowServer)
+            {
+                Application.Run(new FormMain());
+            }
         }
 
         static void StartClient()

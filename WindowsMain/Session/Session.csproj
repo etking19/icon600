@@ -34,24 +34,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -67,14 +49,23 @@
     <Compile Include="Data\ClientKeyboardCmd.cs" />
     <Compile Include="Data\ClientMaintenanceCmd.cs" />
     <Compile Include="Data\ClientMouseCmd.cs" />
+    <Compile Include="Data\ClientPresetsControl.cs" />
     <Compile Include="Data\ClientVncCmd.cs" />
     <Compile Include="Data\ClientWndCmd.cs" />
     <Compile Include="Data\ICommand.cs" />
     <Compile Include="Data\MainCommand.cs" />
     <Compile Include="Data\ClientLoginCmd.cs" />
+    <Compile Include="Data\ServerApplicationStatus.cs" />
+    <Compile Include="Data\ServerLoginReply.cs" />
+    <Compile Include="Data\ServerMaintenanceStatus.cs" />
+    <Compile Include="Data\ServerPresetsStatus.cs" />
+    <Compile Include="Data\ServerVncStatus.cs" />
+    <Compile Include="Data\SubData\ApplicationEntry.cs" />
     <Compile Include="Data\SubData\MonitorInfo.cs" />
-    <Compile Include="Data\ServerMonitorsInfo.cs" />
+    <Compile Include="Data\ServerScreenInfo.cs" />
     <Compile Include="Data\ServerWindowsPos.cs" />
+    <Compile Include="Data\SubData\PresetsEntry.cs" />
+    <Compile Include="Data\SubData\VncEntry.cs" />
     <Compile Include="Data\SubData\WndPos.cs" />
     <Compile Include="Session\ClientSession.cs" />
     <Compile Include="Session\ISession.cs" />

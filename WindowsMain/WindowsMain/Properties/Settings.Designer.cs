@@ -22,5 +22,29 @@ namespace WindowsMain.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowServer {
+            get {
+                return ((bool)(this["ShowServer"]));
+            }
+            set {
+                this["ShowServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowClient {
+            get {
+                return ((bool)(this["ShowClient"]));
+            }
+            set {
+                this["ShowClient"] = value;
+            }
+        }
     }
 }

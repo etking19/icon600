@@ -9,6 +9,6 @@ namespace Session.Data
 {
     public class ServerWindowsPos : BaseCmd
     {
-        public List<WndPos> windowsAttributes { get; set; }
+        public List<WndPos> WindowsAttributes { get; set; }
     }
 }

@@ -1,41 +1,57 @@
-﻿using Session;
+﻿using Database.Data;
+using Session;
 using Session.Connection;
 using Session.Data;
 using Session.Data.SubData;
-using Sqlite.Data;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Utils.Windows;
 
-namespace WindowsMain
+namespace WindowsMain 
 {
     delegate void SetTextCallback(string text);
 
-    public partial class FormMain : Form
+    public partial class FormMain : Form, IServer
     {
-        private Windows.WindowsMgr _WndsMgr = new Windows.WindowsMgr();
+        private Windows.WindowsAppMgr _WndsMgr = new Windows.WindowsAppMgr();
         private ConnectionManager connectionMgr = new ConnectionManager();
-        private List<string> connectedClients = new List<string>();
+
+        private License.LicenseChecker licenseChecker = null;
 
         /// <summary>
         /// string = client's user id
         /// manual reset event used to keep track the connection socket and login status
         /// </summary>
-        private Dictionary<string, ManualResetEvent> connectionDic = new Dictionary<string, ManualResetEvent>();
-
-        private System.Web.Script.Serialization.JavaScriptSerializer deserialize = new System.Web.Script.Serialization.JavaScriptSerializer();
-
+        private Dictionary<object, ManualResetEvent> connectionDic = new Dictionary<object, ManualResetEvent>();
         private VncMarshall.Client vncClient = new VncMarshall.Client();
+
+        private Server.ServerCmdMgr serverCmdMgr = null;
 
         public FormMain()
         {
             InitializeComponent();
+
+            System.Windows.Forms.Application.ApplicationExit += Application_ApplicationExit;
+            CustomWinForm.AutoCloseMessageBox.msgBoxResultEvent += AutoCloseMessageBox_msgBoxResultEvent;
+
+            serverCmdMgr = new Server.ServerCmdMgr(this);
+        }
+
+        void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            if (licenseChecker != null)
+            {
+                licenseChecker.StopCheck();
+                licenseChecker = null;
+            }
+
+            Database.DbHelper.GetInstance().Shutdown();
+            _WndsMgr.StopMonitor();
+            connectionMgr.StopServer();
+            vncClient.StopClient();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -44,43 +60,151 @@ namespace WindowsMain
             connectionMgr.EvtClientDisconnected += new ConnectionManager.OnClientConnectedEvt(GetInstance_EvtClientDisconnected);
             connectionMgr.EvtClientDataReceived += new ConnectionManager.OnClientDataReceived(GetInstance_EvtClientDataReceived);
 
-            foreach (Windows.WindowsMgr.DisplayInfo info in _WndsMgr.GetScreens())
+
+            Server.ServerDbHelper.GetInstance().Initialize();
+           // Server.ServerDbHelper.GetInstance().RemoveGroup(1);
+
+            /*
+            int appId = Server.ServerDbHelper.GetInstance().AddApplication("app1", "re", "reara", 1, 2, 3, 4);
+            Trace.WriteLine(String.Format("appId: {0}", appId));
+
+            List<int> test = new List<int>();
+            test.Add(appId);
+            int groupId = Server.ServerDbHelper.GetInstance().AddGroup("group2", false, true, 10, 20, 30, 40, test);
+            Trace.WriteLine(String.Format("groupId: {0}", groupId));
+
+            int userId = Server.ServerDbHelper.GetInstance().AddUser("tzsasda", "asdasd3", "asdasd", groupId);
+            Trace.WriteLine(String.Format("userId: {0}", userId));
+
+            foreach(WindowsMain.Server.ServerDbHelper.ApplicationData data in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
             {
-                Trace.WriteLine(string.Format("left {0}, top {1}, width {2} height {3}", info.WorkArea.Left, info.MonitorArea.Top, info.ScreenWidth, info.ScreenHeight));
+                Trace.WriteLine(String.Format("group app list with groupId: {0}", data.name));
             }
             
+            foreach(WindowsMain.Server.ServerDbHelper.ApplicationData data in Server.ServerDbHelper.GetInstance().GetAppsWithUserId(userId))
+            {
+                Trace.WriteLine(String.Format("group app list with userId: {0}", data.name));
+            }
+
+            Server.ServerDbHelper.GetInstance().AddPreset("presetName", userId, test);
+
+            Server.ServerDbHelper.GetInstance().RemoveApplication(appId);
+
+            Server.ServerDbHelper.GetInstance().RemoveGroup(groupId);
+            */
+
+
+            /*
             // TODO: get the path to store the database 
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create);
             //System.IO.DirectoryInfo directoryInfo = System.IO.Directory.CreateDirectory(appDataPath + "\\icon6000");
 
-            Sqlite.Helper.GetInstance().Initialize(appDataPath + "\\icon6000\\iCon600DB.sqlite");
-            Sqlite.Helper.GetInstance().CreateTable(new User());
+            Database.Helper.GetInstance().Initialize(appDataPath + "\\Vostrol\\VostrolDB.sqlite");
+            Database.Helper.GetInstance().CreateTable(new Group());
+            Database.Helper.GetInstance().CreateTable(new User());
+            Database.Helper.GetInstance().CreateTable(new Database.Data.Application());
+            Database.Helper.GetInstance().CreateTable(new GroupApplications());
 
-            User newUser = new User { mUsername = "username", mPassword = "password"};
-            // Sqlite.Helper.getInstance().updateData(newUser);
-            try
-            {
-                Sqlite.Helper.GetInstance().AddData(newUser);
-            }
-            catch (Exception)
-            {
+            Group newGroup = new Group { label="group1", share_full_desktop=true, allow_maintenance=false};
+            Database.Helper.GetInstance().AddData(newGroup);
 
-                Trace.WriteLine("error");
-            }
-            Sqlite.Helper.GetInstance().UpdateData(newUser);
-            //Sqlite.Helper.getInstance().removeData(newUser);
+            User newUser = new User { label="user1", username="username", password="password", group=1};
+            Database.Helper.GetInstance().AddData(newUser);
+
+            Database.Data.Application newApplication = new Database.Data.Application { label="application1", arguments="test", pos_bottom=6};
+            Database.Helper.GetInstance().AddData(newApplication);
+
+            GroupApplications newGroupApp = new GroupApplications { group_id=1, application_id=1};
+            Database.Helper.GetInstance().AddData(newGroupApp);
+             * */
 
             // check for license
             System.IO.DriveInfo[] driveInfoList = System.IO.DriveInfo.GetDrives();
             foreach (System.IO.DriveInfo drive in driveInfoList)
             {
-                Trace.WriteLine(String.Format("drive name: {0}", drive.RootDirectory));
+                // check for removable drive
+                if(drive.DriveType == System.IO.DriveType.Removable)
+                {
+                    if (Utils.Files.IsFileExists(drive.RootDirectory + "VostrolLicense.dat"))
+                    {
+                        // start the license checking
+                        licenseChecker = new License.LicenseChecker(drive.RootDirectory + "VostrolLicense.dat");
+                        licenseChecker.EvtLicenseCheckStatus += licenseChecker_EvtLicenseCheckStatus;
+                        licenseChecker.StartCheck();
+                        break;
+                    }
+                }
+            }
+
+            if (licenseChecker == null)
+            {
+                System.Windows.Forms.Application.Exit();
+                return;
+            }
+
+            foreach(WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
+            {
+                Trace.WriteLine(String.Format("Running Windows: {0}, {1},{2},{3},{4}", info.name, info.posX, info.posY, info.width, info.height));
+            }
+
+        }
+
+        public delegate void InvokeDelegate();
+        void CloseApplication()
+        {
+            // display an message box and wait for 1 minute
+            /* DialogResult result = CustomWinForm.AutoCloseMessageBox.Show(
+                                 "Application will be close in 60 seconds." + Environment.NewLine + "Please plug in the license dodger.",
+                                 "License not found",
+                                 10000,
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error); */
+
+
+            CustomWinForm.AutoCloseMessageBox.Show(new CustomWinForm.MsgBoxExtOptions(
+                "Application will be close in 60 seconds." + Environment.NewLine + "Please plug in the license dodger.",
+                "License not found",
+                CustomWinForm.MsgBoxResultReferences.EMPTY,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
+                60000,
+                true
+            ));
+        }
+
+        void AutoCloseMessageBox_msgBoxResultEvent(object sender, CustomWinForm.MsgBoxResultEventArgs e)
+        {
+            Trace.WriteLine(String.Format("result: {0}, reference: {1}", e.resultButton, e.resultReference));
+            if (licenseChecker != null)
+            {
+                licenseChecker.StopCheck();
+                licenseChecker = null;
+            }
+            System.Windows.Forms.Application.Exit();
+        }
+
+        void licenseChecker_EvtLicenseCheckStatus(License.LicenseChecker checker, bool isValid)
+        {
+            if(isValid == false)
+            {
+                this.BeginInvoke(new InvokeDelegate(CloseApplication));
+            }
+            else
+            {
+                // dispose the created message box
+                CustomWinForm.AutoCloseMessageBox.closeMessageBox("License not found");
             }
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            Sqlite.Helper.GetInstance().Shutdown();
+            if (licenseChecker != null)
+            {
+                licenseChecker.StopCheck();
+                licenseChecker = null;
+            }
+
+            Database.DbHelper.GetInstance().Shutdown();
             _WndsMgr.StopMonitor();
             connectionMgr.StopServer();
             vncClient.StopClient();
@@ -108,291 +232,13 @@ namespace WindowsMain
 
         void GetInstance_EvtClientDataReceived(string userId, int mainId, int subId, string cmdData)
         {
-            switch(mainId)
-            {
-                case (int)CommandConst.MainCommandClient.ClientLoginInfo:
-                    handleClientLogin(userId, subId, cmdData);
-                    break;
-                case (int)CommandConst.MainCommandClient.ClientControlInfo:
-                    handleClientControl(subId, cmdData);
-                    break;
-                case (int)CommandConst.MainCommandClient.ClientVncInfo:
-                    handleClientVnc(userId, subId, cmdData);
-                    break;
-                default:
-                    SetReceivedText(Environment.NewLine + String.Format("Data received with userId: {0}, message: {1}", userId, cmdData));
-                    break;
-            }
-        }
-
-        void handleClientVnc(string userId, int subId, string cmdData)
-        {
-            switch(subId)
-            {
-                case (int)CommandConst.SubCmdVncInfo.Start:
-                    startVncClientCmd(cmdData);
-                    break;
-                case (int)CommandConst.SubCmdVncInfo.Stop:
-                    stopVncClientCmd(cmdData);
-                    break;
-                default:
-                    break;
-            }
-
-            
-        }
-
-        void startVncClientCmd(string cmdData)
-        {
-            ClientVncCmd data = deserialize.Deserialize<ClientVncCmd>(cmdData);
-            if (data == null)
-            {
-                return;
-            }
-
-            SetReceivedText(Environment.NewLine + String.Format("client vnc starts: {0}:{1}", data.IpAddress, data.PortNumber));
-
-            // start the vnc client to connect
-            vncClient.StartClient(data.IpAddress, data.PortNumber, new VncMarshall.Client.WindowsAttributes { PosX = 100, PosY = 100, Width = 200, Height = 160 });
-        }
-
-        void stopVncClientCmd(string cmdData)
-        {
-            SetReceivedText(Environment.NewLine + String.Format("client vnc stopped"));
-
-            vncClient.StopClient();
-        }
-
-        void handleClientLogin(string userId, int subId, string cmdData)
-        {
-            ClientLoginCmd data = deserialize.Deserialize<ClientLoginCmd>(cmdData);
-            if(data == null)
-            {
-                return;
-            }
-
-            SetReceivedText(Environment.NewLine + String.Format("client login with username: {0}, password: {1}", data.username, data.password));
-
-            // get the login status matches with database
-            bool matchedUserData = false;
-            DataTable dataTable = Sqlite.Helper.GetInstance().ReadData(new User());
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                string username = dataRow["username"].ToString();
-                string password = dataRow["password"].ToString();
-
-                SetReceivedText(Environment.NewLine + String.Format("database username: {0}, password: {1}", username, password));
-
-                if (username.CompareTo(data.username) == 0 &&
-                    password.CompareTo(data.password) == 0)
-                {
-                    // found matched username and password
-                    matchedUserData = true;
-                    break;
-                }
-            }
-
-            if (matchedUserData == false)
-            {
-                // let the disconnection event timeout
-                return;
-            }
-
-            connectedClients.Add(userId);
-
-            ManualResetEvent resetEvt;
-            foreach(KeyValuePair<string, ManualResetEvent> pair in connectionDic)
-            {
-                SetReceivedText(Environment.NewLine + String.Format("data in connectionDic, userId: {0}", pair.Key));
-            }
-
-            if (connectionDic.TryGetValue(userId, out resetEvt))
-            {
-                SetReceivedText(Environment.NewLine + String.Format("reset event with user id: {0}", userId));
-                resetEvt.Set();
-                if(connectionDic.Remove(userId) == false)
-                {
-                    SetReceivedText(Environment.NewLine + String.Format("failed to remove userId from connectionDic: {0}", userId));
-                }
-            }
-
-            SetReceivedText(Environment.NewLine + String.Format("send monitor info with userId: {0}", userId));
-
-            List<MonitorInfo> monitors = new List<MonitorInfo>();
-            foreach (Windows.WindowsMgr.DisplayInfo info in _WndsMgr.GetScreens())
-            {
-                MonitorInfo monitorInfo = new MonitorInfo();
-                monitorInfo.leftPos = info.WorkArea.Left;
-                monitorInfo.topPos = info.WorkArea.Top;
-                monitorInfo.rightPos = info.WorkArea.Right;
-                monitorInfo.bottomPos = info.WorkArea.Bottom;
-
-                monitors.Add(monitorInfo);
-            }
-
-            ServerMonitorsInfo monitorCmd = new ServerMonitorsInfo { monitorAttributes = monitors };
-            connectionMgr.BroadcastMessage((int)CommandConst.MainCommandServer.ServerMonitorsInfo,
-                (int)CommandConst.SubCmdServerMonitorsInfo.MonitorList, monitorCmd);
-        }
-
-        void handleClientControl(int subId, string cmdData)
-        {
-            switch(subId)
-            {
-                case (int)CommandConst.SubCmdClientControlInfo.WindowsAttributes:
-                    handleWndCommand(cmdData);
-                    break;
-                case (int)CommandConst.SubCmdClientControlInfo.Mouse:
-                    handleMouseCommand(cmdData);
-                    break;
-                case (int)CommandConst.SubCmdClientControlInfo.Keyboard:
-                    handleKeyboardCommand(cmdData);
-                    break;
-                case (int)CommandConst.SubCmdClientControlInfo.Maintenance:
-                    handleMaintenanceCommand(cmdData);
-                    break;
-            }
-
-        }
-
-        void handleMaintenanceCommand(string cmdData)
-        {
-            ClientMaintenanceCmd maintenaceCmd = deserialize.Deserialize<ClientMaintenanceCmd>(cmdData);
-            if (maintenaceCmd == null)
-            {
-                return;
-            }
-
-            switch (maintenaceCmd.CommandType)
-            {
-                case ClientMaintenanceCmd.CommandId.EShutdown:
-                    DoExitWindow(Constant.EWX_SHUTDOWN);
-                    break;
-                case ClientMaintenanceCmd.CommandId.EReboot:
-                    DoExitWindow(Constant.EWX_REBOOT);
-                    break;
-                case ClientMaintenanceCmd.CommandId.ELogOff:
-                    DoExitWindow(Constant.EWX_LOGOFF);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        bool DoExitWindow(int exitCode)
-        {
-            bool result;
-            Utils.Windows.NativeMethods.TokPriv1Luid tp;
-            IntPtr hproc = Utils.Windows.NativeMethods.GetCurrentProcess();
-            IntPtr htok = IntPtr.Zero;
-            result = Utils.Windows.NativeMethods.OpenProcessToken(hproc, Constant.TOKEN_ADJUST_PRIVILEGES | Constant.TOKEN_QUERY, ref htok);
-            tp.Count = 1;
-            tp.Luid = 0;
-            tp.Attr = Constant.SE_PRIVILEGE_ENABLED;
-            result &= Utils.Windows.NativeMethods.LookupPrivilegeValue(null, Constant.SE_SHUTDOWN_NAME, ref tp.Luid);
-            result &= Utils.Windows.NativeMethods.AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
-            result &= Utils.Windows.NativeMethods.ExitWindowsEx(exitCode, 0);
-
-            return result;
-        }
-        void handleMouseCommand(string cmdData)
-        {
-            ClientMouseCmd mouseData = deserialize.Deserialize<ClientMouseCmd>(cmdData);
-            if (mouseData == null)
-            {
-                return;
-            }
-
-            InputConstants.MOUSEINPUT mouseInput = new InputConstants.MOUSEINPUT();
-            mouseInput.dx = mouseData.data.dx;
-            mouseInput.dy = mouseData.data.dy;
-            mouseInput.mouseData = mouseData.data.mouseData;
-            mouseInput.dwFlags = mouseData.data.dwFlags;
-            mouseInput.time = mouseData.data.time;
-            mouseInput.dwExtraInfo = UIntPtr.Zero;
-
-
-            // create input object
-            InputConstants.INPUT input = new InputConstants.INPUT();
-            input.type = InputConstants.MOUSE;
-            input.mi = mouseInput;
-
-            // send input to Windows
-            
-            InputConstants.INPUT[] inputArray = new InputConstants.INPUT[] { input };
-            uint result = NativeMethods.SendInput(1, inputArray, System.Runtime.InteropServices.Marshal.SizeOf(input));
-            Trace.WriteLine(String.Format("Send input result: {1},{2}, flags:{3}, send:{0}", result, mouseInput.dx, mouseInput.dy, mouseInput.dwFlags));
-        }
-
-        void handleKeyboardCommand(string cmdData)
-        {
-            ClientKeyboardCmd keyboardData = deserialize.Deserialize<ClientKeyboardCmd>(cmdData);
-            if (keyboardData == null)
-            {
-                return;
-            }
-
-            InputConstants.KEYBOARDINPUT keyboardInput = new InputConstants.KEYBOARDINPUT();
-            keyboardInput.wScan = keyboardData.data.wScan;
-            keyboardInput.wVk = keyboardData.data.wVk;
-            keyboardInput.dwFlags = keyboardData.data.dwFlags;
-            keyboardInput.time = keyboardData.data.time;
-            keyboardInput.dwExtraInfo = IntPtr.Zero;
-
-            // create input object
-            InputConstants.INPUT input = new InputConstants.INPUT();
-            input.type = InputConstants.KEYBOARD;
-            input.ki = keyboardInput;
-
-            // send input to Windows
-            InputConstants.INPUT[] inputArray = new InputConstants.INPUT[] { input };
-            uint result = NativeMethods.SendInput(1, inputArray, System.Runtime.InteropServices.Marshal.SizeOf(input));
-        }
-
-        void handleWndCommand(string cmdData)
-        {
-            ClientWndCmd data = deserialize.Deserialize<ClientWndCmd>(cmdData);
-            if (data == null)
-            {
-                return;
-            }
-
-            switch (data.CommandType)
-            {
-                case ClientWndCmd.CommandId.EMinimize:
-                    NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWMINIMIZED);
-                    break;
-                case ClientWndCmd.CommandId.EMaximize:
-                    NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWMAXIMIZED);
-                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
-                    break;
-                case ClientWndCmd.CommandId.ERelocation:
-                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, data.PositionX, data.PositionY, 0, 0, (Int32)(Constant.SWP_NOSIZE));
-                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
-                    break;
-                case ClientWndCmd.CommandId.EResize:
-                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, data.Width, data.Height, (Int32)Constant.SWP_NOMOVE);
-                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
-                    break;
-                case ClientWndCmd.CommandId.ERestore:
-                    NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWNORMAL);
-                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
-                    break;
-                case ClientWndCmd.CommandId.EClose:
-                    NativeMethods.SendMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-                    break;
-                case ClientWndCmd.CommandId.ESetForeground:
-                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
-                    break;
-                default:
-                    break;
-            }
+            serverCmdMgr.ExeCommand(userId, mainId, subId, cmdData);
         }
 
         void GetInstance_EvtClientDisconnected(string userId)
         {
             SetReceivedText(Environment.NewLine + String.Format("Client disconnected with userId: {0}", userId));
-            connectedClients.Remove(userId);
+            Server.ConnectedClientHelper.GetInstance().RemoveClient(userId);
         }
 
         void GetInstance_EvtClientConnected(string userId)
@@ -435,14 +281,14 @@ namespace WindowsMain
             output.AppendText(Environment.NewLine + "Server port opened: " + portOpened.ToString());
             if (portOpened != -1)
             {
-                _WndsMgr.EvtApplicationWndChanged += new Windows.WindowsMgr.OnApplicationWndChanged(_WndsMgr_EvtApplicationChanged);
+                _WndsMgr.EvtApplicationWndChanged += new Windows.WindowsAppMgr.OnApplicationWndChanged(_WndsMgr_EvtApplicationChanged);
                 _WndsMgr.StartMonitor();
             }
         }
 
-        void _WndsMgr_EvtApplicationChanged(List<Windows.WindowsMgr.WndAttributes> wndAttributes)
+        void _WndsMgr_EvtApplicationChanged(List<Windows.WindowsAppMgr.WndAttributes> wndAttributes)
         {
-            if (connectedClients.Count == 0)
+            if (Server.ConnectedClientHelper.GetInstance().GetClientsCount() == 0)
             {
                 return;
             }
@@ -451,7 +297,7 @@ namespace WindowsMain
 
             List<WndPos> windowList = new List<WndPos>();
             int zOrderCounter = 0;
-            foreach (Windows.WindowsMgr.WndAttributes attribute in wndAttributes)
+            foreach (Windows.WindowsAppMgr.WndAttributes attribute in wndAttributes)
             {
                 WndPos wndPos = new WndPos { id=attribute.id, name = attribute.name, posX = attribute.posX, posY = attribute.posY, 
                     width = attribute.width, height=attribute.height, style=attribute.style, ZOrder=zOrderCounter };
@@ -460,13 +306,13 @@ namespace WindowsMain
 
                 zOrderCounter++;
             }
-            windowsPos.windowsAttributes = windowList;
+            windowsPos.WindowsAttributes = windowList;
             //Trace.WriteLine(String.Format("windows list size: {0}", windowList.Count.ToString()));
 
             try
             {
-                connectionMgr.SendData((int)CommandConst.MainCommandServer.ServerWindowsInfo,
-                    (int)CommandConst.SubCmdServerWindowsInfo.WindowsList, windowsPos, new List<string>(connectedClients));
+                connectionMgr.SendData((int)CommandConst.MainCommandServer.WindowsInfo,
+                    (int)CommandConst.SubCommandServer.WindowsList, windowsPos, Server.ConnectedClientHelper.GetInstance().GetAllClientsSocketId());
             }
             catch (Exception e)
             {
@@ -477,27 +323,30 @@ namespace WindowsMain
 
         private void stopServer_Click(object sender, EventArgs e)
         {
-            connectedClients.Clear();
+            Server.ConnectedClientHelper.GetInstance().RemoveAllClients();
             connectionMgr.StopServer();
             _WndsMgr.StopMonitor();
         }
 
         private void addDB_Click(object sender, EventArgs e)
         {
-            User user = new User { mUsername = username.Text, mPassword=password.Text};
-            Sqlite.Helper.GetInstance().AddData(user);
+            Group group = new Group() { label="group1", share_full_desktop=true, allow_maintenance=true};
+            Database.DbHelper.GetInstance().AddData(group);
+
+            User user = new User { username=username.Text, password=password.Text, label="display name", group=3 };
+            Database.DbHelper.GetInstance().AddData(user);
         }
 
         private void removeDB_Click(object sender, EventArgs e)
         {
-            User user = new User { mUsername = username.Text };
-            Sqlite.Helper.GetInstance().RemoveData(user);
+            User user = new User { id=0 };
+            Database.DbHelper.GetInstance().RemoveData(user);
         }
 
         private void updateDB_Click(object sender, EventArgs e)
         {
-            User user = new User { mUsername = username.Text, mPassword = password.Text };
-            Sqlite.Helper.GetInstance().UpdateData(user);
+            User user = new User { id = 0, label = "asd", username = username.Text, password = password.Text };
+            Database.DbHelper.GetInstance().UpdateData(user);
         }
 
         private void startVncClient_Click(object sender, EventArgs e)
@@ -508,6 +357,125 @@ namespace WindowsMain
         private void stopVncClient_Click(object sender, EventArgs e)
         {
             //vncClient.StopClient();
+        }
+
+        public void ClientLogin(Server.Model.ClientInfoModel model)
+        {
+            ManualResetEvent resetEvt;
+            if (connectionDic.TryGetValue(model.SocketUserId, out resetEvt))
+            {
+                SetReceivedText(Environment.NewLine + String.Format("reset event with user id: {0}", model.SocketUserId));
+                resetEvt.Set();
+                if (connectionDic.Remove(model.SocketUserId) == false)
+                {
+                    SetReceivedText(Environment.NewLine + String.Format("failed to remove userId from connectionDic: {0}", model.SocketUserId));
+                }
+
+                // add the user to list
+                Server.ConnectedClientHelper.GetInstance().AddClient(model.SocketUserId, model);
+
+                // Reply to user
+                SendLoginReply(model);
+
+
+                // TODO: broadcast vnc to all
+
+                
+            }  
+        }
+
+        public VncMarshall.Client GetVncClient()
+        {
+            return this.vncClient;
+        }
+
+
+        public Server.Model.ClientInfoModel GetClientInfo(string socketId)
+        {
+            return Server.ConnectedClientHelper.GetInstance().GetClientInfo(socketId);
+        }
+
+        private void SendLoginReply(Server.Model.ClientInfoModel model)
+        {
+            // get server's monitor info
+            List<Session.Data.SubData.MonitorInfo> monitorList = new List<MonitorInfo>();
+            foreach(WindowsHelper.MonitorInfo monitor in Utils.Windows.WindowsHelper.GetMonitorList())
+            {
+                monitorList.Add(new Session.Data.SubData.MonitorInfo() 
+                { 
+                    LeftPos=monitor.WorkArea.Left,
+                    TopPos = monitor.WorkArea.Top,
+                    RightPos = monitor.WorkArea.Right,
+                    BottomPos = monitor.WorkArea.Bottom
+                });
+            }
+
+
+            // get user's application list
+            ServerApplicationStatus serverAppStatus = new ServerApplicationStatus();
+            serverAppStatus.UserApplicationList = new List<ApplicationEntry>();
+            foreach(Server.ServerDbHelper.ApplicationData appData in Server.ServerDbHelper.GetInstance().GetAppsWithUserId(model.DbUserId))
+            {
+                serverAppStatus.UserApplicationList.Add(new ApplicationEntry() 
+                { 
+                    Identifier = appData.id, 
+                    Name = appData.name 
+                });
+            }
+
+            // get user's preset list
+            ServerPresetsStatus serverPresetStatus = new ServerPresetsStatus();
+            serverPresetStatus.UserPresetList = new List<PresetsEntry>();
+            foreach(Server.ServerDbHelper.PresetData presetData in Server.ServerDbHelper.GetInstance().GetPresetByUserId(model.DbUserId))
+            {
+                List<ApplicationEntry> presetAppEntries = new List<ApplicationEntry>();
+                foreach (Server.ServerDbHelper.ApplicationData appData in presetData.AppDataList)
+                {
+                    presetAppEntries.Add(new ApplicationEntry()
+                    {
+                        Identifier = appData.id,
+                        Name = appData.name
+                    });
+                }
+                serverPresetStatus.UserPresetList.Add(new PresetsEntry() 
+                {
+                    Identifier = presetData.Id,
+                    Name = presetData.Name,
+                    ApplicationList = presetAppEntries
+                });
+            }
+
+            // get user's priviledge
+            ServerMaintenanceStatus maintenanceStatus = new ServerMaintenanceStatus();
+            maintenanceStatus.AllowMaintenance = Server.ServerDbHelper.GetInstance().GetGroupByUserId(model.DbUserId).allow_maintenance;
+             
+            ServerLoginReply reply = new ServerLoginReply()
+            {
+                LoginName = model.Name,
+                UserId = model.DbUserId,
+                ServerLayout = new ServerScreenInfo()
+                {
+                    MatrixCol = 2,
+                    MatrixRow = 2,
+                    MonitorAttributes = monitorList
+                },
+                // TODO: UserApplications
+                UserApplications = serverAppStatus,
+
+                // TODO: UserPresets
+                UserPresets = serverPresetStatus,
+
+                // TODO: UserMaintenance
+                UserMaintenance = maintenanceStatus,
+                
+            };
+
+            connectionMgr.SendData(
+                (int)CommandConst.MainCommandServer.UserPriviledge,
+                (int)CommandConst.SubCommandServer.DisplayInfo,
+                reply, 
+                new List<string>() { model.SocketUserId });
+
         }
     }
 }

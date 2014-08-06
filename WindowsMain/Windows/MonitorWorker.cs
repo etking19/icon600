@@ -9,11 +9,11 @@ namespace Windows
 {
     public class MonitorWorker
     {
-        public delegate void OnWndAttribute(List<Windows.WindowsMgr.WndAttributes> wndAttributes);
+        public delegate void OnWndAttribute(List<Windows.WindowsAppMgr.WndAttributes> wndAttributes);
         public event OnWndAttribute EvtWndAttributes;
 
         private volatile bool _shouldStop = false;
-        private List<Windows.WindowsMgr.WndAttributes> wndList = new List<Windows.WindowsMgr.WndAttributes>();
+        private List<Windows.WindowsAppMgr.WndAttributes> wndList = new List<Windows.WindowsAppMgr.WndAttributes>();
         
         public void DoWork()
         {
@@ -22,7 +22,7 @@ namespace Windows
                 wndList.Clear();
 
                 // get the visible applications
-                var collection = new List<Windows.WindowsMgr.WndAttributes>();
+                var collection = new List<Windows.WindowsAppMgr.WndAttributes>();
                 NativeMethods.EnumDelegate filter = delegate(IntPtr hWnd, int lParam)
                 {
                     if (IsAltTabWindow(hWnd) == false)
@@ -40,7 +40,7 @@ namespace Windows
                         NativeMethods.GetWindowRect(hWnd, ref wndRect);
 
                         int style = NativeMethods.GetWindowLong(hWnd, Constant.GWL_STYLE);
-                        collection.Add(new Windows.WindowsMgr.WndAttributes { id = hWnd.ToInt32(), name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
+                        collection.Add(new Windows.WindowsAppMgr.WndAttributes { id = hWnd.ToInt32(), name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
                     }
                     return true;
                 };

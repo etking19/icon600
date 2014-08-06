@@ -10,44 +10,50 @@ namespace Session
     {
         public enum MainCommandServer 
         { 
-            ServerWindowsInfo = 1,
-            ServerMonitorsInfo = 2,
+            WindowsInfo = 1,
+            ScreenInfo = 2,
+            UserPriviledge = 3,
+            Presents = 4,
+        }
+
+        public enum SubCommandServer
+        {
+            // WindowsInfo
+            WindowsList = 1,
+
+            // ScreenInfo
+            DisplayInfo = 100,
+
+            // UserPriviledge
+            ApplicationList = 201,
+            Maintenance = 202,
+            
+            // User Presents
+            PresetList = 300,
+            VncList = 301,
         }
 
         public enum MainCommandClient
         {
-            ClientLoginInfo = 1000,
-            ClientControlInfo = 1001,
-            ClientVncInfo = 1002,
+            LoginInfo = 1000,
+            ControlInfo = 1001,
+            Functionality = 1002,
         }
 
-        public enum SubCmdServerWindowsInfo
+        public enum SubCommandClient
         {
-            WindowsList = 0,
-        }
+            // LoginInfo
+            Credential = 1,
 
-        public enum SubCmdServerMonitorsInfo
-        {
-            MonitorList = 0,
-        }
+            // ControlInfo
+            WindowsAttributes = 100,
+            Mouse = 101,
+            Keyboard = 102,
 
-        public enum SubCmdClientLoginInfo
-        {
-            LoginInfo = 0,
-        }
-
-        public enum SubCmdClientControlInfo
-        {
-            WindowsAttributes = 0,
-            Mouse,
-            Keyboard,
-            Maintenance,
-        }
-
-        public enum SubCmdVncInfo
-        {
-            Start = 0,
-            Stop,
+            // Functionality
+            Vnc = 200,
+            Preset = 201,
+            Maintenance = 202,
         }
     }
 }

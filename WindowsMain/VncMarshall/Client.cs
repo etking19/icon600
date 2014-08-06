@@ -9,14 +9,6 @@ namespace VncMarshall
 {
     public class Client
     {
-        public struct WindowsAttributes
-        {
-            public int PosX { get; set; }
-            public int PosY { get; set; }
-            public int Width { get; set; }
-            public int Height { get; set; }
-        }
-
         private ProcessStartInfo process;
         private int processId = 0;
 
@@ -29,7 +21,7 @@ namespace VncMarshall
             process.CreateNoWindow = true;
         }
 
-        public bool StartClient(string vncServerIp, int vncServerPort, WindowsAttributes windowsAttr)
+        public bool StartClient(string vncServerIp, int vncServerPort)
         {
             try
             {
@@ -38,26 +30,26 @@ namespace VncMarshall
                 {
                     processId = proc.Id;
 
-                    // modify the client viewer window
-                    // class name getting from main.cpp file, when creating TvnViewer class
-                    IntPtr hwnd = Utils.Windows.NativeMethods.FindWindow("TvnWindowClass", null);
+                    //// modify the client viewer window
+                    //// class name getting from main.cpp file, when creating TvnViewer class
+                    //IntPtr hwnd = Utils.Windows.NativeMethods.FindWindow("TvnWindowClass", null);
 
-                    int retryCount = 10;
-                    while ((hwnd == IntPtr.Zero) && (retryCount >0))
-                    {
-                        // waiting to deploy the window
-                        Thread.Sleep(1000);
+                    //int retryCount = 10;
+                    //while ((hwnd == IntPtr.Zero) && (retryCount >0))
+                    //{
+                    //    // waiting to deploy the window
+                    //    Thread.Sleep(1000);
 
-                        hwnd = Utils.Windows.NativeMethods.FindWindow("TvnWindowClass", null);
-                        retryCount--;
-                    }
+                    //    hwnd = Utils.Windows.NativeMethods.FindWindow("TvnWindowClass", null);
+                    //    retryCount--;
+                    //}
 
-                    if (hwnd != IntPtr.Zero)
-                    {
-                        Thread.Sleep(1000);
-                        Trace.WriteLine("modify windows");
-                        Utils.Windows.NativeMethods.MoveWindow(hwnd, windowsAttr.PosX, windowsAttr.PosY, windowsAttr.Width, windowsAttr.Height, true);
-                    }
+                    //if (hwnd != IntPtr.Zero)
+                    //{
+                    //    Thread.Sleep(1000);
+                    //    Trace.WriteLine("modify windows");
+                    //    Utils.Windows.NativeMethods.MoveWindow(hwnd, windowsAttr.PosX, windowsAttr.PosY, windowsAttr.Width, windowsAttr.Height, true);
+                    //}
                 }
             }
             catch (Exception e)

@@ -6,13 +6,21 @@ using System.Text;
 
 namespace VncMarshall
 {
-    class VncRegistryHelper
+    public class VncRegistryHelper
     {
         private static string sPath = "HKEY_CURRENT_USER\\Software\\TightVNC\\Server";
 
         public static void SetServerPort(int portNum)
         {
             Registry.SetValue(sPath, "RfbPort", portNum);
+        }
+
+        public static int GetServerPort()
+        {
+            int port = -1;
+            port = (int)Registry.GetValue(sPath, "RfbPort", port);
+
+            return port;
         }
 
         public static void RemoveWallpaper(bool allow)

@@ -1,17 +1,12 @@
-﻿using Session.Data.SubData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace WindowsMain.Comparer
 {
-    public class WndStyleComparer : EqualityComparer<WndPos>
+    public class WndStyleComparer : EqualityComparer<Client.Model.WindowsModel>
     {
-        public override bool Equals(WndPos wnd1, WndPos wnd2)
+        public override bool Equals(Client.Model.WindowsModel wnd1, Client.Model.WindowsModel wnd2)
         {
-            if (wnd1.style == wnd2.style)
+            if (wnd1.Style == wnd2.Style)
             {
                 return true;
             }
@@ -19,9 +14,9 @@ namespace WindowsMain.Comparer
             return false;
         }
 
-        public override int GetHashCode(WndPos wndPos)
+        public override int GetHashCode(Client.Model.WindowsModel wndPos)
         {
-            return wndPos.id.GetHashCode();
+            return wndPos.WindowsId.GetHashCode();
         }
     }
 }

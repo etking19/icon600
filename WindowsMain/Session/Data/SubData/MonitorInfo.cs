@@ -8,9 +8,9 @@ namespace Session.Data.SubData
 {
     public class MonitorInfo
     {
-        public int leftPos { get; set; }
-        public int topPos { get; set; }
-        public int rightPos { get; set; }
-        public int bottomPos { get; set; }
+        public int LeftPos { get; set; }
+        public int TopPos { get; set; }
+        public int RightPos { get; set; }
+        public int BottomPos { get; set; }
     }
 }
