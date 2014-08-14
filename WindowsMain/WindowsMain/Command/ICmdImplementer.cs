@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WindowsMain.Command
+namespace WindowsFormServer.Command
 {
     public interface ICmdImplementer
     {

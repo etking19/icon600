@@ -8,131 +8,84 @@ namespace VncMarshall
 {
     public class Server
     {
-        public enum SharingMode
-        {
-            ShareFull = 0,
-            SharePrimary,
-            ShareDisplay,
-            ShareRect,
-        }
-
-        public enum SharingColor
-        {
-            Bits8 = 0,
-            Bits16,
-            Bits32,
-        }
-
-        public struct SharingAttributes
-        {
-            public SharingMode ShareMode { get; set; }
-
-            /// <summary>
-            /// Only use if ShareDisplay mode
-            /// </summary>
-            public int ShareMonitorNum { get; set; }
-
-            /// <summary>
-            /// Only use if ShareRect mode
-            /// </summary>
-            public int PosLeft { get; set; }
-            public int PosTop { get; set; }
-            public int PosRight { get; set; }
-            public int PosBottom { get; set; }
-
-
-        }
-
         private ProcessStartInfo process;
-        private int processId = 0;
 
-        public Server()
+        public Server(string serverExePath)
         {
             // Prepare the process to run
             process = new ProcessStartInfo();
-            process.FileName = "tvnserver.exe";
+            process.FileName = serverExePath;
             process.WindowStyle = ProcessWindowStyle.Hidden;
+            process.UseShellExecute = false;
             process.CreateNoWindow = true;
         }
 
-        public bool StartServer(Int32 portNumber, SharingAttributes attributes)
+        public void StartVncServer()
         {
-            VncRegistryHelper.SetServerPort(portNumber);
-            VncRegistryHelper.RemoveWallpaper(false);
-            VncRegistryHelper.EnableMirrorDriver(true);
-
-            //// run the application first
-            Process procInitial = null;
-            process.Arguments = "-run";
-            using (procInitial = Process.Start(process))
+            if (isVncServerStarted())
             {
-                processId = procInitial.Id;
-            }
-
-            switch (attributes.ShareMode)
-            {
-                case SharingMode.ShareFull:
-                    process.Arguments = "-controlapp -sharefull";
-                    break;
-                case SharingMode.SharePrimary:
-                    process.Arguments = "-controlapp -shareprimary";
-                    break;
-                case SharingMode.ShareDisplay:
-                    process.Arguments = String.Format("-controlapp -sharedisplay {0}", attributes.ShareMonitorNum);
-                    break;
-                case SharingMode.ShareRect:
-                    process.Arguments = String.Format("-controlapp -sharerect {0}x{1}+{2}+{3}",
-                        attributes.PosRight - attributes.PosLeft,
-                        attributes.PosBottom - attributes.PosTop,
-                        attributes.PosLeft,
-                        attributes.PosTop);
-                    break;
+                return;
             }
 
             try
             {
-                using (Process proc = Process.Start(process))
-                {
-                    processId = proc.Id;
-                }
-            }
-            catch(Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool StopServer()
-        {
-            if (processId == 0)
-            {
-                forceClose();
-                return true;
-            }
-
-            try
-            {
-                process.Arguments = "-controlapp -shutdown";
+                // run as service
+                process.Arguments = "-start";
                 Process.Start(process);
-                processId = 0;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                return false;
+                Trace.WriteLine(e.Message);
             }
             
-            return true;
         }
 
-        private void forceClose()
+        public void StopVncServer()
+        {
+            if (isVncServerStarted() == false)
+            {
+                return;
+            }
+
+            try
+            {
+                process.Arguments = "-controlservice -disconnectall";
+                Process.Start(process);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
+            
+        }
+
+        public bool isVncServerStarted()
         {
             foreach (Process innerProcess in Process.GetProcessesByName("tvnserver"))
             {
-                innerProcess.Kill();
+                return true;
             }
+
+            return false;
+        }
+
+        public void refreshVncServer()
+        {
+            if (isVncServerStarted() == false)
+            {
+                return;
+            }
+
+            try
+            {
+                process.Arguments = "-controlservice -reload";
+                Process.Start(process);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
+            
         }
     }
 }

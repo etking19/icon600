@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E745BEF-0857-48F3-B987-A77516F1D422}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WindowsFormClient</RootNamespace>
+    <AssemblyName>WindowsFormServer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Command\BaseImplementer.cs" />
+    <Compile Include="Command\ClientKeyboardCmdImpl.cs" />
+    <Compile Include="Command\ClientLoginImpl.cs" />
+    <Compile Include="Command\ClientMaintenanceCmdImpl.cs" />
+    <Compile Include="Command\ClientMouseCmdImpl.cs" />
+    <Compile Include="Command\ClientPresetCmdImpl.cs" />
+    <Compile Include="Command\ClientVncCmdImpl.cs" />
+    <Compile Include="Command\ClientWndAttrCmdImpl.cs" />
+    <Compile Include="Command\ICmdImplementer.cs" />
+    <Compile Include="CustomTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomTabControl.Designer.cs">
+      <DependentUpon>CustomTabControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormApplication.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormApplication.Designer.cs">
+      <DependentUpon>FormApplication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGroup.Designer.cs">
+      <DependentUpon>FormGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMonitor.Designer.cs">
+      <DependentUpon>FormMonitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormServer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormServer.Designer.cs">
+      <DependentUpon>FormServer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUser.Designer.cs">
+      <DependentUpon>FormUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IServer.cs" />
+    <Compile Include="Presenter\ApplicationsPresenter.cs" />
+    <Compile Include="Presenter\GroupsPresenter.cs" />
+    <Compile Include="Presenter\MainPresenter.cs" />
+    <Compile Include="Presenter\MonitorsPresenter.cs" />
+    <Compile Include="Presenter\UsersPresenter.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\ConnectedClientHelper.cs" />
+    <Compile Include="Server\Model\ClientInfoModel.cs" />
+    <Compile Include="Server\Model\MonitorModel.cs" />
+    <Compile Include="Server\Model\VncModel.cs" />
+    <Compile Include="Server\ServerCmdMgr.cs" />
+    <Compile Include="Server\ServerDbHelper.cs" />
+    <Compile Include="Server\ThreadClientLogin.cs" />
+    <EmbeddedResource Include="CustomTabControl.resx">
+      <DependentUpon>CustomTabControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormApplication.resx">
+      <DependentUpon>FormApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGroup.resx">
+      <DependentUpon>FormGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMonitor.resx">
+      <DependentUpon>FormMonitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormServer.resx">
+      <DependentUpon>FormServer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUser.resx">
+      <DependentUpon>FormUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomWinForm\CustomControlHolder.csproj">
+      <Project>{e3832688-c985-44e6-97a2-7bd33821095d}</Project>
+      <Name>CustomControlHolder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\License\License.csproj">
+      <Project>{37b5e272-8d1d-4635-9f82-fc03f69f223b}</Project>
+      <Name>License</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Session\Session.csproj">
+      <Project>{581e484c-e477-4201-8fdd-a5461be0eec9}</Project>
+      <Name>Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sqlite\Database.csproj">
+      <Project>{8972a841-d69b-4f4c-bada-30e671f3df50}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{6fd8ccde-eaa0-4295-922b-e59d4b62b659}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VncMarshall\VncMarshall.csproj">
+      <Project>{4ace2501-2b2f-4b6a-9e40-385f31183313}</Project>
+      <Name>VncMarshall</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Windows\Windows.csproj">
+      <Project>{4637c643-bf92-44dc-a506-718929a4d67f}</Project>
+      <Name>Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

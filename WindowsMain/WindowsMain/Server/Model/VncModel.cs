@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WindowsMain.Server.Model
+namespace WindowsFormServer.Server.Model
 {
     public class VncModel
     {

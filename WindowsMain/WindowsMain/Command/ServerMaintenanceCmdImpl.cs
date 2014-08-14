@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WindowsMain.Client.Model;
+using WindowsFormServer.Client.Model;
 
-namespace WindowsMain.Command
+namespace WindowsFormServer.Command
 {
     class ServerMaintenanceCmdImpl : BaseImplementer
     {

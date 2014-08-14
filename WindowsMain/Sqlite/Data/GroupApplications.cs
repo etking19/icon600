@@ -40,8 +40,8 @@ namespace Database.Data
 
         public string GetRemoveCommand()
         {
-            string query = "DELETE FROM {0} WHERE {1}={2}, {3}={4}";
-            return String.Format(query, TABLE_NAME, APPLICATION_ID, application_id, GROUP_ID, group_id);
+            string query = "DELETE FROM {0} WHERE {1}={2}";
+            return String.Format(query, TABLE_NAME, GROUP_ID, group_id);
         }
 
         public string GetTableName()

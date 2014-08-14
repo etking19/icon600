@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace WindowsMain.Server
+namespace WindowsFormServer.Server
 {
     public class ServerDbHelper
     {

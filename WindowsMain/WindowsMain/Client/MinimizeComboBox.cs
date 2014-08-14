@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WindowsMain.Client
+namespace WindowsFormServer.Client
 {
     public class MinimizeComboBox
     {

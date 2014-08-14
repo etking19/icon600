@@ -20,6 +20,12 @@ namespace Database.Data
 
         public int group { get; set; }
 
+        public string GetCreateCommand()
+        {
+            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY AUTOINCREMENT, {2} VARCHAR(100) UNIQUE NOT NULL, {3} VARCHAR(100) NOT NULL, {4} VARCHAR(100) NOT NULL, {5} INTEGER, FOREIGN KEY({5}) REFERENCES {6}({7}) ON DELETE CASCADE)";
+            return String.Format(query, TABLE_NAME, USER_ID, USERNAME, PASSWORD, LABEL, GROUP_ID, Group.TABLE_NAME, Group.GROUP_ID);
+        }
+
         string ISqlData.GetAddCommand()
         {
             string query = "INSERT INTO {0} ({1}, {2}, {3}, {4}) VALUES ('{5}', '{6}', '{7}', {8})";
@@ -37,12 +43,6 @@ namespace Database.Data
         public string GetTableName()
         {
             return TABLE_NAME;
-        }
-
-        public string GetCreateCommand()
-        {
-            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY AUTOINCREMENT, {2} VARCHAR(100) UNIQUE NOT NULL, {3} VARCHAR(100) NOT NULL, {4} VARCHAR(100) NOT NULL, {5} INTEGER, FOREIGN KEY({5}) REFERENCES {6}({7}) ON DELETE CASCADE)";
-            return String.Format(query, TABLE_NAME, USER_ID, USERNAME, PASSWORD, LABEL, GROUP_ID, Group.TABLE_NAME, Group.GROUP_ID);
         }
 
         public string GetQueryCommand()

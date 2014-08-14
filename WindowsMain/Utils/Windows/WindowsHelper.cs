@@ -58,10 +58,10 @@ namespace Utils.Windows
 
             if (NativeMethods.EnumDesktopWindows(IntPtr.Zero, filter, IntPtr.Zero))
             {
-                Trace.WriteLine("enum desktop failed");
                 return collection.AsReadOnly();
             }
 
+            Trace.WriteLine("Enum windows failed");
             return collection.AsReadOnly();
         }
 

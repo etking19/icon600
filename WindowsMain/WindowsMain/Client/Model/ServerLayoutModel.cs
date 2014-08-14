@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WindowsMain.Client.Model
+namespace WindowsFormServer.Client.Model
 {
     public class ServerLayoutModel
     {

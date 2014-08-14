@@ -69,7 +69,7 @@ namespace Database.Data
 
         public string GetUpdateDataCommand()
         {
-            string query = "UPDATE {0} SET {1}='{2}', {3}={4}, {5}={6}, {7}={8}, {9}={10}, {11}={12}, {13}={14} WHERE {15}={16};";
+            string query = "UPDATE {0} SET {1}='{2}', {3}='{4}', {5}='{6}', {7}={8}, {9}={10}, {11}={12}, {13}={14} WHERE {15}={16};";
             return String.Format(query, TABLE_NAME,
                 LABEL, label,
                 PATH, path,
@@ -77,7 +77,8 @@ namespace Database.Data
                 SHOWING_LEFT, pos_left,
                 SHOWING_TOP, pos_top,
                 SHOWING_RIGHT, pos_right,
-                SHOWING_BOTTOM, pos_bottom);
+                SHOWING_BOTTOM, pos_bottom,
+                APPLICATION_ID, id);
         }
     }
 }

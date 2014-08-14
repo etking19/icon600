@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WindowsMain.Comparer
+namespace WindowsFormServer.Comparer
 {
     public class WndSizeComparer : EqualityComparer<Client.Model.WindowsModel>
     {

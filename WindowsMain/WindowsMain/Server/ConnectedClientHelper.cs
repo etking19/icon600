@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WindowsMain.Server.Model;
+using WindowsFormServer.Server.Model;
 
-namespace WindowsMain.Server
+namespace WindowsFormServer.Server
 {
     class ConnectedClientHelper
     {

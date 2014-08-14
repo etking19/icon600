@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Utils.Windows;
 
-namespace WindowsMain.Command
+namespace WindowsFormServer.Command
 {
     class ClientWndAttrCmdImpl : BaseImplementer
     {

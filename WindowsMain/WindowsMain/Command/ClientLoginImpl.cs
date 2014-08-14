@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using WindowsMain.Server.Model;
+using WindowsFormServer.Server.Model;
 
-namespace WindowsMain.Command
+namespace WindowsFormServer.Command
 {
     class ClientLoginImpl : BaseImplementer
     {

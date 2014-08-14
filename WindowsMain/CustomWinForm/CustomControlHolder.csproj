@@ -53,6 +53,7 @@
     <Compile Include="CustomWinForm.Designer.cs">
       <DependentUpon>CustomWinForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DatagridViewCheckBoxHeaderCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>

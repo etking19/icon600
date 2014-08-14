@@ -10,65 +10,33 @@ namespace VncMarshall
     public class Client
     {
         private ProcessStartInfo process;
-        private int processId = 0;
 
-        public Client()
+        public Client(string vncClientExePath)
         {
             // Prepare the process to run
             process = new ProcessStartInfo();
-            process.FileName = "tvnviewer.exe";
-            process.WindowStyle = ProcessWindowStyle.Normal;
-            process.CreateNoWindow = true;
+            process.FileName = vncClientExePath;
         }
 
-        public bool StartClient(string vncServerIp, int vncServerPort)
+        public int StartClient(string vncServerIp, int vncServerPort)
         {
             try
             {
                 process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -showcontrols=no -scale=auto {0}::{1}", vncServerIp, vncServerPort);
-                using (Process proc = Process.Start(process))
+                using(Process clientProcess = Process.Start(process))
                 {
-                    processId = proc.Id;
-
-                    //// modify the client viewer window
-                    //// class name getting from main.cpp file, when creating TvnViewer class
-                    //IntPtr hwnd = Utils.Windows.NativeMethods.FindWindow("TvnWindowClass", null);
-
-                    //int retryCount = 10;
-                    //while ((hwnd == IntPtr.Zero) && (retryCount >0))
-                    //{
-                    //    // waiting to deploy the window
-                    //    Thread.Sleep(1000);
-
-                    //    hwnd = Utils.Windows.NativeMethods.FindWindow("TvnWindowClass", null);
-                    //    retryCount--;
-                    //}
-
-                    //if (hwnd != IntPtr.Zero)
-                    //{
-                    //    Thread.Sleep(1000);
-                    //    Trace.WriteLine("modify windows");
-                    //    Utils.Windows.NativeMethods.MoveWindow(hwnd, windowsAttr.PosX, windowsAttr.PosY, windowsAttr.Width, windowsAttr.Height, true);
-                    //}
+                    return clientProcess.Id;
                 }
             }
-            catch (Exception e)
+            catch(Exception)
             {
-                Trace.WriteLine(e.Message);
-                return false;
             }
 
-            return true;
+            return -1;
         }
 
-        public bool StopClient()
+        public void StopClient(int processId)
         {
-            if (processId == 0)
-            {
-                ForceClose();
-                return true;
-            }
-
             try
             {
                 Process.GetProcessById(processId).Kill();
@@ -76,16 +44,23 @@ namespace VncMarshall
             }
             catch (Exception)
             {
-
-                return false;
             }
-
-            return true;
         }
 
-        private void ForceClose()
+        public int GetRunningClientsCount()
         {
-            foreach (Process innerProcess in Process.GetProcessesByName("tvnclient"))
+            int count = 0;
+            foreach (Process innerProcess in Process.GetProcessesByName("tvnviewer"))
+            {
+                count++;
+            }
+
+            return count;
+        }
+
+        public void StopAllClients()
+        {
+            foreach (Process innerProcess in Process.GetProcessesByName("tvnviewer"))
             {
                 innerProcess.Kill();
             }

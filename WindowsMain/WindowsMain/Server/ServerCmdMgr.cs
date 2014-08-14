@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WindowsMain.Command;
+using WindowsFormServer.Command;
 
-namespace WindowsMain.Server
+namespace WindowsFormServer.Server
 {
     class ServerCmdMgr
     {

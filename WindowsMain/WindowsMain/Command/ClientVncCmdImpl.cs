@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WindowsMain.Server;
-using WindowsMain.Server.Model;
+using WindowsFormServer.Server;
+using WindowsFormServer.Server.Model;
 
-namespace WindowsMain.Command
+namespace WindowsFormServer.Command
 {
     class ClientVncCmdImpl : BaseImplementer
     {
