@@ -386,9 +386,9 @@ namespace WindowsFormClient
 
         public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout)
         {
-            holder.ReferenceXPos = layout.DesktopLayout.PosLeft;
-            holder.ReferenceYPos = layout.DesktopLayout.PosTop;
-            holder.MaxSize = new Size(layout.DesktopLayout.Width, layout.DesktopLayout.Height);
+            holder.ReferenceXPos = layout.ViewingArea.PosLeft;
+            holder.ReferenceYPos = layout.ViewingArea.PosTop;
+            holder.MaxSize = new Size(layout.ViewingArea.Width, layout.ViewingArea.Height);
         }
 
         public void RefreshAppList(IList<Client.Model.ApplicationModel> appList)
