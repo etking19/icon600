@@ -37,7 +37,6 @@ namespace VncMarshall
             {
                 Trace.WriteLine(e.Message);
             }
-            
         }
 
         public void StopVncServer()

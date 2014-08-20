@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WindowsFormClient.Client.Model;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient.Command
 {
@@ -30,7 +31,7 @@ namespace WindowsFormClient.Command
             int minPosY = 0;
             int maxPosX = 0;
             int maxPosY = 0;
-            foreach (MonitorInfo monitor in loginData.ServerLayout.MonitorAttributes)
+            foreach (MonitorInfo monitor in loginData.ServerLayout.ServerMonitorsList)
             {
                 minPosX = Math.Min(monitor.LeftPos, minPosX);
                 minPosY = Math.Min(monitor.TopPos, minPosY);
@@ -42,10 +43,34 @@ namespace WindowsFormClient.Command
             UserInfoModel userInfo = new UserInfoModel() { UserId = loginData.UserId, DisplayName = loginData.LoginName };
             ServerLayoutModel layoutInfo = new ServerLayoutModel()
             {
-                DesktopLayout = new WindowsModel() {PosLeft=minPosX, PosTop=minPosY, Width=maxPosX-minPosX, Height=maxPosY-minPosY},
+                DesktopLayout = new WindowsModel() 
+                {
+                    PosLeft=minPosX,
+                    PosTop=minPosY, 
+                    Width=maxPosX-minPosX, 
+                    Height=maxPosY-minPosY
+                },
+                ViewingArea = new WindowsModel() 
+                { 
+                    PosLeft = loginData.ViewingArea.LeftPos, 
+                    PosTop = loginData.ViewingArea.TopPos, 
+                    Width = loginData.ViewingArea.RightPos - loginData.ViewingArea.LeftPos,
+                    Height = loginData.ViewingArea.BottomPos - loginData.ViewingArea.TopPos
+                },
                 LayoutColumn = loginData.ServerLayout.MatrixCol,
                 LayoutRow = loginData.ServerLayout.MatrixRow,
             };
+
+            // save to settings
+            ServerSettings.GetInstance().DesktopLeft = layoutInfo.DesktopLayout.PosLeft;
+            ServerSettings.GetInstance().DesktopTop = layoutInfo.DesktopLayout.PosTop;
+            ServerSettings.GetInstance().DesktopWidth = layoutInfo.DesktopLayout.Width;
+            ServerSettings.GetInstance().DesktopHeight = layoutInfo.DesktopLayout.Height;
+            ServerSettings.GetInstance().DesktopRow = layoutInfo.LayoutRow;
+            ServerSettings.GetInstance().DesktopColumn = layoutInfo.LayoutColumn;
+
+            UserSettings.GetInstance().UserId = userInfo.UserId;
+            UserSettings.GetInstance().DisplayName = userInfo.DisplayName;
 
             // update the gui
             client.RefreshLayout(userInfo, layoutInfo);

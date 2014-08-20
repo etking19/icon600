@@ -35,5 +35,10 @@ namespace WindowsFormClient.Presenter
         {
             Server.ServerDbHelper.GetInstance().RemoveApplication(appId);
         }
+
+        public void EditApplication(int appId, string appName, string exePath, string arguments, int left, int top, int right, int bottom)
+        {
+            Server.ServerDbHelper.GetInstance().EditApplication(appId, appName, arguments, exePath, left, top, right, bottom);
+        }
     }
 }

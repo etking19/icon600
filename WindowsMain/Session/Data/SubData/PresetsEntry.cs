@@ -17,6 +17,6 @@ namespace Session.Data.SubData
         /// </summary>
         public string Name { get; set; }
 
-        public IList<ApplicationEntry> ApplicationList { get; set; }
+        public List<ApplicationEntry> ApplicationList { get; set; }
     }
 }

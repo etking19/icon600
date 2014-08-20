@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Session.Data.SubData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace Session.Data
         public string LoginName { get; set; }
 
         public ServerScreenInfo ServerLayout { get; set; }
+
+        public MonitorInfo ViewingArea { get; set; }
 
         public ServerPresetsStatus UserPresets { get; set; }
 

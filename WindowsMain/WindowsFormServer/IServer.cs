@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Session.Connection;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -27,5 +29,9 @@ namespace WindowsFormClient
         /// <param name="userId"></param>
         /// <returns></returns>
         ClientInfoModel GetClientInfo(string userId);
+
+        ConnectionManager GetConnectionMgr();
+
+        void AddMessageBox(string message, Font font, Color color, int duration, int left, int top, int width, int height);
     }
 }

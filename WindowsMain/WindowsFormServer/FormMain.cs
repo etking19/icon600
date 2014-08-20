@@ -400,7 +400,7 @@ namespace WindowsFormClient
                 {
                     MatrixCol = 2,
                     MatrixRow = 2,
-                    MonitorAttributes = monitorList
+                    ServerMonitorsList = monitorList
                 },
                 // UserApplications
                 UserApplications = serverAppStatus,
@@ -419,6 +419,18 @@ namespace WindowsFormClient
                 reply, 
                 new List<string>() { model.SocketUserId });
 
+        }
+
+
+        public void AddMessageBox(string message, System.Drawing.Font font, System.Drawing.Color color, int duration, int left, int top, int width, int height)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public ConnectionManager GetConnectionMgr()
+        {
+            return connectionMgr;
         }
     }
 }

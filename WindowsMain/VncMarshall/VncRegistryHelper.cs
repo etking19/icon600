@@ -16,30 +16,46 @@ namespace VncMarshall
 
         public static int GetListeningPort()
         {
-            int port = (int)GetRegistryValue(sPath, sServerListeningPort);
+            int port = 0;
+
+            try
+            {
+                port = (int)GetRegistryValue(sPath, sServerListeningPort);
+            }
+            catch (Exception)
+            {
+            }
+            
             return port;
         }
 
         public static int[] GetExtraListeningPorts()
         {
             List<int> ports = new List<int>();
-            string extraPortStr = (string)GetRegistryValue(sPath, sServerExtraPorts);
-            if (extraPortStr != null && extraPortStr.Length != 0)
-            {
-                if (extraPortStr.Length != 0)
-                {
-                    // format eg: 5901:640x480+0+0,5902:444x444+0+0
-                    // split the ","
-                    string[] extraStrs = extraPortStr.Split(',');
 
-                    // split the ":" to get the ports
-                    foreach (string portStr in extraStrs)
+            try
+            {
+                string extraPortStr = (string)GetRegistryValue(sPath, sServerExtraPorts);
+                if (extraPortStr != null && extraPortStr.Length != 0)
+                {
+                    if (extraPortStr.Length != 0)
                     {
-                        string[] extraPorts = portStr.Split(':');
-                        // should have two entries, first is port number, second is area
-                        ports.Add(int.Parse(extraPorts[0]));
+                        // format eg: 5901:640x480+0+0,5902:444x444+0+0
+                        // split the ","
+                        string[] extraStrs = extraPortStr.Split(',');
+
+                        // split the ":" to get the ports
+                        foreach (string portStr in extraStrs)
+                        {
+                            string[] extraPorts = portStr.Split(':');
+                            // should have two entries, first is port number, second is area
+                            ports.Add(int.Parse(extraPorts[0]));
+                        }
                     }
-                } 
+                }
+            }
+            catch (Exception)
+            {
             }
 
             return ports.ToArray();
@@ -49,17 +65,39 @@ namespace VncMarshall
         {
             // format eg: 5901:640x480+0+0,5902:444x444+0+0
             // port:width+height+left+top
-            string extraPortStr = (string)GetRegistryValue(sPath, sServerExtraPorts);
-            extraPortStr += String.Format(",{0}:{1}x{2}+{3}+{4}", listeningPort, width, height, left, top);
+            try
+            {
+                string extraPortStr = (string)GetRegistryValue(sPath, sServerExtraPorts);
+                if (extraPortStr.Length == 0)
+                {
+                    extraPortStr += String.Format("{0}:{1}x{2}+{3}+{4}", listeningPort, width, height, left, top);
+                }
+                else
+                {
+                    extraPortStr += String.Format(",{0}:{1}x{2}+{3}+{4}", listeningPort, width, height, left, top);
+                }
+                
 
-            RegistryKey key = GetRegistryKey(sPath);
-            key.SetValue(sServerExtraPorts, extraPortStr, RegistryValueKind.String);
+                RegistryKey key = GetRegistryKey(sPath);
+                key.SetValue(sServerExtraPorts, extraPortStr, RegistryValueKind.String);
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         public static void RemoveExtrasListeningPort()
         {
-            RegistryKey key = GetRegistryKey(sPath);
-            key.SetValue(sServerExtraPorts, String.Empty, RegistryValueKind.String);
+            try
+            {
+                RegistryKey key = GetRegistryKey(sPath);
+                key.SetValue(sServerExtraPorts, String.Empty, RegistryValueKind.String);
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         private static RegistryKey GetRegistryKey()
@@ -83,7 +121,16 @@ namespace VncMarshall
         private static object GetRegistryValue(string keyPath, string keyName)
         {
             RegistryKey registry = GetRegistryKey(keyPath);
-            return registry.GetValue(keyName);
+
+            try
+            {
+                return registry.GetValue(keyName);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
     }
 }

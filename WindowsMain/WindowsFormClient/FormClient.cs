@@ -1,269 +1,251 @@
 ﻿using CustomWinForm;
-using Session;
 using Session.Connection;
-using Session.Data;
-using Session.Data.SubData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utils.Hooks;
 using Utils.Windows;
-using WindowsFormClient.Client;
+using WeifenLuo.WinFormsUI.Docking;
+using WindowsFormClient.Client.Model;
 using WindowsFormClient.Comparer;
 
 namespace WindowsFormClient
 {
     public partial class FormClient : Form, IClient
     {
-        private ConnectionManager connectionMgr = new ConnectionManager();
+        private const string CONFIG_FILE_NAME = "DockPanel.config";
 
+        private ConnectionManager connectionMgr;
+        private Presenter.ClientPresenter clientPresenter;
+
+        /// <summary>
+        /// helper class
+        /// </summary>
+        private MouseHook mouseHook;
+        private KeyboardHook keyboardHook;
+
+        /// <summary>
+        ///  UI class
+        /// </summary>
+        private FormPresets formPreset;
+        private FormRunningApps formRunningApps;
+        private FormVnc formVnc;
+        private FormMimic formMimic;
+        private CustomControlHolder holder;
+
+        /// <summary>
+        /// dock UI related
+        /// </summary>
+        private DeserializeDockContent deserializeDockContent;
+
+        /// <summary>
+        /// storage
+        /// </summary>
+        /// <param name="mgr"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         private List<Client.Model.WindowsModel> applicationList = new List<Client.Model.WindowsModel>();
-        private CustomControlHolder mHolder = new CustomControlHolder(new Size(0, 0), Int32.MinValue, Int32.MinValue);
-
-        private Dictionary<int, int> mWindowsDic = new Dictionary<int, int>();
-
         private delegate void DelegateWindow(Client.Model.WindowsModel wndPos);
         private delegate void DelegateEvt();
 
-        MouseHook mouseHook = new MouseHook();
-        KeyboardHook keyboardHook = new KeyboardHook();
+        private delegate void DelegateVncList(IList<Client.Model.VncModel> vncList);
+        private delegate void DelegatePresetList(IList<Client.Model.PresetModel> presetList);
 
-        private VncMarshall.Server vncServer = new VncMarshall.Server(@"C:\Program Files\TightVNC\tvnserver.exe");
-        private Client.ClientCmdMgr clienCmdMgr;
-
-        private int UserId = -1;
-
-        public FormClient()
+        public FormClient(ConnectionManager mgr, string username, string password)
         {
             InitializeComponent();
+            this.connectionMgr = mgr;
 
-            layoutPanel.Controls.Add(mHolder);
-            mHolder.Location = new Point(0, 0);
-            mHolder.Size = layoutPanel.Size;
-            mHolder.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            // initialize helper classes
+            clientPresenter = new Presenter.ClientPresenter(this, mgr, username, password);
+        }
 
-            connectionMgr.EvtConnected += connectionMgr_EvtConnected;
-            connectionMgr.EvtDisconnected += connectionMgr_EvtDisconnected;
-            connectionMgr.EvtServerDataReceived += connectionMgr_EvtServerDataReceived;
+        private void FormClient_Load(object sender, EventArgs e)
+        {
+            this.IsMdiContainer = true;
+            dockPanel.DocumentStyle = DocumentStyle.DockingMdi;
 
-            mHolder.onDelegateClosedEvt += mHolder_onDelegateClosedEvt;
-            mHolder.onDelegateMinimizedEvt += mHolder_onDelegateMinimizedEvt;
-            mHolder.onDelegateMaximizedEvt += mHolder_onDelegateMaximizedEvt;
-            mHolder.onDelegatePosChangedEvt += mHolder_onDelegatePosChangedEvt;
-            mHolder.onDelegateRestoredEvt += mHolder_onDelegateRestoredEvt;
-            mHolder.onDelegateSizeChangedEvt += mHolder_onDelegateSizeChangedEvt;
+            // create the dock controls
+            createControls();
+            deserializeDockContent = new DeserializeDockContent(getContentFromPersistString);
 
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), CONFIG_FILE_NAME);
+            if (File.Exists(configFile))
+            {
+                dockPanel.LoadFromXml(configFile, deserializeDockContent);
+            }
+            else
+            {
+                loadNewLayout();
+            }
+
+            // add the custom mimic windows holder
+            holder = new CustomControlHolder(new Size(0,0), 0, 0);
+            holder.Dock = DockStyle.Fill;
+            formMimic.Controls.Add(holder);
+
+            // register events from the holder
+            holder.onDelegateClosedEvt += holder_onDelegateClosedEvt;
+            holder.onDelegateMaximizedEvt += holder_onDelegateMaximizedEvt;
+            holder.onDelegateMinimizedEvt += holder_onDelegateMinimizedEvt;
+            holder.onDelegatePosChangedEvt += holder_onDelegatePosChangedEvt;
+            holder.onDelegateRestoredEvt += holder_onDelegateRestoredEvt;
+            holder.onDelegateSizeChangedEvt += holder_onDelegateSizeChangedEvt;
+
+            // initialize helper classes
+            mouseHook = new MouseHook();
             mouseHook.HookInvoked += mouseHook_HookInvoked;
+            keyboardHook = new KeyboardHook();
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
-
-            applicationsListbox.DataSource = applicationList;
-            applicationsListbox.DisplayMember = "DisplayName";      // map to WindowsModel.DisplayName
-            applicationsListbox.ValueMember = "WindowsId";        // map to WindowsModel.WindowsId
-            applicationsListbox.ClearSelected();
-            applicationsListbox.SelectedIndexChanged += applicationsListbox_SelectedIndexChanged;
-
-            // initialize command manager
-            clienCmdMgr = new ClientCmdMgr(this);
-
-            // TODO: start vnc client, store monitor list and set the corresponding listening port to registry
-            vncServer.StartVncServer();
         }
 
-        void applicationsListbox_SelectedIndexChanged(object sender, EventArgs e)
+        void holder_onDelegateSizeChangedEvt(int id, Size newSize)
         {
-            ListBox listBox = (ListBox)sender;
-            WndPos item = (WndPos)applicationsListbox.SelectedItem;
-            if (item != null)
+            clientPresenter.SetApplicationSize(id, newSize);
+        }
+
+        void holder_onDelegateRestoredEvt(int id)
+        {
+            clientPresenter.SetApplicationRestore(id);
+        }
+
+        void holder_onDelegatePosChangedEvt(int id, int xPos, int yPos)
+        {
+            clientPresenter.SetApplicationPos(id, xPos, yPos);
+        }
+
+        void holder_onDelegateMinimizedEvt(int id)
+        {
+            clientPresenter.SetApplicationMinimize(id);
+        }
+
+        void holder_onDelegateMaximizedEvt(int id)
+        {
+            clientPresenter.SetApplicationMaximize(id);
+        }
+
+        void holder_onDelegateClosedEvt(int id)
+        {
+            clientPresenter.SetApplicationClose(id);
+        }
+
+        private void createControls()
+        {
+            formPreset = new FormPresets();
+            formPreset.CloseButtonVisible = false;
+            formPreset.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
+            formPreset.EvtPresetAdded += formPreset_EvtPresetAdded;
+            formPreset.EvtPresetRemoved += formPreset_EvtPresetRemoved;
+
+            formVnc = new FormVnc();
+            formVnc.CloseButtonVisible = false;
+            formVnc.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
+
+            formRunningApps = new FormRunningApps();
+            formRunningApps.CloseButtonVisible = false;
+            formRunningApps.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
+
+            formMimic = new FormMimic();
+            formMimic.CloseButtonVisible = false;
+            formMimic.DockAreas = DockAreas.Document;
+            formMimic.AllowDrop = true;
+            formMimic.DragEnter += formMimic_DragEnter;
+            formMimic.DragDrop += formMimic_DragDrop;
+        }
+
+        void formPreset_EvtPresetRemoved(FormPresets form, Client.Model.PresetModel item)
+        {
+            // remove a preset
+            clientPresenter.RemovePreset(item);
+        }
+
+        void formPreset_EvtPresetAdded(FormPresets form)
+        {
+            // add a preset
+            FormAddPreset addPreset = new FormAddPreset();
+            addPreset.SetAppList(Settings.ApplicationSettings.GetInstance().ApplicationList);
+            if (addPreset.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                int wndId = item.id;
-                applicationsListbox.ClearSelected();
-
-                // send to server for setting it to foreground
-                ClientWndCmd wndCommand = new ClientWndCmd();
-                wndCommand.CommandType = ClientWndCmd.CommandId.ESetForeground;
-                wndCommand.Id = wndId;
-
-                connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ControlInfo,
-                    (int)CommandConst.SubCommandClient.WindowsAttributes,
-                    wndCommand);                
+                clientPresenter.AddPreset(addPreset.PresetName, addPreset.GetSelectedAppList());
             }
         }
 
-        void mHolder_onDelegateMinimizedEvt(int id)
+        void formMimic_DragEnter(object sender, DragEventArgs e)
         {
-            if(mWindowsDic.ContainsValue(id))
-            {
-                var wndId = mWindowsDic.FirstOrDefault(x => x.Value == id).Key;
-                ClientWndCmd wndCommand = new ClientWndCmd();
-                wndCommand.CommandType = ClientWndCmd.CommandId.EMinimize;
-                wndCommand.Id = wndId;
-
-                connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ControlInfo,
-                    (int)CommandConst.SubCommandClient.WindowsAttributes,
-                    wndCommand);
-            }
-            
+            e.Effect = DragDropEffects.All;
         }
 
-        void mHolder_onDelegateSizeChangedEvt(int id, Size newSize)
+        void formMimic_DragDrop(object sender, DragEventArgs e)
         {
-            if (mWindowsDic.ContainsValue(id))
+            if (e.Data.GetDataPresent(typeof(Client.Model.PresetModel)))
             {
-                var wndId = mWindowsDic.FirstOrDefault(x => x.Value == id).Key;
-                ClientWndCmd wndCommand = new ClientWndCmd();
-                wndCommand.CommandType = ClientWndCmd.CommandId.EResize;
-                wndCommand.Id = wndId;
-                wndCommand.Width = newSize.Width;
-                wndCommand.Height = newSize.Height;
-
-                connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ControlInfo,
-                    (int)CommandConst.SubCommandClient.WindowsAttributes,
-                    wndCommand);
+                Client.Model.PresetModel presetData = null;
+                if ((presetData = (Client.Model.PresetModel)e.Data.GetData(typeof(Client.Model.PresetModel))) != null)
+                {
+                    clientPresenter.TriggerPreset(presetData);
+                }
             }
-        }
-
-        void mHolder_onDelegateRestoredEvt(int id)
-        {
-            if (mWindowsDic.ContainsValue(id))
+            else if(e.Data.GetDataPresent(typeof(Client.Model.VncModel)))
             {
-                var wndId = mWindowsDic.FirstOrDefault(x => x.Value == id).Key;
-                ClientWndCmd wndCommand = new ClientWndCmd();
-                wndCommand.CommandType = ClientWndCmd.CommandId.ERestore;
-                wndCommand.Id = wndId;
-
-                connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ControlInfo,
-                    (int)CommandConst.SubCommandClient.WindowsAttributes,
-                    wndCommand);
+                Client.Model.VncModel vncData = null;
+                if ((vncData = (Client.Model.VncModel)e.Data.GetData(typeof(Client.Model.VncModel))) != null)
+                {
+                    clientPresenter.TriggerVnc(vncData);
+                }
+            }
+            else if (e.Data.GetDataPresent(typeof(Client.Model.WindowsModel)))
+            {
+                Client.Model.WindowsModel appData = null;
+                if ((appData = (Client.Model.WindowsModel)e.Data.GetData(typeof(Client.Model.WindowsModel))) != null)
+                {
+                    if ((appData.Style & Constant.WS_MINIMIZE) != 0)
+                    {
+                        // restore the window first
+                        clientPresenter.SetApplicationRestore(appData.WindowsId);
+                    }
+                    else
+                    {
+                        clientPresenter.SetApplicationForeground(appData.WindowsId);
+                    }
+                }
             }
         }
 
-        void mHolder_onDelegatePosChangedEvt(int id, int xPos, int yPos)
+        private IDockContent getContentFromPersistString(string persistString)
         {
-            if (mWindowsDic.ContainsValue(id))
-            {
-                var wndId = mWindowsDic.FirstOrDefault(x => x.Value == id).Key;
-                ClientWndCmd wndCommand = new ClientWndCmd();
-                wndCommand.CommandType = ClientWndCmd.CommandId.ERelocation;
-                wndCommand.Id = wndId;
-                wndCommand.PositionX = xPos;
-                wndCommand.PositionY = yPos;
-
-                connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ControlInfo,
-                    (int)CommandConst.SubCommandClient.WindowsAttributes,
-                    wndCommand);
-            }
+            if (persistString == typeof(FormPresets).ToString())
+                return formPreset;
+            else if (persistString == typeof(FormVnc).ToString())
+                return formVnc;
+            else if (persistString == typeof(FormRunningApps).ToString())
+                return formRunningApps;
+            else
+                return formMimic;
         }
 
-        void mHolder_onDelegateMaximizedEvt(int id)
+
+        private void loadNewLayout()
         {
-            if (mWindowsDic.ContainsValue(id))
-            {
-                var wndId = mWindowsDic.FirstOrDefault(x => x.Value == id).Key;
-                ClientWndCmd wndCommand = new ClientWndCmd();
-                wndCommand.CommandType = ClientWndCmd.CommandId.EMaximize;
-                wndCommand.Id = wndId;
+            dockPanel.SuspendLayout(true);
 
-                connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ControlInfo,
-                    (int)CommandConst.SubCommandClient.WindowsAttributes,
-                    wndCommand);
-            }
-        }
+            // load the dock form
+            formPreset.Show(dockPanel, DockState.DockLeft);
+            formVnc.Show(formPreset.Pane, DockAlignment.Bottom, 0.6);
+            formRunningApps.Show(formVnc.Pane, DockAlignment.Bottom, 0.5);
+            formMimic.Show(dockPanel, DockState.Document);
 
-        void mHolder_onDelegateClosedEvt(int id)
-        {
-            if (mWindowsDic.ContainsValue(id))
-            {
-                var wndId = mWindowsDic.FirstOrDefault(x => x.Value == id).Key;
-                ClientWndCmd wndCommand = new ClientWndCmd();
-                wndCommand.CommandType = ClientWndCmd.CommandId.EClose;
-                wndCommand.Id = wndId;
-
-                connectionMgr.BroadcastMessage(
-                    (int)CommandConst.MainCommandClient.ControlInfo,
-                    (int)CommandConst.SubCommandClient.WindowsAttributes,
-                    wndCommand);
-            }
-        }
-
-        void connectionMgr_EvtServerDataReceived(int mainId, int subId, string commandData)
-        {
-            // server user id undefined = "0"
-            clienCmdMgr.ExeCommand("0", mainId, subId, commandData);
-        }
-
-        void connectionMgr_EvtDisconnected()
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateEvt(connectionMgr_EvtDisconnected));
-                return;
-            }
-
-            mHolder.RemoveAllControls();
-            applicationList.Clear();
-            refreshApplicationList();
-            mWindowsDic.Clear();
-            minimizedWndComboBox.Items.Clear();
-
-            vncServer.StopVncServer();
-        }
-
-        void connectionMgr_EvtConnected()
-        {
-            ClientLoginCmd loginCmd = new ClientLoginCmd();
-            loginCmd.Username = username.Text;
-            loginCmd.Password = password.Text;
-
-            // get the VNC status, if there is VNC server installed, get the ip address and port shared
-            int port;
-            if((port = VncMarshall.VncRegistryHelper.GetListeningPort()) != -1)
-            {
-                loginCmd.VncServerPort = port;
-                loginCmd.VncServerIp = Utils.Socket.LocalIPAddress();
-            }
-
-            // get how many monitors attached to this PC
-            List<MonitorInfo> monitorList = new List<MonitorInfo>();
-            foreach(WindowsHelper.MonitorInfo info in Utils.Windows.WindowsHelper.GetMonitorList())
-            {
-                monitorList.Add(new MonitorInfo { 
-                    LeftPos = info.WorkArea.Left, 
-                    TopPos = info.WorkArea.Top, 
-                    RightPos = info.WorkArea.Right, 
-                    BottomPos = info.WorkArea.Bottom });
-            }
-            loginCmd.MonitorsInfo = monitorList;
-
-            connectionMgr.BroadcastMessage((int)CommandConst.MainCommandClient.LoginInfo, (int)CommandConst.SubCommandClient.Credential, loginCmd);
-        }
-
-        private void connect_Click(object sender, EventArgs e)
-        {
-            connectionMgr.StartClient(hostIp.Text, Convert.ToInt32(hostPort.Text));
+            dockPanel.ResumeLayout(true, true);
         }
 
         void keyboardHook_HookInvoked(object sender, KeyboardHook.KeyboardHookEventArgs data)
         {
-            if (captureKeyboard.Checked == false)
-            {
-                return;
-            }
-
-            Trace.WriteLine(String.Format("keyboard code:{2}, vk:{0}, scan:{1}, wParam:{3}, flag:{4}", data.lParam.vkCode, data.lParam.scanCode, data.code, data.wParam, data.lParam.flags));
             if (data.wParam == Constant.WM_KEYDOWN)
             {
                 // only handle keydown and keyup events, reference: http://msdn.microsoft.com/en-us/library/windows/desktop/ms646271(v=vs.85).aspx
@@ -274,29 +256,15 @@ namespace WindowsFormClient
                 data.lParam.flags = 0x0002;
             }
 
-            ClientKeyboardCmd keyboardCmd = new ClientKeyboardCmd();
-            keyboardCmd.data = new ClientKeyboardCmd.KeyboardData
-            {
-                wVk = (UInt16)data.lParam.vkCode,
-                wScan = (UInt16)data.lParam.scanCode,
-                time = data.lParam.time,
-                dwFlags = (UInt32)data.lParam.flags,
-                dwExtraInfo = 0
-            };
-
-            connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ControlInfo,
-                (int)CommandConst.SubCommandClient.Keyboard,
-                keyboardCmd);
+            clientPresenter.ControlServerKeyboard(
+                (UInt16)data.lParam.vkCode,
+                (UInt16)data.lParam.scanCode, 
+                data.lParam.time, 
+                data.lParam.flags);
         }
 
         void mouseHook_HookInvoked(object sender, MouseHook.MouseHookEventArgs arg)
         {
-            if (captureMouse.Checked == false)
-            {
-                return;
-            }
-
             if (arg.lParam.flags == 1)
             {
                 // do not handle injected mouse event
@@ -306,23 +274,21 @@ namespace WindowsFormClient
             int offsetTop = (this.Size.Height - this.ClientSize.Height);
             int offsetWidth = (this.Size.Width - this.ClientSize.Width) / 2;
 
-            int relativeX = arg.lParam.pt.x - this.Location.X - offsetTop - layoutPanel.Bounds.X - mHolder.Bounds.X;
-            int relativeY = arg.lParam.pt.y - this.Location.Y - offsetWidth - layoutPanel.Bounds.Y - mHolder.Bounds.Y;
-
+            int relativeX = arg.lParam.pt.x - this.Location.X - offsetTop - formMimic.Bounds.X - holder.Bounds.X;
+            int relativeY = arg.lParam.pt.y - this.Location.Y - offsetWidth - formMimic.Bounds.Y - holder.Bounds.Y;
             if (relativeX < 0 ||
                 relativeY < 0 ||
-                relativeX > mHolder.Bounds.Width ||
-                relativeY > mHolder.Bounds.Height)
+                relativeX > holder.Bounds.Width ||
+                relativeY > holder.Bounds.Height)
             {
                 // not in client bound
                 Trace.WriteLine("mouse not in client area");
                 return;
             }
 
-            float relativePosX = (float)relativeX / (float)mHolder.Width * 65535.0f;
-            float relativePosY = (float)relativeY / (float)mHolder.Height * 65535.0f;
+            float relativePosX = (float)relativeX / (float)holder.Width * 65535.0f;
+            float relativePosY = (float)relativeY / (float)holder.Height * 65535.0f;
 
-            Trace.WriteLine(String.Format("mouse {0},{1}, flags:{2}, mouseData:{3}", relativePosX, relativePosY, arg.lParam.flags, arg.lParam.mouseData));
             UInt32 actualFlags = InputConstants.MOUSEEVENTF_MOVE | InputConstants.MOUSEEVENTF_ABSOLUTE | InputConstants.MOUSEEVENTF_VIRTUALDESK;
             switch(arg.wParam.ToInt32())
             {
@@ -346,322 +312,88 @@ namespace WindowsFormClient
                     break;
             }
 
-            ClientMouseCmd mouseCmd = new ClientMouseCmd();
-            mouseCmd.data = new ClientMouseCmd.MouseData 
-            {
-                dx = (int)relativePosX,
-                dy = (int)relativePosY,
-                mouseData = arg.lParam.mouseData,
-                dwFlags = actualFlags,
-                time = 0,
-                dwExtraInfo = 0
-            };
-
-            connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ControlInfo,
-                (int)CommandConst.SubCommandClient.Mouse,
-                mouseCmd);
+            clientPresenter.ControlServerMouse(relativeX, relativeY, arg.lParam.mouseData, actualFlags);
         }
 
 
-        private void disconnect_Click(object sender, EventArgs e)
+        private void buttonMessage_Click(object sender, EventArgs e)
         {
-            connectionMgr.StopClient();
-            connectionMgr_EvtDisconnected();
-
-            vncServer.StopVncServer();
-        }
-
-        private void AddWindow(Client.Model.WindowsModel wndPos)
-        {
-            if (this.InvokeRequired)
+            FormMessageBox messageBox = new FormMessageBox();
+            if (messageBox.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                this.BeginInvoke(new DelegateWindow(AddWindow), wndPos);
-                return;
-            }
-
-
-            int wndId = mHolder.AddControl(new CustomWinForm.CustomControlHolder.ControlAttributes {
-                WindowName = wndPos.DisplayName, 
-                Xpos = wndPos.PosLeft, 
-                Ypos = wndPos.PosTop, 
-                Width = wndPos.Width, 
-                Height = wndPos.Height,
-                Style = wndPos.Style,
-                ZOrder = wndPos.ZOrder
-            });
-
-            mWindowsDic.Add(wndPos.WindowsId, wndId);
-
-            // check if the control was minimized
-            if ((wndPos.Style & Constant.WS_MINIMIZE) != 0)
-            {
-                AddMinimizedWindow(wndPos.WindowsId, wndPos);
+                // sent to server for display
+                clientPresenter.ShowMessage(messageBox.Text,
+                    messageBox.SelectedFont,
+                    messageBox.SelectedColor,
+                    messageBox.Duration,
+                    messageBox.LocationX,
+                    messageBox.LocationY,
+                    messageBox.Width,
+                    messageBox.Height);
             }
         }
 
-        private void RemoveWindow(Client.Model.WindowsModel wndPos)
+        private void buttonMaintenance_Click(object sender, EventArgs e)
         {
-            if (this.InvokeRequired)
+            FormServerMaintenance formServerMaintenance = new FormServerMaintenance();
+            DialogResult result = formServerMaintenance.ShowDialog();
+            Presenter.ClientPresenter.ServerMaintenanceMode mode = Presenter.ClientPresenter.ServerMaintenanceMode.Standby;
+            switch (result)
             {
-                this.BeginInvoke(new DelegateWindow(RemoveWindow), wndPos);
-                return;
+                case System.Windows.Forms.DialogResult.OK:
+                    // restart
+                    mode = Presenter.ClientPresenter.ServerMaintenanceMode.Restart;
+                    break;
+                case System.Windows.Forms.DialogResult.Retry:
+                    // shutdown
+                    mode = Presenter.ClientPresenter.ServerMaintenanceMode.Shutdown;
+                    break;
+                case System.Windows.Forms.DialogResult.Yes:
+                    // standby
+                    mode = Presenter.ClientPresenter.ServerMaintenanceMode.Standby;
+                    break;
+                default:
+                    break;
             }
 
-            int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
-            {
-                mHolder.RemoveControl(wndId);
-                mWindowsDic.Remove(wndPos.WindowsId);
-
-                RemoveMinimizedWindow(wndPos.WindowsId);
-            }
+            clientPresenter.ServerMaintenance(mode);
         }
 
-        private void ChangeWindowName(Client.Model.WindowsModel wndPos)
+        private void buttonMouse_Click(object sender, EventArgs e)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowName), wndPos);
-                return;
-            }
-
-            int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
-            {
-                mHolder.ChangeControlName(wndId, wndPos.DisplayName);
-            }
-
-        }
-
-        private void ChangeWindowPos(Client.Model.WindowsModel wndPos)
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowPos), wndPos);
-                return;
-            }
-
-            int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
-            {
-                mHolder.ChangeControlPos(wndId, new Point(wndPos.PosLeft, wndPos.PosTop));
-            }
-        }
-
-        private void ChangeWindowSize(Client.Model.WindowsModel wndPos)
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowSize), wndPos);
-                return;
-            }
-
-            int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
-            {
-                mHolder.ChangeControlSize(wndId, new Size(wndPos.Width, wndPos.Height));
-            }
-        }
-
-        private void ChangeWindowStyle(Client.Model.WindowsModel wndPos)
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowStyle), wndPos);
-                return;
-            }
-
-            int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
-            {
-                mHolder.ChangeControlStyle(wndId, wndPos.Style);
-
-                // check if the control was minimized
-                if ((wndPos.Style & Constant.WS_MINIMIZE) != 0)
-                {
-                    AddMinimizedWindow(wndPos.WindowsId, wndPos);
-                }
-                else
-                {
-                    RemoveMinimizedWindow(wndPos.WindowsId);
-                }
-
-            }
-        }
-
-        private void ChangeWindowZOrder(Client.Model.WindowsModel wndPos)
-        {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowZOrder), wndPos);
-                return;
-            }
-
-            int wndId;
-            if (mWindowsDic.TryGetValue(wndPos.WindowsId, out wndId))
-            {
-                mHolder.ChangeControlZOrder(wndId, wndPos.ZOrder);
-            }
-        }
-
-        private void AddMinimizedWindow(int id, Client.Model.WindowsModel data)
-        {
-            MinimizeComboBox comboBox = new MinimizeComboBox();
-            comboBox.Id = id;
-            comboBox.Text = data.DisplayName;
-            comboBox.Data = data;
-
-            minimizedWndComboBox.Items.Add(comboBox);
-        }
-
-        private void RemoveMinimizedWindow(int id)
-        {
-            foreach (Object obj in minimizedWndComboBox.Items)
-            {
-                MinimizeComboBox comboBox = (MinimizeComboBox)obj;
-                if (comboBox.Id == id)
-                {
-                    minimizedWndComboBox.Items.Remove(obj);
-                    return;
-                }
-            }
-        }
-
-        private void minimizedWndComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            MinimizeComboBox comboBox = (MinimizeComboBox)minimizedWndComboBox.SelectedItem;
-            RemoveMinimizedWindow(comboBox.Id);
-
-            // send command to server for notification
-            ClientWndCmd wndCommand = new ClientWndCmd();
-            wndCommand.CommandType = ClientWndCmd.CommandId.ERestore;
-            wndCommand.Id = comboBox.Id;
-
-            connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ControlInfo,
-                (int)CommandConst.SubCommandClient.WindowsAttributes,
-                wndCommand);
-        }
-
-        private void captureKeyboard_CheckedChanged(object sender, EventArgs e)
-        {
-            if(captureKeyboard.Checked)
-            {
-                keyboardHook.StartHook(0);
-            }
-            else
-            {
-                keyboardHook.StopHook();
-            }
-        }
-
-        private void captureMouse_CheckedChanged(object sender, EventArgs e)
-        {
-            if (captureMouse.Checked)
-            {
-                mouseHook.StartHook(0);
-            }
-            else
+            if (mouseHook.IsHooking())
             {
                 mouseHook.StopHook();
             }
-        }
-
-        private void onFormClosing(object sender, FormClosingEventArgs e)
-        {
-            keyboardHook.StopHook();
-            mouseHook.StopHook();
-
-            connectionMgr.StopClient();
-
-            vncServer.StopVncServer();
-        }
-
-        private void refreshApplicationList()
-        {
-            if (this.InvokeRequired)
+            else
             {
-                this.BeginInvoke(new DelegateEvt(refreshApplicationList));
-                return;
+                mouseHook.StartHook(0);
             }
+        }
 
-            if (applicationsListbox.SelectedIndex != -1)
+        private void buttonKeyboard_Click(object sender, EventArgs e)
+        {
+            if(keyboardHook.IsHooking())
             {
-                return;
+                keyboardHook.StopHook();
             }
-            applicationsListbox.DataSource = null;
-            applicationsListbox.DataSource = applicationList;
-            applicationsListbox.DisplayMember = "DisplayName";
-            applicationsListbox.ValueMember = "WindowsId";
+            else
+            {
+                keyboardHook.StartHook(0);
+            }
         }
 
-        private void shutdownBtn_Click(object sender, EventArgs e)
-        {
-            sendMaintenanceCmd(ClientMaintenanceCmd.CommandId.EShutdown);
-        }
-
-        private void rebootBtn_Click(object sender, EventArgs e)
-        {
-            sendMaintenanceCmd(ClientMaintenanceCmd.CommandId.EReboot);
-        }
-
-        private void logOffBtn_Click(object sender, EventArgs e)
-        {
-            sendMaintenanceCmd(ClientMaintenanceCmd.CommandId.ELogOff);
-        }
-
-        void sendMaintenanceCmd(ClientMaintenanceCmd.CommandId id)
-        {
-            ClientMaintenanceCmd command = new ClientMaintenanceCmd { CommandType = id };
-            connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandClient.ControlInfo,
-                (int)CommandConst.SubCommandClient.Maintenance,
-                command);
-        }
-
-        private void startVNC_Click(object sender, EventArgs e)
-        {
-            //int portNumber = Utils.Socket.getUnusedPort(VNC_PORTSTART, VNC_PORTSTOP);
-
-            //// start vnc server
-            //vncServer.StartServer(portNumber, new VncMarshall.Server.SharingAttributes { ShareMode=VncMarshall.Server.SharingMode.ShareRect, PosLeft=0, PosTop=0, PosRight=100, PosBottom=100});
-
-            //// send signal to server to indicate vnc server info
-            //ClientVncCmd command = new ClientVncCmd { PortNumber = portNumber, IpAddress=Utils.Socket.LocalIPAddress() };
-            //connectionMgr.BroadcastMessage(
-            //    (int)CommandConst.MainCommandClient.ClientVncInfo,
-            //    (int)CommandConst.SubCmdVncInfo.Start,
-            //    command);
-        }
-
-        private void stopVNC_Click(object sender, EventArgs e)
-        {
-            //vncServer.StopServer();
-
-            //// send signal to server to indicate vnc server info
-            //ClientVncCmd command = new ClientVncCmd();
-            //connectionMgr.BroadcastMessage(
-            //    (int)CommandConst.MainCommandClient.ClientVncInfo,
-            //    (int)CommandConst.SubCmdVncInfo.Stop,
-            //    command);
-        }
 
         public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout)
         {
-            mHolder.MaxSize = new Size(layout.DesktopLayout.Width, layout.DesktopLayout.Height);
-            mHolder.ReferenceXPos = layout.DesktopLayout.PosLeft;
-            mHolder.ReferenceYPos = layout.DesktopLayout.PosTop;
-
-            // TODO: 
-            // 1. keep the user info
-            UserId = user.UserId;
-            // 2. drawn the matrix layout
+            holder.ReferenceXPos = layout.DesktopLayout.PosLeft;
+            holder.ReferenceYPos = layout.DesktopLayout.PosTop;
+            holder.MaxSize = new Size(layout.DesktopLayout.Width, layout.DesktopLayout.Height);
         }
 
         public void RefreshAppList(IList<Client.Model.ApplicationModel> appList)
         {
-            throw new NotImplementedException();
+            // do nothing as it will not affect current windows
         }
 
         public void RefreshWndList(IList<Client.Model.WindowsModel> wndsList)
@@ -704,68 +436,193 @@ namespace WindowsFormClient
             bool refreshAppList = false;
             foreach (Client.Model.WindowsModel windows in addedQuery)
             {
-                //Trace.WriteLine(String.Format("Added - name:{5} id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
                 refreshAppList |= true;
                 AddWindow(windows);
             }
 
             foreach (Client.Model.WindowsModel windows in removedQuery)
             {
-                //Trace.WriteLine(String.Format("Removed - name:{5}  id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id, windows.name));
                 refreshAppList |= true;
                 RemoveWindow(windows);
             }
 
             foreach (Client.Model.WindowsModel windows in modifiedNameQuery)
             {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
                 ChangeWindowName(windows);
             }
 
             foreach (Client.Model.WindowsModel windows in modifiedPosQuery)
             {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
                 ChangeWindowPos(windows);
             }
 
             foreach (Client.Model.WindowsModel windows in modifiedStyleQuery)
             {
-                // NOTE: must set style then only set size as maximize state will not shown in the entire screen
+                refreshAppList |= true;
                 ChangeWindowStyle(windows);
             }
 
             foreach (Client.Model.WindowsModel windows in modifiedSizeQuery)
             {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
                 ChangeWindowSize(windows);
             }
 
             // update entire list z-order
             foreach (Client.Model.WindowsModel windows in applicationList)
             {
-                //Trace.WriteLine(String.Format("Modified - id:{4} X:{0} Y:{1} Width:{2} Height:{3}", windows.posX, windows.posY, windows.width, windows.height, windows.id));
                 ChangeWindowZOrder(windows);
             }
 
             if (refreshAppList)
             {
-                refreshApplicationList();
+                this.Invoke(new DelegateEvt(refreshAppListing));
             }
+        }
+
+        private void refreshAppListing()
+        {
+            formRunningApps.SetApplicationListData(applicationList);
+        }
+
+        private void AddWindow(Client.Model.WindowsModel wndPos)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWindow(AddWindow), wndPos);
+                return;
+            }
+
+
+            holder.AddControl(new CustomWinForm.CustomControlHolder.ControlAttributes
+            {
+                Id = wndPos.WindowsId,
+                WindowName = wndPos.DisplayName,
+                Xpos = wndPos.PosLeft,
+                Ypos = wndPos.PosTop,
+                Width = wndPos.Width,
+                Height = wndPos.Height,
+                Style = wndPos.Style,
+                ZOrder = wndPos.ZOrder
+            });
+        }
+
+        private void RemoveWindow(Client.Model.WindowsModel wndPos)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWindow(RemoveWindow), wndPos);
+                return;
+            }
+
+            holder.RemoveControl(wndPos.WindowsId);
+        }
+
+        private void ChangeWindowName(Client.Model.WindowsModel wndPos)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWindow(ChangeWindowName), wndPos);
+                return;
+            }
+
+            holder.ChangeControlName(wndPos.WindowsId, wndPos.DisplayName);
+        }
+
+        private void ChangeWindowPos(Client.Model.WindowsModel wndPos)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWindow(ChangeWindowPos), wndPos);
+                return;
+            }
+
+            holder.ChangeControlPos(wndPos.WindowsId, new Point(wndPos.PosLeft, wndPos.PosTop));
+        }
+
+        private void ChangeWindowSize(Client.Model.WindowsModel wndPos)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWindow(ChangeWindowSize), wndPos);
+                return;
+            }
+
+            holder.ChangeControlSize(wndPos.WindowsId, new Size(wndPos.Width, wndPos.Height));
+        }
+
+        private void ChangeWindowStyle(Client.Model.WindowsModel wndPos)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWindow(ChangeWindowStyle), wndPos);
+                return;
+            }
+
+            holder.ChangeControlStyle(wndPos.WindowsId, wndPos.Style);
+        }
+
+        private void ChangeWindowZOrder(Client.Model.WindowsModel wndPos)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWindow(ChangeWindowZOrder), wndPos);
+                return;
+            }
+
+            holder.ChangeControlZOrder(wndPos.WindowsId, wndPos.ZOrder);
         }
 
         public void RefreshVncList(IList<Client.Model.VncModel> vncList)
         {
-            throw new NotImplementedException();
+            if(this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateVncList(RefreshVncList), vncList);
+                return;
+            }
+
+            formVnc.SetVNCList(vncList);
         }
 
         public void RefreshPresetList(IList<Client.Model.PresetModel> presetList)
         {
-            throw new NotImplementedException();
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegatePresetList(RefreshPresetList), presetList);
+                return;
+            }
+
+            formPreset.SetPresetList(presetList);
         }
 
         public void RefreshMaintenanceStatus(Client.Model.UserPriviledgeModel privilegde)
         {
-            throw new NotImplementedException();
+            buttonMaintenance.Enabled = privilegde.AllowMaintenance;
+        }
+
+        private void FormClient_Closing(object sender, FormClosingEventArgs e)
+        {
+            // save current UI state
+            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), CONFIG_FILE_NAME);
+            dockPanel.SaveAsXml(configFile);
+
+            // clean up connection
+            clientPresenter.Dispose();
+        }
+
+
+        public void CloseApplication()
+        {
+            if(this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateEvt(CloseApplication));
+                return;
+            }
+
+            this.Close();
+        }
+
+        private void FormClient_Closed(object sender, FormClosedEventArgs e)
+        {
         }
     }
 }

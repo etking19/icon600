@@ -31,7 +31,6 @@ namespace WindowsFormClient.Server
             public int id { get; set; }
             public string name { get; set; }
             public bool share_full_desktop { get; set; }
-            public Utils.Windows.NativeMethods.Rect rect { get; set; } 
             public bool allow_maintenance { get; set; }
         }
 
@@ -96,6 +95,8 @@ namespace WindowsFormClient.Server
                 Database.DbHelper.GetInstance().CreateTable(new Application());
                 Database.DbHelper.GetInstance().CreateTable(new GroupApplications());
                 Database.DbHelper.GetInstance().CreateTable(new PresetName());
+                Database.DbHelper.GetInstance().CreateTable(new PresetApplications());
+                Database.DbHelper.GetInstance().CreateTable(new Setting());
             }
 
             return result;
@@ -233,9 +234,16 @@ namespace WindowsFormClient.Server
             Group dbGroup = new Group { id=groupId, label = groupName, share_full_desktop = shareDesktop, allow_maintenance = allowMaintenace };
             bool result = DbHelper.GetInstance().UpdateData(dbGroup);
 
-            // update from group-monitor
-            GroupMonitor groupMonitor = new GroupMonitor() { group_id = groupId, monitor_id = monitorId };
-            result &= DbHelper.GetInstance().UpdateData(groupMonitor);
+            // remove all from group-monitor
+            GroupMonitor groupMonitor = new GroupMonitor() { group_id = groupId };
+            DbHelper.GetInstance().RemoveData(groupMonitor);
+
+            if (shareDesktop == false)
+            {
+                // add from group-monitor
+                groupMonitor = new GroupMonitor() { group_id = groupId, monitor_id = monitorId };
+                result &= DbHelper.GetInstance().AddData(groupMonitor);
+            }
 
             // remove all from the group-app
             GroupApplications groupApps = new GroupApplications() { group_id = groupId};
@@ -266,23 +274,13 @@ namespace WindowsFormClient.Server
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 int groupId = int.Parse(dataRow[Group.GROUP_ID].ToString());
-                MonitorData monitorData = GetMonitorByGroupId(groupId);
-
+                
                 GroupData groupData = new GroupData()
                 {
                     id = groupId,
                     name = dataRow[Group.NAME].ToString(),
                     share_full_desktop = int.Parse(dataRow[Group.SHARE_FULL].ToString()) == 0 ? false:true,
                     allow_maintenance = int.Parse(dataRow[Group.MAINTENANCE].ToString()) == 0 ? false:true,
-                    
-                    // get the monitor info
-                    rect = new Utils.Windows.NativeMethods.Rect
-                    {
-                        Left = monitorData.Left,
-                        Top = monitorData.Top,
-                        Right = monitorData.Right,
-                        Bottom = monitorData.Bottom
-                    }
                 };
 
                 groupsList.Add(groupData);

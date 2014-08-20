@@ -8,6 +8,9 @@ namespace Session
 {
     public class CommandConst
     {
+        /// <summary>
+        /// used by Server send to Client
+        /// </summary>
         public enum MainCommandServer 
         { 
             WindowsInfo = 1,
@@ -33,6 +36,9 @@ namespace Session
             VncList = 301,
         }
 
+        /// <summary>
+        /// use by Client to send to Server
+        /// </summary>
         public enum MainCommandClient
         {
             LoginInfo = 1000,
@@ -54,6 +60,7 @@ namespace Session
             Vnc = 200,
             Preset = 201,
             Maintenance = 202,
+            MessageBox = 203,
         }
     }
 }

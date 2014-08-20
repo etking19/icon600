@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Session.Connection;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -8,6 +9,13 @@ namespace WindowsFormClient.Presenter
 {
     class GroupsPresenter
     {
+        private ConnectionManager connectionMgr;
+
+        public GroupsPresenter(ConnectionManager connectionMgr)
+        {
+            this.connectionMgr = connectionMgr;
+        }
+        
         public DataTable GetGroupsTable()
         {
             // get user's info (display name, username, group name)

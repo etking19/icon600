@@ -51,24 +51,18 @@ namespace WindowsFormClient.Command
                 return;
             }
 
-            // get the monitor info from client
-            List<MonitorModel> monitorList = new List<MonitorModel>() ;
-            int count = 1;
-            foreach (MonitorInfo monitorInfo in data.MonitorsInfo)
+            // get the vnc info
+            List<VncModel> vncList = new List<VncModel>();
+            foreach(VncEntry entry in data.VncList)
             {
-                MonitorModel model = new MonitorModel()
+                vncList.Add(new VncModel() 
                 {
-                    Label = String.Format("{0}'s PC: Monitor {1}", displayName, count),
-                    WorkAreaLeft = monitorInfo.LeftPos,
-                    WorkAreaTop = monitorInfo.TopPos,
-                    WorkAreaRight = monitorInfo.RightPos,
-                    WorkAreaBottom = monitorInfo.BottomPos,
-                };
-
-                count++;
-
-                monitorList.Add(model);
-            };
+                    OwnerPCName = entry.OwnerPCName,
+                    MonitorCount = entry.MonitorCount,
+                    IpAddress = entry.IpAddress,
+                    ListeningPort = entry.Port
+                });
+            }
 
             // notify UI
             ClientInfoModel clientModel = new ClientInfoModel()
@@ -76,8 +70,7 @@ namespace WindowsFormClient.Command
                 DbUserId = dbUserId,
                 SocketUserId = userId,
                 Name = displayName,
-                VncInfo = new VncModel() { IpAdress = data.VncServerIp, ListeningPort = data.VncServerPort },
-                MonitorsInfo = monitorList,
+                VncInfoList = vncList,
             };
 
             server.ClientLogin(clientModel);

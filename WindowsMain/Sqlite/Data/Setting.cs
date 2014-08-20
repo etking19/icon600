@@ -25,7 +25,7 @@ namespace Database.Data
         public string GetCreateCommand()
         {
             string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY, {2} INTEGER NOT NULL DEFAULT 0, {3} INTEGER NOT NULL DEFAULT 0, {4} INTEGER NOT NULL DEFAULT 0, {5} INTEGER NOT NULL DEFAULT 0, {6} VARCHAR(100) NOT NULL)";
-            return String.Format(query, ID, TABLE_NAME, PORT_START, PORT_END, COL, ROW, VNC_PATH);
+            return String.Format(query, TABLE_NAME, ID, PORT_START, PORT_END, COL, ROW, VNC_PATH);
         }
 
         public string GetAddCommand()

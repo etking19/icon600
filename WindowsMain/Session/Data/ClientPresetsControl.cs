@@ -19,10 +19,5 @@ namespace Session.Data
         public EControlType ControlType { get; set; }
 
         public PresetsEntry PresetEntry { get; set; }
-
-        /// <summary>
-        /// Only use when Add command
-        /// </summary>
-        public List<ApplicationEntry> ApplicationList { get; set; }
     }
 }

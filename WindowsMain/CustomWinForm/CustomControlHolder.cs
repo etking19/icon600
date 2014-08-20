@@ -42,6 +42,7 @@ namespace CustomWinForm
  
         public struct ControlAttributes
         {
+            public int Id { get; set; }
             public string WindowName { get; set; }
             public int Xpos { get; set; }
             public int Ypos { get; set; }
@@ -84,15 +85,14 @@ namespace CustomWinForm
             return new Point(actualX, actualY);
         }
 
-        public int AddControl(ControlAttributes controlAttr)
+        public void AddControl(ControlAttributes controlAttr)
         {
-            int id = Guid.NewGuid().GetHashCode();
-            CustomWinForm winForm = new CustomWinForm(id, controlAttr.Style);
+            CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style);
 
             winForm.SetWindowName(controlAttr.WindowName);            
             this.Controls.Add(winForm);
             this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
-            mControlsDic.Add(id, winForm);
+            mControlsDic.Add(controlAttr.Id, winForm);
 
             winForm.Style = controlAttr.Style;
 
@@ -111,8 +111,6 @@ namespace CustomWinForm
             winForm.onDelegatePosChangedEvt += winForm_onDelegatePosChangedEvt;
             winForm.onDelegateRestoredEvt += winForm_onDelegateRestoredEvt;
             winForm.onDelegateSizeChangedEvt += winForm_onDelegateSizeChangedEvt;
-
-            return id;
         }
 
         void winForm_onDelegateSizeChangedEvt(CustomWinForm winForm, Size size)

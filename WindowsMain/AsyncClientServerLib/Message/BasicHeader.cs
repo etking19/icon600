@@ -112,6 +112,7 @@ namespace AsyncClientServerLib.Message
         /// <returns>The next position in the buffer after the header</returns>
         override public int Read(byte[] sourceBuffer, int offset)
         {
+            bool complete;
             if (sourceBuffer.Length - offset < HeaderLength)
             {
                 complete = false;

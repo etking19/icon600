@@ -9,6 +9,7 @@ namespace Database.Data
     {
         public const string TABLE_NAME = "preset_application";
 
+        public const string PRESET_APPLICATION_ID = "preset_application_id";
         public const string PRESET_NAME_ID = "preset_name_id";
         public const string APPLICATION_ID = "application_id";
 
@@ -17,11 +18,11 @@ namespace Database.Data
 
         public string GetCreateCommand()
         {
-            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} REFERENCES {2}({3}) ON DELETE CASCADE, {4} REFERENCES {5}({6}) ON DELETE CASCADE, PRIMARY_KEY({1}, {4}))";
+            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} REFERENCES {2}({3}) ON DELETE CASCADE, {4} REFERENCES {5}({6}) ON DELETE CASCADE, {7} INTEGER PRIMARY KEY AUTOINCREMENT)";
             return String.Format(query, TABLE_NAME,
                 PRESET_NAME_ID, PresetName.TABLE_NAME, PresetName.PRESET_ID,
-                APPLICATION_ID, Application.TABLE_NAME, Application.APPLICATION_ID
-                );
+                APPLICATION_ID, Application.TABLE_NAME, Application.APPLICATION_ID,
+                PRESET_APPLICATION_ID);
         }
 
         public string GetAddCommand()

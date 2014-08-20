@@ -4,13 +4,14 @@ using SocketServerLib.Server;
 using SocketServerLib.SocketHandler;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
 
 namespace Session.Session
 {
-    public class ServerSession : ISession, IDisposable
+    public class ServerSession : ISession
     {
         public delegate void DataReceivedEventHandler(string ID, byte[] Data);
         public delegate void LostConnectionEventHandler(string id);
@@ -25,44 +26,54 @@ namespace Session.Session
         private Guid _ServerGuid = Guid.NewGuid();
         private bool isServerStarted = false;
 
-        private KeepAlive keepAliveWorker = new KeepAlive();
-        private Thread workerThread = null;
+       // private KeepAlive keepAliveWorker = new KeepAlive();
+       // private Thread workerThread = null;
+
+        private BackgroundWorker worker;
 
         public ServerSession(int listeningPort)
         {
             _ListeningPort = listeningPort;
             _Server = new BasicSocketServer();
 
-            keepAliveWorker.EvtSocketCheck += keepAliveWorker_EvtSocketCheck;
-            workerThread = new Thread(keepAliveWorker.DoWork);
-            workerThread.Start();
-            while (!workerThread.IsAlive) ;
+            //keepAliveWorker.EvtSocketCheck += keepAliveWorker_EvtSocketCheck;
+            //workerThread = new Thread(keepAliveWorker.DoWork);
+            //workerThread.Start();
+            //while (!workerThread.IsAlive) ;
         }
 
-        void keepAliveWorker_EvtSocketCheck(object sender)
+        void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (_Server == null)
+            while(true)
             {
-                return;
-            }
-
-            if (isServerStarted == false)
-            {
-                return;
-            }
-
-            ClientInfo[] clientList = _Server.GetClientList();
-            foreach (ClientInfo client in clientList)
-            {
-                AbstractTcpSocketClientHandler clientHandler = client.TcpSocketClientHandler;
-
-                if (clientHandler.Connected == false)
+                if (_Server == null)
                 {
-                    Trace.WriteLine(String.Format("Disconnected: {0}", clientHandler.GetHashCode().ToString()));
-                    clientHandler.Close();
+                    continue;
+                }
+
+                if (isServerStarted == false)
+                {
+                    continue;
+                }
+
+                ClientInfo[] clientList = _Server.GetClientList();
+                foreach (ClientInfo client in clientList)
+                {
+                    AbstractTcpSocketClientHandler clientHandler = client.TcpSocketClientHandler;
+
+                    if (clientHandler.Connected == false)
+                    {
+                        Trace.WriteLine(String.Format("Disconnected: {0}", clientHandler.GetHashCode().ToString()));
+                        clientHandler.Close();
+                    }
                 }
             }
         }
+
+        //void keepAliveWorker_EvtSocketCheck(object sender)
+        //{
+           
+        //}
 
         public override bool start()
         {
@@ -76,6 +87,11 @@ namespace Session.Session
                 _Server.Init(new IPEndPoint(IPAddress.Any, _ListeningPort));
                 _Server.StartUp();
                 isServerStarted = true;
+
+                worker = new BackgroundWorker();
+                worker.WorkerSupportsCancellation = true;
+                worker.DoWork += worker_DoWork;
+                worker.RunWorkerAsync();
             }
             catch (Exception e)
             {
@@ -84,25 +100,6 @@ namespace Session.Session
             }
             
             return true;
-        }
-
-        private IPAddress GetLocalAddr()
-        {
-            const string InterNetwork = @"InterNetwork";
-
-            IPAddress localAddr = IPAddress.Any;
-            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
-
-            foreach (IPAddress ipAddr in host.AddressList)
-            {
-                if (ipAddr.AddressFamily.ToString() == InterNetwork)
-                {
-                    localAddr = ipAddr;
-                    //break;
-                }
-            }
-
-            return localAddr;
         }
 
         void Server_DataReceived(SocketServerLib.SocketHandler.AbstractTcpSocketClientHandler handler, SocketServerLib.Message.AbstractMessage message)
@@ -132,10 +129,11 @@ namespace Session.Session
 
         public override void stop()
         {
+            worker.CancelAsync();
+
             _Server.Shutdown();
             isServerStarted = false;
         }
-
 
         public override bool isStarted()
         {
@@ -201,12 +199,6 @@ namespace Session.Session
                     break;
                 }
             }
-        }
-
-        public void Dispose()
-        {
-            keepAliveWorker.RequestStop();
-            workerThread.Join();
         }
     }
 }

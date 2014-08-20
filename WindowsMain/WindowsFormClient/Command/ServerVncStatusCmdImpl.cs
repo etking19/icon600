@@ -30,9 +30,10 @@ namespace WindowsFormClient.Command
             {
                 VncModel model = new VncModel()
                 {
-                    Identifier = entry.Identifier,
-                    DisplayName = entry.OwnerPCName,
+                    DisplayName = entry.OwnerPCName + ":" + entry.MonitorCount.ToString(),
                     DisplayCount = entry.MonitorCount,
+                    VncServerIp = entry.IpAddress,
+                    VncServerPort = entry.Port
                 };
 
                 vncList.Add(model);

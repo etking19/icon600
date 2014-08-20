@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using WindowsFormClient;
 using WindowsFormClient.Client.Model;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient.Command
 {
@@ -29,6 +30,8 @@ namespace WindowsFormClient.Command
             {
                 AllowMaintenance = maintenanceData.AllowMaintenance,
             };
+
+            UserSettings.GetInstance().AllowMaintenance = maintenanceData.AllowMaintenance;
 
             client.RefreshMaintenanceStatus(model);
         }

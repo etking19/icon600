@@ -23,13 +23,8 @@ namespace WindowsFormClient.Server.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Monitor info, used in vnc connection
-        /// </summary>
-        public IList<MonitorModel> MonitorsInfo { get; set; }
-
-        /// <summary>
         /// Vnc info
         /// </summary>
-        public VncModel VncInfo { get; set; }
+        public List<VncModel> VncInfoList { get; set; }
     }
 }

@@ -33,5 +33,10 @@ namespace WindowsFormClient.Presenter
         {
             Server.ServerDbHelper.GetInstance().RemoveMonitor(monitorId);
         }
+
+        public void EditMonitor(int monitorId, string monitorName, int left, int top, int right, int bottom)
+        {
+            Server.ServerDbHelper.GetInstance().EditMonitor(monitorId, monitorName, left, top, right, bottom);
+        }
     }
 }

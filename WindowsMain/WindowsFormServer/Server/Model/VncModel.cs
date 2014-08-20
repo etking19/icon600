@@ -7,7 +7,9 @@ namespace WindowsFormClient.Server.Model
 {
     public class VncModel
     {
-        public string IpAdress { get; set; }
+        public string OwnerPCName { get; set; }
+        public int MonitorCount { get; set; }
+        public string IpAddress { get; set; }
         public int ListeningPort { get; set; }
     }
 }

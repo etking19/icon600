@@ -11,5 +11,7 @@ namespace WindowsFormClient.Client.Model
         public int LayoutColumn { get; set; }
 
         public WindowsModel DesktopLayout { get; set; }
+
+        public WindowsModel ViewingArea { get; set; }
     }
 }

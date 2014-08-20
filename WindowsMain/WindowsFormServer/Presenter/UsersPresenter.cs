@@ -38,6 +38,11 @@ namespace WindowsFormClient.Presenter
             Server.ServerDbHelper.GetInstance().RemoveUser(userId);
         }
 
+        public void EditUser(int userId, string displayName, string userName, string password, int groupId)
+        {
+            Server.ServerDbHelper.GetInstance().EditUser(userId, displayName, userName, password, groupId);
+        }
+
         public Dictionary<int, string> GetGroupsList()
         {
             Dictionary<int, string> dicGroup = new Dictionary<int, string>();

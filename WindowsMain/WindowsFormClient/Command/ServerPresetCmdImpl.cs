@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WindowsFormClient.Client.Model;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient.Command
 {
@@ -49,6 +50,7 @@ namespace WindowsFormClient.Command
                 presetList.Add(model);
             }
 
+            ApplicationSettings.GetInstance().PresetList = vncData.UserPresetList;
             client.RefreshPresetList(presetList);
         }
     }

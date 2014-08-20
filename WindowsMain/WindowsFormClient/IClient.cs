@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Session.Connection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,6 @@ namespace WindowsFormClient
 {
     public interface IClient
     {
-        // GUI
-
         /// <summary>
         /// GUI of server which client needs to follow
         /// </summary>
@@ -46,5 +45,7 @@ namespace WindowsFormClient
         /// </summary>
         /// <param name="privilegde"></param>
         void RefreshMaintenanceStatus(UserPriviledgeModel privilegde);
+
+        void CloseApplication();
     }
 }

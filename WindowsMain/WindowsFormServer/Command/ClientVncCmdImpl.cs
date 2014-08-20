@@ -40,8 +40,7 @@ namespace WindowsFormClient.Command
 
         private void StartVnc(VncEntry data)
         {
-            ClientInfoModel clientInfo = server.GetClientInfo(data.Identifier);
-            vncClientImpl.StartClient(clientInfo.VncInfo.IpAdress, clientInfo.VncInfo.ListeningPort);
+            vncClientImpl.StartClient(data.IpAddress, data.Port);
         }
     }
 }

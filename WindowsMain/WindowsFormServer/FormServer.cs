@@ -1,42 +1,63 @@
 ﻿using CustomUI;
+using Session.Connection;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using WindowsFormClient.Presenter;
+using WindowsFormClient.Server;
 
 namespace WindowsFormClient
 {
-    public partial class FormServer : Form
+    public partial class FormServer : Form, IServer
     {
         private MainPresenter mainPresenter;
         private UsersPresenter userPresenter;
         private GroupsPresenter groupPresenter;
         private MonitorsPresenter monitorPresenter;
         private ApplicationsPresenter applicationPresenter;
+        private ConnectionPresenter connectionPresenter;
 
-        public FormServer()
+        private ConnectionManager connectionMgr;
+        private VncMarshall.Client vncClient;
+
+        private int desktopRow = 1;
+        private int desktopColumn = 1;
+
+        public FormServer(ConnectionManager connectionMgr)
         {
             InitializeComponent();
 
-            // initialize database
-            Server.ServerDbHelper.GetInstance().Initialize();
+            this.connectionMgr = connectionMgr;
 
             // initialize presenters
             mainPresenter = new MainPresenter();
             userPresenter = new UsersPresenter();
-            groupPresenter = new GroupsPresenter();
+            groupPresenter = new GroupsPresenter(connectionMgr);
             monitorPresenter = new MonitorsPresenter();
             applicationPresenter = new ApplicationsPresenter();
+            connectionPresenter = new ConnectionPresenter(this, connectionMgr);
 
            // tabControl.ImageList = new ImageList();
         }
 
+        private void onFormLoad(object sender, EventArgs e)
+        {
+            setupDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
+            setupDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
+            setupDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
+            setupDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
+
+            textBoxGeneralMin.Text = mainPresenter.PortMin.ToString();
+            textBoxGeneralMax.Text = mainPresenter.PortMax.ToString();
+            textBoxGeneralPath.Text = mainPresenter.VncPath;
+
+            comboBoxGeneralRow.SelectedIndex = (mainPresenter.ScreenRow - 1) < 0 ? 0 : mainPresenter.ScreenRow - 1;
+            comboBoxGeneralColumn.SelectedIndex = (mainPresenter.ScreenColumn - 1) < 0 ? 0 : mainPresenter.ScreenColumn - 1;
+
+            refreshGeneralPanel();
+        }
+
+        #region General
         private void btnGeneralBrowse_Click(object sender, EventArgs e)
         {
             // open file selection dialog
@@ -50,19 +71,78 @@ namespace WindowsFormClient
             fileDialog.Title = "Browse TightVNC Client Executable";
             fileDialog.ValidateNames = true;
 
-            if(fileDialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if (fileDialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 textBoxGeneralPath.Text = fileDialog.FileName;
             }
         }
 
-        private void onFormLoad(object sender, EventArgs e)
+        private void btnGeneralStart_Click(object sender, EventArgs e)
         {
-            setupDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
-            setupDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
-            setupDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
-            setupDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
+            int portMax = 0;
+            if(textBoxGeneralMax.Text.Length == 0 ||
+                false == int.TryParse(textBoxGeneralMax.Text, out portMax))
+            {
+                MessageBox.Show("Invalid data");
+                return;
+            }
+
+            int portMin = 0;
+            if (textBoxGeneralMin.Text.Length == 0 ||
+                false == int.TryParse(textBoxGeneralMin.Text, out portMin))
+            {
+                MessageBox.Show("Invalid data");
+                return;
+            }
+
+            if (textBoxGeneralPath.Text.Length == 0)
+            {
+                MessageBox.Show("Invalid data");
+                return;
+            }
+
+            // initialize vnc client
+            vncClient = new VncMarshall.Client(textBoxGeneralPath.Text);
+
+            // save the matrix setting
+            desktopRow = comboBoxGeneralRow.SelectedIndex + 1;
+            desktopColumn = comboBoxGeneralColumn.SelectedIndex + 1;
+
+            // start the server
+            int portOpened = connectionMgr.StartServer(portMin, portMax);
+            this.Text = String.Format("Vistrol Server (Listening Port: {0})", portOpened);
+
+            refreshGeneralPanel();
+
+            // save current setting to db
+            mainPresenter.PortMin = portMin;
+            mainPresenter.PortMax = portMax;
+            mainPresenter.ScreenColumn = desktopColumn;
+            mainPresenter.ScreenRow = desktopRow;
+            mainPresenter.VncPath = textBoxGeneralPath.Text;
         }
+
+        private void btnGeneralStop_Click(object sender, EventArgs e)
+        {
+            this.Text = String.Format("Vistrol Server - Offline");
+            connectionMgr.StopServer();
+
+            refreshGeneralPanel();
+        }
+
+        private bool isServerRunning()
+        {
+            return connectionMgr.IsStarted();
+        }
+
+        private void refreshGeneralPanel()
+        {
+            groupBoxGeneral.Enabled = !isServerRunning();
+            btnGeneralStart.Enabled = !isServerRunning();
+            btnGeneralStop.Enabled = isServerRunning();
+        }
+
+        #endregion
 
         void reloadDataGrid(DataGridView view, object dataSource)
         {
@@ -111,10 +191,10 @@ namespace WindowsFormClient
             FormUser formUser = new FormUser(String.Empty);
             formUser.Text = "Add User";
             formUser.SetGroups(userPresenter.GetGroupsList());
-            if(formUser.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if (formUser.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 // add to database
-                Server.ServerDbHelper.GetInstance().AddUser(formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
+                userPresenter.AddUser(formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
 
                 reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
             }
@@ -129,25 +209,26 @@ namespace WindowsFormClient
                     (bool)row.Cells[0].Value)
                 {
                     int userId = (int)row.Cells[1].Value;
-                    string username = (string)row.Cells[2].Value;
+                    string username = (string)row.Cells[3].Value;
 
                     FormUser formUser = new FormUser(username);
                     formUser.Text = "Edit User";
                     formUser.SetGroups(userPresenter.GetGroupsList());
-                    formUser.DisplayName = username;
-                    formUser.UserName = (string)row.Cells[3].Value;
+                    formUser.DisplayName = (string)row.Cells[2].Value;
+                    formUser.UserName = username;
                     formUser.Password = (string)row.Cells[4].Value;
                     formUser.SelectedGroupName = (string)row.Cells[5].Value;
 
                     if (formUser.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     {
                         // add to database
-                        Server.ServerDbHelper.GetInstance().EditUser(userId, formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
+                        userPresenter.EditUser(userId, formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
                     }
                 }                
             }
 
             reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
+            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
         }
 
         private void btnUsersDelete_Click(object sender, EventArgs e)
@@ -163,11 +244,12 @@ namespace WindowsFormClient
                     (bool)row.Cells[0].Value)
                 {
                     int userId = (int)row.Cells[1].Value;
-                    Server.ServerDbHelper.GetInstance().RemoveUser(userId);
+                    userPresenter.RemoveUser(userId);
                 }
             }
 
             reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
+            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
         }
 
         #endregion
@@ -183,7 +265,7 @@ namespace WindowsFormClient
             if (formGroup.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 // add to database
-                Server.ServerDbHelper.GetInstance().AddGroup(
+                groupPresenter.AddGroup(
                     formGroup.GroupName, 
                     formGroup.WholeDesktop, 
                     formGroup.AllowMaintenance, 
@@ -213,11 +295,12 @@ namespace WindowsFormClient
                     formGroup.WholeDesktop = (bool)row.Cells[3].Value;
                     formGroup.AllowMaintenance = (bool)row.Cells[4].Value;
                     formGroup.SetSelectedApplications(groupPresenter.GetApplicationsId(groupId));
+                    formGroup.MonitorId = groupPresenter.GetMonitorId(groupId);
 
                     if (formGroup.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     {
                         // add to database
-                        Server.ServerDbHelper.GetInstance().EditGroup(
+                        groupPresenter.EditGroup(
                             groupId,
                             formGroup.GroupName,
                             formGroup.WholeDesktop,
@@ -244,11 +327,12 @@ namespace WindowsFormClient
                     (bool)row.Cells[0].Value)
                 {
                     int groupId = (int)row.Cells[1].Value;
-                    Server.ServerDbHelper.GetInstance().RemoveGroup(groupId);
+                    groupPresenter.RemoveGroup(groupId);
                 }
             }
 
             reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
+            reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
         }
 
         #endregion
@@ -262,7 +346,7 @@ namespace WindowsFormClient
             if (fromApp.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 // add to database
-                Server.ServerDbHelper.GetInstance().AddApplication(
+                applicationPresenter.AddApplication(
                     fromApp.DisplayName,
                     fromApp.Arguments,
                     fromApp.ExecutablePath,
@@ -306,7 +390,7 @@ namespace WindowsFormClient
                     if (formApp.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     {
                         // add to database
-                        Server.ServerDbHelper.GetInstance().EditApplication(
+                        applicationPresenter.EditApplication(
                             appId,
                             formApp.DisplayName,
                             formApp.Arguments,
@@ -335,7 +419,7 @@ namespace WindowsFormClient
                     (bool)row.Cells[0].Value)
                 {
                     int appId = (int)row.Cells[1].Value;
-                    Server.ServerDbHelper.GetInstance().RemoveApplication(appId);
+                    applicationPresenter.RemoveApplication(appId);
                 }
             }
 
@@ -352,7 +436,7 @@ namespace WindowsFormClient
             if (formMonitor.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
             {
                 // add to database
-                Server.ServerDbHelper.GetInstance().AddMonitor(
+                monitorPresenter.AddMonitor(
                     formMonitor.DisplayName,
                     formMonitor.LocationX,
                     formMonitor.LocationY,
@@ -392,7 +476,7 @@ namespace WindowsFormClient
                     if (formMonitor.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     {
                         // add to database
-                        Server.ServerDbHelper.GetInstance().EditMonitor(
+                        monitorPresenter.EditMonitor(
                             monitorId,
                             formMonitor.DisplayName,
                             formMonitor.LocationX,
@@ -419,12 +503,47 @@ namespace WindowsFormClient
                     (bool)row.Cells[0].Value)
                 {
                     int monitorId = (int)row.Cells[1].Value;
-                    Server.ServerDbHelper.GetInstance().RemoveMonitor(monitorId);
+                    monitorPresenter.RemoveMonitor(monitorId);
                 }
             }
 
             reloadDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
         }
         #endregion
+
+        #region Connection Methods
+        public void ClientLogin(Server.Model.ClientInfoModel model)
+        {
+            connectionPresenter.ClientCredentialReceived(model, desktopRow, desktopColumn);
+        }
+
+        public VncMarshall.Client GetVncClient()
+        {
+            return vncClient;
+        }
+
+        public Server.Model.ClientInfoModel GetClientInfo(string userId)
+        {
+            return ConnectedClientHelper.GetInstance().GetClientInfo(userId);
+        }
+        #endregion
+
+        public void AddMessageBox(string message, Font font, Color color, int duration, int left, int top, int width, int height)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void onFormClosed(object sender, FormClosedEventArgs e)
+        {
+            vncClient.StopAllClients();
+            connectionMgr.StopServer();
+            connectionPresenter.Dispose();
+        }
+
+
+        public ConnectionManager GetConnectionMgr()
+        {
+            return this.connectionMgr;
+        }
     }
 }

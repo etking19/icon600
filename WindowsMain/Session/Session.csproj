@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -48,6 +49,7 @@
     <Compile Include="Data\BaseCmd.cs" />
     <Compile Include="Data\ClientKeyboardCmd.cs" />
     <Compile Include="Data\ClientMaintenanceCmd.cs" />
+    <Compile Include="Data\ClientMessageBoxCmd.cs" />
     <Compile Include="Data\ClientMouseCmd.cs" />
     <Compile Include="Data\ClientPresetsControl.cs" />
     <Compile Include="Data\ClientVncCmd.cs" />

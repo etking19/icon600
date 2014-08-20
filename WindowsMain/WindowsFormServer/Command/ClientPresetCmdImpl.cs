@@ -1,18 +1,24 @@
-﻿using Session.Data;
+﻿using Session;
+using Session.Data;
 using Session.Data.SubData;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Utils.Windows;
 
 namespace WindowsFormClient.Command
 {
     class ClientPresetCmdImpl : BaseImplementer
     {
         private int clientId;
-        public ClientPresetCmdImpl(int userId)
+        private IServer server;
+
+        public ClientPresetCmdImpl(IServer server, int userId)
         {
             this.clientId = userId;
+            this.server = server;
         }
 
         public override void ExecuteCommand(string userId, string command)
@@ -35,7 +41,7 @@ namespace WindowsFormClient.Command
                     broadcastChanges = true;
                     break;
                 case ClientPresetsControl.EControlType.Launch:
-                    LaunchPreset(presetData);
+                    LaunchPreset(clientId, presetData);
                     break;
                 case ClientPresetsControl.EControlType.Modify:
                     ModifyPreset(clientId, presetData);
@@ -47,6 +53,33 @@ namespace WindowsFormClient.Command
             if (broadcastChanges)
             {
                 // TODO: broadcast changes to user who login using the owner's account
+                // get user's preset list
+                ServerPresetsStatus serverPresetStatus = new ServerPresetsStatus();
+                serverPresetStatus.UserPresetList = new List<PresetsEntry>();
+                foreach (Server.ServerDbHelper.PresetData data in Server.ServerDbHelper.GetInstance().GetPresetByUserId(clientId))
+                {
+                    List<ApplicationEntry> presetAppEntries = new List<ApplicationEntry>();
+                    foreach (Server.ServerDbHelper.ApplicationData appData in data.AppDataList)
+                    {
+                        presetAppEntries.Add(new ApplicationEntry()
+                        {
+                            Identifier = appData.id,
+                            Name = appData.name
+                        });
+                    }
+                    serverPresetStatus.UserPresetList.Add(new PresetsEntry()
+                    {
+                        Identifier = data.Id,
+                        Name = data.Name,
+                        ApplicationList = presetAppEntries
+                    });
+                }
+
+                server.GetConnectionMgr().SendData(
+                    (int)CommandConst.MainCommandServer.UserPriviledge,
+                    (int)CommandConst.SubCommandServer.PresetList,
+                    serverPresetStatus,
+                    new List<string>() { userId });
             }
         }
 
@@ -54,7 +87,7 @@ namespace WindowsFormClient.Command
         {
             // save preset to database
             List<int> applicationIds = new List<int>();
-            foreach(ApplicationEntry entry in presetData.ApplicationList)
+            foreach(ApplicationEntry entry in presetData.PresetEntry.ApplicationList)
             {
                 applicationIds.Add(entry.Identifier);
             }
@@ -74,7 +107,7 @@ namespace WindowsFormClient.Command
         private void ModifyPreset(int userId, ClientPresetsControl presetData)
         {
             List<int> applicationIds = new List<int>();
-            foreach (ApplicationEntry entry in presetData.ApplicationList)
+            foreach (ApplicationEntry entry in presetData.PresetEntry.ApplicationList)
             {
                 applicationIds.Add(entry.Identifier);
             }
@@ -82,11 +115,32 @@ namespace WindowsFormClient.Command
             Server.ServerDbHelper.GetInstance().EditPreset(presetData.PresetEntry.Identifier, presetData.PresetEntry.Name, userId, applicationIds);
         }
 
-        private void LaunchPreset(ClientPresetsControl presetData)
+        private void LaunchPreset(int userId, ClientPresetsControl presetData)
         {
-            // TODO:
             // 1. Close all existing running applications
+            foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
+            {
+                if (false == info.name.Contains("Vistrol Server"))
+                {
+                    Utils.Windows.NativeMethods.SendMessage(new IntPtr(info.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                }
+            }
+
             // 2. trigger the apps in the preset by giving preset's id
+            WindowsFormClient.Server.ServerDbHelper.PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(userId).First(PresetData => PresetData.Id == presetData.PresetEntry.Identifier);
+            foreach (WindowsFormClient.Server.ServerDbHelper.ApplicationData appData in preset.AppDataList)
+            {
+                ProcessStartInfo info = new ProcessStartInfo()
+                {
+                    FileName = appData.applicationPath,
+                    Arguments = appData.arguments
+                };
+                using(Process process = Process.Start(info))
+                {
+                    NativeMethods.SetWindowPos(new IntPtr(process.Id), Constant.HWND_TOP, appData.rect.Left, appData.rect.Top, 0, 0, (Int32)(Constant.SWP_NOSIZE));
+                    NativeMethods.SetWindowPos(new IntPtr(process.Id), Constant.HWND_TOP, 0, 0, appData.rect.Right - appData.rect.Left, appData.rect.Bottom - appData.rect.Top, (Int32)Constant.SWP_NOMOVE);
+                }
+            }
         }
     }
 }

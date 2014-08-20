@@ -33,20 +33,21 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabControl = new WindowsFormClient.CustomTabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
-            this.btnGeneralStop = new System.Windows.Forms.Button();
-            this.btnGeneralStart = new System.Windows.Forms.Button();
-            this.btnGeneralBrowse = new System.Windows.Forms.Button();
+            this.groupBoxGeneral = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxGeneralPath = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBoxGeneralColumn = new System.Windows.Forms.ComboBox();
-            this.comboBoxGeneralRow = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.btnGeneralBrowse = new System.Windows.Forms.Button();
             this.textBoxGeneralMax = new System.Windows.Forms.TextBox();
             this.textBoxGeneralMin = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxGeneralColumn = new System.Windows.Forms.ComboBox();
             this.labelMin = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.labelServerPort = new System.Windows.Forms.Label();
+            this.comboBoxGeneralRow = new System.Windows.Forms.ComboBox();
+            this.btnGeneralStop = new System.Windows.Forms.Button();
+            this.btnGeneralStart = new System.Windows.Forms.Button();
             this.labelGeneral = new System.Windows.Forms.Label();
             this.tabUsers = new System.Windows.Forms.TabPage();
             this.tabUsersUser = new System.Windows.Forms.TabControl();
@@ -76,6 +77,7 @@
             this.tabDrivers = new System.Windows.Forms.TabPage();
             this.tabControl.SuspendLayout();
             this.tabGeneral.SuspendLayout();
+            this.groupBoxGeneral.SuspendLayout();
             this.tabUsers.SuspendLayout();
             this.tabUsersUser.SuspendLayout();
             this.tabPageUser.SuspendLayout();
@@ -104,78 +106,64 @@
             this.tabControl.Controls.Add(this.tabApplications);
             this.tabControl.Controls.Add(this.tabMonitors);
             this.tabControl.Controls.Add(this.tabDrivers);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.ImageList = this.imageList1;
             this.tabControl.ItemSize = new System.Drawing.Size(100, 100);
-            this.tabControl.Location = new System.Drawing.Point(12, 12);
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Multiline = true;
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(760, 538);
+            this.tabControl.Size = new System.Drawing.Size(784, 562);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 0;
             // 
             // tabGeneral
             // 
+            this.tabGeneral.Controls.Add(this.groupBoxGeneral);
             this.tabGeneral.Controls.Add(this.btnGeneralStop);
             this.tabGeneral.Controls.Add(this.btnGeneralStart);
-            this.tabGeneral.Controls.Add(this.btnGeneralBrowse);
-            this.tabGeneral.Controls.Add(this.label4);
-            this.tabGeneral.Controls.Add(this.textBoxGeneralPath);
-            this.tabGeneral.Controls.Add(this.label3);
-            this.tabGeneral.Controls.Add(this.comboBoxGeneralColumn);
-            this.tabGeneral.Controls.Add(this.comboBoxGeneralRow);
-            this.tabGeneral.Controls.Add(this.label2);
-            this.tabGeneral.Controls.Add(this.textBoxGeneralMax);
-            this.tabGeneral.Controls.Add(this.textBoxGeneralMin);
-            this.tabGeneral.Controls.Add(this.label1);
-            this.tabGeneral.Controls.Add(this.labelMin);
-            this.tabGeneral.Controls.Add(this.labelServerPort);
             this.tabGeneral.Controls.Add(this.labelGeneral);
             this.tabGeneral.ImageIndex = 0;
             this.tabGeneral.Location = new System.Drawing.Point(104, 4);
             this.tabGeneral.Margin = new System.Windows.Forms.Padding(0);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(652, 530);
+            this.tabGeneral.Size = new System.Drawing.Size(676, 554);
             this.tabGeneral.TabIndex = 5;
             this.tabGeneral.Text = "General";
             this.tabGeneral.UseVisualStyleBackColor = true;
             // 
-            // btnGeneralStop
+            // groupBoxGeneral
             // 
-            this.btnGeneralStop.Location = new System.Drawing.Point(557, 494);
-            this.btnGeneralStop.Name = "btnGeneralStop";
-            this.btnGeneralStop.Size = new System.Drawing.Size(75, 23);
-            this.btnGeneralStop.TabIndex = 15;
-            this.btnGeneralStop.Text = "Stop Server";
-            this.btnGeneralStop.UseVisualStyleBackColor = true;
-            // 
-            // btnGeneralStart
-            // 
-            this.btnGeneralStart.Location = new System.Drawing.Point(476, 494);
-            this.btnGeneralStart.Name = "btnGeneralStart";
-            this.btnGeneralStart.Size = new System.Drawing.Size(75, 23);
-            this.btnGeneralStart.TabIndex = 14;
-            this.btnGeneralStart.Text = "Start Server";
-            this.btnGeneralStart.UseVisualStyleBackColor = true;
-            // 
-            // btnGeneralBrowse
-            // 
-            this.btnGeneralBrowse.Location = new System.Drawing.Point(517, 308);
-            this.btnGeneralBrowse.Name = "btnGeneralBrowse";
-            this.btnGeneralBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnGeneralBrowse.TabIndex = 12;
-            this.btnGeneralBrowse.Text = "Browse";
-            this.btnGeneralBrowse.UseVisualStyleBackColor = true;
-            this.btnGeneralBrowse.Click += new System.EventHandler(this.btnGeneralBrowse_Click);
+            this.groupBoxGeneral.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxGeneral.BackColor = System.Drawing.Color.Transparent;
+            this.groupBoxGeneral.Controls.Add(this.label4);
+            this.groupBoxGeneral.Controls.Add(this.textBoxGeneralPath);
+            this.groupBoxGeneral.Controls.Add(this.btnGeneralBrowse);
+            this.groupBoxGeneral.Controls.Add(this.textBoxGeneralMax);
+            this.groupBoxGeneral.Controls.Add(this.textBoxGeneralMin);
+            this.groupBoxGeneral.Controls.Add(this.label3);
+            this.groupBoxGeneral.Controls.Add(this.label1);
+            this.groupBoxGeneral.Controls.Add(this.comboBoxGeneralColumn);
+            this.groupBoxGeneral.Controls.Add(this.labelMin);
+            this.groupBoxGeneral.Controls.Add(this.label2);
+            this.groupBoxGeneral.Controls.Add(this.labelServerPort);
+            this.groupBoxGeneral.Controls.Add(this.comboBoxGeneralRow);
+            this.groupBoxGeneral.Location = new System.Drawing.Point(30, 44);
+            this.groupBoxGeneral.Name = "groupBoxGeneral";
+            this.groupBoxGeneral.Size = new System.Drawing.Size(575, 422);
+            this.groupBoxGeneral.TabIndex = 16;
+            this.groupBoxGeneral.TabStop = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(51, 274);
+            this.label4.Location = new System.Drawing.Point(21, 215);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(243, 20);
             this.label4.TabIndex = 11;
@@ -183,23 +171,61 @@
             // 
             // textBoxGeneralPath
             // 
-            this.textBoxGeneralPath.Location = new System.Drawing.Point(58, 308);
+            this.textBoxGeneralPath.Location = new System.Drawing.Point(28, 249);
             this.textBoxGeneralPath.Name = "textBoxGeneralPath";
             this.textBoxGeneralPath.ReadOnly = true;
             this.textBoxGeneralPath.Size = new System.Drawing.Size(453, 20);
             this.textBoxGeneralPath.TabIndex = 10;
             this.textBoxGeneralPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // btnGeneralBrowse
+            // 
+            this.btnGeneralBrowse.Location = new System.Drawing.Point(487, 249);
+            this.btnGeneralBrowse.Name = "btnGeneralBrowse";
+            this.btnGeneralBrowse.Size = new System.Drawing.Size(75, 23);
+            this.btnGeneralBrowse.TabIndex = 12;
+            this.btnGeneralBrowse.Text = "Browse";
+            this.btnGeneralBrowse.UseVisualStyleBackColor = true;
+            this.btnGeneralBrowse.Click += new System.EventHandler(this.btnGeneralBrowse_Click);
+            // 
+            // textBoxGeneralMax
+            // 
+            this.textBoxGeneralMax.Location = new System.Drawing.Point(68, 77);
+            this.textBoxGeneralMax.Name = "textBoxGeneralMax";
+            this.textBoxGeneralMax.Size = new System.Drawing.Size(100, 20);
+            this.textBoxGeneralMax.TabIndex = 5;
+            this.textBoxGeneralMax.Text = "8010";
+            this.textBoxGeneralMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxGeneralMin
+            // 
+            this.textBoxGeneralMin.Location = new System.Drawing.Point(68, 48);
+            this.textBoxGeneralMin.Name = "textBoxGeneralMin";
+            this.textBoxGeneralMin.Size = new System.Drawing.Size(100, 20);
+            this.textBoxGeneralMin.TabIndex = 4;
+            this.textBoxGeneralMin.Text = "8000";
+            this.textBoxGeneralMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(120, 219);
+            this.label3.Location = new System.Drawing.Point(97, 166);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(16, 20);
             this.label3.TabIndex = 9;
             this.label3.Text = "x";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Location = new System.Drawing.Point(32, 80);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(27, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Max";
             // 
             // comboBoxGeneralColumn
             // 
@@ -225,11 +251,43 @@
             "18",
             "19",
             "20"});
-            this.comboBoxGeneralColumn.Location = new System.Drawing.Point(142, 218);
+            this.comboBoxGeneralColumn.Location = new System.Drawing.Point(119, 165);
             this.comboBoxGeneralColumn.Name = "comboBoxGeneralColumn";
             this.comboBoxGeneralColumn.Size = new System.Drawing.Size(49, 21);
             this.comboBoxGeneralColumn.TabIndex = 8;
             this.comboBoxGeneralColumn.Text = "1";
+            // 
+            // labelMin
+            // 
+            this.labelMin.AutoSize = true;
+            this.labelMin.BackColor = System.Drawing.Color.Transparent;
+            this.labelMin.Location = new System.Drawing.Point(32, 51);
+            this.labelMin.Name = "labelMin";
+            this.labelMin.Size = new System.Drawing.Size(24, 13);
+            this.labelMin.TabIndex = 2;
+            this.labelMin.Text = "Min";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(28, 131);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(160, 20);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Server Screen Matrix:";
+            // 
+            // labelServerPort
+            // 
+            this.labelServerPort.AutoSize = true;
+            this.labelServerPort.BackColor = System.Drawing.Color.Transparent;
+            this.labelServerPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelServerPort.Location = new System.Drawing.Point(28, 16);
+            this.labelServerPort.Name = "labelServerPort";
+            this.labelServerPort.Size = new System.Drawing.Size(144, 20);
+            this.labelServerPort.TabIndex = 1;
+            this.labelServerPort.Text = "Server Port Range:";
             // 
             // comboBoxGeneralRow
             // 
@@ -255,71 +313,33 @@
             "18",
             "19",
             "20"});
-            this.comboBoxGeneralRow.Location = new System.Drawing.Point(58, 218);
+            this.comboBoxGeneralRow.Location = new System.Drawing.Point(35, 165);
             this.comboBoxGeneralRow.Name = "comboBoxGeneralRow";
             this.comboBoxGeneralRow.Size = new System.Drawing.Size(54, 21);
             this.comboBoxGeneralRow.TabIndex = 7;
             this.comboBoxGeneralRow.Text = "1";
             // 
-            // label2
+            // btnGeneralStop
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(51, 184);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(160, 20);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Server Screen Matrix:";
+            this.btnGeneralStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGeneralStop.Location = new System.Drawing.Point(557, 494);
+            this.btnGeneralStop.Name = "btnGeneralStop";
+            this.btnGeneralStop.Size = new System.Drawing.Size(75, 23);
+            this.btnGeneralStop.TabIndex = 15;
+            this.btnGeneralStop.Text = "Stop Server";
+            this.btnGeneralStop.UseVisualStyleBackColor = true;
+            this.btnGeneralStop.Click += new System.EventHandler(this.btnGeneralStop_Click);
             // 
-            // textBoxGeneralMax
+            // btnGeneralStart
             // 
-            this.textBoxGeneralMax.Location = new System.Drawing.Point(91, 131);
-            this.textBoxGeneralMax.Name = "textBoxGeneralMax";
-            this.textBoxGeneralMax.Size = new System.Drawing.Size(100, 20);
-            this.textBoxGeneralMax.TabIndex = 5;
-            this.textBoxGeneralMax.Text = "8010";
-            this.textBoxGeneralMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBoxGeneralMin
-            // 
-            this.textBoxGeneralMin.Location = new System.Drawing.Point(91, 102);
-            this.textBoxGeneralMin.Name = "textBoxGeneralMin";
-            this.textBoxGeneralMin.Size = new System.Drawing.Size(100, 20);
-            this.textBoxGeneralMin.TabIndex = 4;
-            this.textBoxGeneralMin.Text = "8000";
-            this.textBoxGeneralMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(55, 134);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(27, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Max";
-            // 
-            // labelMin
-            // 
-            this.labelMin.AutoSize = true;
-            this.labelMin.BackColor = System.Drawing.Color.Transparent;
-            this.labelMin.Location = new System.Drawing.Point(55, 105);
-            this.labelMin.Name = "labelMin";
-            this.labelMin.Size = new System.Drawing.Size(24, 13);
-            this.labelMin.TabIndex = 2;
-            this.labelMin.Text = "Min";
-            // 
-            // labelServerPort
-            // 
-            this.labelServerPort.AutoSize = true;
-            this.labelServerPort.BackColor = System.Drawing.Color.Transparent;
-            this.labelServerPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelServerPort.Location = new System.Drawing.Point(51, 70);
-            this.labelServerPort.Name = "labelServerPort";
-            this.labelServerPort.Size = new System.Drawing.Size(144, 20);
-            this.labelServerPort.TabIndex = 1;
-            this.labelServerPort.Text = "Server Port Range:";
+            this.btnGeneralStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGeneralStart.Location = new System.Drawing.Point(476, 494);
+            this.btnGeneralStart.Name = "btnGeneralStart";
+            this.btnGeneralStart.Size = new System.Drawing.Size(75, 23);
+            this.btnGeneralStart.TabIndex = 14;
+            this.btnGeneralStart.Text = "Start Server";
+            this.btnGeneralStart.UseVisualStyleBackColor = true;
+            this.btnGeneralStart.Click += new System.EventHandler(this.btnGeneralStart_Click);
             // 
             // labelGeneral
             // 
@@ -338,22 +358,20 @@
             this.tabUsers.Location = new System.Drawing.Point(104, 4);
             this.tabUsers.Margin = new System.Windows.Forms.Padding(0);
             this.tabUsers.Name = "tabUsers";
-            this.tabUsers.Size = new System.Drawing.Size(652, 530);
+            this.tabUsers.Size = new System.Drawing.Size(676, 554);
             this.tabUsers.TabIndex = 6;
             this.tabUsers.Text = "Users";
             this.tabUsers.UseVisualStyleBackColor = true;
             // 
             // tabUsersUser
             // 
-            this.tabUsersUser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabUsersUser.Controls.Add(this.tabPageUser);
             this.tabUsersUser.Controls.Add(this.tabPageGroup);
-            this.tabUsersUser.Location = new System.Drawing.Point(18, 14);
+            this.tabUsersUser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabUsersUser.Location = new System.Drawing.Point(0, 0);
             this.tabUsersUser.Name = "tabUsersUser";
             this.tabUsersUser.SelectedIndex = 0;
-            this.tabUsersUser.Size = new System.Drawing.Size(631, 503);
+            this.tabUsersUser.Size = new System.Drawing.Size(676, 554);
             this.tabUsersUser.TabIndex = 0;
             // 
             // tabPageUser
@@ -365,14 +383,15 @@
             this.tabPageUser.Controls.Add(this.dataGridUsers);
             this.tabPageUser.Location = new System.Drawing.Point(4, 22);
             this.tabPageUser.Name = "tabPageUser";
-            this.tabPageUser.Size = new System.Drawing.Size(623, 477);
+            this.tabPageUser.Size = new System.Drawing.Size(668, 528);
             this.tabPageUser.TabIndex = 0;
             this.tabPageUser.Text = "User Management";
             this.tabPageUser.UseVisualStyleBackColor = true;
             // 
             // btnUsersDelete
             // 
-            this.btnUsersDelete.Location = new System.Drawing.Point(533, 3);
+            this.btnUsersDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUsersDelete.Location = new System.Drawing.Point(589, 3);
             this.btnUsersDelete.Name = "btnUsersDelete";
             this.btnUsersDelete.Size = new System.Drawing.Size(75, 23);
             this.btnUsersDelete.TabIndex = 4;
@@ -382,7 +401,8 @@
             // 
             // btnUsersEdit
             // 
-            this.btnUsersEdit.Location = new System.Drawing.Point(451, 3);
+            this.btnUsersEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUsersEdit.Location = new System.Drawing.Point(507, 3);
             this.btnUsersEdit.Name = "btnUsersEdit";
             this.btnUsersEdit.Size = new System.Drawing.Size(75, 23);
             this.btnUsersEdit.TabIndex = 3;
@@ -392,7 +412,8 @@
             // 
             // btnUsersAdd
             // 
-            this.btnUsersAdd.Location = new System.Drawing.Point(370, 3);
+            this.btnUsersAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUsersAdd.Location = new System.Drawing.Point(426, 3);
             this.btnUsersAdd.Name = "btnUsersAdd";
             this.btnUsersAdd.Size = new System.Drawing.Size(75, 23);
             this.btnUsersAdd.TabIndex = 2;
@@ -402,13 +423,15 @@
             // 
             // dataGridViewUsers
             // 
+            this.dataGridViewUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewUsers.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dataGridViewUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewUsers.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewUsers.GridColor = System.Drawing.SystemColors.ActiveBorder;
             this.dataGridViewUsers.Location = new System.Drawing.Point(0, 32);
             this.dataGridViewUsers.Name = "dataGridViewUsers";
-            this.dataGridViewUsers.Size = new System.Drawing.Size(623, 445);
+            this.dataGridViewUsers.Size = new System.Drawing.Size(668, 496);
             this.dataGridViewUsers.TabIndex = 1;
             // 
             // dataGridUsers
@@ -418,7 +441,7 @@
             this.dataGridUsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridUsers.Location = new System.Drawing.Point(0, 0);
             this.dataGridUsers.Name = "dataGridUsers";
-            this.dataGridUsers.Size = new System.Drawing.Size(623, 477);
+            this.dataGridUsers.Size = new System.Drawing.Size(668, 528);
             this.dataGridUsers.TabIndex = 0;
             // 
             // tabPageGroup
@@ -429,14 +452,15 @@
             this.tabPageGroup.Controls.Add(this.dataGridViewGroup);
             this.tabPageGroup.Location = new System.Drawing.Point(4, 22);
             this.tabPageGroup.Name = "tabPageGroup";
-            this.tabPageGroup.Size = new System.Drawing.Size(623, 477);
+            this.tabPageGroup.Size = new System.Drawing.Size(668, 528);
             this.tabPageGroup.TabIndex = 1;
             this.tabPageGroup.Text = "Group Management";
             this.tabPageGroup.UseVisualStyleBackColor = true;
             // 
             // btnGroupsDelete
             // 
-            this.btnGroupsDelete.Location = new System.Drawing.Point(532, 3);
+            this.btnGroupsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGroupsDelete.Location = new System.Drawing.Point(589, 3);
             this.btnGroupsDelete.Name = "btnGroupsDelete";
             this.btnGroupsDelete.Size = new System.Drawing.Size(75, 23);
             this.btnGroupsDelete.TabIndex = 7;
@@ -446,7 +470,8 @@
             // 
             // btnGroupsEdit
             // 
-            this.btnGroupsEdit.Location = new System.Drawing.Point(450, 3);
+            this.btnGroupsEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGroupsEdit.Location = new System.Drawing.Point(507, 3);
             this.btnGroupsEdit.Name = "btnGroupsEdit";
             this.btnGroupsEdit.Size = new System.Drawing.Size(75, 23);
             this.btnGroupsEdit.TabIndex = 6;
@@ -456,7 +481,8 @@
             // 
             // btnGroupsAdd
             // 
-            this.btnGroupsAdd.Location = new System.Drawing.Point(369, 3);
+            this.btnGroupsAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGroupsAdd.Location = new System.Drawing.Point(426, 3);
             this.btnGroupsAdd.Name = "btnGroupsAdd";
             this.btnGroupsAdd.Size = new System.Drawing.Size(75, 23);
             this.btnGroupsAdd.TabIndex = 5;
@@ -467,12 +493,14 @@
             // dataGridViewGroup
             // 
             this.dataGridViewGroup.AllowUserToOrderColumns = true;
+            this.dataGridViewGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewGroup.BackgroundColor = System.Drawing.SystemColors.Menu;
             this.dataGridViewGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGroup.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewGroup.Location = new System.Drawing.Point(0, 32);
             this.dataGridViewGroup.Name = "dataGridViewGroup";
-            this.dataGridViewGroup.Size = new System.Drawing.Size(623, 445);
+            this.dataGridViewGroup.Size = new System.Drawing.Size(668, 496);
             this.dataGridViewGroup.TabIndex = 0;
             // 
             // tabApplications
@@ -485,7 +513,7 @@
             this.tabApplications.Location = new System.Drawing.Point(104, 4);
             this.tabApplications.Margin = new System.Windows.Forms.Padding(0);
             this.tabApplications.Name = "tabApplications";
-            this.tabApplications.Size = new System.Drawing.Size(652, 530);
+            this.tabApplications.Size = new System.Drawing.Size(676, 554);
             this.tabApplications.TabIndex = 2;
             this.tabApplications.Text = "Applications";
             this.tabApplications.UseVisualStyleBackColor = true;
@@ -494,7 +522,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Location = new System.Drawing.Point(3, 7);
+            this.label5.Location = new System.Drawing.Point(3, 13);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(124, 13);
             this.label5.TabIndex = 12;
@@ -502,7 +530,8 @@
             // 
             // btnAppDelete
             // 
-            this.btnAppDelete.Location = new System.Drawing.Point(532, 2);
+            this.btnAppDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAppDelete.Location = new System.Drawing.Point(593, 8);
             this.btnAppDelete.Name = "btnAppDelete";
             this.btnAppDelete.Size = new System.Drawing.Size(75, 23);
             this.btnAppDelete.TabIndex = 11;
@@ -512,7 +541,8 @@
             // 
             // btnAppEdit
             // 
-            this.btnAppEdit.Location = new System.Drawing.Point(450, 2);
+            this.btnAppEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAppEdit.Location = new System.Drawing.Point(511, 8);
             this.btnAppEdit.Name = "btnAppEdit";
             this.btnAppEdit.Size = new System.Drawing.Size(75, 23);
             this.btnAppEdit.TabIndex = 10;
@@ -522,7 +552,8 @@
             // 
             // btnAppAdd
             // 
-            this.btnAppAdd.Location = new System.Drawing.Point(369, 2);
+            this.btnAppAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAppAdd.Location = new System.Drawing.Point(430, 8);
             this.btnAppAdd.Name = "btnAppAdd";
             this.btnAppAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAppAdd.TabIndex = 9;
@@ -533,12 +564,14 @@
             // dataGridViewApp
             // 
             this.dataGridViewApp.AllowUserToOrderColumns = true;
+            this.dataGridViewApp.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewApp.BackgroundColor = System.Drawing.SystemColors.Menu;
             this.dataGridViewApp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewApp.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridViewApp.Location = new System.Drawing.Point(0, 31);
+            this.dataGridViewApp.Location = new System.Drawing.Point(3, 37);
             this.dataGridViewApp.Name = "dataGridViewApp";
-            this.dataGridViewApp.Size = new System.Drawing.Size(652, 499);
+            this.dataGridViewApp.Size = new System.Drawing.Size(670, 514);
             this.dataGridViewApp.TabIndex = 8;
             // 
             // tabMonitors
@@ -551,7 +584,7 @@
             this.tabMonitors.Location = new System.Drawing.Point(104, 4);
             this.tabMonitors.Margin = new System.Windows.Forms.Padding(0);
             this.tabMonitors.Name = "tabMonitors";
-            this.tabMonitors.Size = new System.Drawing.Size(652, 530);
+            this.tabMonitors.Size = new System.Drawing.Size(676, 554);
             this.tabMonitors.TabIndex = 3;
             this.tabMonitors.Text = "Monitors";
             this.tabMonitors.UseVisualStyleBackColor = true;
@@ -560,7 +593,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Location = new System.Drawing.Point(3, 6);
+            this.label6.Location = new System.Drawing.Point(3, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(107, 13);
             this.label6.TabIndex = 16;
@@ -568,7 +601,8 @@
             // 
             // btnMonitorsDelete
             // 
-            this.btnMonitorsDelete.Location = new System.Drawing.Point(532, 1);
+            this.btnMonitorsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMonitorsDelete.Location = new System.Drawing.Point(593, 8);
             this.btnMonitorsDelete.Name = "btnMonitorsDelete";
             this.btnMonitorsDelete.Size = new System.Drawing.Size(75, 23);
             this.btnMonitorsDelete.TabIndex = 15;
@@ -578,7 +612,8 @@
             // 
             // btnMonitorsEdit
             // 
-            this.btnMonitorsEdit.Location = new System.Drawing.Point(450, 1);
+            this.btnMonitorsEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMonitorsEdit.Location = new System.Drawing.Point(511, 8);
             this.btnMonitorsEdit.Name = "btnMonitorsEdit";
             this.btnMonitorsEdit.Size = new System.Drawing.Size(75, 23);
             this.btnMonitorsEdit.TabIndex = 14;
@@ -588,7 +623,8 @@
             // 
             // btnMonitorsAdd
             // 
-            this.btnMonitorsAdd.Location = new System.Drawing.Point(369, 1);
+            this.btnMonitorsAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMonitorsAdd.Location = new System.Drawing.Point(430, 8);
             this.btnMonitorsAdd.Name = "btnMonitorsAdd";
             this.btnMonitorsAdd.Size = new System.Drawing.Size(75, 23);
             this.btnMonitorsAdd.TabIndex = 13;
@@ -599,12 +635,14 @@
             // dataGridViewMonitors
             // 
             this.dataGridViewMonitors.AllowUserToOrderColumns = true;
+            this.dataGridViewMonitors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewMonitors.BackgroundColor = System.Drawing.SystemColors.Menu;
             this.dataGridViewMonitors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewMonitors.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridViewMonitors.Location = new System.Drawing.Point(0, 31);
+            this.dataGridViewMonitors.Location = new System.Drawing.Point(3, 37);
             this.dataGridViewMonitors.Name = "dataGridViewMonitors";
-            this.dataGridViewMonitors.Size = new System.Drawing.Size(652, 499);
+            this.dataGridViewMonitors.Size = new System.Drawing.Size(670, 514);
             this.dataGridViewMonitors.TabIndex = 12;
             // 
             // tabDrivers
@@ -612,7 +650,7 @@
             this.tabDrivers.Location = new System.Drawing.Point(104, 4);
             this.tabDrivers.Margin = new System.Windows.Forms.Padding(0);
             this.tabDrivers.Name = "tabDrivers";
-            this.tabDrivers.Size = new System.Drawing.Size(652, 530);
+            this.tabDrivers.Size = new System.Drawing.Size(676, 554);
             this.tabDrivers.TabIndex = 4;
             this.tabDrivers.Text = "Drivers";
             this.tabDrivers.UseVisualStyleBackColor = true;
@@ -624,11 +662,14 @@
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.tabControl);
             this.Name = "FormServer";
-            this.Text = "FormServer";
+            this.Text = "Vistrol Server";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.onFormClosed);
             this.Load += new System.EventHandler(this.onFormLoad);
             this.tabControl.ResumeLayout(false);
             this.tabGeneral.ResumeLayout(false);
             this.tabGeneral.PerformLayout();
+            this.groupBoxGeneral.ResumeLayout(false);
+            this.groupBoxGeneral.PerformLayout();
             this.tabUsers.ResumeLayout(false);
             this.tabUsersUser.ResumeLayout(false);
             this.tabPageUser.ResumeLayout(false);
@@ -692,6 +733,7 @@
         private System.Windows.Forms.DataGridView dataGridViewMonitors;
         private System.Windows.Forms.Button btnGeneralStart;
         private System.Windows.Forms.Button btnGeneralStop;
+        private System.Windows.Forms.GroupBox groupBoxGeneral;
 
     }
 }

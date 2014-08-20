@@ -233,6 +233,7 @@
             // 
             this.textBoxPath.Location = new System.Drawing.Point(93, 38);
             this.textBoxPath.Name = "textBoxPath";
+            this.textBoxPath.ReadOnly = true;
             this.textBoxPath.Size = new System.Drawing.Size(198, 20);
             this.textBoxPath.TabIndex = 6;
             // 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WindowsFormClient.Client.Model;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient.Command
 {
@@ -36,6 +37,7 @@ namespace WindowsFormClient.Command
                 appModelList.Add(model);
             }
 
+            ApplicationSettings.GetInstance().ApplicationList = appStatusData.UserApplicationList;
             client.RefreshAppList(appModelList);
         }
     }
