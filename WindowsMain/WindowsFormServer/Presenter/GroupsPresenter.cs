@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
 {
@@ -28,7 +29,7 @@ namespace WindowsFormClient.Presenter
 
             foreach (WindowsFormClient.Server.ServerDbHelper.GroupData data in Server.ServerDbHelper.GetInstance().GetAllGroups())
             {
-                int numberOfUsers = Server.ServerDbHelper.GetInstance().GetUsersInGroup(data.id);
+                int numberOfUsers = Server.ServerDbHelper.GetInstance().GetUsersInGroup(data.id).Count();
                 table.Rows.Add(data.id, data.name, data.share_full_desktop, data.allow_maintenance, numberOfUsers);
             }
 
@@ -42,7 +43,34 @@ namespace WindowsFormClient.Presenter
 
         public void RemoveGroup(int groupId)
         {
-            Server.ServerDbHelper.GetInstance().RemoveGroup(groupId);
+            // modify database
+            List<string> usersList = getSocketIdentifierFromGroupId(groupId);
+            if(Server.ServerDbHelper.GetInstance().RemoveGroup(groupId))
+            {
+                // disconnect the affect user's that connected to server
+                foreach (string socketId in usersList)
+                {
+                    connectionMgr.RemoveClient(socketId);
+                }
+            }
+        }
+
+        private List<string> getSocketIdentifierFromGroupId(int groupId)
+        {
+            // get any connected clients with this group id
+            List<WindowsFormClient.Server.ServerDbHelper.UserData> userDataList = Server.ServerDbHelper.GetInstance().GetUsersInGroup(groupId);
+
+            List<string> disconnectionUserIdList = new List<string>();
+            foreach (WindowsFormClient.Server.ServerDbHelper.UserData dbUserData in userDataList)
+            {
+                var disconnectList = Server.ConnectedClientHelper.GetInstance().GetAllUsers().Where(clientInfo => clientInfo.DbUserId == dbUserData.id);
+                foreach (ClientInfoModel model in disconnectList)
+                {
+                    disconnectionUserIdList.Add(model.SocketUserId);
+                }
+            }
+
+            return disconnectionUserIdList;
         }
 
         public int GetMonitorId(int groupId)
@@ -86,7 +114,15 @@ namespace WindowsFormClient.Presenter
 
         public void EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenance, int monitorId, List<int> appIds)
         {
-            Server.ServerDbHelper.GetInstance().EditGroup(groupId, groupName, shareDesktop, allowMaintenance, monitorId, appIds);
+            List<string> usersList = getSocketIdentifierFromGroupId(groupId);
+            if (Server.ServerDbHelper.GetInstance().EditGroup(groupId, groupName, shareDesktop, allowMaintenance, monitorId, appIds))
+            {
+                // disconnect the affect user's that connected to server
+                foreach (string socketId in usersList)
+                {
+                    connectionMgr.RemoveClient(socketId);
+                }
+            }
         }
     }
 }

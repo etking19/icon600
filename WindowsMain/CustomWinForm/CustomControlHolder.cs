@@ -31,7 +31,7 @@ namespace CustomWinForm
         public Size MaxSize 
         {
             get { return mMaxSize; }
-            set { mMaxSize = value; HandleSizing(); }
+            set { mMaxSize = value; }
         }
 
         /// <summary>
@@ -272,9 +272,14 @@ namespace CustomWinForm
             }
         }
 
-        private void onSizeChanged(object sender, EventArgs e)
+        public void RefreshLayout()
         {
             HandleSizing();
+        }
+
+        private void onSizeChanged(object sender, EventArgs e)
+        {
+            // do nothing here as the windows will be flying all around desktop
         }
 
         private void HandleSizing()
@@ -290,9 +295,12 @@ namespace CustomWinForm
             }
 
             // update all controls
+            
             foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
             {
+                map.Value.SuspendLayout();
                 map.Value.Scale(new SizeF(mScaleX, mScaleY));
+                map.Value.ResumeLayout(true);
             }
         }
     }

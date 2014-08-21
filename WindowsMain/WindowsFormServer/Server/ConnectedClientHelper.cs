@@ -70,6 +70,11 @@ namespace WindowsFormClient.Server
             return socketList;
         }
 
+        public IList<ClientInfoModel> GetAllUsers()
+        {
+            return connectedClientList.Values.ToList().AsReadOnly();
+        }
+        
         public List<VncModel> GetAllUsersVnc()
         {
             List<VncModel> vncModelList = new List<VncModel>();

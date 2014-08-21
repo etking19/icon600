@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Session.Connection;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -8,6 +9,13 @@ namespace WindowsFormClient.Presenter
 {
     class UsersPresenter
     {
+        private ConnectionManager connectionMgr;
+
+        public UsersPresenter(ConnectionManager connectionMgr)
+        {
+            this.connectionMgr = connectionMgr;
+        }
+
         public DataTable GetUsersTable()
         {
             // get user's info (display name, username, group name)
@@ -33,14 +41,35 @@ namespace WindowsFormClient.Presenter
             Server.ServerDbHelper.GetInstance().AddUser(displayName, userName, password, groupId);
         }
 
+        private List<string> getSocketIdFromUserId(int dbUserId)
+        {
+            return Server.ConnectedClientHelper.GetInstance().GetAllUsers()
+                .Where(clientInfo => clientInfo.DbUserId == dbUserId)
+                .Select(t => t.SocketUserId).ToList();
+        }
+
         public void RemoveUser(int userId)
         {
-            Server.ServerDbHelper.GetInstance().RemoveUser(userId);
+            List<string> usersList = getSocketIdFromUserId(userId);
+            if(Server.ServerDbHelper.GetInstance().RemoveUser(userId))
+            {
+                foreach (string socketId in usersList)
+                {
+                    connectionMgr.RemoveClient(socketId);
+                }
+            }
         }
 
         public void EditUser(int userId, string displayName, string userName, string password, int groupId)
         {
-            Server.ServerDbHelper.GetInstance().EditUser(userId, displayName, userName, password, groupId);
+            List<string> usersList = getSocketIdFromUserId(userId);
+            if (Server.ServerDbHelper.GetInstance().EditUser(userId, displayName, userName, password, groupId))
+            {
+                foreach (string socketId in usersList)
+                {
+                    connectionMgr.RemoveClient(socketId);
+                }
+            }
         }
 
         public Dictionary<int, string> GetGroupsList()

@@ -1,13 +1,22 @@
-﻿using System;
+﻿using Session.Connection;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
 {
     class MonitorsPresenter
     {
+        private ConnectionManager connectionMgr;
+
+        public MonitorsPresenter(ConnectionManager connectionMgr)
+        {
+            this.connectionMgr = connectionMgr;
+        }
+
         public DataTable GetMonitorsTable()
         {
             // get user's info (display name, username, group name)
@@ -29,14 +38,44 @@ namespace WindowsFormClient.Presenter
             Server.ServerDbHelper.GetInstance().AddMonitor(monitorName, left, top, right, bottom);
         }
 
+        private List<string> getUsersSocketIdFromMonitorId(int monitorId)
+        {
+            List<string> usersSocketList = new List<string>();
+            foreach(ClientInfoModel clientInfo in Server.ConnectedClientHelper.GetInstance().GetAllUsers())
+            {
+                if (Server.ServerDbHelper.GetInstance().GetMonitorDataByUserId(clientInfo.DbUserId).MonitorId == monitorId)
+                {
+                    usersSocketList.Add(clientInfo.SocketUserId);
+                }
+            }
+
+            return usersSocketList;
+        }
+
         public void RemoveMonitor(int monitorId)
         {
-            Server.ServerDbHelper.GetInstance().RemoveMonitor(monitorId);
+            List<string> usersList = getUsersSocketIdFromMonitorId(monitorId);
+
+            if(Server.ServerDbHelper.GetInstance().RemoveMonitor(monitorId))
+            {
+                foreach(string userSocketId in usersList)
+                {
+                    connectionMgr.RemoveClient(userSocketId);
+                }
+            }
         }
 
         public void EditMonitor(int monitorId, string monitorName, int left, int top, int right, int bottom)
         {
-            Server.ServerDbHelper.GetInstance().EditMonitor(monitorId, monitorName, left, top, right, bottom);
+            List<string> usersList = getUsersSocketIdFromMonitorId(monitorId);
+
+            if (Server.ServerDbHelper.GetInstance().EditMonitor(monitorId, monitorName, left, top, right, bottom))
+            {
+                foreach (string userSocketId in usersList)
+                {
+                    connectionMgr.RemoveClient(userSocketId);
+                }
+            }
         }
     }
 }

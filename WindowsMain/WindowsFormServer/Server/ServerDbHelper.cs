@@ -142,7 +142,7 @@ namespace WindowsFormClient.Server
             return DbHelper.GetInstance().RemoveData(dbUser);
         }
 
-        public IList<UserData> GetAllUsers()
+        public List<UserData> GetAllUsers()
         {
             List<UserData> usersList = new List<UserData>();
 
@@ -162,7 +162,7 @@ namespace WindowsFormClient.Server
                 usersList.Add(userData);
             }
 
-            return usersList.AsReadOnly();
+            return usersList;
         }
 
         public UserData GetUser(int userId)
@@ -298,9 +298,9 @@ namespace WindowsFormClient.Server
             return groupData;
         }
 
-        public int GetUsersInGroup(int groupId)
+        public List<UserData> GetUsersInGroup(int groupId)
         {
-            return GetAllUsers().Where(UserData => UserData.group == groupId).Count(); 
+            return GetAllUsers().Where(userData => userData.group == groupId).ToList();
         }
 
         #endregion
@@ -390,7 +390,7 @@ namespace WindowsFormClient.Server
             return appsList.AsReadOnly();
         }
 
-        public IList<ApplicationData> GetAppsWithGroupId(int groupId)
+        public List<ApplicationData> GetAppsWithGroupId(int groupId)
         {
             List<ApplicationData> appsList = new List<ApplicationData>();
 
@@ -412,10 +412,10 @@ namespace WindowsFormClient.Server
                 }
             }
 
-            return appsList.AsReadOnly();
+            return appsList;
         }
 
-        public IList<ApplicationData> GetAppsWithUserId(int userId)
+        public List<ApplicationData> GetAppsWithUserId(int userId)
         {
             foreach(UserData userData in GetAllUsers())
             {

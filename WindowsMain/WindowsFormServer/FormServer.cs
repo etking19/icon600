@@ -31,10 +31,10 @@ namespace WindowsFormClient
 
             // initialize presenters
             mainPresenter = new MainPresenter();
-            userPresenter = new UsersPresenter();
+            userPresenter = new UsersPresenter(connectionMgr);
             groupPresenter = new GroupsPresenter(connectionMgr);
-            monitorPresenter = new MonitorsPresenter();
-            applicationPresenter = new ApplicationsPresenter();
+            monitorPresenter = new MonitorsPresenter(connectionMgr);
+            applicationPresenter = new ApplicationsPresenter(connectionMgr);
             connectionPresenter = new ConnectionPresenter(this, connectionMgr);
 
            // tabControl.ImageList = new ImageList();

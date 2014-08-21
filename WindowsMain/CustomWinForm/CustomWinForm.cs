@@ -25,10 +25,6 @@ namespace CustomWinForm
         public event OnRestored onDelegateRestoredEvt;
         public event OnClosed onDelegateClosedEvt;
 
-        public delegate void OnMouseMove(CustomWinForm sender, MouseEventArgs e);
-
-        public event OnMouseMove onMouseMoveEvt;
-
         public int Id { get; private set;}
 
         // used to control the actual size and relative size scaling issue

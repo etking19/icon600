@@ -69,6 +69,7 @@ namespace WindowsFormClient
 
         private void FormClient_Load(object sender, EventArgs e)
         {
+            this.ResizeEnd += FormClient_ResizeEnd;
             this.IsMdiContainer = true;
             dockPanel.DocumentStyle = DocumentStyle.DockingMdi;
 
@@ -104,6 +105,11 @@ namespace WindowsFormClient
             mouseHook.HookInvoked += mouseHook_HookInvoked;
             keyboardHook = new KeyboardHook();
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
+        }
+
+        void FormClient_ResizeEnd(object sender, EventArgs e)
+        {
+            holder.RefreshLayout();
         }
 
         void holder_onDelegateSizeChangedEvt(int id, Size newSize)
@@ -389,6 +395,8 @@ namespace WindowsFormClient
             holder.ReferenceXPos = layout.ViewingArea.PosLeft;
             holder.ReferenceYPos = layout.ViewingArea.PosTop;
             holder.MaxSize = new Size(layout.ViewingArea.Width, layout.ViewingArea.Height);
+
+            holder.RefreshLayout();
         }
 
         public void RefreshAppList(IList<Client.Model.ApplicationModel> appList)
@@ -623,6 +631,7 @@ namespace WindowsFormClient
 
         private void FormClient_Closed(object sender, FormClosedEventArgs e)
         {
+            connectionMgr.StopClient();
         }
     }
 }
