@@ -37,6 +37,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "CustomControlHolder";
+            this.Load += new System.EventHandler(this.CustomControlHolder_Load);
             this.SizeChanged += new System.EventHandler(this.onSizeChanged);
             this.ResumeLayout(false);
 

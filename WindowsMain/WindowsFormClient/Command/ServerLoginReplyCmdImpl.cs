@@ -66,6 +66,12 @@ namespace WindowsFormClient.Command
             ServerSettings.GetInstance().DesktopTop = layoutInfo.DesktopLayout.PosTop;
             ServerSettings.GetInstance().DesktopWidth = layoutInfo.DesktopLayout.Width;
             ServerSettings.GetInstance().DesktopHeight = layoutInfo.DesktopLayout.Height;
+
+            ServerSettings.GetInstance().ViewingAreaLeft = layoutInfo.ViewingArea.PosLeft;
+            ServerSettings.GetInstance().ViewingAreaTop = layoutInfo.ViewingArea.PosTop;
+            ServerSettings.GetInstance().ViewingAreaWidth = layoutInfo.ViewingArea.Width;
+            ServerSettings.GetInstance().ViewingAreaHeight = layoutInfo.ViewingArea.Height;
+
             ServerSettings.GetInstance().DesktopRow = layoutInfo.LayoutRow;
             ServerSettings.GetInstance().DesktopColumn = layoutInfo.LayoutColumn;
 

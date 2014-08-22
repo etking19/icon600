@@ -17,6 +17,11 @@ namespace WindowsFormClient.Settings
         public int DesktopWidth { get; set; }
         public int DesktopHeight { get; set; }
 
+        public int ViewingAreaLeft { get; set; }
+        public int ViewingAreaTop { get; set; }
+        public int ViewingAreaWidth { get; set; }
+        public int ViewingAreaHeight { get; set; }
+
 
         private ServerSettings()
         {

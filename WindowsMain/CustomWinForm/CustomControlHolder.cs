@@ -24,14 +24,20 @@ namespace CustomWinForm
         public event OnControlRestore onDelegateRestoredEvt;
         public event OnControlClose onDelegateClosedEvt;
 
-        private Size mMaxSize;
+        private Size mVirtualSize;
         /// <summary>
         /// The total resolution of the control
         /// </summary>
-        public Size MaxSize 
+        public Size VirtualSize 
         {
-            get { return mMaxSize; }
-            set { mMaxSize = value; }
+            get { return mVirtualSize; }
+            set 
+            { 
+                mVirtualSize = value;
+
+                mScaleX = (float)this.Width / (float)VirtualSize.Width;
+                mScaleY = (float)this.Height / (float)VirtualSize.Height;
+            }
         }
 
         /// <summary>
@@ -39,7 +45,19 @@ namespace CustomWinForm
         /// </summary>
         public int ReferenceXPos { get; set; }
         public int ReferenceYPos { get; set; }
- 
+
+        /// <summary>
+        /// keep the size of the control if parent maximized
+        /// </summary>
+        public Size MaximizedSize { get; set; }
+
+        /// <summary>
+        /// keep the current control size, used when restore called
+        /// </summary>
+        public Size CurrentSize { get; set; }
+
+        private bool isMaximized = false;
+
         public struct ControlAttributes
         {
             public int Id { get; set; }
@@ -56,13 +74,13 @@ namespace CustomWinForm
         private float mScaleX = 1.0f;
         private float mScaleY = 1.0f;
 
-        private Dictionary<int, CustomWinForm> mControlsDic = new System.Collections.Generic.Dictionary<int, CustomWinForm>();
+        private Dictionary<int, CustomWinForm> mControlsDic;
 
         public CustomControlHolder(Size maxSize, int relativeXpos, int relativeYPos)
         {
             InitializeComponent();
 
-            this.MaxSize = maxSize;
+            this.VirtualSize = maxSize;
             this.ReferenceXPos = relativeXpos;
             this.ReferenceYPos = relativeYPos;
         }
@@ -88,22 +106,22 @@ namespace CustomWinForm
         public void AddControl(ControlAttributes controlAttr)
         {
             CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style);
+            Trace.WriteLine("New form added: " + controlAttr.Id);
 
-            winForm.SetWindowName(controlAttr.WindowName);            
             this.Controls.Add(winForm);
             this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
             mControlsDic.Add(controlAttr.Id, winForm);
 
+            winForm.SetWindowName(controlAttr.WindowName);
             winForm.Style = controlAttr.Style;
 
-            winForm.Size = new Size((int)controlAttr.Width, (int)controlAttr.Height);
             winForm.ActualSize = new Size((int)controlAttr.Width, (int)controlAttr.Height);
-            winForm.Scale(new SizeF(mScaleX, mScaleY));
+            winForm.SetWindowSize(new Size((int)Math.Round((float)controlAttr.Width * mScaleX), (int)Math.Round((float)controlAttr.Height * mScaleY)));
 
             // set size and pos after add
             winForm.ActualPos = new Point(controlAttr.Xpos, controlAttr.Ypos);
             winForm.Location = getRelativePoint(controlAttr.Xpos, controlAttr.Ypos);
-            
+
             // register the event callback
             winForm.onDelegateClosedEvt += winForm_onDelegateClosedEvt;
             winForm.onDelegateMaximizedEvt += winForm_onDelegateMaximizedEvt;
@@ -117,7 +135,6 @@ namespace CustomWinForm
         {
             if (onDelegateSizeChangedEvt != null)
             {
-                Trace.WriteLine(String.Format("delegate {0} size changed: {1}", winForm.Name, size));
                 Size actualSize = new Size((int)Math.Round((float)size.Width / mScaleX), (int)Math.Round((float)size.Height / mScaleY));
                 if (actualSize.Equals(winForm.ActualSize))
                 {
@@ -125,7 +142,7 @@ namespace CustomWinForm
                     return;
                 }
 
-                Trace.WriteLine(String.Format("different size {0}", actualSize));
+                Trace.WriteLine(String.Format("different id:{2} actualsize: {0}, previousSize:{1}", actualSize, winForm.ActualSize, winForm.Id));
                 winForm.ActualSize = actualSize;
                 onDelegateSizeChangedEvt(winForm.Id, actualSize);
             } 
@@ -150,7 +167,7 @@ namespace CustomWinForm
                 {
                     return;
                 }
-                Trace.WriteLine(String.Format("delegate {0} pos changed: {1},{2}", winForm.Name, xPos, yPos));
+                Trace.WriteLine(String.Format("delegate {0} pos changed: {1},{2}, previous:{3},{4}", winForm.Name, xPos, yPos, winForm.ActualPos.X, winForm.ActualPos.Y));
                 winForm.ActualPos = actual;
                 onDelegatePosChangedEvt(winForm.Id, actual.X, actual.Y);
             }
@@ -222,7 +239,8 @@ namespace CustomWinForm
                     return;
                 }
 
-                control.Size = ratioSize;
+                //control.Size = ratioSize;
+                control.SetWindowSize(ratioSize);
             }
         }
 
@@ -279,29 +297,75 @@ namespace CustomWinForm
 
         private void onSizeChanged(object sender, EventArgs e)
         {
-            // do nothing here as the windows will be flying all around desktop
+            
+        }
+
+        public void SetMaximized()
+        {
+            // update all controls
+            mScaleX = (float)MaximizedSize.Width / (float)VirtualSize.Width;
+            mScaleY = (float)MaximizedSize.Height / (float)VirtualSize.Height;
+            this.Size = MaximizedSize;
+
+            foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
+            {
+                map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
+            }
+
+            this.isMaximized = true;
+        }
+
+        public void SetRestore()
+        {
+            if (false == this.isMaximized)
+            {
+                return;
+            }
+            Trace.WriteLine("Current size:" + CurrentSize);
+            this.isMaximized = false;
+            this.Size = CurrentSize;
+            mScaleX = (float)CurrentSize.Width / (float)VirtualSize.Width;
+            mScaleY = (float)CurrentSize.Height / (float)VirtualSize.Height;
+
+            foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
+            {
+                map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
+            }
         }
 
         private void HandleSizing()
         {
-            if (MaxSize.Width != 0)
+            float newScaleX = 0;
+            if (VirtualSize.Width != 0)
             {
-                mScaleX = (float)this.Width / (float)MaxSize.Width;
+                newScaleX = (float)this.Width / (float)VirtualSize.Width;
             }
 
-            if (MaxSize.Height != 0)
+            float newScaleY = 0;
+            if (VirtualSize.Height != 0)
             {
-                mScaleY = (float)this.Height / (float)MaxSize.Height;
+                newScaleY = (float)this.Height / (float)VirtualSize.Height;
+            }
+
+            if(newScaleX == mScaleX &&
+                newScaleY == mScaleY)
+            {
+                return;
             }
 
             // update all controls
-            
+            mScaleX = newScaleX;
+            mScaleY = newScaleY;
+
             foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
             {
-                map.Value.SuspendLayout();
-                map.Value.Scale(new SizeF(mScaleX, mScaleY));
-                map.Value.ResumeLayout(true);
+                map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
             }
+        }
+
+        private void CustomControlHolder_Load(object sender, EventArgs e)
+        {
+            mControlsDic = new System.Collections.Generic.Dictionary<int, CustomWinForm>();
         }
     }
 }

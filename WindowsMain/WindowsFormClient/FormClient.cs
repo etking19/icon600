@@ -70,6 +70,8 @@ namespace WindowsFormClient
         private void FormClient_Load(object sender, EventArgs e)
         {
             this.ResizeEnd += FormClient_ResizeEnd;
+            this.SizeChanged += FormClient_SizeChanged;
+
             this.IsMdiContainer = true;
             dockPanel.DocumentStyle = DocumentStyle.DockingMdi;
 
@@ -105,6 +107,61 @@ namespace WindowsFormClient
             mouseHook.HookInvoked += mouseHook_HookInvoked;
             keyboardHook = new KeyboardHook();
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
+        }
+
+        /// <summary>
+        /// get the maximized size of the control by not actually maxmized the parent
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void FormClient_SizeChanged(object sender, EventArgs e)
+        {
+            if(this.WindowState == FormWindowState.Maximized)
+            {
+                holder.MaximizedSize = getMaximizedClientSize();
+                holder.SetMaximized();
+            }
+            else if(this.WindowState == FormWindowState.Normal)
+            {
+                holder.SetRestore();
+            }
+        }
+
+        private Size getMaximizedClientSize()
+        {
+            var original = this.WindowState;
+            try
+            {
+                NativeMethods.SendMessage(this.Handle, (int)Constant.WM_SETREDRAW, new IntPtr(0), IntPtr.Zero);
+
+                this.WindowState = FormWindowState.Maximized;
+                return holder.ClientSize;
+
+            }
+            finally
+            {
+                this.WindowState = original;
+                NativeMethods.SendMessage(this.Handle, (int)Constant.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
+            }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if ((UInt32)m.Msg == Constant.WM_SYSCOMMAND)
+            {
+                switch ((UInt32)m.WParam)
+                {
+                    case Constant.SC_MAXIMIZE:
+                        {
+                            // set the previous size of the holder for restore used
+                            holder.CurrentSize = holder.Size;
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
+            base.WndProc(ref m);
         }
 
         void FormClient_ResizeEnd(object sender, EventArgs e)
@@ -394,7 +451,7 @@ namespace WindowsFormClient
         {
             holder.ReferenceXPos = layout.ViewingArea.PosLeft;
             holder.ReferenceYPos = layout.ViewingArea.PosTop;
-            holder.MaxSize = new Size(layout.ViewingArea.Width, layout.ViewingArea.Height);
+            holder.VirtualSize = new Size(layout.ViewingArea.Width, layout.ViewingArea.Height);
 
             holder.RefreshLayout();
         }
@@ -615,6 +672,7 @@ namespace WindowsFormClient
 
             // clean up connection
             clientPresenter.Dispose();
+            holder.RemoveAllControls();
         }
 
 

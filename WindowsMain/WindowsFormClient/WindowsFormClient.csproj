@@ -79,12 +79,6 @@
     <Compile Include="FormClient.Designer.cs">
       <DependentUpon>FormClient.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormClient2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormClient2.Designer.cs">
-      <DependentUpon>FormClient2.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,9 +133,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormClient.resx">
       <DependentUpon>FormClient.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormClient2.resx">
-      <DependentUpon>FormClient2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>

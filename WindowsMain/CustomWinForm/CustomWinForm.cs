@@ -55,8 +55,19 @@ namespace CustomWinForm
             NativeMethods.SendMessage(this.Handle, Constant.WM_SETTEXT, (IntPtr)name.Length, name);
         }
 
+        public void SetWindowSize(Size newSize)
+        {
+            NativeMethods.SetWindowPos(this.Handle, 0, 0, 0, newSize.Width, newSize.Height, (Int32)(Constant.SWP_NOMOVE));
+        }
+
+        public void SetWindowLocation(int x, int y)
+        {
+            NativeMethods.SetWindowPos(this.Handle, 0, x, y, 0, 0, (Int32)(Constant.SWP_NOSIZE));
+        }
+
         private void onSizeChangedEvt(object sender, EventArgs e)
         {
+            Trace.WriteLine(String.Format("sizeChangedEvt- id:{0} size:{1}", Id, this.Size));
             if (onDelegateSizeChangedEvt != null)
             {
                 onDelegateSizeChangedEvt(this, this.Size);
@@ -134,6 +145,11 @@ namespace CustomWinForm
 
             //Trace.WriteLine(String.Format("message: {0}", (UInt32)m.Msg));
             base.WndProc(ref m);
+        }
+
+        private void CustomWinForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

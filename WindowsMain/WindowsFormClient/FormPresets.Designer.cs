@@ -55,6 +55,9 @@
             // 
             // listBoxPreset
             // 
+            this.listBoxPreset.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxPreset.FormattingEnabled = true;
             this.listBoxPreset.Location = new System.Drawing.Point(2, 33);
             this.listBoxPreset.Name = "listBoxPreset";
