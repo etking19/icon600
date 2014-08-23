@@ -61,6 +61,7 @@
     <Compile Include="Data\ServerLoginReply.cs" />
     <Compile Include="Data\ServerMaintenanceStatus.cs" />
     <Compile Include="Data\ServerPresetsStatus.cs" />
+    <Compile Include="Data\ServerViewingAreaStatus.cs" />
     <Compile Include="Data\ServerVncStatus.cs" />
     <Compile Include="Data\SubData\ApplicationEntry.cs" />
     <Compile Include="Data\SubData\MonitorInfo.cs" />

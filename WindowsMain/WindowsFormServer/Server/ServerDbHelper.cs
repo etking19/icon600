@@ -334,7 +334,7 @@ namespace WindowsFormClient.Server
             return -1;
         }
 
-        public bool EditApplication(int appId, string appName, string extraArguments, string exePath, int left, int top, int right, int bottom)
+        public bool EditApplication(int appId, string appName, string exePath, string extraArguments, int left, int top, int right, int bottom)
         {
             Application dbApp = new Application()
             {

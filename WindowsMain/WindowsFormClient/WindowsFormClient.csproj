@@ -60,6 +60,7 @@
     <Compile Include="Command\ServerLoginReplyCmdImpl.cs" />
     <Compile Include="Command\ServerMaintenanceCmdImpl.cs" />
     <Compile Include="Command\ServerPresetCmdImpl.cs" />
+    <Compile Include="Command\ServerViewingAreaCmdImpl.cs" />
     <Compile Include="Command\ServerVncStatusCmdImpl.cs" />
     <Compile Include="Command\ServerWndsAttrCmdImpl.cs" />
     <Compile Include="Comparer\WndNameComparer.cs" />

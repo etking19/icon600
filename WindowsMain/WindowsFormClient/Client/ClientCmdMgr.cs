@@ -48,6 +48,9 @@ namespace WindowsFormClient.Client
                 case (int)CommandConst.SubCommandServer.WindowsList:
                     implementor = new Command.ServerWndsAttrCmdImpl(client);
                     break;
+                case (int)CommandConst.SubCommandServer.ViewingArea:
+                    implementor = new Command.ServerViewingAreaCmdImpl(client);
+                    break;
                 default:
                     break;
             }

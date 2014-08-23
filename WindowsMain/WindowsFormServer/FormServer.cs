@@ -219,7 +219,8 @@ namespace WindowsFormClient
                     formUser.Password = (string)row.Cells[4].Value;
                     formUser.SelectedGroupName = (string)row.Cells[5].Value;
 
-                    if (formUser.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    if (formUser.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
+                        formUser.IsDirty)
                     {
                         // add to database
                         userPresenter.EditUser(userId, formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
@@ -297,7 +298,8 @@ namespace WindowsFormClient
                     formGroup.SetSelectedApplications(groupPresenter.GetApplicationsId(groupId));
                     formGroup.MonitorId = groupPresenter.GetMonitorId(groupId);
 
-                    if (formGroup.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    if (formGroup.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
+                        formGroup.IsDirty)
                     {
                         // add to database
                         groupPresenter.EditGroup(
@@ -348,8 +350,8 @@ namespace WindowsFormClient
                 // add to database
                 applicationPresenter.AddApplication(
                     fromApp.DisplayName,
-                    fromApp.Arguments,
                     fromApp.ExecutablePath,
+                    fromApp.Arguments,
                     fromApp.PositionLeft,
                     fromApp.PositionTop,
                     fromApp.PositionLeft + fromApp.Width,
@@ -387,14 +389,15 @@ namespace WindowsFormClient
                     formApp.Width = right - left;
                     formApp.Height = bottom - top;
 
-                    if (formApp.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    if (formApp.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
+                        formApp.IsDirty)
                     {
                         // add to database
                         applicationPresenter.EditApplication(
                             appId,
                             formApp.DisplayName,
-                            formApp.Arguments,
                             formApp.ExecutablePath,
+                            formApp.Arguments,
                             formApp.PositionLeft,
                             formApp.PositionTop,
                             formApp.PositionLeft + formApp.Width,
@@ -473,7 +476,8 @@ namespace WindowsFormClient
                     formMonitor.Width = right - left;
                     formMonitor.Height = bottom - top;
 
-                    if (formMonitor.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    if (formMonitor.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
+                        formMonitor.IsDirty)
                     {
                         // add to database
                         monitorPresenter.EditMonitor(

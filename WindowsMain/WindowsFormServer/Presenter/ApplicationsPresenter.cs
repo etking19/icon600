@@ -97,7 +97,7 @@ namespace WindowsFormClient.Presenter
 
         public void EditApplication(int appId, string appName, string exePath, string arguments, int left, int top, int right, int bottom)
         {
-            Server.ServerDbHelper.GetInstance().EditApplication(appId, appName, arguments, exePath, left, top, right, bottom);
+            Server.ServerDbHelper.GetInstance().EditApplication(appId, appName, exePath, arguments, left, top, right, bottom);
         }
     }
 }

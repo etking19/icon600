@@ -14,7 +14,13 @@ namespace WindowsFormClient
         /// </summary>
         /// <param name="user"></param>
         /// <param name="layout"></param>
-        void RefreshLayout(UserInfoModel user, ServerLayoutModel layout);
+        void RefreshLayout(UserInfoModel user, ServerLayoutModel layout, WindowsModel viewingArea);
+
+        /// <summary>
+        /// Allowed viewing area changed
+        /// </summary>
+        /// <param name="viewingArea"></param>
+        void RefreshViewingArea(WindowsModel viewingArea);
 
         /// <summary>
         /// Allowed application list set by server during user management

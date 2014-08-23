@@ -50,15 +50,17 @@ namespace WindowsFormClient.Command
                     Width=maxPosX-minPosX, 
                     Height=maxPosY-minPosY
                 },
-                ViewingArea = new WindowsModel() 
-                { 
-                    PosLeft = loginData.ViewingArea.LeftPos, 
-                    PosTop = loginData.ViewingArea.TopPos, 
-                    Width = loginData.ViewingArea.RightPos - loginData.ViewingArea.LeftPos,
-                    Height = loginData.ViewingArea.BottomPos - loginData.ViewingArea.TopPos
-                },
+                
                 LayoutColumn = loginData.ServerLayout.MatrixCol,
                 LayoutRow = loginData.ServerLayout.MatrixRow,
+            };
+
+            WindowsModel viewingArea = new WindowsModel()
+            {
+                PosLeft = loginData.ViewingArea.LeftPos,
+                PosTop = loginData.ViewingArea.TopPos,
+                Width = loginData.ViewingArea.RightPos - loginData.ViewingArea.LeftPos,
+                Height = loginData.ViewingArea.BottomPos - loginData.ViewingArea.TopPos
             };
 
             // save to settings
@@ -67,10 +69,10 @@ namespace WindowsFormClient.Command
             ServerSettings.GetInstance().DesktopWidth = layoutInfo.DesktopLayout.Width;
             ServerSettings.GetInstance().DesktopHeight = layoutInfo.DesktopLayout.Height;
 
-            ServerSettings.GetInstance().ViewingAreaLeft = layoutInfo.ViewingArea.PosLeft;
-            ServerSettings.GetInstance().ViewingAreaTop = layoutInfo.ViewingArea.PosTop;
-            ServerSettings.GetInstance().ViewingAreaWidth = layoutInfo.ViewingArea.Width;
-            ServerSettings.GetInstance().ViewingAreaHeight = layoutInfo.ViewingArea.Height;
+            ServerSettings.GetInstance().ViewingAreaLeft = viewingArea.PosLeft;
+            ServerSettings.GetInstance().ViewingAreaTop = viewingArea.PosTop;
+            ServerSettings.GetInstance().ViewingAreaWidth = viewingArea.Width;
+            ServerSettings.GetInstance().ViewingAreaHeight = viewingArea.Height;
 
             ServerSettings.GetInstance().DesktopRow = layoutInfo.LayoutRow;
             ServerSettings.GetInstance().DesktopColumn = layoutInfo.LayoutColumn;
@@ -79,7 +81,7 @@ namespace WindowsFormClient.Command
             UserSettings.GetInstance().DisplayName = userInfo.DisplayName;
 
             // update the gui
-            client.RefreshLayout(userInfo, layoutInfo);
+            client.RefreshLayout(userInfo, layoutInfo, viewingArea);
 
             // update the application priviledge
             ServerAppStatusCmdImpl appCmdImpl = new ServerAppStatusCmdImpl(client);

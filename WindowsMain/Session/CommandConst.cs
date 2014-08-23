@@ -30,6 +30,7 @@ namespace Session
             // UserPriviledge
             ApplicationList = 201,
             Maintenance = 202,
+            ViewingArea = 203,
             
             // User Presents
             PresetList = 300,

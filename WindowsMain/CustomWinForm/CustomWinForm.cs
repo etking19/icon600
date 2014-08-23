@@ -42,6 +42,8 @@ namespace CustomWinForm
             } 
         }
 
+        private Size currentSize { get; set; }
+
         public CustomWinForm(int id, Int32 style)
         {
             InitializeComponent();
@@ -57,6 +59,7 @@ namespace CustomWinForm
 
         public void SetWindowSize(Size newSize)
         {
+            currentSize = newSize;
             NativeMethods.SetWindowPos(this.Handle, 0, 0, 0, newSize.Width, newSize.Height, (Int32)(Constant.SWP_NOMOVE));
         }
 
@@ -67,11 +70,7 @@ namespace CustomWinForm
 
         private void onSizeChangedEvt(object sender, EventArgs e)
         {
-            Trace.WriteLine(String.Format("sizeChangedEvt- id:{0} size:{1}", Id, this.Size));
-            if (onDelegateSizeChangedEvt != null)
-            {
-                onDelegateSizeChangedEvt(this, this.Size);
-            }        
+                 
         }
 
         private void onLocationChanged(object sender, EventArgs e)
@@ -149,7 +148,19 @@ namespace CustomWinForm
 
         private void CustomWinForm_Load(object sender, EventArgs e)
         {
+            this.Resize += CustomWinForm_Resize;
+        }
 
+        void CustomWinForm_Resize(object sender, EventArgs e)
+        {
+            if (currentSize != this.Size)
+            {
+                Trace.WriteLine(String.Format("sizeChangedEvt- id:{0} size:{1}", Id, this.Size));
+                if (onDelegateSizeChangedEvt != null)
+                {
+                    onDelegateSizeChangedEvt(this, this.Size);
+                }   
+            }
         }
     }
 }

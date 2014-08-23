@@ -1,4 +1,6 @@
-﻿using Session.Connection;
+﻿using Session;
+using Session.Connection;
+using Session.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -73,7 +75,22 @@ namespace WindowsFormClient.Presenter
             {
                 foreach (string userSocketId in usersList)
                 {
-                    connectionMgr.RemoveClient(userSocketId);
+                    //connectionMgr.RemoveClient(userSocketId);
+
+                    ServerViewingAreaStatus viewingAreaCmd = new ServerViewingAreaStatus()
+                    {
+                        ViewingArea = new Session.Data.SubData.MonitorInfo()
+                        {
+                            LeftPos = left,
+                            TopPos = top,
+                            RightPos = right,
+                            BottomPos = bottom
+                        },
+                    };
+                    connectionMgr.SendData((int)CommandConst.MainCommandServer.UserPriviledge,
+                    (int)CommandConst.SubCommandServer.ViewingArea,
+                    viewingAreaCmd,
+                    new List<string> { userSocketId }); 
                 }
             }
         }

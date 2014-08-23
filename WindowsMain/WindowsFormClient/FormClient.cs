@@ -57,6 +57,7 @@ namespace WindowsFormClient
 
         private delegate void DelegateVncList(IList<Client.Model.VncModel> vncList);
         private delegate void DelegatePresetList(IList<Client.Model.PresetModel> presetList);
+        private delegate void DelegateMaintenanceStatus(Client.Model.UserPriviledgeModel priviledge);
 
         public FormClient(ConnectionManager mgr, string username, string password)
         {
@@ -416,7 +417,8 @@ namespace WindowsFormClient
                     mode = Presenter.ClientPresenter.ServerMaintenanceMode.Standby;
                     break;
                 default:
-                    break;
+                    // close without action
+                    return;
             }
 
             clientPresenter.ServerMaintenance(mode);
@@ -447,13 +449,24 @@ namespace WindowsFormClient
         }
 
 
-        public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout)
+        public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout, WindowsModel viewingArea)
         {
-            holder.ReferenceXPos = layout.ViewingArea.PosLeft;
-            holder.ReferenceYPos = layout.ViewingArea.PosTop;
-            holder.VirtualSize = new Size(layout.ViewingArea.Width, layout.ViewingArea.Height);
+            holder.ReferenceXPos = viewingArea.PosLeft;
+            holder.ReferenceYPos = viewingArea.PosTop;
+            holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
 
             holder.RefreshLayout();
+        }
+
+        public void RefreshViewingArea(WindowsModel viewingArea)
+        {
+            holder.ReferenceXPos = viewingArea.PosLeft;
+            holder.ReferenceYPos = viewingArea.PosTop;
+            holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
+
+            // need to use force as changing the virtual member will auto change the scale as well
+            // no invalidation happen when the old scale same as new scale when calling normal refresh method
+            holder.ForceRefreshLayout();
         }
 
         public void RefreshAppList(IList<Client.Model.ApplicationModel> appList)
@@ -661,6 +674,12 @@ namespace WindowsFormClient
 
         public void RefreshMaintenanceStatus(Client.Model.UserPriviledgeModel privilegde)
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateMaintenanceStatus(RefreshMaintenanceStatus), privilegde);
+                return;
+            }
+
             buttonMaintenance.Enabled = privilegde.AllowMaintenance;
         }
 

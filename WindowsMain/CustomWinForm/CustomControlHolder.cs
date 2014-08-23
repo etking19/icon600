@@ -76,6 +76,9 @@ namespace CustomWinForm
 
         private Dictionary<int, CustomWinForm> mControlsDic;
 
+        private delegate void delegateUI();
+        private delegate void delegateAddControl(ControlAttributes controlAttr);
+
         public CustomControlHolder(Size maxSize, int relativeXpos, int relativeYPos)
         {
             InitializeComponent();
@@ -105,8 +108,14 @@ namespace CustomWinForm
 
         public void AddControl(ControlAttributes controlAttr)
         {
+            if(this.InvokeRequired)
+            {
+                this.Invoke(new delegateAddControl(AddControl), controlAttr);
+                return;
+            }
+
             CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style);
-            Trace.WriteLine("New form added: " + controlAttr.Id);
+            Trace.WriteLine(String.Format("New form added: id:{5} {0} pos:{1},{2} zorder:{3} style:{4}", controlAttr.WindowName, controlAttr.Xpos, controlAttr.Ypos, controlAttr.ZOrder, controlAttr.Style, controlAttr.Id));
 
             this.Controls.Add(winForm);
             this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
@@ -292,7 +301,37 @@ namespace CustomWinForm
 
         public void RefreshLayout()
         {
+            if(this.InvokeRequired)
+            {
+                this.Invoke(new delegateUI(RefreshLayout));
+                return;
+            }
+
             HandleSizing();
+        }
+
+        /// <summary>
+        /// force resize the layout using current setting
+        /// location might change as well
+        /// </summary>
+        public void ForceRefreshLayout()
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new delegateUI(ForceRefreshLayout));
+                return;
+            }
+
+            foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
+            {
+                // change location
+                Point ratioPoint = new Point((int)Math.Round((float)(map.Value.ActualPos.X - ReferenceXPos) * mScaleX),
+                   (int)Math.Round((float)(map.Value.ActualPos.Y - ReferenceYPos) * mScaleY));
+                map.Value.Location = ratioPoint;
+
+                // change size
+                map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
+            }
         }
 
         private void onSizeChanged(object sender, EventArgs e)
