@@ -122,6 +122,10 @@
     <Compile Include="FormVnc.Designer.cs">
       <DependentUpon>FormVnc.cs</DependentUpon>
     </Compile>
+    <Compile Include="GraphicalOverlay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GraphicalOverlay.designer.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="Presenter\ClientPresenter.cs" />
     <Compile Include="Program.cs" />

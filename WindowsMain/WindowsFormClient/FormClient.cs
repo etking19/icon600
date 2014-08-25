@@ -92,8 +92,7 @@ namespace WindowsFormClient
 
             // add the custom mimic windows holder
             holder = new CustomControlHolder(new Size(0,0), 0, 0);
-            holder.Dock = DockStyle.Fill;
-            formMimic.Controls.Add(holder);
+            formMimic.AddMimicHolder(holder);
 
             // register events from the holder
             holder.onDelegateClosedEvt += holder_onDelegateClosedEvt;
@@ -455,7 +454,15 @@ namespace WindowsFormClient
             holder.ReferenceYPos = viewingArea.PosTop;
             holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
 
+            formMimic.Row = layout.LayoutRow;
+            formMimic.Column = layout.LayoutColumn;
+            formMimic.FullSize = new Size(layout.DesktopLayout.Width, layout.DesktopLayout.Height);
+            formMimic.VisibleSize = new Size(viewingArea.Width, viewingArea.Height);
+            formMimic.ReferenceLeft = viewingArea.PosLeft;
+            formMimic.ReferenceTop = viewingArea.PosTop;
+
             holder.RefreshLayout();
+            formMimic.RefreshMatrixLayout();
         }
 
         public void RefreshViewingArea(WindowsModel viewingArea)
@@ -464,9 +471,14 @@ namespace WindowsFormClient
             holder.ReferenceYPos = viewingArea.PosTop;
             holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
 
+            formMimic.VisibleSize = new Size(viewingArea.Width, viewingArea.Height);
+            formMimic.ReferenceLeft = viewingArea.PosLeft;
+            formMimic.ReferenceTop = viewingArea.PosTop;
+
             // need to use force as changing the virtual member will auto change the scale as well
             // no invalidation happen when the old scale same as new scale when calling normal refresh method
             holder.ForceRefreshLayout();
+            formMimic.RefreshMatrixLayout();
         }
 
         public void RefreshAppList(IList<Client.Model.ApplicationModel> appList)
@@ -569,7 +581,6 @@ namespace WindowsFormClient
                 this.BeginInvoke(new DelegateWindow(AddWindow), wndPos);
                 return;
             }
-
 
             holder.AddControl(new CustomWinForm.CustomControlHolder.ControlAttributes
             {

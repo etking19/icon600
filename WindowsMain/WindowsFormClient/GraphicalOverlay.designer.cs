@@ -1,13 +1,13 @@
-﻿namespace CustomWinForm
+﻿namespace CodeProject
 {
-    partial class CustomControlHolder
+    partial class GraphicalOverlay
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -23,25 +23,14 @@
         #region Component Designer generated code
 
         /// <summary>
-        /// Required method for Designer support - do not modify 
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // CustomControlHolder
-            // 
-            this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.Margin = new System.Windows.Forms.Padding(0);
-            this.Name = "CustomControlHolder";
-            this.SizeChanged += new System.EventHandler(this.onSizeChanged);
-            this.ResumeLayout(false);
-
+            components = new System.ComponentModel.Container();
         }
 
         #endregion
-
-
     }
 }

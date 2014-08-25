@@ -23,10 +23,9 @@ namespace CustomWinForm
         public event OnControlMaximize onDelegateMinimizedEvt;
         public event OnControlRestore onDelegateRestoredEvt;
         public event OnControlClose onDelegateClosedEvt;
-
-        private Size mVirtualSize;
+        
         /// <summary>
-        /// The total resolution of the control
+        /// The total resolution of the control which allow to view set be server
         /// </summary>
         public Size VirtualSize 
         {
@@ -55,9 +54,11 @@ namespace CustomWinForm
         /// keep the current control size, used when restore called
         /// </summary>
         public Size CurrentSize { get; set; }
-
         private bool isMaximized = false;
 
+        public int MatrixRow { get; set; }
+        public int MatrixColumn { get; set; }
+        
         public struct ControlAttributes
         {
             public int Id { get; set; }
@@ -71,6 +72,8 @@ namespace CustomWinForm
             public int ZOrder { get; set; }
         }
 
+        private Size mVirtualSize;
+
         private float mScaleX = 1.0f;
         private float mScaleY = 1.0f;
 
@@ -79,9 +82,12 @@ namespace CustomWinForm
         private delegate void delegateUI();
         private delegate void delegateAddControl(ControlAttributes controlAttr);
 
+
         public CustomControlHolder(Size maxSize, int relativeXpos, int relativeYPos)
         {
             InitializeComponent();
+
+            mControlsDic = new System.Collections.Generic.Dictionary<int, CustomWinForm>();
 
             this.VirtualSize = maxSize;
             this.ReferenceXPos = relativeXpos;
@@ -400,11 +406,6 @@ namespace CustomWinForm
             {
                 map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
             }
-        }
-
-        private void CustomControlHolder_Load(object sender, EventArgs e)
-        {
-            mControlsDic = new System.Collections.Generic.Dictionary<int, CustomWinForm>();
         }
     }
 }
