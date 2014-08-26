@@ -84,7 +84,7 @@
             this.Controls.Add(this.textBoxPassword);
             this.Controls.Add(this.textBoxUsername);
             this.Name = "FormLogin";
-            this.Text = "FormLogin";
+            this.Text = "VISTROL Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLogin_Closing);
             this.Load += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);

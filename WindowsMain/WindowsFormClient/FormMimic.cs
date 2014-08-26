@@ -55,16 +55,10 @@ namespace WindowsFormClient
                 return;
             }
 
-            //this.Controls.Clear();
-            //this.Controls.Add(mHolder);
-           // mHolder.SendToBack();
-           // this.Controls.Add(referenceLayout);
-
             foreach (Panel panel in panelList)
             {
                 this.Controls.Remove(panel);
             }
-
 
             // modify the reference layout
             Rectangle referenceLayout = new Rectangle();

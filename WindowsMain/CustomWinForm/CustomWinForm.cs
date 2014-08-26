@@ -68,11 +68,6 @@ namespace CustomWinForm
             NativeMethods.SetWindowPos(this.Handle, 0, x, y, 0, 0, (Int32)(Constant.SWP_NOSIZE));
         }
 
-        private void onSizeChangedEvt(object sender, EventArgs e)
-        {
-                 
-        }
-
         private void onLocationChanged(object sender, EventArgs e)
         {
             if (onDelegatePosChangedEvt != null)
@@ -155,7 +150,6 @@ namespace CustomWinForm
         {
             if (currentSize != this.Size)
             {
-                Trace.WriteLine(String.Format("sizeChangedEvt- id:{0} size:{1}", Id, this.Size));
                 if (onDelegateSizeChangedEvt != null)
                 {
                     onDelegateSizeChangedEvt(this, this.Size);

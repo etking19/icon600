@@ -36,6 +36,8 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FormMimic";
+            this.Text = "Vistrol Server";
+            this.ToolTipText = "";
             this.Load += new System.EventHandler(this.FormMimic_Load);
             this.ResumeLayout(false);
 

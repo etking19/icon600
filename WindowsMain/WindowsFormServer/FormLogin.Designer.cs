@@ -56,7 +56,7 @@
             this.textBoxPassword.Location = new System.Drawing.Point(76, 64);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(196, 20);
-            this.textBoxPassword.TabIndex = 3;
+            this.textBoxPassword.TabIndex = 2;
             // 
             // label2
             // 
@@ -72,7 +72,7 @@
             this.buttonLogin.Location = new System.Drawing.Point(197, 109);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(75, 23);
-            this.buttonLogin.TabIndex = 4;
+            this.buttonLogin.TabIndex = 3;
             this.buttonLogin.Text = "Login";
             this.buttonLogin.UseVisualStyleBackColor = true;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
@@ -88,7 +88,7 @@
             this.Controls.Add(this.textBoxUsername);
             this.Controls.Add(this.label1);
             this.Name = "FormLogin";
-            this.Text = "FormLogin";
+            this.Text = "VISTROL Server";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormLogin_Closed);
             this.Load += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);

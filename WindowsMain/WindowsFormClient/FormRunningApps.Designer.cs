@@ -48,7 +48,7 @@
             this.Controls.Add(this.listBoxApps);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FormRunningApps";
-            this.Text = "FormRunningApps";
+            this.Text = "Running Applications";
             this.Load += new System.EventHandler(this.FormRunningApps_Load);
             this.ResumeLayout(false);
 

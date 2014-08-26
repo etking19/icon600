@@ -47,7 +47,7 @@
             this.buttonOK.Location = new System.Drawing.Point(116, 219);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 1;
+            this.buttonOK.TabIndex = 2;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -57,7 +57,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(197, 219);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 2;
+            this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -76,7 +76,7 @@
             this.checkedListBoxApp.Location = new System.Drawing.Point(15, 38);
             this.checkedListBoxApp.Name = "checkedListBoxApp";
             this.checkedListBoxApp.Size = new System.Drawing.Size(257, 169);
-            this.checkedListBoxApp.TabIndex = 4;
+            this.checkedListBoxApp.TabIndex = 1;
             // 
             // FormAddPreset
             // 
@@ -88,7 +88,9 @@
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.textBoxName);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormAddPreset";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Preset";
             this.Load += new System.EventHandler(this.FormAddPreset_Load);
             this.ResumeLayout(false);

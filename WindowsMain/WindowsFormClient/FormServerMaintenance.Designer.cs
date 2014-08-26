@@ -73,6 +73,7 @@
             this.Controls.Add(this.buttonShutdown);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormServerMaintenance";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Server Maintenance";
             this.Load += new System.EventHandler(this.FormServerMaintenance_Load);
             this.ResumeLayout(false);

@@ -539,7 +539,11 @@ namespace WindowsFormClient
 
         private void onFormClosed(object sender, FormClosedEventArgs e)
         {
-            vncClient.StopAllClients();
+            if (vncClient != null)
+            {
+                vncClient.StopAllClients();
+            }
+            
             connectionMgr.StopServer();
             connectionPresenter.Dispose();
         }

@@ -47,7 +47,7 @@
             this.comboBoxGroup.Location = new System.Drawing.Point(93, 90);
             this.comboBoxGroup.Name = "comboBoxGroup";
             this.comboBoxGroup.Size = new System.Drawing.Size(279, 21);
-            this.comboBoxGroup.TabIndex = 0;
+            this.comboBoxGroup.TabIndex = 4;
             // 
             // textBoxDisplayName
             // 
@@ -111,7 +111,7 @@
             this.buttonOK.Location = new System.Drawing.Point(216, 331);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 8;
+            this.buttonOK.TabIndex = 5;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -121,7 +121,7 @@
             this.buttonCancel.Location = new System.Drawing.Point(297, 331);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 9;
+            this.buttonCancel.TabIndex = 6;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -143,6 +143,7 @@
             this.Controls.Add(this.comboBoxGroup);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormUser";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormUser";
             this.ResumeLayout(false);
             this.PerformLayout();

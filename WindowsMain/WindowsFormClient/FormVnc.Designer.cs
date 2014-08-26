@@ -48,7 +48,7 @@
             this.Controls.Add(this.listBoxVnc);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "FormVnc";
-            this.Text = "FormVnc";
+            this.Text = "VNC Servers";
             this.Load += new System.EventHandler(this.FormVnc_Load);
             this.ResumeLayout(false);
 

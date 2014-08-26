@@ -32,7 +32,7 @@ namespace WindowsFormClient
             presetName = textBoxName.Text;
             if (presetName.Length == 0)
             {
-                MessageBox.Show("Invalid input.");
+                textBoxName.BackColor = Color.Red;
                 this.DialogResult = DialogResult.None;
                 return;
             }

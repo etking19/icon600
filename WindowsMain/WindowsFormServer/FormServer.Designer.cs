@@ -662,6 +662,7 @@
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.tabControl);
             this.Name = "FormServer";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Vistrol Server";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.onFormClosed);
             this.Load += new System.EventHandler(this.onFormLoad);

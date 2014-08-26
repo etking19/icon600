@@ -43,7 +43,6 @@
             this.Size = new System.Drawing.Size(248, 248);
             this.Load += new System.EventHandler(this.CustomWinForm_Load);
             this.LocationChanged += new System.EventHandler(this.onLocationChanged);
-            this.SizeChanged += new System.EventHandler(this.onSizeChangedEvt);
             this.ResumeLayout(false);
 
         }

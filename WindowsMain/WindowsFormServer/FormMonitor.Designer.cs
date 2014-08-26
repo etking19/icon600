@@ -56,14 +56,14 @@
             this.textBoxDisplayName.Location = new System.Drawing.Point(93, 12);
             this.textBoxDisplayName.Name = "textBoxDisplayName";
             this.textBoxDisplayName.Size = new System.Drawing.Size(279, 20);
-            this.textBoxDisplayName.TabIndex = 5;
+            this.textBoxDisplayName.TabIndex = 1;
             // 
             // buttonCancel
             // 
             this.buttonCancel.Location = new System.Drawing.Point(297, 331);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 11;
+            this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
@@ -73,7 +73,7 @@
             this.buttonOK.Location = new System.Drawing.Point(216, 331);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 10;
+            this.buttonOK.TabIndex = 6;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
@@ -92,7 +92,7 @@
             this.textBoxX.Location = new System.Drawing.Point(93, 48);
             this.textBoxX.Name = "textBoxX";
             this.textBoxX.Size = new System.Drawing.Size(60, 20);
-            this.textBoxX.TabIndex = 12;
+            this.textBoxX.TabIndex = 2;
             this.textBoxX.Text = "0";
             // 
             // textBoxY
@@ -100,7 +100,7 @@
             this.textBoxY.Location = new System.Drawing.Point(256, 48);
             this.textBoxY.Name = "textBoxY";
             this.textBoxY.Size = new System.Drawing.Size(60, 20);
-            this.textBoxY.TabIndex = 14;
+            this.textBoxY.TabIndex = 3;
             this.textBoxY.Text = "0";
             // 
             // label3
@@ -117,7 +117,7 @@
             this.textBoxWidth.Location = new System.Drawing.Point(93, 74);
             this.textBoxWidth.Name = "textBoxWidth";
             this.textBoxWidth.Size = new System.Drawing.Size(60, 20);
-            this.textBoxWidth.TabIndex = 16;
+            this.textBoxWidth.TabIndex = 4;
             this.textBoxWidth.Text = "0";
             // 
             // label4
@@ -134,7 +134,7 @@
             this.textBoxHeight.Location = new System.Drawing.Point(256, 74);
             this.textBoxHeight.Name = "textBoxHeight";
             this.textBoxHeight.Size = new System.Drawing.Size(60, 20);
-            this.textBoxHeight.TabIndex = 18;
+            this.textBoxHeight.TabIndex = 5;
             this.textBoxHeight.Text = "0";
             // 
             // label5
@@ -165,6 +165,7 @@
             this.Controls.Add(this.textBoxDisplayName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormMonitor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormMonitor";
             this.Load += new System.EventHandler(this.FormMonitor_Load);
             this.ResumeLayout(false);

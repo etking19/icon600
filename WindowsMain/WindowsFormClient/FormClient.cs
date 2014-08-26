@@ -52,12 +52,14 @@ namespace WindowsFormClient
         /// <param name="username"></param>
         /// <param name="password"></param>
         private List<Client.Model.WindowsModel> applicationList = new List<Client.Model.WindowsModel>();
-        private delegate void DelegateWindow(Client.Model.WindowsModel wndPos);
-        private delegate void DelegateEvt();
 
+        private delegate void DelegateUI();
+        private delegate void DelegateWndChange(IList<Client.Model.WindowsModel> wndsList);
         private delegate void DelegateVncList(IList<Client.Model.VncModel> vncList);
         private delegate void DelegatePresetList(IList<Client.Model.PresetModel> presetList);
         private delegate void DelegateMaintenanceStatus(Client.Model.UserPriviledgeModel priviledge);
+        private delegate void DelegateRefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout, WindowsModel viewingArea);
+        private delegate void DelegateRefreshViewArea(WindowsModel viewingArea);
 
         public FormClient(ConnectionManager mgr, string username, string password)
         {
@@ -70,7 +72,6 @@ namespace WindowsFormClient
 
         private void FormClient_Load(object sender, EventArgs e)
         {
-            this.ResizeEnd += FormClient_ResizeEnd;
             this.SizeChanged += FormClient_SizeChanged;
 
             this.IsMdiContainer = true;
@@ -164,9 +165,12 @@ namespace WindowsFormClient
             base.WndProc(ref m);
         }
 
-        void FormClient_ResizeEnd(object sender, EventArgs e)
+        void formMimic_SizeChanged(object sender, EventArgs e)
         {
-            holder.RefreshLayout();
+            if (holder != null)
+            {
+                holder.RefreshLayout();
+            }
         }
 
         void holder_onDelegateSizeChangedEvt(int id, Size newSize)
@@ -219,6 +223,7 @@ namespace WindowsFormClient
             formMimic.CloseButtonVisible = false;
             formMimic.DockAreas = DockAreas.Document;
             formMimic.AllowDrop = true;
+            formMimic.SizeChanged += formMimic_SizeChanged;
             formMimic.DragEnter += formMimic_DragEnter;
             formMimic.DragDrop += formMimic_DragDrop;
         }
@@ -450,6 +455,12 @@ namespace WindowsFormClient
 
         public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout, WindowsModel viewingArea)
         {
+            if(this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateRefreshLayout(RefreshLayout), user, layout, viewingArea);
+                return;
+            }
+
             holder.ReferenceXPos = viewingArea.PosLeft;
             holder.ReferenceYPos = viewingArea.PosTop;
             holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
@@ -462,11 +473,19 @@ namespace WindowsFormClient
             formMimic.ReferenceTop = viewingArea.PosTop;
 
             holder.RefreshLayout();
+
+            formMimic.Text = user.DisplayName;
             formMimic.RefreshMatrixLayout();
         }
 
         public void RefreshViewingArea(WindowsModel viewingArea)
         {
+            if(this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateRefreshViewArea(RefreshViewingArea), viewingArea);
+                return;
+            }
+
             holder.ReferenceXPos = viewingArea.PosLeft;
             holder.ReferenceYPos = viewingArea.PosTop;
             holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
@@ -488,6 +507,12 @@ namespace WindowsFormClient
 
         public void RefreshWndList(IList<Client.Model.WindowsModel> wndsList)
         {
+            if(this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateWndChange(RefreshWndList), wndsList);
+                return;
+            }
+
             // find difference with current list and updated list
 
             List<Client.Model.WindowsModel> tempList = new List<Client.Model.WindowsModel>(wndsList);
@@ -565,7 +590,7 @@ namespace WindowsFormClient
 
             if (refreshAppList)
             {
-                this.Invoke(new DelegateEvt(refreshAppListing));
+                refreshAppListing();
             }
         }
 
@@ -576,12 +601,6 @@ namespace WindowsFormClient
 
         private void AddWindow(Client.Model.WindowsModel wndPos)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(AddWindow), wndPos);
-                return;
-            }
-
             holder.AddControl(new CustomWinForm.CustomControlHolder.ControlAttributes
             {
                 Id = wndPos.WindowsId,
@@ -597,67 +616,31 @@ namespace WindowsFormClient
 
         private void RemoveWindow(Client.Model.WindowsModel wndPos)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(RemoveWindow), wndPos);
-                return;
-            }
-
             holder.RemoveControl(wndPos.WindowsId);
         }
 
         private void ChangeWindowName(Client.Model.WindowsModel wndPos)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowName), wndPos);
-                return;
-            }
-
             holder.ChangeControlName(wndPos.WindowsId, wndPos.DisplayName);
         }
 
         private void ChangeWindowPos(Client.Model.WindowsModel wndPos)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowPos), wndPos);
-                return;
-            }
-
             holder.ChangeControlPos(wndPos.WindowsId, new Point(wndPos.PosLeft, wndPos.PosTop));
         }
 
         private void ChangeWindowSize(Client.Model.WindowsModel wndPos)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowSize), wndPos);
-                return;
-            }
-
             holder.ChangeControlSize(wndPos.WindowsId, new Size(wndPos.Width, wndPos.Height));
         }
 
         private void ChangeWindowStyle(Client.Model.WindowsModel wndPos)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowStyle), wndPos);
-                return;
-            }
-
             holder.ChangeControlStyle(wndPos.WindowsId, wndPos.Style);
         }
 
         private void ChangeWindowZOrder(Client.Model.WindowsModel wndPos)
         {
-            if (this.InvokeRequired)
-            {
-                this.BeginInvoke(new DelegateWindow(ChangeWindowZOrder), wndPos);
-                return;
-            }
-
             holder.ChangeControlZOrder(wndPos.WindowsId, wndPos.ZOrder);
         }
 
@@ -710,7 +693,7 @@ namespace WindowsFormClient
         {
             if(this.InvokeRequired)
             {
-                this.BeginInvoke(new DelegateEvt(CloseApplication));
+                this.BeginInvoke(new DelegateUI(CloseApplication));
                 return;
             }
 

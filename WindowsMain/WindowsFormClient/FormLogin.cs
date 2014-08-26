@@ -23,6 +23,8 @@ namespace WindowsFormClient
 
         private void FormLogin_Load(object sender, EventArgs e)
         {
+            this.AcceptButton = buttonLogin;
+
             textBoxServerIp.Text = Properties.Settings.Default.ServerIp;
             textBoxServerPort.Text = Properties.Settings.Default.ServerPort;
         }

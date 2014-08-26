@@ -47,6 +47,8 @@ namespace WindowsFormClient
         {
             // initialize database
             Server.ServerDbHelper.GetInstance().Initialize();
+
+            this.AcceptButton = buttonLogin;
         }
 
         private void FormLogin_Closed(object sender, FormClosedEventArgs e)

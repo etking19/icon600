@@ -68,7 +68,7 @@
             this.textBoxDisplayName.Location = new System.Drawing.Point(93, 12);
             this.textBoxDisplayName.Name = "textBoxDisplayName";
             this.textBoxDisplayName.Size = new System.Drawing.Size(279, 20);
-            this.textBoxDisplayName.TabIndex = 7;
+            this.textBoxDisplayName.TabIndex = 1;
             // 
             // groupBox1
             // 
@@ -90,7 +90,7 @@
             this.comboBoxWindows.Location = new System.Drawing.Point(41, 161);
             this.comboBoxWindows.Name = "comboBoxWindows";
             this.comboBoxWindows.Size = new System.Drawing.Size(287, 21);
-            this.comboBoxWindows.TabIndex = 3;
+            this.comboBoxWindows.TabIndex = 11;
             this.comboBoxWindows.SelectedIndexChanged += new System.EventHandler(this.comboBoxWindows_SelectedIndexChanged);
             // 
             // groupBox2
@@ -114,7 +114,7 @@
             this.textBoxHeight.Location = new System.Drawing.Point(240, 45);
             this.textBoxHeight.Name = "textBoxHeight";
             this.textBoxHeight.Size = new System.Drawing.Size(60, 20);
-            this.textBoxHeight.TabIndex = 26;
+            this.textBoxHeight.TabIndex = 10;
             this.textBoxHeight.Text = "0";
             // 
             // textBoxX
@@ -122,7 +122,7 @@
             this.textBoxX.Location = new System.Drawing.Point(77, 19);
             this.textBoxX.Name = "textBoxX";
             this.textBoxX.Size = new System.Drawing.Size(60, 20);
-            this.textBoxX.TabIndex = 20;
+            this.textBoxX.TabIndex = 7;
             this.textBoxX.Text = "0";
             // 
             // label5
@@ -148,7 +148,7 @@
             this.textBoxWidth.Location = new System.Drawing.Point(77, 47);
             this.textBoxWidth.Name = "textBoxWidth";
             this.textBoxWidth.Size = new System.Drawing.Size(60, 20);
-            this.textBoxWidth.TabIndex = 24;
+            this.textBoxWidth.TabIndex = 9;
             this.textBoxWidth.Text = "0";
             // 
             // label3
@@ -174,7 +174,7 @@
             this.textBoxY.Location = new System.Drawing.Point(240, 19);
             this.textBoxY.Name = "textBoxY";
             this.textBoxY.Size = new System.Drawing.Size(60, 20);
-            this.textBoxY.TabIndex = 22;
+            this.textBoxY.TabIndex = 8;
             this.textBoxY.Text = "0";
             // 
             // radioButtonAuto
@@ -183,7 +183,7 @@
             this.radioButtonAuto.Location = new System.Drawing.Point(6, 137);
             this.radioButtonAuto.Name = "radioButtonAuto";
             this.radioButtonAuto.Size = new System.Drawing.Size(159, 17);
-            this.radioButtonAuto.TabIndex = 1;
+            this.radioButtonAuto.TabIndex = 5;
             this.radioButtonAuto.TabStop = true;
             this.radioButtonAuto.Text = "Detect Using Window\'s Title";
             this.radioButtonAuto.UseVisualStyleBackColor = true;
@@ -195,7 +195,7 @@
             this.radioButtonManual.Location = new System.Drawing.Point(7, 20);
             this.radioButtonManual.Name = "radioButtonManual";
             this.radioButtonManual.Size = new System.Drawing.Size(60, 17);
-            this.radioButtonManual.TabIndex = 0;
+            this.radioButtonManual.TabIndex = 5;
             this.radioButtonManual.TabStop = true;
             this.radioButtonManual.Text = "Manual";
             this.radioButtonManual.UseVisualStyleBackColor = true;
@@ -235,14 +235,14 @@
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.ReadOnly = true;
             this.textBoxPath.Size = new System.Drawing.Size(198, 20);
-            this.textBoxPath.TabIndex = 6;
+            this.textBoxPath.TabIndex = 2;
             // 
             // buttonBrowse
             // 
             this.buttonBrowse.Location = new System.Drawing.Point(297, 36);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
-            this.buttonBrowse.TabIndex = 14;
+            this.buttonBrowse.TabIndex = 3;
             this.buttonBrowse.Text = "Browse";
             this.buttonBrowse.UseVisualStyleBackColor = true;
             this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
@@ -261,7 +261,7 @@
             this.textBoxArguments.Location = new System.Drawing.Point(93, 64);
             this.textBoxArguments.Name = "textBoxArguments";
             this.textBoxArguments.Size = new System.Drawing.Size(279, 20);
-            this.textBoxArguments.TabIndex = 15;
+            this.textBoxArguments.TabIndex = 4;
             // 
             // FormApplication
             // 
@@ -280,6 +280,7 @@
             this.Controls.Add(this.textBoxDisplayName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormApplication";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormApplication";
             this.Load += new System.EventHandler(this.FormApplication_Load);
             this.groupBox1.ResumeLayout(false);
