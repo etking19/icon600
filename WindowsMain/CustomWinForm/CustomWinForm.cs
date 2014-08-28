@@ -83,7 +83,7 @@ namespace CustomWinForm
                 new SecurityPermission(SecurityPermissionFlag.UnmanagedCode).Demand();
 
                 var cp = base.CreateParams;
-                cp.Style |= this.Style;
+                cp.Style |= (int)(this.Style & 0x7FFFFFFF);     // Avoid 0x8000000 (WS_POPUP windows style)
                 
                 return cp;
             }

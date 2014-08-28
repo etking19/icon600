@@ -4,7 +4,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 
-namespace License
+namespace LicenseChecker
 {
     public class Utils
     {

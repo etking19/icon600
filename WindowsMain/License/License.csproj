@@ -7,7 +7,7 @@
     <ProjectGuid>{37B5E272-8D1D-4635-9F82-FC03F69F223B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>License</RootNamespace>
+    <RootNamespace>LicenseChecker</RootNamespace>
     <AssemblyName>License</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -47,22 +47,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Encryptor.cs" />
     <Compile Include="FormLicense.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormLicense.Designer.cs">
       <DependentUpon>FormLicense.cs</DependentUpon>
     </Compile>
-    <Compile Include="LicenseChecker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormLicense.resx">
       <DependentUpon>FormLicense.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LicenseChecker\LicenseChecker.csproj">
+      <Project>{02574fe0-d383-4ebb-8422-77c1cd324fba}</Project>
+      <Name>LicenseChecker</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

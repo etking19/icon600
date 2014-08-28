@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace License
+namespace LicenseChecker
 {
     public class LicenseChecker
     {
+        public const string LICENSE_FILE_NAME = "VostrolLicense.dat";
+
         public delegate void LicenseStatusDelegate(LicenseChecker checker, bool isValid);
         public event LicenseStatusDelegate EvtLicenseCheckStatus = null;
 

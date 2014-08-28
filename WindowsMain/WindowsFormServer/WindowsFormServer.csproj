@@ -43,6 +43,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command\BaseImplementer.cs" />
@@ -72,6 +73,12 @@
     </Compile>
     <Compile Include="FormGroup.Designer.cs">
       <DependentUpon>FormGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLicense.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLicense.Designer.cs">
+      <DependentUpon>FormLicense.cs</DependentUpon>
     </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
@@ -121,6 +128,9 @@
     <EmbeddedResource Include="FormGroup.resx">
       <DependentUpon>FormGroup.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormLicense.resx">
+      <DependentUpon>FormLicense.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -159,9 +169,9 @@
       <Project>{e3832688-c985-44e6-97a2-7bd33821095d}</Project>
       <Name>CustomControlHolder</Name>
     </ProjectReference>
-    <ProjectReference Include="..\License\License.csproj">
-      <Project>{37b5e272-8d1d-4635-9f82-fc03f69f223b}</Project>
-      <Name>License</Name>
+    <ProjectReference Include="..\LicenseChecker\LicenseChecker.csproj">
+      <Project>{02574fe0-d383-4ebb-8422-77c1cd324fba}</Project>
+      <Name>LicenseChecker</Name>
     </ProjectReference>
     <ProjectReference Include="..\Session\Session.csproj">
       <Project>{581e484c-e477-4201-8fdd-a5461be0eec9}</Project>
@@ -183,6 +193,10 @@
       <Project>{4637c643-bf92-44dc-a506-718929a4d67f}</Project>
       <Name>Windows</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SystemTray.ico" />
+    <None Include="Resources\SystemTray.ico.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

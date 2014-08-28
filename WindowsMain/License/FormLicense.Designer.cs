@@ -1,4 +1,4 @@
-﻿namespace License
+﻿namespace LicenseChecker
 {
     partial class FormLicense
     {

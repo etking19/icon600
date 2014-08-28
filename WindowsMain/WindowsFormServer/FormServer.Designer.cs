@@ -34,9 +34,6 @@
             this.tabControl = new WindowsFormClient.CustomTabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.groupBoxGeneral = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBoxGeneralPath = new System.Windows.Forms.TextBox();
-            this.btnGeneralBrowse = new System.Windows.Forms.Button();
             this.textBoxGeneralMax = new System.Windows.Forms.TextBox();
             this.textBoxGeneralMin = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -75,6 +72,7 @@
             this.btnMonitorsAdd = new System.Windows.Forms.Button();
             this.dataGridViewMonitors = new System.Windows.Forms.DataGridView();
             this.tabDrivers = new System.Windows.Forms.TabPage();
+            this.notifyIconServer = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.groupBoxGeneral.SuspendLayout();
@@ -140,9 +138,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxGeneral.BackColor = System.Drawing.Color.Transparent;
-            this.groupBoxGeneral.Controls.Add(this.label4);
-            this.groupBoxGeneral.Controls.Add(this.textBoxGeneralPath);
-            this.groupBoxGeneral.Controls.Add(this.btnGeneralBrowse);
             this.groupBoxGeneral.Controls.Add(this.textBoxGeneralMax);
             this.groupBoxGeneral.Controls.Add(this.textBoxGeneralMin);
             this.groupBoxGeneral.Controls.Add(this.label3);
@@ -157,36 +152,6 @@
             this.groupBoxGeneral.Size = new System.Drawing.Size(575, 422);
             this.groupBoxGeneral.TabIndex = 16;
             this.groupBoxGeneral.TabStop = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(21, 215);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(243, 20);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "TightVNC Client Installation Path:";
-            // 
-            // textBoxGeneralPath
-            // 
-            this.textBoxGeneralPath.Location = new System.Drawing.Point(28, 249);
-            this.textBoxGeneralPath.Name = "textBoxGeneralPath";
-            this.textBoxGeneralPath.ReadOnly = true;
-            this.textBoxGeneralPath.Size = new System.Drawing.Size(453, 20);
-            this.textBoxGeneralPath.TabIndex = 10;
-            this.textBoxGeneralPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // btnGeneralBrowse
-            // 
-            this.btnGeneralBrowse.Location = new System.Drawing.Point(487, 249);
-            this.btnGeneralBrowse.Name = "btnGeneralBrowse";
-            this.btnGeneralBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnGeneralBrowse.TabIndex = 12;
-            this.btnGeneralBrowse.Text = "Browse";
-            this.btnGeneralBrowse.UseVisualStyleBackColor = true;
-            this.btnGeneralBrowse.Click += new System.EventHandler(this.btnGeneralBrowse_Click);
             // 
             // textBoxGeneralMax
             // 
@@ -655,6 +620,11 @@
             this.tabDrivers.Text = "Drivers";
             this.tabDrivers.UseVisualStyleBackColor = true;
             // 
+            // notifyIconServer
+            // 
+            this.notifyIconServer.Text = "notifyIcon";
+            this.notifyIconServer.Visible = true;
+            // 
             // FormServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -707,9 +677,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxGeneralColumn;
         private System.Windows.Forms.ComboBox comboBoxGeneralRow;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxGeneralPath;
-        private System.Windows.Forms.Button btnGeneralBrowse;
         private System.Windows.Forms.TabControl tabUsersUser;
         private System.Windows.Forms.TabPage tabPageUser;
         private System.Windows.Forms.TabPage tabPageGroup;
@@ -735,6 +702,7 @@
         private System.Windows.Forms.Button btnGeneralStart;
         private System.Windows.Forms.Button btnGeneralStop;
         private System.Windows.Forms.GroupBox groupBoxGeneral;
+        private System.Windows.Forms.NotifyIcon notifyIconServer;
 
     }
 }

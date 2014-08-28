@@ -119,15 +119,25 @@ namespace CustomWinForm
         public void AddControl(ControlAttributes controlAttr)
         {
             CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style);
-            Trace.WriteLine(String.Format("New form added: id:{5} {0} pos:{1},{2} zorder:{3} style:{4} size:{6},{7}",
+            Trace.WriteLine(String.Format("New form added: id:{5} {0} pos:{1},{2} zorder:{3} style:{4:X} size:{6},{7}",
                 controlAttr.WindowName, controlAttr.Xpos, controlAttr.Ypos, controlAttr.ZOrder, controlAttr.Style, controlAttr.Id, controlAttr.Width, controlAttr.Height));
 
             this.Controls.Add(winForm);
             this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
-            mControlsDic.Add(controlAttr.Id, winForm);
+
+            try
+            {
+                mControlsDic.Add(controlAttr.Id, winForm);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
+            
 
             winForm.SetWindowName(controlAttr.WindowName);
-            winForm.Style = controlAttr.Style;
+            winForm.Style = (int)(controlAttr.Style);
+            Trace.WriteLine(String.Format("After change style: {0:X}", winForm.Style));
 
             if ((controlAttr.Style & Constant.WS_MINIMIZE) != 0)
             {
@@ -241,6 +251,7 @@ namespace CustomWinForm
             if(mControlsDic.TryGetValue(id, out control))
             {
                 this.Controls.Remove(control);
+                mControlsDic.Remove(id);
             }
         }
 

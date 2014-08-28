@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace License
+namespace LicenseChecker
 {
     public partial class FormLicense : Form
     {
@@ -23,7 +23,7 @@ namespace License
             byte[] data = Encryptor.GetInstance().EncodeContent(textBoxIdentifier.Text);
 
             // generate a file from the string
-            if(Utils.WriteFile(@"VostrolLicense.dat", data))
+            if (Utils.WriteFile(LicenseChecker.LICENSE_FILE_NAME, data))
             {
                 btnGenerateLicence.BackColor = Color.Green;
             }

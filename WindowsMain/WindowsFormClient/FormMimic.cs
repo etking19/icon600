@@ -49,6 +49,17 @@ namespace WindowsFormClient
 
         public void RefreshMatrixLayout()
         {
+            if (VisibleSize.Width == 0 ||
+                VisibleSize.Height == 0 ||
+                FullSize.Width == 0 ||
+                FullSize.Height == 0 ||
+                Row == 0 ||
+                Column == 0)
+            {
+                return;
+            }
+
+
             if(this.InvokeRequired)
             {
                 this.Invoke(new delegateUI(RefreshMatrixLayout));

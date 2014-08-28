@@ -1,7 +1,9 @@
 ﻿using CustomUI;
 using Session.Connection;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using WindowsFormClient.Presenter;
 using WindowsFormClient.Server;
@@ -10,6 +12,9 @@ namespace WindowsFormClient
 {
     public partial class FormServer : Form, IServer
     {
+        private const string USERNAME = "username";
+        private const string PASSWORD = "password";
+
         private MainPresenter mainPresenter;
         private UsersPresenter userPresenter;
         private GroupsPresenter groupPresenter;
@@ -23,11 +28,11 @@ namespace WindowsFormClient
         private int desktopRow = 1;
         private int desktopColumn = 1;
 
-        public FormServer(ConnectionManager connectionMgr)
+        public FormServer()
         {
             InitializeComponent();
 
-            this.connectionMgr = connectionMgr;
+            this.connectionMgr = new ConnectionManager();
 
             // initialize presenters
             mainPresenter = new MainPresenter();
@@ -42,6 +47,55 @@ namespace WindowsFormClient
 
         private void onFormLoad(object sender, EventArgs e)
         {
+            // initialize database
+            Server.ServerDbHelper.GetInstance().Initialize();
+
+            string vncClientPath = mainPresenter.VncPath;
+            if (vncClientPath == String.Empty)
+            {
+                DriveInfo[] allDrives = DriveInfo.GetDrives();
+                foreach (DriveInfo d in allDrives)
+                {
+                    foreach (String vncPath in Utils.Files.DirSearch(d.RootDirectory.FullName + "Program Files", "tvnviewer.exe"))
+                    {
+                        vncClientPath = vncPath;
+                        break;
+                    }
+
+                    if (vncClientPath != String.Empty)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (vncClientPath == String.Empty)
+            {
+                MessageBox.Show("Tight VNC executable path not found." + Environment.NewLine + "Please install Tight VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+                return;
+            }
+            else
+            {
+                mainPresenter.VncPath = vncClientPath;
+            }
+
+            FormLogin formLogin = new FormLogin(USERNAME, PASSWORD);
+            System.Windows.Forms.DialogResult result = formLogin.ShowDialog(this);
+            while (result != System.Windows.Forms.DialogResult.OK)
+            {
+                result = formLogin.ShowDialog(this);
+            }
+
+            notifyIconServer.Text = "Vistrol server is offline";
+            notifyIconServer.BalloonTipTitle = "Vistrol Server";
+            notifyIconServer.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIconServer.Icon = Properties.Resources.SystemTray;
+            notifyIconServer.Visible = true;
+            notifyIconServer.DoubleClick += notifyIconServer_DoubleClick;
+
+            this.Resize += FormServer_Resize;
+
             setupDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
             setupDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
             setupDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
@@ -49,7 +103,6 @@ namespace WindowsFormClient
 
             textBoxGeneralMin.Text = mainPresenter.PortMin.ToString();
             textBoxGeneralMax.Text = mainPresenter.PortMax.ToString();
-            textBoxGeneralPath.Text = mainPresenter.VncPath;
 
             comboBoxGeneralRow.SelectedIndex = (mainPresenter.ScreenRow - 1) < 0 ? 0 : mainPresenter.ScreenRow - 1;
             comboBoxGeneralColumn.SelectedIndex = (mainPresenter.ScreenColumn - 1) < 0 ? 0 : mainPresenter.ScreenColumn - 1;
@@ -57,25 +110,30 @@ namespace WindowsFormClient
             refreshGeneralPanel();
         }
 
-        #region General
-        private void btnGeneralBrowse_Click(object sender, EventArgs e)
+        void FormServer_Resize(object sender, EventArgs e)
         {
-            // open file selection dialog
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Programs (*.exe)|*.exe";
-            fileDialog.CheckPathExists = true;
-            fileDialog.CheckFileExists = true;
-            fileDialog.Multiselect = false;
-            fileDialog.ShowReadOnly = false;
-            fileDialog.ShowHelp = false;
-            fileDialog.Title = "Browse TightVNC Client Executable";
-            fileDialog.ValidateNames = true;
-
-            if (fileDialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            if (FormWindowState.Minimized == this.WindowState)
             {
-                textBoxGeneralPath.Text = fileDialog.FileName;
+                this.Visible = false;
             }
         }
+
+        void notifyIconServer_DoubleClick(object sender, EventArgs e)
+        {
+            if(this.Visible == false)
+            {
+                FormLogin formLogin = new FormLogin(USERNAME, PASSWORD);
+                if(formLogin.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                {
+                    // show this dialog
+                    this.Visible = true;
+                    this.WindowState = FormWindowState.Normal;
+                }
+            }
+            
+        }
+
+        #region General
 
         private void btnGeneralStart_Click(object sender, EventArgs e)
         {
@@ -95,14 +153,8 @@ namespace WindowsFormClient
                 return;
             }
 
-            if (textBoxGeneralPath.Text.Length == 0)
-            {
-                MessageBox.Show("Invalid data");
-                return;
-            }
-
             // initialize vnc client
-            vncClient = new VncMarshall.Client(textBoxGeneralPath.Text);
+            vncClient = new VncMarshall.Client(mainPresenter.VncPath);
 
             // save the matrix setting
             desktopRow = comboBoxGeneralRow.SelectedIndex + 1;
@@ -110,7 +162,16 @@ namespace WindowsFormClient
 
             // start the server
             int portOpened = connectionMgr.StartServer(portMin, portMax);
+            if (portOpened == -1)
+            {
+                // error start server
+                MessageBox.Show("Error start server", "Error");
+                return;
+            }
+
+
             this.Text = String.Format("Vistrol Server (Listening Port: {0})", portOpened);
+            notifyIconServer.Text = String.Format("Vistrol server is running at port {0}", portOpened);
 
             refreshGeneralPanel();
 
@@ -119,12 +180,12 @@ namespace WindowsFormClient
             mainPresenter.PortMax = portMax;
             mainPresenter.ScreenColumn = desktopColumn;
             mainPresenter.ScreenRow = desktopRow;
-            mainPresenter.VncPath = textBoxGeneralPath.Text;
         }
 
         private void btnGeneralStop_Click(object sender, EventArgs e)
         {
             this.Text = String.Format("Vistrol Server - Offline");
+            notifyIconServer.Text = String.Format("Vistrol server is offline");
             connectionMgr.StopServer();
 
             refreshGeneralPanel();
@@ -168,6 +229,7 @@ namespace WindowsFormClient
 
             // set the data
             view.DataSource = dataSource;
+            view.Columns[1].Visible = false;        // hide the id of the database data
         }
 
         void chkHeader_OnCheckBoxClicked(DataGridView view, bool state)

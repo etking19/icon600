@@ -1,11 +1,6 @@
 ﻿using Session.Connection;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Windows.Forms;
 
 namespace WindowsFormClient
@@ -13,6 +8,7 @@ namespace WindowsFormClient
     public partial class FormLogin : Form
     {
         private ConnectionManager connectionManager;
+        private string vncServerPath = String.Empty;
 
         public FormLogin()
         {
@@ -27,6 +23,32 @@ namespace WindowsFormClient
 
             textBoxServerIp.Text = Properties.Settings.Default.ServerIp;
             textBoxServerPort.Text = Properties.Settings.Default.ServerPort;
+
+            if (Properties.Settings.Default.TightVncServerPath == String.Empty)
+            {
+                // auto search the tight vnc server
+                DriveInfo[] allDrives = DriveInfo.GetDrives();
+                foreach (DriveInfo d in allDrives)
+                {
+                    foreach (String vncPath in Utils.Files.DirSearch(d.RootDirectory.FullName + "Program Files", "tvnserver.exe"))
+                    {
+                        vncServerPath = vncPath;
+                        break;
+                    }
+
+                    if (vncServerPath != String.Empty)
+                    {
+                        break;
+                    }
+                }
+
+                if (vncServerPath == String.Empty)
+                {
+                    MessageBox.Show("Tight VNC executable path not found." + Environment.NewLine + "Please install Tight VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                    return;
+                }
+            }
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -56,6 +78,7 @@ namespace WindowsFormClient
             // save current server's ip into properties file
             Properties.Settings.Default.ServerIp = textBoxServerIp.Text;
             Properties.Settings.Default.ServerPort = textBoxServerPort.Text;
+            Properties.Settings.Default.TightVncServerPath = vncServerPath;
 
             Properties.Settings.Default.Save();
         }
