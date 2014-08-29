@@ -59,7 +59,6 @@ namespace WindowsFormClient
                 return;
             }
 
-
             if(this.InvokeRequired)
             {
                 this.Invoke(new delegateUI(RefreshMatrixLayout));

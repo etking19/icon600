@@ -84,8 +84,8 @@ namespace CustomWinForm
         /// </summary>
         private Dictionary<int, CustomWinForm> mControlsDic;
 
-        private Size mInvalidSize = new Size(-int.MaxValue, -int.MaxValue);
-        private Point mInvalidPoint = new Point(-int.MaxValue, -int.MaxValue);
+        //private Size mInvalidSize = new Size(-int.MaxValue, -int.MaxValue);
+        //private Point mInvalidPoint = new Point(-int.MaxValue, -int.MaxValue);
 
         public CustomControlHolder(Size maxSize, int relativeXpos, int relativeYPos)
         {
@@ -139,6 +139,7 @@ namespace CustomWinForm
             winForm.Style = (int)(controlAttr.Style);
             Trace.WriteLine(String.Format("After change style: {0:X}", winForm.Style));
 
+            /*
             if ((controlAttr.Style & Constant.WS_MINIMIZE) != 0)
             {
                 // application in minimize mode
@@ -149,7 +150,7 @@ namespace CustomWinForm
                 winForm.ActualPos = mInvalidPoint;
                 winForm.SetWindowLocation(mInvalidPoint.X, mInvalidPoint.Y);
             }
-            else
+            else*/
             {
                 winForm.ActualSize = new Size((int)controlAttr.Width, (int)controlAttr.Height);
                 winForm.SetWindowSize(new Size((int)Math.Round((float)controlAttr.Width * mScaleX), (int)Math.Round((float)controlAttr.Height * mScaleY)));
@@ -170,11 +171,12 @@ namespace CustomWinForm
 
         void winForm_onDelegateSizeChangedEvt(CustomWinForm winForm, Size size)
         {
+            /*
             if (winForm.ActualSize == mInvalidSize)
             {
                 Trace.WriteLine("Invalid size, previous is minimized");
                 return;
-            }
+            }*/
 
             if (onDelegateSizeChangedEvt != null)
             {
@@ -201,11 +203,12 @@ namespace CustomWinForm
 
         void winForm_onDelegatePosChangedEvt(CustomWinForm winForm, int xPos, int yPos)
         {
+            /*
             if (winForm.ActualPos == mInvalidPoint)
             {
                 Trace.WriteLine("Invalid location, previous is minimized");
                 return;
-            }
+            }*/
 
             if (onDelegatePosChangedEvt != null)
             {
@@ -336,11 +339,13 @@ namespace CustomWinForm
             }
         }
 
+        
         public void RefreshLayout()
         {
             HandleSizing();
         }
 
+        /*
         /// <summary>
         /// force resize the layout using current setting
         /// location might change as well
@@ -357,8 +362,9 @@ namespace CustomWinForm
                 // change size
                 map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
             }
-        }
+        }*/
 
+        /*
         public void SetMaximized()
         {
             // update all controls
@@ -368,12 +374,18 @@ namespace CustomWinForm
 
             foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
             {
+                // change location
+                Point ratioPoint = new Point((int)Math.Round((float)(map.Value.ActualPos.X - ReferenceXPos) * mScaleX),
+                   (int)Math.Round((float)(map.Value.ActualPos.Y - ReferenceYPos) * mScaleY));
+                map.Value.Location = ratioPoint;
+
                 map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
             }
 
             this.isMaximized = true;
-        }
+        }*/
 
+        /*
         public void SetRestore()
         {
             if (false == this.isMaximized)
@@ -388,9 +400,14 @@ namespace CustomWinForm
 
             foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
             {
+                // change location
+                Point ratioPoint = new Point((int)Math.Round((float)(map.Value.ActualPos.X - ReferenceXPos) * mScaleX),
+                   (int)Math.Round((float)(map.Value.ActualPos.Y - ReferenceYPos) * mScaleY));
+                map.Value.Location = ratioPoint;
+
                 map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
             }
-        }
+        }*/
 
         private void HandleSizing()
         {
@@ -418,8 +435,23 @@ namespace CustomWinForm
 
             foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
             {
+                // change location
+                Point ratioPoint = new Point((int)Math.Round((float)(map.Value.ActualPos.X - ReferenceXPos) * mScaleX),
+                   (int)Math.Round((float)(map.Value.ActualPos.Y - ReferenceYPos) * mScaleY));
+                map.Value.Location = ratioPoint;
+
                 map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
             }
+        }
+
+        private void CustomControlHolder_Load(object sender, EventArgs e)
+        {
+            this.SizeChanged += CustomControlHolder_SizeChanged;
+        }
+
+        void CustomControlHolder_SizeChanged(object sender, EventArgs e)
+        {
+            HandleSizing();
         }
     }
 }

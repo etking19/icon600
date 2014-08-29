@@ -69,7 +69,7 @@ namespace WindowsFormClient
 
         private void FormClient_Load(object sender, EventArgs e)
         {
-            this.SizeChanged += FormClient_SizeChanged;
+            //this.SizeChanged += FormClient_SizeChanged;
 
             this.IsMdiContainer = true;
             dockPanel.DocumentStyle = DocumentStyle.DockingMdi;
@@ -107,6 +107,7 @@ namespace WindowsFormClient
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
         }
 
+        /*
         /// <summary>
         /// get the maximized size of the control by not actually maxmized the parent
         /// </summary>
@@ -123,8 +124,9 @@ namespace WindowsFormClient
             {
                 holder.SetRestore();
             }
-        }
+        }*/
 
+        /*
         private Size getMaximizedClientSize()
         {
             var original = this.WindowState;
@@ -160,15 +162,16 @@ namespace WindowsFormClient
                 }
             }
             base.WndProc(ref m);
-        }
+        }*/
 
+        /*
         void formMimic_SizeChanged(object sender, EventArgs e)
         {
             if (holder != null)
             {
                 holder.RefreshLayout();
             }
-        }
+        }*/
 
         void holder_onDelegateSizeChangedEvt(int id, Size newSize)
         {
@@ -220,7 +223,6 @@ namespace WindowsFormClient
             formMimic.CloseButtonVisible = false;
             formMimic.DockAreas = DockAreas.Document;
             formMimic.AllowDrop = true;
-            formMimic.SizeChanged += formMimic_SizeChanged;
             formMimic.DragEnter += formMimic_DragEnter;
             formMimic.DragDrop += formMimic_DragDrop;
         }
@@ -469,7 +471,7 @@ namespace WindowsFormClient
             formMimic.ReferenceLeft = viewingArea.PosLeft;
             formMimic.ReferenceTop = viewingArea.PosTop;
 
-            holder.RefreshLayout();
+           // holder.RefreshLayout();
 
             formMimic.Text = user.DisplayName;
             formMimic.RefreshMatrixLayout();
@@ -493,7 +495,7 @@ namespace WindowsFormClient
 
             // need to use force as changing the virtual member will auto change the scale as well
             // no invalidation happen when the old scale same as new scale when calling normal refresh method
-            holder.ForceRefreshLayout();
+            holder.RefreshLayout();
             formMimic.RefreshMatrixLayout();
         }
 
