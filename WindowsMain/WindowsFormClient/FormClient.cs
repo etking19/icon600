@@ -387,7 +387,7 @@ namespace WindowsFormClient
             if (messageBox.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 // sent to server for display
-                clientPresenter.ShowMessage(messageBox.Text,
+                clientPresenter.ShowMessage(messageBox.Message,
                     messageBox.SelectedFont,
                     messageBox.SelectedColor,
                     messageBox.Duration,

@@ -11,8 +11,18 @@ namespace Session.Data
     public class ClientMessageBoxCmd : BaseCmd
     {
         public string Message { get; set; }
+
+        /// <summary>
+        /// string textFont = new SerializableFont(font).SerializeFontAttribut;
+        /// Font font = new SerializableFont() { SerializeFontAttribute = messageBoxData.TextFont }.FontValue;
+        /// </summary>
         public string TextFont { get; set; }
-        public Color TextColor { get; set; }
+
+        /// <summary>
+        /// string TextColor = System.Drawing.ColorTranslator.ToHtml(MyColorInstance);
+        /// Color MyColor = System.Drawing.ColorTranslator.FromHtml(MyColorString);
+        /// </summary>
+        public string TextColor { get; set; }
         public int Duration { get; set; }
 
         public int Left { get; set; }
@@ -63,7 +73,7 @@ public class SerializableFont
     }
 }
 
-public static class FontXmlConverter
+internal class FontXmlConverter
 {
     public static string ConvertToString(Font font)
     {
@@ -89,5 +99,35 @@ public static class FontXmlConverter
         }
         catch { System.Diagnostics.Debug.WriteLine("Unable to convert"); }
         return null;
+    }
+}
+
+internal class ColorXmlConverter
+{
+    public static string ConvertToString(Color color)
+    {
+        try
+        {
+            if (color != null)
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(typeof(Color));
+                return converter.ConvertToString(color);
+            }
+            else
+                return null;
+        }
+        catch { System.Diagnostics.Debug.WriteLine("Unable to convert color"); }
+        return null;
+    }
+
+    public static Color ConvertToColor(string colorString)
+    {
+        try
+        {
+            TypeConverter converter = TypeDescriptor.GetConverter(typeof(Color));
+            return (Color)converter.ConvertFromString(colorString);
+        }
+        catch { System.Diagnostics.Debug.WriteLine("Unable to convert color"); }
+        return new Color();
     }
 }

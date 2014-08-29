@@ -609,9 +609,8 @@ namespace WindowsFormClient
             formMessage.MessageFont = font;
             formMessage.MessageColor = color;
             formMessage.MessageDuration = duration;
-            formMessage.Location = new Point(left, top);
-            formMessage.MessageBoxSize = new Size(width, height);
             formMessage.Show(null);
+            formMessage.Location = new Point(left, top);
         }
 
         private void onFormClosed(object sender, FormClosedEventArgs e)

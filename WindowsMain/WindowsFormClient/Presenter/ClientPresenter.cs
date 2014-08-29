@@ -108,7 +108,7 @@ namespace WindowsFormClient.Presenter
             {
                 Message = text,
                 TextFont = new SerializableFont(font).SerializeFontAttribute,
-                TextColor = color,
+                TextColor = System.Drawing.ColorTranslator.ToHtml(color),
                 Duration = duration,
                 Left = left,
                 Top = top,

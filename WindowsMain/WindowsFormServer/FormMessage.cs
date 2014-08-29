@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Utils.Windows;
 
 namespace WindowsFormClient
 {
@@ -55,25 +56,21 @@ namespace WindowsFormClient
         {
             this.FormClosing += FormMessage_FormClosing;
 
-            this.BackColor = Color.Black;
-            this.Size = MessageBoxSize;
+            SizeF size = labelMessage.CreateGraphics().MeasureString(Message, MessageFont);
+            this.BackColor = Color.White;
+            this.Size = new Size((int)size.Width + 10, (int)size.Height + 10);
+            this.TopMost = true;
 
             // set the attributes for message
             labelMessage.Text = Message;
             labelMessage.Font = MessageFont;
             labelMessage.ForeColor = MessageColor;
 
-            labelMessageDuplicate.Text = Message;
-            labelMessageDuplicate.Font = MessageFont;
-            labelMessageDuplicate.ForeColor = MessageColor;
-
             // put the text on the middle vertical, left most
             int offsetX = 5;
             int locationX = offsetX;
-            int locationY = MessageBoxSize.Height / 2;
+            int locationY = offsetX;
             labelMessage.Location = new Point(locationX, locationY);
-
-            labelMessageDuplicate.Location = new Point(this.Width - offsetX, locationY);
 
             workerClose = new BackgroundWorker();
             workerClose.DoWork += workerClose_DoWork;
@@ -86,18 +83,36 @@ namespace WindowsFormClient
             workerFlying.RunWorkerAsync();
         }
 
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == Constant.WM_NCHITTEST)
+            {
+                // to allow move by clicking the window's body
+                base.WndProc(ref m);
+
+                if (m.Result.ToInt32() == (int)Constant.HitTest.Client)
+                {
+                    m.Result = new IntPtr((int)Constant.HitTest.Caption);
+                }
+
+                return;
+            }
+            base.WndProc(ref m);
+        }
+
         void workerFlying_DoWork(object sender, DoWorkEventArgs e)
         {
             while(true)
             {
                 changeLocation();
-                Thread.Sleep(1000);
+                Thread.Sleep(1000/(int)MessageFont.Size);
             }
         }
 
         void workerClose_DoWork(object sender, DoWorkEventArgs e)
         {
-            Thread.Sleep(MessageDuration);
+            Thread.Sleep(MessageDuration*1000);
 
             closeDialog();
         }
@@ -137,17 +152,17 @@ namespace WindowsFormClient
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new DelegateUI(changeLocation));
+                this.Invoke(new DelegateUI(changeLocation));
                 return;
             }
 
             Point currentLocation = labelMessage.Location;
-            currentLocation.X -= 1;
-            labelMessage.Location = currentLocation;
-
-            Point currentDuplicateLocation = labelMessageDuplicate.Location;
-            currentDuplicateLocation.X -= 1;
-            labelMessageDuplicate.Location = currentDuplicateLocation;
+            Point latestPost = new Point(currentLocation.X - 1, currentLocation.Y);
+            if (latestPost.X <= (-labelMessage.Width))
+            {
+                latestPost.X = this.Width;
+            }
+            labelMessage.Location = latestPost;
         }
     }
 }
