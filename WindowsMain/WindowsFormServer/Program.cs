@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace WindowsFormClient
@@ -13,12 +14,20 @@ namespace WindowsFormClient
 
         private delegate void DelegateUI(LicenseChecker.LicenseChecker checker, bool isValid);
 
+        static Mutex mutex = new Mutex(true, "91ba0644-90a6-4df1-89bc-188ab5a2775c");
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            if (mutex.WaitOne(TimeSpan.Zero, true) == false)
+            {
+                MessageBox.Show("Only one instance of Vistrol application allowed.");
+                return;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
