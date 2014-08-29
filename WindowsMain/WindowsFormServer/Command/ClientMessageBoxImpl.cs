@@ -23,13 +23,13 @@ namespace WindowsFormClient.Command
             }
 
             this.server.AddMessageBox(
-                messageBoxData.Message, 
-                messageBoxData.TextFont, 
-                messageBoxData.TextColor, 
-                messageBoxData.Duration, 
-                messageBoxData.Left, 
-                messageBoxData.Top, 
-                messageBoxData.Width, 
+                messageBoxData.Message,
+                new SerializableFont() { SerializeFontAttribute = messageBoxData.TextFont }.FontValue,
+                messageBoxData.TextColor,
+                messageBoxData.Duration,
+                messageBoxData.Left,
+                messageBoxData.Top,
+                messageBoxData.Width,
                 messageBoxData.Height);
         }
     }

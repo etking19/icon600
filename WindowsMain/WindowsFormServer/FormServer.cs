@@ -28,6 +28,8 @@ namespace WindowsFormClient
         private int desktopRow = 1;
         private int desktopColumn = 1;
 
+        private delegate void DelegateAddMessageBox(string message, Font font, Color color, int duration, int left, int top, int width, int height);
+
         public FormServer()
         {
             InitializeComponent();
@@ -596,7 +598,20 @@ namespace WindowsFormClient
 
         public void AddMessageBox(string message, Font font, Color color, int duration, int left, int top, int width, int height)
         {
-            throw new NotImplementedException();
+            if(this.InvokeRequired)
+            {
+                this.Invoke(new DelegateAddMessageBox(AddMessageBox), message, font, color, duration, left, top, width, height);
+                return;
+            }
+
+            FormMessage formMessage = new FormMessage();
+            formMessage.Message = message;
+            formMessage.MessageFont = font;
+            formMessage.MessageColor = color;
+            formMessage.MessageDuration = duration;
+            formMessage.Location = new Point(left, top);
+            formMessage.MessageBoxSize = new Size(width, height);
+            formMessage.Show(null);
         }
 
         private void onFormClosed(object sender, FormClosedEventArgs e)

@@ -129,9 +129,15 @@ namespace CustomWinForm
                 // to allow move by clicking the window's body
                 base.WndProc(ref m);
 
-                if ((int)m.Result == 1)
+                if (m.Result.ToInt32() == (int)Constant.HitTest.Border)
                 {
-                    m.Result = (IntPtr)2;
+                    //m.Result = new IntPtr((int)Constant.HitTest.Caption);
+                    currentSize = this.Size;
+                }
+
+                if (currentSize != this.Size)
+                {
+                    onDelegateSizeChangedEvt(this, this.Size);
                 }
 
                 return;
@@ -144,7 +150,31 @@ namespace CustomWinForm
         private void CustomWinForm_Load(object sender, EventArgs e)
         {
             this.Resize += CustomWinForm_Resize;
+            this.MouseDown += CustomWinForm_MouseDown;
+            this.MouseUp += CustomWinForm_MouseUp;
         }
+
+        void CustomWinForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            if(currentSize != this.Size)
+            {
+                onDelegateSizeChangedEvt(this, this.Size);
+            }
+        }
+
+        void CustomWinForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(this.Cursor != DefaultCursor)
+            {
+                currentSize = this.Size;
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                Utils.Windows.NativeMethods.ReleaseCapture();
+                Utils.Windows.NativeMethods.SendMessage(this.Handle, Constant.WM_NCLBUTTONDOWN, new IntPtr((int)Constant.HitTest.Caption), IntPtr.Zero);
+            }
+        }
+
 
         void CustomWinForm_Resize(object sender, EventArgs e)
         {
@@ -152,7 +182,7 @@ namespace CustomWinForm
             {
                 if (onDelegateSizeChangedEvt != null)
                 {
-                    onDelegateSizeChangedEvt(this, this.Size);
+                   // onDelegateSizeChangedEvt(this, this.Size);
                 }   
             }
         }

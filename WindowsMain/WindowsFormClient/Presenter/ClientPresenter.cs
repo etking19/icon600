@@ -107,7 +107,7 @@ namespace WindowsFormClient.Presenter
             ClientMessageBoxCmd msgBoxCmd = new ClientMessageBoxCmd()
             {
                 Message = text,
-                TextFont = font,
+                TextFont = new SerializableFont(font).SerializeFontAttribute,
                 TextColor = color,
                 Duration = duration,
                 Left = left,

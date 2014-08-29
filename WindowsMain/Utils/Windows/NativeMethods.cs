@@ -45,6 +45,9 @@ namespace Utils.Windows
             public int Attr;
         }
 
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
         [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsWindowVisible(IntPtr hWnd);

@@ -276,16 +276,16 @@ namespace CustomWinForm
                     return;
                 }
 
-                Size ratioSize = new Size((int)Math.Round((float)newSize.Width * mScaleX), 
-                    (int)Math.Round((float)newSize.Height * mScaleY));
-
-                control.ActualSize = newSize;
                 if ((control.Style & Constant.WS_MINIMIZE) != 0)
                 {
                     Trace.WriteLine("in minimize state, ignore sizing");
                     return;
                 }
 
+                Size ratioSize = new Size((int)Math.Round((float)newSize.Width * mScaleX),
+                    (int)Math.Round((float)newSize.Height * mScaleY));
+
+                control.ActualSize = newSize;
                 control.SetWindowSize(ratioSize);
             }
         }

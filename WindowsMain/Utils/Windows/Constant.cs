@@ -367,5 +367,23 @@ namespace Utils.Windows
         public const int EWX_FORCE = 0x00000004;
         public const int EWX_POWEROFF = 0x00000008;
         public const int EWX_FORCEIFHUNG = 0x00000010;
+
+        // WM_NCHITTEST
+        public enum HitTest
+        {
+            Caption = 2,
+            Transparent = -1,
+            Nowhere = 0,
+            Client = 1,
+            Left = 10,
+            Right = 11,
+            Top = 12,
+            TopLeft = 13,
+            TopRight = 14,
+            Bottom = 15,
+            BottomLeft = 16,
+            BottomRight = 17,
+            Border = 18
+        }
     }
 }
