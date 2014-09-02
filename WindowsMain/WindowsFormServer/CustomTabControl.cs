@@ -159,7 +159,9 @@ namespace WindowsFormClient
             TabPage tp;
             SolidBrush PaintBrush = new SolidBrush(BackColor);
             SolidBrush SelectedBrush = new SolidBrush(Color.White);
-            Pen BorderPen = new Pen(Color.Black);
+            Pen BorderPenBottom = new Pen(Color.FromArgb(112, 151, 180));
+            Pen BorderPenTop = new Pen(Color.FromArgb(149, 178, 199));
+            
 
             //Draw the Tabs
             for (int index = 0; index <= TabCount - 1; index++)
@@ -189,10 +191,10 @@ namespace WindowsFormClient
                 // draw the bottom line of the tab
                 if (index != 0)
                 {
-                    e.Graphics.DrawLine(BorderPen, new Point(r.Left, r.Top), new Point(r.Right, r.Top));
+                    e.Graphics.DrawLine(BorderPenTop, new Point(r.Left, r.Top), new Point(r.Right, r.Top));
                 }
                 
-                e.Graphics.DrawLine(BorderPen, new Point(r.Left, r.Bottom), new Point(r.Right, r.Bottom));
+                e.Graphics.DrawLine(BorderPenBottom, new Point(r.Left, r.Bottom), new Point(r.Right, r.Bottom));
 
                 PaintBrush.Color = tp.ForeColor;
 
@@ -248,7 +250,7 @@ namespace WindowsFormClient
                 e.Graphics.ResetTransform();
             }
 
-            BorderPen.Dispose();
+            BorderPenBottom.Dispose();
             PaintBrush.Dispose();
             SelectedBrush.Dispose();
         }

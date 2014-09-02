@@ -438,7 +438,12 @@ namespace WindowsFormClient
                     formGroup.WholeDesktop = (bool)row.Cells[3].Value;
                     formGroup.AllowMaintenance = (bool)row.Cells[4].Value;
                     formGroup.SetSelectedApplications(groupPresenter.GetApplicationsId(groupId));
-                    formGroup.MonitorId = groupPresenter.GetMonitorId(groupId);
+                    int currentMonitorId = groupPresenter.GetMonitorId(groupId);
+                    if(currentMonitorId != -1)
+                    {
+                        formGroup.MonitorId = currentMonitorId;
+                    }
+                    
 
                     if (formGroup.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
                         formGroup.IsDirty)

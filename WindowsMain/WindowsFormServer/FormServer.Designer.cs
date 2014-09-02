@@ -163,7 +163,7 @@
             this.groupBoxGeneral.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxGeneral.Name = "groupBoxGeneral";
             this.groupBoxGeneral.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxGeneral.Size = new System.Drawing.Size(657, 260);
+            this.groupBoxGeneral.Size = new System.Drawing.Size(657, 297);
             this.groupBoxGeneral.TabIndex = 16;
             this.groupBoxGeneral.TabStop = false;
             // 
@@ -464,7 +464,7 @@
             this.dataGridViewUsers.Location = new System.Drawing.Point(8, 44);
             this.dataGridViewUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewUsers.Name = "dataGridViewUsers";
-            this.dataGridViewUsers.Size = new System.Drawing.Size(655, 474);
+            this.dataGridViewUsers.Size = new System.Drawing.Size(655, 479);
             this.dataGridViewUsers.TabIndex = 1;
             // 
             // dataGridUsers
@@ -487,10 +487,10 @@
             this.tabPageGroup.Controls.Add(this.btnGroupsEdit);
             this.tabPageGroup.Controls.Add(this.btnGroupsAdd);
             this.tabPageGroup.Controls.Add(this.dataGridViewGroup);
-            this.tabPageGroup.Location = new System.Drawing.Point(4, 27);
+            this.tabPageGroup.Location = new System.Drawing.Point(4, 22);
             this.tabPageGroup.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageGroup.Name = "tabPageGroup";
-            this.tabPageGroup.Size = new System.Drawing.Size(668, 523);
+            this.tabPageGroup.Size = new System.Drawing.Size(668, 528);
             this.tabPageGroup.TabIndex = 1;
             this.tabPageGroup.Text = "Group Management";
             // 
@@ -566,7 +566,7 @@
             this.dataGridViewGroup.Location = new System.Drawing.Point(8, 44);
             this.dataGridViewGroup.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewGroup.Name = "dataGridViewGroup";
-            this.dataGridViewGroup.Size = new System.Drawing.Size(656, 474);
+            this.dataGridViewGroup.Size = new System.Drawing.Size(656, 484);
             this.dataGridViewGroup.TabIndex = 0;
             // 
             // tabApplications
@@ -692,25 +692,33 @@
             // btnMonitorsDelete
             // 
             this.btnMonitorsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMonitorsDelete.Location = new System.Drawing.Point(890, 11);
+            this.btnMonitorsDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.btnMonitorsDelete.ForeColor = System.Drawing.Color.White;
+            this.btnMonitorsDelete.Image = global::WindowsFormClient.Properties.Resources.delete;
+            this.btnMonitorsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMonitorsDelete.Location = new System.Drawing.Point(560, 11);
             this.btnMonitorsDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btnMonitorsDelete.Name = "btnMonitorsDelete";
             this.btnMonitorsDelete.Size = new System.Drawing.Size(112, 32);
             this.btnMonitorsDelete.TabIndex = 15;
             this.btnMonitorsDelete.Text = "Delete";
-            this.btnMonitorsDelete.UseVisualStyleBackColor = true;
+            this.btnMonitorsDelete.UseVisualStyleBackColor = false;
             this.btnMonitorsDelete.Click += new System.EventHandler(this.btnMonitorsDelete_Click);
             // 
             // btnMonitorsEdit
             // 
             this.btnMonitorsEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMonitorsEdit.Location = new System.Drawing.Point(766, 11);
+            this.btnMonitorsEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.btnMonitorsEdit.ForeColor = System.Drawing.Color.White;
+            this.btnMonitorsEdit.Image = global::WindowsFormClient.Properties.Resources.edit;
+            this.btnMonitorsEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnMonitorsEdit.Location = new System.Drawing.Point(440, 11);
             this.btnMonitorsEdit.Margin = new System.Windows.Forms.Padding(4);
             this.btnMonitorsEdit.Name = "btnMonitorsEdit";
             this.btnMonitorsEdit.Size = new System.Drawing.Size(112, 32);
             this.btnMonitorsEdit.TabIndex = 14;
             this.btnMonitorsEdit.Text = "Edit";
-            this.btnMonitorsEdit.UseVisualStyleBackColor = true;
+            this.btnMonitorsEdit.UseVisualStyleBackColor = false;
             this.btnMonitorsEdit.Click += new System.EventHandler(this.btnMonitorsEdit_Click);
             // 
             // btnMonitorsAdd
@@ -720,7 +728,7 @@
             this.btnMonitorsAdd.ForeColor = System.Drawing.Color.White;
             this.btnMonitorsAdd.Image = global::WindowsFormClient.Properties.Resources.Add;
             this.btnMonitorsAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitorsAdd.Location = new System.Drawing.Point(555, 11);
+            this.btnMonitorsAdd.Location = new System.Drawing.Point(320, 11);
             this.btnMonitorsAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnMonitorsAdd.Name = "btnMonitorsAdd";
             this.btnMonitorsAdd.Size = new System.Drawing.Size(112, 32);
@@ -740,7 +748,7 @@
             this.dataGridViewMonitors.Location = new System.Drawing.Point(4, 51);
             this.dataGridViewMonitors.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewMonitors.Name = "dataGridViewMonitors";
-            this.dataGridViewMonitors.Size = new System.Drawing.Size(663, 494);
+            this.dataGridViewMonitors.Size = new System.Drawing.Size(668, 494);
             this.dataGridViewMonitors.TabIndex = 12;
             // 
             // tabDrivers
