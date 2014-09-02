@@ -23,7 +23,13 @@ namespace CustomWinForm
         public event OnControlMaximize onDelegateMinimizedEvt;
         public event OnControlRestore onDelegateRestoredEvt;
         public event OnControlClose onDelegateClosedEvt;
-        
+
+        /// <summary>
+        /// keep the row and column grid view (reference size) so can perform snap to border feature
+        /// </summary>
+        private IList<int> columnGrid = null;
+        private IList<int> rowGrid = null;
+
         /// <summary>
         /// The total resolution of the control which allow to view set be server
         /// </summary>
@@ -128,6 +134,8 @@ namespace CustomWinForm
             try
             {
                 mControlsDic.Add(controlAttr.Id, winForm);
+                winForm.SetColumnSnapGrid(this.columnGrid);
+                winForm.SetRowSnapGrid(this.rowGrid);
             }
             catch (Exception e)
             {
@@ -452,6 +460,18 @@ namespace CustomWinForm
         void CustomControlHolder_SizeChanged(object sender, EventArgs e)
         {
             HandleSizing();
+        }
+
+        public void SetSnapGrid(IList<int> columnGrid, IList<int> rowGrid)
+        {
+            this.columnGrid = columnGrid;
+            this.rowGrid = rowGrid;
+
+            foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
+            {
+                map.Value.SetColumnSnapGrid(columnGrid);
+                map.Value.SetRowSnapGrid(rowGrid);
+            }
         }
     }
 }

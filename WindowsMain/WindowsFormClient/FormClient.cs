@@ -175,6 +175,10 @@ namespace WindowsFormClient
 
         void holder_onDelegateSizeChangedEvt(int id, Size newSize)
         {
+            // check if the application snap to grid
+
+
+
             clientPresenter.SetApplicationSize(id, newSize);
         }
 

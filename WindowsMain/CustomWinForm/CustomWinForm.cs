@@ -6,6 +6,7 @@ using System.Security.Permissions;
 using System.Runtime.InteropServices;
 using System.Text;
 using Utils.Windows;
+using System.Collections.Generic;
 
 namespace CustomWinForm
 {
@@ -44,11 +45,25 @@ namespace CustomWinForm
 
         private Size currentSize { get; set; }
 
+        private IList<int> columnSnapGrid = null;
+        private IList<int> rowSnapGrid = null;
+
         public CustomWinForm(int id, Int32 style)
         {
             InitializeComponent();
             this.Id = id;
             this.Style = style;
+            this.LocationChanged += CustomWinForm_LocationChanged;
+        }
+
+        void CustomWinForm_LocationChanged(object sender, EventArgs e)
+        {
+            int outLocationX;
+            int outLocationY;
+            if (performLocationSnap(this.Location.X, this.Location.Y, out outLocationX, out outLocationY))
+            {
+                this.Location = new Point(outLocationX, outLocationY);
+            }
         }
 
         public void SetWindowName(string name)
@@ -178,13 +193,100 @@ namespace CustomWinForm
 
         void CustomWinForm_Resize(object sender, EventArgs e)
         {
-            if (currentSize != this.Size)
+            // check if the size snap
+            int snapWidth;
+            int snapHeight;
+            if (performSizeSnap(this.Location.X, this.Location.Y, this.Width, this.Height, out snapWidth, out snapHeight))
             {
-                if (onDelegateSizeChangedEvt != null)
-                {
-                   // onDelegateSizeChangedEvt(this, this.Size);
-                }   
+                this.Width = snapWidth;
+                this.Height = snapHeight;
             }
+        }
+
+        public void SetColumnSnapGrid(IList<int> columnGrid)
+        {
+            this.columnSnapGrid = columnGrid;
+        }
+
+        public void SetRowSnapGrid(IList<int> rowGrid)
+        {
+            this.rowSnapGrid = rowGrid;
+        }
+
+        private bool doSnap(int pos, int edge)
+        {
+            int delta = pos - edge;
+            return delta > 0 && delta <= 10;     // within 10 pixels
+        }
+
+        private bool performSizeSnap(int xPos, int yPos, int width, int height, out int snapWidth, out int snapHeight)
+        {
+            snapWidth = width;
+            snapHeight = height;
+
+            if (columnSnapGrid == null ||
+                rowSnapGrid == null)
+            {
+                return false;
+            }
+
+            bool snap = false;
+            foreach (int column in columnSnapGrid)
+            {
+                if (doSnap(xPos + width, column))
+                {
+                    snap = true;
+                    snapWidth = column - xPos;
+                    break;
+                }
+            }
+
+            foreach (int row in rowSnapGrid)
+            {
+                if (doSnap(yPos + height, row))
+                {
+                    snap = true;
+                    snapHeight = row - yPos;
+                    break;
+                }
+            }
+
+            return snap;
+        }
+
+        private bool performLocationSnap(int xPos, int yPos, out int snapX, out int snapY)
+        {
+            snapX = xPos;
+            snapY = yPos;
+
+            if (columnSnapGrid == null ||
+                rowSnapGrid == null)
+            {
+                return false;
+            }
+
+            bool snap = false;
+            foreach (int column in columnSnapGrid)
+            {
+                if (doSnap(xPos, column))
+                {
+                    snap = true;
+                    snapX = xPos;
+                    break;
+                }
+            }
+
+            foreach (int row in rowSnapGrid)
+            {
+                if (doSnap(yPos, row))
+                {
+                    snap = true;
+                    snapY = yPos;
+                    break;
+                }
+            }
+
+            return snap;
         }
     }
 }
