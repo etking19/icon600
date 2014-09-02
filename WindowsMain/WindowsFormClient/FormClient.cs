@@ -396,6 +396,7 @@ namespace WindowsFormClient
                 clientPresenter.ShowMessage(messageBox.Message,
                     messageBox.SelectedFont,
                     messageBox.SelectedColor,
+                    messageBox.BackgroundColor,
                     messageBox.Duration,
                     messageBox.LocationX,
                     messageBox.LocationY,

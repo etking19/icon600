@@ -28,7 +28,7 @@ namespace WindowsFormClient
         private int desktopRow = 1;
         private int desktopColumn = 1;
 
-        private delegate void DelegateAddMessageBox(string message, Font font, Color color, int duration, int left, int top, int width, int height);
+        private delegate void DelegateAddMessageBox(string message, Font font, Color color, Color bgndColor, int duration, int left, int top, int width, int height);
 
         public FormServer()
         {
@@ -323,7 +323,17 @@ namespace WindowsFormClient
 
         System.Windows.Forms.DialogResult showDeleteMessageBox()
         {
-            return MessageBox.Show("Are you sure want to delete checked data?");
+            return MessageBox.Show("Are you sure want to delete checked data?" + Environment.NewLine + "Group and/or User assosiate wit");
+        }
+
+        System.Windows.Forms.DialogResult showDeleteMessageBoxMonitor()
+        {
+            return MessageBox.Show("Are you sure want to delete checked data?" + Environment.NewLine + "Groups assosiate with this monitor info will be modify to allow viewing full desktop.");
+        }
+
+        System.Windows.Forms.DialogResult showDeleteMessageBoxGroup()
+        {
+            return MessageBox.Show("Are you sure want to delete checked data?" + Environment.NewLine + "Users assosiate with this group will be deleted.");
         }
 
         #region User
@@ -465,7 +475,7 @@ namespace WindowsFormClient
 
         private void btnGroupsDelete_Click(object sender, EventArgs e)
         {
-            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBoxGroup() != System.Windows.Forms.DialogResult.OK)
             {
                 return;
             }
@@ -643,7 +653,7 @@ namespace WindowsFormClient
 
         private void btnMonitorsDelete_Click(object sender, EventArgs e)
         {
-            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBoxMonitor() != System.Windows.Forms.DialogResult.OK)
             {
                 return;
             }
@@ -659,6 +669,7 @@ namespace WindowsFormClient
             }
 
             reloadDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
+            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
         }
         #endregion
 
@@ -679,11 +690,11 @@ namespace WindowsFormClient
         }
         #endregion
 
-        public void AddMessageBox(string message, Font font, Color color, int duration, int left, int top, int width, int height)
+        public void AddMessageBox(string message, Font font, Color color, Color bgndColor, int duration, int left, int top, int width, int height)
         {
             if(this.InvokeRequired)
             {
-                this.Invoke(new DelegateAddMessageBox(AddMessageBox), message, font, color, duration, left, top, width, height);
+                this.Invoke(new DelegateAddMessageBox(AddMessageBox), message, font, color, bgndColor, duration, left, top, width, height);
                 return;
             }
 
@@ -694,6 +705,7 @@ namespace WindowsFormClient
             formMessage.MessageDuration = duration;
             formMessage.Show(null);
             formMessage.Location = new Point(left, top);
+            formMessage.BackColor = bgndColor;
         }
 
         private void onFormClosed(object sender, FormClosedEventArgs e)

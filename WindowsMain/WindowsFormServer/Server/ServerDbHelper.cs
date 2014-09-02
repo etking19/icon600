@@ -720,6 +720,7 @@ namespace WindowsFormClient.Server
             {
                 monitorId = int.Parse(row[GroupMonitor.MONITOR_ID].ToString());
             }
+            monitorData.MonitorId = monitorId;
 
             if (monitorId != -1)
             {

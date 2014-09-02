@@ -23,12 +23,15 @@ namespace Session.Data
         /// Color MyColor = System.Drawing.ColorTranslator.FromHtml(MyColorString);
         /// </summary>
         public string TextColor { get; set; }
+        public string BackgroundColor { get; set; }
+
         public int Duration { get; set; }
 
         public int Left { get; set; }
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+
     }
 }
 

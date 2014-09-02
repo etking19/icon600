@@ -26,6 +26,7 @@ namespace WindowsFormClient.Command
                 messageBoxData.Message,
                 new SerializableFont() { SerializeFontAttribute = messageBoxData.TextFont }.FontValue,
                 System.Drawing.ColorTranslator.FromHtml(messageBoxData.TextColor),
+                System.Drawing.ColorTranslator.FromHtml(messageBoxData.BackgroundColor),
                 messageBoxData.Duration,
                 messageBoxData.Left,
                 messageBoxData.Top,

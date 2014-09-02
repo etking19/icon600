@@ -100,8 +100,16 @@ namespace Session.Session
 
         public override void broadcastMessage(byte[] data)
         {
-            BasicMessage message = new BasicMessage(this._Guid, data);
-            _Client.SendAsync(message);
+            try
+            {
+                BasicMessage message = new BasicMessage(this._Guid, data);
+                _Client.SendAsync(message);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
+            
         }
 
         public override void sendMessage(byte[] data, List<string> desireReceiver)

@@ -34,6 +34,7 @@
             // labelMessage
             // 
             this.labelMessage.AutoSize = true;
+            this.labelMessage.BackColor = System.Drawing.Color.Transparent;
             this.labelMessage.Location = new System.Drawing.Point(13, 13);
             this.labelMessage.Name = "labelMessage";
             this.labelMessage.Size = new System.Drawing.Size(50, 13);
@@ -49,6 +50,7 @@
             this.Controls.Add(this.labelMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormMessage";
+            this.ShowInTaskbar = false;
             this.Load += new System.EventHandler(this.FormMessage_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

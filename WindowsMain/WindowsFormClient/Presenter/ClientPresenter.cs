@@ -102,13 +102,14 @@ namespace WindowsFormClient.Presenter
             connectionMgr.BroadcastMessage((int)CommandConst.MainCommandClient.LoginInfo, (int)CommandConst.SubCommandClient.Credential, loginCmd);
         }
 
-        public void ShowMessage(string text, Font font, Color color, int duration, int left, int top, int width, int height)
+        public void ShowMessage(string text, Font font, Color color, Color backgroundColor, int duration, int left, int top, int width, int height)
         {
             ClientMessageBoxCmd msgBoxCmd = new ClientMessageBoxCmd()
             {
                 Message = text,
                 TextFont = new SerializableFont(font).SerializeFontAttribute,
                 TextColor = System.Drawing.ColorTranslator.ToHtml(color),
+                BackgroundColor = System.Drawing.ColorTranslator.ToHtml(backgroundColor),
                 Duration = duration,
                 Left = left,
                 Top = top,

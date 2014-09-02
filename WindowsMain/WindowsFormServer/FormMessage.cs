@@ -65,6 +65,7 @@ namespace WindowsFormClient
             labelMessage.Text = Message;
             labelMessage.Font = MessageFont;
             labelMessage.ForeColor = MessageColor;
+            labelMessage.BackColor = Color.Transparent;
 
             // put the text on the middle vertical, left most
             int offsetX = 5;

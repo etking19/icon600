@@ -19,6 +19,7 @@ namespace WindowsFormClient
         private int duration;
 
         public Color SelectedColor { get; set; }
+        public Color BackgroundColor { get; set; }
         public Font SelectedFont { get; set; }
 
         public int LocationX { get { return locationX; } }
@@ -35,6 +36,7 @@ namespace WindowsFormClient
         }
 
         private FontDialog fontDialog;
+        private ColorDialog bgndColorDialog;
 
         public FormMessageBox()
         {
@@ -52,12 +54,17 @@ namespace WindowsFormClient
             SelectedFont = textBoxMessage.Font;
             SelectedColor = textBoxMessage.ForeColor;
 
+            BackgroundColor = textBoxMessage.BackColor;
+
             fontDialog = new FontDialog();
             fontDialog.ShowColor = true;
             fontDialog.ShowEffects = true;
             fontDialog.ShowApply = true;
             fontDialog.FontMustExist = true;
             fontDialog.Apply += fontDialog_Apply;
+
+            bgndColorDialog = new ColorDialog();
+            bgndColorDialog.AnyColor = true;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -107,6 +114,15 @@ namespace WindowsFormClient
             FontDialog fontDialog = (FontDialog)sender;
             textBoxMessage.Font = fontDialog.Font;
             textBoxMessage.ForeColor = fontDialog.Color;
+        }
+
+        private void buttonBgnd_Click(object sender, EventArgs e)
+        {
+            if (bgndColorDialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            {
+                BackgroundColor = bgndColorDialog.Color;
+                textBoxMessage.BackColor = BackgroundColor;
+            }
         }
 
     }

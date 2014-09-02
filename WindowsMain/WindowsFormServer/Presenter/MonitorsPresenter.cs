@@ -54,9 +54,24 @@ namespace WindowsFormClient.Presenter
             return usersSocketList;
         }
 
+        private List<WindowsFormClient.Server.ServerDbHelper.GroupData> getGroupsFromMonitorId(int monitorId)
+        {
+            List<WindowsFormClient.Server.ServerDbHelper.GroupData> groupsId = new List<WindowsFormClient.Server.ServerDbHelper.GroupData>();
+            foreach(WindowsFormClient.Server.ServerDbHelper.GroupData groupData in Server.ServerDbHelper.GetInstance().GetAllGroups())
+            {
+                if(Server.ServerDbHelper.GetInstance().GetMonitorByGroupId(groupData.id).MonitorId == monitorId)
+                {
+                    groupsId.Add(groupData);
+                }
+            }
+
+            return groupsId;
+        }
+
         public void RemoveMonitor(int monitorId)
         {
             List<string> usersList = getUsersSocketIdFromMonitorId(monitorId);
+            List<WindowsFormClient.Server.ServerDbHelper.GroupData> groupDataList = getGroupsFromMonitorId(monitorId);
 
             if(Server.ServerDbHelper.GetInstance().RemoveMonitor(monitorId))
             {
@@ -64,7 +79,23 @@ namespace WindowsFormClient.Presenter
                 {
                     connectionMgr.RemoveClient(userSocketId);
                 }
+
+                foreach (WindowsFormClient.Server.ServerDbHelper.GroupData groupData in groupDataList)
+                {
+                    Server.ServerDbHelper.GetInstance().EditGroup(groupData.id, groupData.name, true, groupData.allow_maintenance, -1, getApplicationsId(groupData.id));
+                }
             }
+        }
+
+        private List<int> getApplicationsId(int groupId)
+        {
+            List<int> appList = new List<int>();
+            foreach (WindowsFormClient.Server.ServerDbHelper.ApplicationData data in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
+            {
+                appList.Add(data.id);
+            }
+
+            return appList;
         }
 
         public void EditMonitor(int monitorId, string monitorName, int left, int top, int right, int bottom)
