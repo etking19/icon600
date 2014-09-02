@@ -67,6 +67,8 @@ namespace Session.Session
                         clientHandler.Close();
                     }
                 }
+
+                Thread.Sleep(5000);
             }
         }
 
