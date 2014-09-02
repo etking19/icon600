@@ -57,17 +57,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Location = new System.Drawing.Point(14, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 13);
+            this.label1.Size = new System.Drawing.Size(93, 16);
             this.label1.TabIndex = 8;
             this.label1.Text = "Display Name:";
             // 
             // textBoxDisplayName
             // 
-            this.textBoxDisplayName.Location = new System.Drawing.Point(93, 12);
+            this.textBoxDisplayName.Location = new System.Drawing.Point(108, 15);
+            this.textBoxDisplayName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxDisplayName.Name = "textBoxDisplayName";
-            this.textBoxDisplayName.Size = new System.Drawing.Size(279, 20);
+            this.textBoxDisplayName.Size = new System.Drawing.Size(325, 22);
             this.textBoxDisplayName.TabIndex = 1;
             // 
             // groupBox1
@@ -76,9 +77,11 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.radioButtonAuto);
             this.groupBox1.Controls.Add(this.radioButtonManual);
-            this.groupBox1.Location = new System.Drawing.Point(12, 103);
+            this.groupBox1.Location = new System.Drawing.Point(14, 127);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(357, 200);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox1.Size = new System.Drawing.Size(416, 246);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Windows Placement and Positioning";
@@ -87,9 +90,10 @@
             // 
             this.comboBoxWindows.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxWindows.FormattingEnabled = true;
-            this.comboBoxWindows.Location = new System.Drawing.Point(41, 161);
+            this.comboBoxWindows.Location = new System.Drawing.Point(48, 198);
+            this.comboBoxWindows.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.comboBoxWindows.Name = "comboBoxWindows";
-            this.comboBoxWindows.Size = new System.Drawing.Size(287, 21);
+            this.comboBoxWindows.Size = new System.Drawing.Size(334, 24);
             this.comboBoxWindows.TabIndex = 11;
             this.comboBoxWindows.SelectedIndexChanged += new System.EventHandler(this.comboBoxWindows_SelectedIndexChanged);
             // 
@@ -103,86 +107,93 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.textBoxY);
-            this.groupBox2.Location = new System.Drawing.Point(28, 43);
+            this.groupBox2.Location = new System.Drawing.Point(33, 53);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(323, 77);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox2.Size = new System.Drawing.Size(377, 95);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             // 
             // textBoxHeight
             // 
-            this.textBoxHeight.Location = new System.Drawing.Point(240, 45);
+            this.textBoxHeight.Location = new System.Drawing.Point(280, 55);
+            this.textBoxHeight.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxHeight.Name = "textBoxHeight";
-            this.textBoxHeight.Size = new System.Drawing.Size(60, 20);
+            this.textBoxHeight.Size = new System.Drawing.Size(69, 22);
             this.textBoxHeight.TabIndex = 10;
             this.textBoxHeight.Text = "0";
             // 
             // textBoxX
             // 
-            this.textBoxX.Location = new System.Drawing.Point(77, 19);
+            this.textBoxX.Location = new System.Drawing.Point(90, 23);
+            this.textBoxX.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxX.Name = "textBoxX";
-            this.textBoxX.Size = new System.Drawing.Size(60, 20);
+            this.textBoxX.Size = new System.Drawing.Size(69, 22);
             this.textBoxX.TabIndex = 7;
             this.textBoxX.Text = "0";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(173, 48);
+            this.label5.Location = new System.Drawing.Point(202, 59);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.Size = new System.Drawing.Size(49, 16);
             this.label5.TabIndex = 27;
             this.label5.Text = "Height:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 22);
+            this.label2.Location = new System.Drawing.Point(12, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
+            this.label2.Size = new System.Drawing.Size(72, 16);
             this.label2.TabIndex = 21;
             this.label2.Text = "Location X:";
             // 
             // textBoxWidth
             // 
-            this.textBoxWidth.Location = new System.Drawing.Point(77, 47);
+            this.textBoxWidth.Location = new System.Drawing.Point(90, 58);
+            this.textBoxWidth.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxWidth.Name = "textBoxWidth";
-            this.textBoxWidth.Size = new System.Drawing.Size(60, 20);
+            this.textBoxWidth.Size = new System.Drawing.Size(69, 22);
             this.textBoxWidth.TabIndex = 9;
             this.textBoxWidth.Text = "0";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(173, 22);
+            this.label3.Location = new System.Drawing.Point(202, 27);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 13);
+            this.label3.Size = new System.Drawing.Size(73, 16);
             this.label3.TabIndex = 23;
             this.label3.Text = "Location Y:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 50);
+            this.label4.Location = new System.Drawing.Point(12, 62);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(38, 13);
+            this.label4.Size = new System.Drawing.Size(46, 16);
             this.label4.TabIndex = 25;
             this.label4.Text = "Width:";
             // 
             // textBoxY
             // 
-            this.textBoxY.Location = new System.Drawing.Point(240, 19);
+            this.textBoxY.Location = new System.Drawing.Point(280, 23);
+            this.textBoxY.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxY.Name = "textBoxY";
-            this.textBoxY.Size = new System.Drawing.Size(60, 20);
+            this.textBoxY.Size = new System.Drawing.Size(69, 22);
             this.textBoxY.TabIndex = 8;
             this.textBoxY.Text = "0";
             // 
             // radioButtonAuto
             // 
             this.radioButtonAuto.AutoSize = true;
-            this.radioButtonAuto.Location = new System.Drawing.Point(6, 137);
+            this.radioButtonAuto.Location = new System.Drawing.Point(7, 169);
+            this.radioButtonAuto.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonAuto.Name = "radioButtonAuto";
-            this.radioButtonAuto.Size = new System.Drawing.Size(159, 17);
+            this.radioButtonAuto.Size = new System.Drawing.Size(188, 20);
             this.radioButtonAuto.TabIndex = 5;
             this.radioButtonAuto.TabStop = true;
             this.radioButtonAuto.Text = "Detect Using Window\'s Title";
@@ -192,9 +203,10 @@
             // radioButtonManual
             // 
             this.radioButtonManual.AutoSize = true;
-            this.radioButtonManual.Location = new System.Drawing.Point(7, 20);
+            this.radioButtonManual.Location = new System.Drawing.Point(8, 25);
+            this.radioButtonManual.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonManual.Name = "radioButtonManual";
-            this.radioButtonManual.Size = new System.Drawing.Size(60, 17);
+            this.radioButtonManual.Size = new System.Drawing.Size(68, 20);
             this.radioButtonManual.TabIndex = 5;
             this.radioButtonManual.TabStop = true;
             this.radioButtonManual.Text = "Manual";
@@ -203,71 +215,81 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(297, 331);
+            this.buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.buttonCancel.ForeColor = System.Drawing.Color.White;
+            this.buttonCancel.Location = new System.Drawing.Point(346, 407);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(87, 28);
             this.buttonCancel.TabIndex = 13;
             this.buttonCancel.Text = "Cancel";
-            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.UseVisualStyleBackColor = false;
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(216, 331);
+            this.buttonOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.buttonOK.ForeColor = System.Drawing.Color.White;
+            this.buttonOK.Location = new System.Drawing.Point(252, 407);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(87, 28);
             this.buttonOK.TabIndex = 12;
             this.buttonOK.Text = "OK";
-            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.UseVisualStyleBackColor = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 41);
+            this.label6.Location = new System.Drawing.Point(14, 50);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(32, 13);
+            this.label6.Size = new System.Drawing.Size(39, 16);
             this.label6.TabIndex = 7;
             this.label6.Text = "Path:";
             // 
             // textBoxPath
             // 
-            this.textBoxPath.Location = new System.Drawing.Point(93, 38);
+            this.textBoxPath.Location = new System.Drawing.Point(108, 47);
+            this.textBoxPath.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.ReadOnly = true;
-            this.textBoxPath.Size = new System.Drawing.Size(198, 20);
+            this.textBoxPath.Size = new System.Drawing.Size(230, 22);
             this.textBoxPath.TabIndex = 2;
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(297, 36);
+            this.buttonBrowse.Location = new System.Drawing.Point(346, 44);
+            this.buttonBrowse.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonBrowse.Name = "buttonBrowse";
-            this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
+            this.buttonBrowse.Size = new System.Drawing.Size(87, 28);
             this.buttonBrowse.TabIndex = 3;
-            this.buttonBrowse.Text = "Browse";
+            this.buttonBrowse.Text = "Browse...";
             this.buttonBrowse.UseVisualStyleBackColor = true;
             this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 67);
+            this.label7.Location = new System.Drawing.Point(14, 82);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(57, 13);
+            this.label7.Size = new System.Drawing.Size(71, 16);
             this.label7.TabIndex = 16;
             this.label7.Text = "Arguments";
             // 
             // textBoxArguments
             // 
-            this.textBoxArguments.Location = new System.Drawing.Point(93, 64);
+            this.textBoxArguments.Location = new System.Drawing.Point(108, 79);
+            this.textBoxArguments.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxArguments.Name = "textBoxArguments";
-            this.textBoxArguments.Size = new System.Drawing.Size(279, 20);
+            this.textBoxArguments.Size = new System.Drawing.Size(325, 22);
             this.textBoxArguments.TabIndex = 4;
             // 
             // FormApplication
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 366);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
+            this.ClientSize = new System.Drawing.Size(448, 450);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.textBoxArguments);
             this.Controls.Add(this.buttonBrowse);
@@ -278,7 +300,9 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxDisplayName);
+            this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormApplication";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormApplication";

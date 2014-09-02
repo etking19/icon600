@@ -1,7 +1,9 @@
 ﻿using Session.Connection;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Utils.Windows;
 
 namespace WindowsFormClient
 {
@@ -13,6 +15,7 @@ namespace WindowsFormClient
         public FormLogin()
         {
             InitializeComponent();
+
             connectionManager = new ConnectionManager();
             connectionManager.EvtConnected += connectionManager_EvtConnected;
         }
@@ -20,6 +23,7 @@ namespace WindowsFormClient
         private void FormLogin_Load(object sender, EventArgs e)
         {
             this.AcceptButton = buttonLogin;
+            this.CancelButton = buttonClose;
 
             textBoxServerIp.Text = Properties.Settings.Default.ServerIp;
             textBoxServerPort.Text = Properties.Settings.Default.ServerPort;
@@ -81,6 +85,29 @@ namespace WindowsFormClient
             Properties.Settings.Default.TightVncServerPath = vncServerPath;
 
             Properties.Settings.Default.Save();
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == Constant.WM_NCHITTEST)
+            {
+                // to allow move by clicking the window's body
+                base.WndProc(ref m);
+
+                if (m.Result.ToInt32() == (int)Constant.HitTest.Client)
+                {
+                    m.Result = new IntPtr((int)Constant.HitTest.Caption);
+                }
+
+                return;
+            }
+            base.WndProc(ref m);
         }
     }
 }

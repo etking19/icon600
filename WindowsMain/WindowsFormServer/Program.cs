@@ -59,11 +59,18 @@ namespace WindowsFormClient
 
         static void licenceChecker_EvtLicenseCheckStatus(LicenseChecker.LicenseChecker checker, bool isValid)
         {
-            if (formServer.InvokeRequired)
+            try
             {
-                formServer.Invoke(new DelegateUI(licenceChecker_EvtLicenseCheckStatus), checker, isValid);
-                return;
+                if (formServer.InvokeRequired)
+                {
+                    formServer.Invoke(new DelegateUI(licenceChecker_EvtLicenseCheckStatus), checker, isValid);
+                    return;
+                }
             }
+            catch (Exception)
+            {
+            }
+            
 
             if (!isValid)
             {

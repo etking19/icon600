@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Utils.Windows;
 
 namespace WindowsFormClient
 {
@@ -28,6 +29,7 @@ namespace WindowsFormClient
         private void FormLogin_Load(object sender, EventArgs e)
         {
             this.AcceptButton = buttonLogin;
+            this.TopMost = true;
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -46,6 +48,29 @@ namespace WindowsFormClient
 
         private void FormLogin_Closed(object sender, FormClosedEventArgs e)
         {
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == Constant.WM_NCHITTEST)
+            {
+                // to allow move by clicking the window's body
+                base.WndProc(ref m);
+
+                if (m.Result.ToInt32() == (int)Constant.HitTest.Client)
+                {
+                    m.Result = new IntPtr((int)Constant.HitTest.Caption);
+                }
+
+                return;
+            }
+            base.WndProc(ref m);
         }
     }
 }

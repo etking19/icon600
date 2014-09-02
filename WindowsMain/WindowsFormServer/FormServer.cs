@@ -214,6 +214,23 @@ namespace WindowsFormClient
 
         private void setupDataGrid(DataGridView view, object dataSource)
         {
+            // change the header color
+            view.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(68, 101, 128);
+            view.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            view.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            view.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font(view.Font, FontStyle.Bold);
+            view.EnableHeadersVisualStyles = false;
+
+            // change the selection row color
+            view.DefaultCellStyle.SelectionBackColor = Color.FromArgb(79, 169, 236);
+            view.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            // change the grid border style
+            view.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            view.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            view.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            view.CellPainting += view_CellPainting;
+
             // attributes for the datagrid
             view.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             view.MultiSelect = true;
@@ -224,6 +241,7 @@ namespace WindowsFormClient
 
             // add checkbox header
             DataGridViewCheckBoxColumn chkbox = new DataGridViewCheckBoxColumn();
+            chkbox.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             DatagridViewCheckBoxHeaderCell chkHeader = new DatagridViewCheckBoxHeaderCell();
             chkbox.HeaderCell = chkHeader;
             chkHeader.OnCheckBoxClicked += new CheckBoxClickedHandler(chkHeader_OnCheckBoxClicked);
@@ -232,6 +250,66 @@ namespace WindowsFormClient
             // set the data
             view.DataSource = dataSource;
             view.Columns[1].Visible = false;        // hide the id of the database data
+        }
+
+        /// <summary>
+        /// custom draw the column for each datagrid control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void view_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            DataGridView view = (DataGridView)sender;
+
+            e.Handled = true;
+
+            if (e.RowIndex == -1 && e.ColumnIndex > -1)
+            {
+                // header color
+                using (Brush b = new SolidBrush(view.ColumnHeadersDefaultCellStyle.BackColor))
+                {
+                    e.Graphics.FillRectangle(b, e.CellBounds);
+                }
+            }
+            else if (e.RowIndex % 2 == 0)
+            {
+                // custom color
+                using (Brush b = new SolidBrush(Color.FromArgb(238, 238, 238)))
+                {
+                    e.Graphics.FillRectangle(b, e.CellBounds);
+                }
+            }
+            else
+            {
+                // normal color
+                using (Brush b = new SolidBrush(view.DefaultCellStyle.BackColor))
+                {
+                    e.Graphics.FillRectangle(b, e.CellBounds);
+                }
+            }
+
+            // draw the vertical line
+            using (Pen p = new Pen(Brushes.Black))
+            {
+                p.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+
+                if (e.ColumnIndex > 0)
+                {
+                    e.Graphics.DrawLine(p, new Point(e.CellBounds.Left, e.CellBounds.Top),
+                                       new Point(e.CellBounds.Left, e.CellBounds.Bottom));
+                }
+
+                e.Graphics.DrawLine(p, new Point(e.CellBounds.Right, e.CellBounds.Top),
+                                       new Point(e.CellBounds.Right, e.CellBounds.Bottom));
+
+                if (e.RowIndex == (view.RowCount-1))
+                {
+                    e.Graphics.DrawLine(p, new Point(e.CellBounds.Left, e.CellBounds.Bottom),
+                                       new Point(e.CellBounds.Right, e.CellBounds.Bottom));
+                }
+            }
+
+            e.PaintContent(e.ClipBounds);
         }
 
         void chkHeader_OnCheckBoxClicked(DataGridView view, bool state)

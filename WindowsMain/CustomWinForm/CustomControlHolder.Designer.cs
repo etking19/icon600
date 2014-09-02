@@ -32,9 +32,14 @@
             // 
             // CustomControlHolder
             // 
-            this.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(193)))), ((int)(((byte)(220)))));
+            this.BackgroundImage = global::CustomWinForm.Properties.Resources.vistrol_logo;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "CustomControlHolder";
+            this.Padding = new System.Windows.Forms.Padding(20);
+            this.Size = new System.Drawing.Size(313, 275);
             this.Load += new System.EventHandler(this.CustomControlHolder_Load);
             this.ResumeLayout(false);
 

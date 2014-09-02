@@ -63,5 +63,24 @@ namespace WindowsFormClient
             listBoxPreset.DisplayMember = "PresetName";
             listBoxPreset.ValueMember = "PresetId";
         }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (EvtPresetAdded != null)
+            {
+                EvtPresetAdded.Invoke(this);
+            }
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (object item in listBoxPreset.SelectedItems)
+            {
+                if (EvtPresetRemoved != null)
+                {
+                    EvtPresetRemoved.BeginInvoke(this, (Client.Model.PresetModel)item, null, null);
+                }
+            }
+        }
     }
 }

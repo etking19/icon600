@@ -36,9 +36,9 @@
             // labelLicense
             // 
             this.labelLicense.AutoSize = true;
-            this.labelLicense.Location = new System.Drawing.Point(12, 9);
+            this.labelLicense.Location = new System.Drawing.Point(14, 11);
             this.labelLicense.Name = "labelLicense";
-            this.labelLicense.Size = new System.Drawing.Size(60, 13);
+            this.labelLicense.Size = new System.Drawing.Size(75, 16);
             this.labelLicense.TabIndex = 0;
             this.labelLicense.Text = "license text";
             // 
@@ -46,31 +46,37 @@
             // 
             this.labelCounter.AutoSize = true;
             this.labelCounter.ForeColor = System.Drawing.Color.Red;
-            this.labelCounter.Location = new System.Drawing.Point(13, 26);
+            this.labelCounter.Location = new System.Drawing.Point(15, 32);
             this.labelCounter.Name = "labelCounter";
-            this.labelCounter.Size = new System.Drawing.Size(43, 13);
+            this.labelCounter.Size = new System.Drawing.Size(51, 16);
             this.labelCounter.TabIndex = 1;
             this.labelCounter.Text = "counter";
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(315, 75);
+            this.buttonOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.buttonOK.ForeColor = System.Drawing.Color.White;
+            this.buttonOK.Location = new System.Drawing.Point(367, 92);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(87, 28);
             this.buttonOK.TabIndex = 2;
             this.buttonOK.Text = "OK";
-            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.UseVisualStyleBackColor = false;
             // 
             // FormLicense
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(402, 110);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
+            this.ClientSize = new System.Drawing.Size(469, 135);
             this.ControlBox = false;
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.labelCounter);
             this.Controls.Add(this.labelLicense);
+            this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormLicense";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

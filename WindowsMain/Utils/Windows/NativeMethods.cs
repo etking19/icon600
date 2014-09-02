@@ -124,5 +124,11 @@ namespace Utils.Windows
 
         [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
         public static extern bool ExitWindowsEx(int flg, int rea);
+
+        [DllImport("user32.dll")]
+        public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("User32.dll")]
+        public static extern IntPtr GetWindowDC(IntPtr hWnd); 
     }
 }

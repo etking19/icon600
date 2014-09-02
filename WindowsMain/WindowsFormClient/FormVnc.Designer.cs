@@ -33,20 +33,25 @@
             // 
             // listBoxVnc
             // 
+            this.listBoxVnc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(231)))), ((int)(((byte)(236)))));
             this.listBoxVnc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxVnc.FormattingEnabled = true;
+            this.listBoxVnc.ItemHeight = 18;
             this.listBoxVnc.Location = new System.Drawing.Point(0, 0);
+            this.listBoxVnc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.listBoxVnc.Name = "listBoxVnc";
-            this.listBoxVnc.Size = new System.Drawing.Size(284, 262);
+            this.listBoxVnc.Size = new System.Drawing.Size(426, 363);
             this.listBoxVnc.TabIndex = 0;
             // 
             // FormVnc
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
+            this.ClientSize = new System.Drawing.Size(426, 363);
             this.Controls.Add(this.listBoxVnc);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormVnc";
             this.Text = "VNC Servers";
             this.Load += new System.EventHandler(this.FormVnc_Load);
