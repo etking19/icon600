@@ -327,6 +327,8 @@ namespace WindowsFormClient
                 data.lParam.flags = 0x0002;
             }
 
+            Trace.WriteLine("keyboard");
+
             clientPresenter.ControlServerKeyboard(
                 (UInt16)data.lParam.vkCode,
                 (UInt16)data.lParam.scanCode, 
@@ -342,23 +344,20 @@ namespace WindowsFormClient
                 return;
             }
 
-            int offsetTop = (this.Size.Height - this.ClientSize.Height);
-            int offsetWidth = (this.Size.Width - this.ClientSize.Width) / 2;
-
-            int relativeX = arg.lParam.pt.x - this.Location.X - offsetTop - formMimic.Bounds.X - holder.Bounds.X;
-            int relativeY = arg.lParam.pt.y - this.Location.Y - offsetWidth - formMimic.Bounds.Y - holder.Bounds.Y;
-            if (relativeX < 0 ||
-                relativeY < 0 ||
-                relativeX > holder.Bounds.Width ||
-                relativeY > holder.Bounds.Height)
+            int relativeX = arg.lParam.pt.x - this.Location.X - formMimic.Location.X - 10;      // 10 is offset for the control size
+            int relativeY = arg.lParam.pt.y - this.Location.Y - formMimic.Location.Y - 30;      // offset for title bar and dock panel header
+            if (relativeX < -2 ||
+                relativeY < -2 ||
+                relativeX > (holder.Bounds.Width + 2) ||
+                relativeY > (holder.Bounds.Height + 2))         // 2 pixel offset to allow hidden control visible in server when mouse move
             {
                 // not in client bound
-                Trace.WriteLine("mouse not in client area");
                 return;
             }
 
-            float relativePosX = (float)relativeX / (float)holder.Width * 65535.0f;
-            float relativePosY = (float)relativeY / (float)holder.Height * 65535.0f;
+            Trace.WriteLine("relative " + relativeX + ", " + relativeY);
+            float relativePosX = (float)relativeX * 65535.0f / (float)holder.Width;
+            float relativePosY = (float)relativeY * 65535.0f / (float)holder.Height;
 
             UInt32 actualFlags = InputConstants.MOUSEEVENTF_MOVE | InputConstants.MOUSEEVENTF_ABSOLUTE | InputConstants.MOUSEEVENTF_VIRTUALDESK;
             switch(arg.wParam.ToInt32())
@@ -383,7 +382,7 @@ namespace WindowsFormClient
                     break;
             }
 
-            clientPresenter.ControlServerMouse(relativeX, relativeY, arg.lParam.mouseData, actualFlags);
+            clientPresenter.ControlServerMouse((int)relativePosX, (int)relativePosY, arg.lParam.mouseData, actualFlags);
         }
 
 

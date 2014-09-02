@@ -11,6 +11,7 @@ namespace Utils.Hooks
         public event KeyboardHookEventHandler HookInvoked;
 
         private HProc hookProc;
+        private static int hHook = 0;
 
         public class KeyboardHookEventArgs : EventArgs
         {

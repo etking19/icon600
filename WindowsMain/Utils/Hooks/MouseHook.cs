@@ -12,6 +12,7 @@ namespace Utils.Hooks
         public event MouseHookEventHandler HookInvoked;
 
         private HProc hookProc;
+        private static int hHook = 0;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MouseHookStruct

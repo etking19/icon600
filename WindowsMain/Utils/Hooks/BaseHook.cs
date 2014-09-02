@@ -6,7 +6,6 @@ namespace Utils.Hooks
     public class BaseHook : IHooks
     {
         protected delegate int HProc(int nCode, IntPtr wParam, IntPtr lParam);
-        protected static int hHook = 0;
 
         //This is the Import for the SetWindowsHookEx function.
         //Use this function to install a thread-specific hook.
