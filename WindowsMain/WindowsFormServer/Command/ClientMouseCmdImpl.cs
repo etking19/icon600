@@ -1,6 +1,7 @@
 ﻿using Session.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Utils.Windows;
@@ -25,14 +26,12 @@ namespace WindowsFormClient.Command
             mouseInput.time = mouseData.data.time;
             mouseInput.dwExtraInfo = UIntPtr.Zero;
 
-
             // create input object
             InputConstants.INPUT input = new InputConstants.INPUT();
             input.type = InputConstants.MOUSE;
             input.mi = mouseInput;
 
             // send input to Windows
-
             InputConstants.INPUT[] inputArray = new InputConstants.INPUT[] { input };
             uint result = NativeMethods.SendInput(1, inputArray, System.Runtime.InteropServices.Marshal.SizeOf(input));
         }
