@@ -17,6 +17,9 @@ namespace WindowsFormClient
 {
     public partial class FormClient : Form, IClient
     {
+        public delegate void DelegateServerReply(FormClient sender);
+        public event DelegateServerReply EvtServerReply;
+
         private const string CONFIG_FILE_NAME = "DockPanel.config";
 
         private ConnectionManager connectionMgr;
@@ -175,10 +178,6 @@ namespace WindowsFormClient
 
         void holder_onDelegateSizeChangedEvt(int id, Size newSize)
         {
-            // check if the application snap to grid
-
-
-
             clientPresenter.SetApplicationSize(id, newSize);
         }
 
@@ -458,9 +457,14 @@ namespace WindowsFormClient
 
         public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout, WindowsModel viewingArea)
         {
+            if (EvtServerReply != null)
+            {
+                EvtServerReply(this);
+            }
+
             if(this.InvokeRequired)
             {
-                this.BeginInvoke(new DelegateRefreshLayout(RefreshLayout), user, layout, viewingArea);
+                this.Invoke(new DelegateRefreshLayout(RefreshLayout), user, layout, viewingArea);
                 return;
             }
 
@@ -700,7 +704,13 @@ namespace WindowsFormClient
                 return;
             }
 
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void FormClient_Closed(object sender, FormClosedEventArgs e)

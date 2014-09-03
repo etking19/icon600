@@ -201,6 +201,7 @@
             this.Controls.Add(this.groupBoxControls);
             this.IsMdiContainer = true;
             this.Name = "FormClient";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "VISTROL Application";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormClient_Closing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormClient_Closed);

@@ -104,6 +104,12 @@
     <Compile Include="FormPresets.Designer.cs">
       <DependentUpon>FormPresets.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProgress.Designer.cs">
+      <DependentUpon>FormProgress.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormRunningApps.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormPresets.resx">
       <DependentUpon>FormPresets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormProgress.resx">
+      <DependentUpon>FormProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRunningApps.resx">
       <DependentUpon>FormRunningApps.cs</DependentUpon>
