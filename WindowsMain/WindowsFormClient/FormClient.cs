@@ -72,7 +72,11 @@ namespace WindowsFormClient
 
         private void FormClient_Load(object sender, EventArgs e)
         {
-            //this.SizeChanged += FormClient_SizeChanged;
+            notifyIconClient.BalloonTipTitle = "Vistrol Client";
+            notifyIconClient.BalloonTipIcon = ToolTipIcon.Info;
+            notifyIconClient.Icon = Properties.Resources.system_tray;
+            notifyIconClient.Visible = true;
+            notifyIconClient.DoubleClick += notifyIconClient_DoubleClick;
 
             this.IsMdiContainer = true;
             dockPanel.DocumentStyle = DocumentStyle.DockingMdi;
@@ -102,12 +106,18 @@ namespace WindowsFormClient
             holder.onDelegatePosChangedEvt += holder_onDelegatePosChangedEvt;
             holder.onDelegateRestoredEvt += holder_onDelegateRestoredEvt;
             holder.onDelegateSizeChangedEvt += holder_onDelegateSizeChangedEvt;
+            holderPointer = holder.Handle;
 
             // initialize helper classes
             mouseHook = new MouseHook();
             mouseHook.HookInvoked += mouseHook_HookInvoked;
             keyboardHook = new KeyboardHook();
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
+        }
+
+        void notifyIconClient_DoubleClick(object sender, EventArgs e)
+        {
+            this.Visible = true;
         }
 
         /*
@@ -147,25 +157,7 @@ namespace WindowsFormClient
                 NativeMethods.SendMessage(this.Handle, (int)Constant.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
             }
         }
-
-        protected override void WndProc(ref Message m)
-        {
-            if ((UInt32)m.Msg == Constant.WM_SYSCOMMAND)
-            {
-                switch ((UInt32)m.WParam)
-                {
-                    case Constant.SC_MAXIMIZE:
-                        {
-                            // set the previous size of the holder for restore used
-                            holder.CurrentSize = holder.Size;
-                            break;
-                        }
-                    default:
-                        break;
-                }
-            }
-            base.WndProc(ref m);
-        }*/
+        */
 
         /*
         void formMimic_SizeChanged(object sender, EventArgs e)
@@ -335,6 +327,7 @@ namespace WindowsFormClient
                 data.lParam.flags);
         }
 
+        private IntPtr holderPointer;
         void mouseHook_HookInvoked(object sender, MouseHook.MouseHookEventArgs arg)
         {
             if (arg.lParam.flags == 1)
@@ -345,6 +338,20 @@ namespace WindowsFormClient
 
             int relativeX = arg.lParam.pt.x - this.Location.X - formMimic.Location.X - 10;      // 10 is offset for the control size
             int relativeY = arg.lParam.pt.y - this.Location.Y - formMimic.Location.Y - 30;      // offset for title bar and dock panel header
+
+            NativeMethods.Point relativePt = new NativeMethods.Point() {x = arg.lParam.pt.x, y = arg.lParam.pt.y };
+
+            if (Utils.Windows.NativeMethods.ScreenToClient(holderPointer, ref relativePt))
+            {
+                if (relativePt.x < -2 ||
+                    relativePt.y < -2 ||
+                    relativePt.x > (holder.Bounds.Width + 2) ||
+                    relativePt.y > (holder.Bounds.Height + 2))
+                {
+                    Trace.WriteLine("not in client");
+                    return;
+                }
+            }
             if (relativeX < -2 ||
                 relativeY < -2 ||
                 relativeX > (holder.Bounds.Width + 2) ||
@@ -354,7 +361,6 @@ namespace WindowsFormClient
                 return;
             }
 
-            Trace.WriteLine("relative " + relativeX + ", " + relativeY);
             float relativePosX = (float)relativeX * 65535.0f / (float)holder.Width;
             float relativePosY = (float)relativeY * 65535.0f / (float)holder.Height;
 
@@ -429,31 +435,6 @@ namespace WindowsFormClient
 
             clientPresenter.ServerMaintenance(mode);
         }
-
-        private void buttonMouse_Click(object sender, EventArgs e)
-        {
-            if (mouseHook.IsHooking())
-            {
-                mouseHook.StopHook();
-            }
-            else
-            {
-                mouseHook.StartHook(0);
-            }
-        }
-
-        private void buttonKeyboard_Click(object sender, EventArgs e)
-        {
-            if(keyboardHook.IsHooking())
-            {
-                keyboardHook.StopHook();
-            }
-            else
-            {
-                keyboardHook.StartHook(0);
-            }
-        }
-
 
         public void RefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout, WindowsModel viewingArea)
         {
@@ -686,6 +667,10 @@ namespace WindowsFormClient
 
         private void FormClient_Closing(object sender, FormClosingEventArgs e)
         {
+            // shutdown
+            mouseHook.StopHook();
+            keyboardHook.StopHook();
+
             // save current UI state
             string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), CONFIG_FILE_NAME);
             dockPanel.SaveAsXml(configFile);
@@ -716,6 +701,67 @@ namespace WindowsFormClient
         private void FormClient_Closed(object sender, FormClosedEventArgs e)
         {
             connectionMgr.StopClient();
+        }
+
+        private void buttonLogout_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        
+        protected override void WndProc(ref Message m)
+        {
+            if ((UInt32)m.Msg == Constant.WM_SYSCOMMAND)
+            {
+                switch ((UInt32)m.WParam)
+                {
+                    case Constant.SC_CLOSE:
+                        {
+                            mouseHook.StopHook();
+                            keyboardHook.StopHook();
+                            break;
+                        }
+                    case Constant.SC_MINIMIZE:
+                        {
+                            this.Visible = false;
+                            return;
+                        }
+                    default:
+                        break;
+                }
+            }
+
+            base.WndProc(ref m);
+        }
+
+        private void checkBoxMouse_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox button = sender as CheckBox;
+            if (button.Checked)
+            {
+                button.BackColor = Color.FromArgb(20, 116, 186);
+                mouseHook.StartHook(0);
+            }
+            else
+            {
+                button.BackColor = Color.FromArgb(79, 169, 236);
+                mouseHook.StopHook();
+            }
+        }
+
+        private void checkBoxKeyboard_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox button = sender as CheckBox;
+            if (button.Checked)
+            {
+                button.BackColor = Color.FromArgb(20, 116, 186);
+                keyboardHook.StartHook(0);
+            }
+            else
+            {
+                button.BackColor = Color.FromArgb(79, 169, 236);
+                keyboardHook.StopHook();
+            }
         }
     }
 }

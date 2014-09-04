@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.Security.Permissions;
-using System.Runtime.InteropServices;
-using System.Text;
-using Utils.Windows;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Security.Permissions;
+using System.Windows.Forms;
+using Utils.Windows;
 
 namespace CustomWinForm
 {
@@ -143,6 +141,7 @@ namespace CustomWinForm
             {
                 // to allow move by clicking the window's body
                 base.WndProc(ref m);
+                //m.Result = new IntPtr(-1);        // past wndproc to parent
 
                 if (m.Result.ToInt32() == (int)Constant.HitTest.Border)
                 {

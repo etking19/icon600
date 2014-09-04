@@ -45,6 +45,13 @@ namespace Utils.Windows
             public int Attr;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Point
+        {
+            public Int32 x;
+            public Int32 y;
+        }
+
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -141,5 +148,11 @@ namespace Utils.Windows
             int nWidthEllipse, // height of ellipse
             int nHeightEllipse // width of ellipse
          );
+
+        [DllImport("Kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetCurrentThreadId();
+
+        [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref Point lpPoint);
     }
 }

@@ -56,16 +56,12 @@ namespace Utils.Hooks
 
         public int KeyboardHookProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            KeyboardHookStruct messageStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
-
-            if (nCode < 0)
-            {
-                return CallNextHookEx(hHook, nCode, wParam, lParam);
-            }
-            else
+            
+            if (nCode >= 0)
             {
                 if (HookInvoked != null)
                 {
+                    KeyboardHookStruct messageStruct = (KeyboardHookStruct)Marshal.PtrToStructure(lParam, typeof(KeyboardHookStruct));
                     KeyboardHookEventArgs eventArg = new KeyboardHookEventArgs
                     {
                         code = nCode,
@@ -76,8 +72,10 @@ namespace Utils.Hooks
                     HookInvoked.BeginInvoke(this, eventArg, null, null);
                 }
 
-                return CallNextHookEx(hHook, nCode, wParam, lParam);
+                return 1;
             }
+
+            return CallNextHookEx(hHook, nCode, wParam, lParam);
         }
     }
 }
