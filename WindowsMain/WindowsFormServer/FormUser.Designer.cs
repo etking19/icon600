@@ -44,34 +44,34 @@
             // 
             this.comboBoxGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxGroup.FormattingEnabled = true;
-            this.comboBoxGroup.Location = new System.Drawing.Point(108, 111);
+            this.comboBoxGroup.Location = new System.Drawing.Point(135, 111);
             this.comboBoxGroup.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.comboBoxGroup.Name = "comboBoxGroup";
-            this.comboBoxGroup.Size = new System.Drawing.Size(264, 24);
+            this.comboBoxGroup.Size = new System.Drawing.Size(237, 27);
             this.comboBoxGroup.TabIndex = 4;
             // 
             // textBoxDisplayName
             // 
-            this.textBoxDisplayName.Location = new System.Drawing.Point(108, 15);
+            this.textBoxDisplayName.Location = new System.Drawing.Point(135, 15);
             this.textBoxDisplayName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxDisplayName.Name = "textBoxDisplayName";
-            this.textBoxDisplayName.Size = new System.Drawing.Size(264, 22);
+            this.textBoxDisplayName.Size = new System.Drawing.Size(237, 27);
             this.textBoxDisplayName.TabIndex = 1;
             // 
             // textBoxUsername
             // 
-            this.textBoxUsername.Location = new System.Drawing.Point(108, 47);
+            this.textBoxUsername.Location = new System.Drawing.Point(135, 47);
             this.textBoxUsername.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxUsername.Name = "textBoxUsername";
-            this.textBoxUsername.Size = new System.Drawing.Size(264, 22);
+            this.textBoxUsername.Size = new System.Drawing.Size(237, 27);
             this.textBoxUsername.TabIndex = 2;
             // 
             // textBoxPassword
             // 
-            this.textBoxPassword.Location = new System.Drawing.Point(108, 79);
+            this.textBoxPassword.Location = new System.Drawing.Point(135, 79);
             this.textBoxPassword.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.Size = new System.Drawing.Size(264, 22);
+            this.textBoxPassword.Size = new System.Drawing.Size(237, 27);
             this.textBoxPassword.TabIndex = 3;
             // 
             // label1
@@ -79,7 +79,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(14, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 16);
+            this.label1.Size = new System.Drawing.Size(115, 19);
             this.label1.TabIndex = 4;
             this.label1.Text = "Display Name:";
             // 
@@ -88,7 +88,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(14, 50);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 16);
+            this.label2.Size = new System.Drawing.Size(88, 19);
             this.label2.TabIndex = 5;
             this.label2.Text = "Username:";
             // 
@@ -97,7 +97,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(14, 82);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 16);
+            this.label3.Size = new System.Drawing.Size(85, 19);
             this.label3.TabIndex = 6;
             this.label3.Text = "Password:";
             // 
@@ -106,7 +106,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(14, 114);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 16);
+            this.label4.Size = new System.Drawing.Size(59, 19);
             this.label4.TabIndex = 7;
             this.label4.Text = "Group:";
             // 
@@ -140,8 +140,7 @@
             // 
             // FormUser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
             this.ClientSize = new System.Drawing.Size(384, 366);
             this.Controls.Add(this.buttonCancel);
@@ -154,7 +153,7 @@
             this.Controls.Add(this.textBoxUsername);
             this.Controls.Add(this.textBoxDisplayName);
             this.Controls.Add(this.comboBoxGroup);
-            this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormUser";

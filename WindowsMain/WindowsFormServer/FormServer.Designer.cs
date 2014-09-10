@@ -118,14 +118,14 @@
             this.tabControl.Controls.Add(this.tabDrivers);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.ImageList = this.imageList1;
-            this.tabControl.ItemSize = new System.Drawing.Size(100, 100);
+            this.tabControl.ItemSize = new System.Drawing.Size(110, 100);
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Multiline = true;
             this.tabControl.Name = "tabControl";
             this.tabControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(784, 562);
+            this.tabControl.Size = new System.Drawing.Size(782, 555);
             this.tabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl.TabIndex = 0;
             // 
@@ -140,7 +140,7 @@
             this.tabGeneral.Location = new System.Drawing.Point(104, 4);
             this.tabGeneral.Margin = new System.Windows.Forms.Padding(0);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Size = new System.Drawing.Size(676, 554);
+            this.tabGeneral.Size = new System.Drawing.Size(674, 547);
             this.tabGeneral.TabIndex = 5;
             this.tabGeneral.Text = "Main";
             // 
@@ -160,29 +160,29 @@
             this.groupBoxGeneral.Controls.Add(this.labelServerPort);
             this.groupBoxGeneral.Controls.Add(this.comboBoxGeneralRow);
             this.groupBoxGeneral.Location = new System.Drawing.Point(10, 29);
-            this.groupBoxGeneral.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBoxGeneral.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBoxGeneral.Name = "groupBoxGeneral";
-            this.groupBoxGeneral.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxGeneral.Size = new System.Drawing.Size(657, 297);
+            this.groupBoxGeneral.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxGeneral.Size = new System.Drawing.Size(657, 290);
             this.groupBoxGeneral.TabIndex = 16;
             this.groupBoxGeneral.TabStop = false;
             // 
             // textBoxGeneralMax
             // 
-            this.textBoxGeneralMax.Location = new System.Drawing.Point(102, 107);
-            this.textBoxGeneralMax.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxGeneralMax.Location = new System.Drawing.Point(101, 107);
+            this.textBoxGeneralMax.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxGeneralMax.Name = "textBoxGeneralMax";
-            this.textBoxGeneralMax.Size = new System.Drawing.Size(148, 26);
+            this.textBoxGeneralMax.Size = new System.Drawing.Size(148, 27);
             this.textBoxGeneralMax.TabIndex = 5;
             this.textBoxGeneralMax.Text = "8010";
             this.textBoxGeneralMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBoxGeneralMin
             // 
-            this.textBoxGeneralMin.Location = new System.Drawing.Point(102, 66);
-            this.textBoxGeneralMin.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxGeneralMin.Location = new System.Drawing.Point(101, 67);
+            this.textBoxGeneralMin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxGeneralMin.Name = "textBoxGeneralMin";
-            this.textBoxGeneralMin.Size = new System.Drawing.Size(148, 26);
+            this.textBoxGeneralMin.Size = new System.Drawing.Size(148, 27);
             this.textBoxGeneralMin.TabIndex = 4;
             this.textBoxGeneralMin.Text = "8000";
             this.textBoxGeneralMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -195,7 +195,7 @@
             this.label3.Location = new System.Drawing.Point(138, 208);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(16, 20);
+            this.label3.Size = new System.Drawing.Size(22, 25);
             this.label3.TabIndex = 9;
             this.label3.Text = "x";
             // 
@@ -206,7 +206,7 @@
             this.label1.Location = new System.Drawing.Point(48, 111);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 18);
+            this.label1.Size = new System.Drawing.Size(38, 19);
             this.label1.TabIndex = 3;
             this.label1.Text = "Max";
             // 
@@ -234,10 +234,10 @@
             "18",
             "19",
             "20"});
-            this.comboBoxGeneralColumn.Location = new System.Drawing.Point(162, 208);
-            this.comboBoxGeneralColumn.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxGeneralColumn.Location = new System.Drawing.Point(163, 208);
+            this.comboBoxGeneralColumn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxGeneralColumn.Name = "comboBoxGeneralColumn";
-            this.comboBoxGeneralColumn.Size = new System.Drawing.Size(72, 26);
+            this.comboBoxGeneralColumn.Size = new System.Drawing.Size(72, 27);
             this.comboBoxGeneralColumn.TabIndex = 8;
             this.comboBoxGeneralColumn.Text = "1";
             // 
@@ -248,7 +248,7 @@
             this.labelMin.Location = new System.Drawing.Point(48, 71);
             this.labelMin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelMin.Name = "labelMin";
-            this.labelMin.Size = new System.Drawing.Size(33, 18);
+            this.labelMin.Size = new System.Drawing.Size(35, 19);
             this.labelMin.TabIndex = 2;
             this.labelMin.Text = "Min";
             // 
@@ -257,10 +257,10 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(18, 164);
+            this.label2.Location = new System.Drawing.Point(18, 163);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(173, 19);
+            this.label2.Size = new System.Drawing.Size(216, 24);
             this.label2.TabIndex = 6;
             this.label2.Text = "Server Screen Matrix:";
             // 
@@ -272,7 +272,7 @@
             this.labelServerPort.Location = new System.Drawing.Point(18, 23);
             this.labelServerPort.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelServerPort.Name = "labelServerPort";
-            this.labelServerPort.Size = new System.Drawing.Size(155, 19);
+            this.labelServerPort.Size = new System.Drawing.Size(191, 24);
             this.labelServerPort.TabIndex = 1;
             this.labelServerPort.Text = "Server Port Range:";
             // 
@@ -301,9 +301,9 @@
             "19",
             "20"});
             this.comboBoxGeneralRow.Location = new System.Drawing.Point(51, 208);
-            this.comboBoxGeneralRow.Margin = new System.Windows.Forms.Padding(4);
+            this.comboBoxGeneralRow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxGeneralRow.Name = "comboBoxGeneralRow";
-            this.comboBoxGeneralRow.Size = new System.Drawing.Size(79, 26);
+            this.comboBoxGeneralRow.Size = new System.Drawing.Size(79, 27);
             this.comboBoxGeneralRow.TabIndex = 7;
             this.comboBoxGeneralRow.Text = "1";
             // 
@@ -314,10 +314,10 @@
             this.btnGeneralStop.ForeColor = System.Drawing.Color.White;
             this.btnGeneralStop.Image = global::WindowsFormClient.Properties.Resources.stop_serve;
             this.btnGeneralStop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGeneralStop.Location = new System.Drawing.Point(513, 513);
-            this.btnGeneralStop.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGeneralStop.Location = new System.Drawing.Point(512, 506);
+            this.btnGeneralStop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGeneralStop.Name = "btnGeneralStop";
-            this.btnGeneralStop.Size = new System.Drawing.Size(154, 32);
+            this.btnGeneralStop.Size = new System.Drawing.Size(154, 31);
             this.btnGeneralStop.TabIndex = 15;
             this.btnGeneralStop.Text = "Stop Server";
             this.btnGeneralStop.UseVisualStyleBackColor = false;
@@ -327,13 +327,14 @@
             // 
             this.btnGeneralStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGeneralStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.btnGeneralStart.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGeneralStart.ForeColor = System.Drawing.Color.White;
             this.btnGeneralStart.Image = global::WindowsFormClient.Properties.Resources.start_server;
             this.btnGeneralStart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGeneralStart.Location = new System.Drawing.Point(351, 513);
-            this.btnGeneralStart.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGeneralStart.Location = new System.Drawing.Point(350, 506);
+            this.btnGeneralStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGeneralStart.Name = "btnGeneralStart";
-            this.btnGeneralStart.Size = new System.Drawing.Size(154, 32);
+            this.btnGeneralStart.Size = new System.Drawing.Size(154, 31);
             this.btnGeneralStart.TabIndex = 14;
             this.btnGeneralStart.Text = "Start Server";
             this.btnGeneralStart.UseVisualStyleBackColor = false;
@@ -348,7 +349,7 @@
             this.labelGeneral.Location = new System.Drawing.Point(6, 6);
             this.labelGeneral.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelGeneral.Name = "labelGeneral";
-            this.labelGeneral.Size = new System.Drawing.Size(45, 19);
+            this.labelGeneral.Size = new System.Drawing.Size(55, 24);
             this.labelGeneral.TabIndex = 0;
             this.labelGeneral.Text = "Main";
             // 
@@ -359,7 +360,7 @@
             this.tabUsers.Location = new System.Drawing.Point(104, 4);
             this.tabUsers.Margin = new System.Windows.Forms.Padding(0);
             this.tabUsers.Name = "tabUsers";
-            this.tabUsers.Size = new System.Drawing.Size(676, 554);
+            this.tabUsers.Size = new System.Drawing.Size(674, 547);
             this.tabUsers.TabIndex = 6;
             this.tabUsers.Text = "Users";
             this.tabUsers.UseVisualStyleBackColor = true;
@@ -370,10 +371,10 @@
             this.tabUsersUser.Controls.Add(this.tabPageGroup);
             this.tabUsersUser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabUsersUser.Location = new System.Drawing.Point(0, 0);
-            this.tabUsersUser.Margin = new System.Windows.Forms.Padding(4);
+            this.tabUsersUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabUsersUser.Name = "tabUsersUser";
             this.tabUsersUser.SelectedIndex = 0;
-            this.tabUsersUser.Size = new System.Drawing.Size(676, 554);
+            this.tabUsersUser.Size = new System.Drawing.Size(674, 547);
             this.tabUsersUser.TabIndex = 0;
             // 
             // tabPageUser
@@ -384,10 +385,10 @@
             this.tabPageUser.Controls.Add(this.btnUsersAdd);
             this.tabPageUser.Controls.Add(this.dataGridViewUsers);
             this.tabPageUser.Controls.Add(this.dataGridUsers);
-            this.tabPageUser.Location = new System.Drawing.Point(4, 27);
-            this.tabPageUser.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPageUser.Location = new System.Drawing.Point(4, 28);
+            this.tabPageUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabPageUser.Name = "tabPageUser";
-            this.tabPageUser.Size = new System.Drawing.Size(668, 523);
+            this.tabPageUser.Size = new System.Drawing.Size(667, 522);
             this.tabPageUser.TabIndex = 0;
             this.tabPageUser.Text = "User Management";
             this.tabPageUser.UseVisualStyleBackColor = true;
@@ -401,7 +402,7 @@
             this.label4.Location = new System.Drawing.Point(4, 11);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(147, 19);
+            this.label4.Size = new System.Drawing.Size(181, 24);
             this.label4.TabIndex = 5;
             this.label4.Text = "User Management";
             // 
@@ -413,9 +414,9 @@
             this.btnUsersDelete.Image = global::WindowsFormClient.Properties.Resources.delete;
             this.btnUsersDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUsersDelete.Location = new System.Drawing.Point(551, 4);
-            this.btnUsersDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUsersDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnUsersDelete.Name = "btnUsersDelete";
-            this.btnUsersDelete.Size = new System.Drawing.Size(112, 32);
+            this.btnUsersDelete.Size = new System.Drawing.Size(112, 31);
             this.btnUsersDelete.TabIndex = 4;
             this.btnUsersDelete.Text = "Delete";
             this.btnUsersDelete.UseVisualStyleBackColor = false;
@@ -429,9 +430,9 @@
             this.btnUsersEdit.Image = global::WindowsFormClient.Properties.Resources.edit;
             this.btnUsersEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUsersEdit.Location = new System.Drawing.Point(431, 4);
-            this.btnUsersEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUsersEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnUsersEdit.Name = "btnUsersEdit";
-            this.btnUsersEdit.Size = new System.Drawing.Size(112, 32);
+            this.btnUsersEdit.Size = new System.Drawing.Size(112, 31);
             this.btnUsersEdit.TabIndex = 3;
             this.btnUsersEdit.Text = "Edit";
             this.btnUsersEdit.UseVisualStyleBackColor = false;
@@ -444,10 +445,10 @@
             this.btnUsersAdd.ForeColor = System.Drawing.Color.White;
             this.btnUsersAdd.Image = global::WindowsFormClient.Properties.Resources.Add;
             this.btnUsersAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUsersAdd.Location = new System.Drawing.Point(311, 4);
-            this.btnUsersAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUsersAdd.Location = new System.Drawing.Point(310, 4);
+            this.btnUsersAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnUsersAdd.Name = "btnUsersAdd";
-            this.btnUsersAdd.Size = new System.Drawing.Size(112, 32);
+            this.btnUsersAdd.Size = new System.Drawing.Size(112, 31);
             this.btnUsersAdd.TabIndex = 2;
             this.btnUsersAdd.Text = "Add";
             this.btnUsersAdd.UseVisualStyleBackColor = false;
@@ -461,10 +462,10 @@
             this.dataGridViewUsers.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.dataGridViewUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewUsers.GridColor = System.Drawing.SystemColors.ActiveBorder;
-            this.dataGridViewUsers.Location = new System.Drawing.Point(8, 44);
-            this.dataGridViewUsers.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewUsers.Location = new System.Drawing.Point(9, 44);
+            this.dataGridViewUsers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewUsers.Name = "dataGridViewUsers";
-            this.dataGridViewUsers.Size = new System.Drawing.Size(655, 479);
+            this.dataGridViewUsers.Size = new System.Drawing.Size(655, 485);
             this.dataGridViewUsers.TabIndex = 1;
             // 
             // dataGridUsers
@@ -474,9 +475,9 @@
             this.dataGridUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridUsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridUsers.Location = new System.Drawing.Point(0, 0);
-            this.dataGridUsers.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridUsers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridUsers.Name = "dataGridUsers";
-            this.dataGridUsers.Size = new System.Drawing.Size(668, 523);
+            this.dataGridUsers.Size = new System.Drawing.Size(667, 522);
             this.dataGridUsers.TabIndex = 0;
             // 
             // tabPageGroup
@@ -487,10 +488,10 @@
             this.tabPageGroup.Controls.Add(this.btnGroupsEdit);
             this.tabPageGroup.Controls.Add(this.btnGroupsAdd);
             this.tabPageGroup.Controls.Add(this.dataGridViewGroup);
-            this.tabPageGroup.Location = new System.Drawing.Point(4, 22);
-            this.tabPageGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPageGroup.Location = new System.Drawing.Point(4, 28);
+            this.tabPageGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabPageGroup.Name = "tabPageGroup";
-            this.tabPageGroup.Size = new System.Drawing.Size(668, 528);
+            this.tabPageGroup.Size = new System.Drawing.Size(666, 515);
             this.tabPageGroup.TabIndex = 1;
             this.tabPageGroup.Text = "Group Management";
             // 
@@ -503,7 +504,7 @@
             this.label7.Location = new System.Drawing.Point(4, 11);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(159, 19);
+            this.label7.Size = new System.Drawing.Size(197, 24);
             this.label7.TabIndex = 8;
             this.label7.Text = "Group Management";
             // 
@@ -514,10 +515,10 @@
             this.btnGroupsDelete.ForeColor = System.Drawing.Color.White;
             this.btnGroupsDelete.Image = global::WindowsFormClient.Properties.Resources.delete;
             this.btnGroupsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGroupsDelete.Location = new System.Drawing.Point(552, 4);
-            this.btnGroupsDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGroupsDelete.Location = new System.Drawing.Point(550, 4);
+            this.btnGroupsDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGroupsDelete.Name = "btnGroupsDelete";
-            this.btnGroupsDelete.Size = new System.Drawing.Size(112, 32);
+            this.btnGroupsDelete.Size = new System.Drawing.Size(112, 31);
             this.btnGroupsDelete.TabIndex = 7;
             this.btnGroupsDelete.Text = "Delete";
             this.btnGroupsDelete.UseVisualStyleBackColor = false;
@@ -530,10 +531,10 @@
             this.btnGroupsEdit.ForeColor = System.Drawing.Color.White;
             this.btnGroupsEdit.Image = global::WindowsFormClient.Properties.Resources.edit;
             this.btnGroupsEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGroupsEdit.Location = new System.Drawing.Point(432, 4);
-            this.btnGroupsEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGroupsEdit.Location = new System.Drawing.Point(429, 4);
+            this.btnGroupsEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGroupsEdit.Name = "btnGroupsEdit";
-            this.btnGroupsEdit.Size = new System.Drawing.Size(112, 32);
+            this.btnGroupsEdit.Size = new System.Drawing.Size(112, 31);
             this.btnGroupsEdit.TabIndex = 6;
             this.btnGroupsEdit.Text = "Edit";
             this.btnGroupsEdit.UseVisualStyleBackColor = false;
@@ -546,10 +547,10 @@
             this.btnGroupsAdd.ForeColor = System.Drawing.Color.White;
             this.btnGroupsAdd.Image = global::WindowsFormClient.Properties.Resources.Add;
             this.btnGroupsAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGroupsAdd.Location = new System.Drawing.Point(312, 4);
-            this.btnGroupsAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGroupsAdd.Location = new System.Drawing.Point(310, 4);
+            this.btnGroupsAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGroupsAdd.Name = "btnGroupsAdd";
-            this.btnGroupsAdd.Size = new System.Drawing.Size(112, 32);
+            this.btnGroupsAdd.Size = new System.Drawing.Size(112, 31);
             this.btnGroupsAdd.TabIndex = 5;
             this.btnGroupsAdd.Text = "Add";
             this.btnGroupsAdd.UseVisualStyleBackColor = false;
@@ -563,10 +564,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewGroup.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.dataGridViewGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGroup.Location = new System.Drawing.Point(8, 44);
-            this.dataGridViewGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewGroup.Location = new System.Drawing.Point(9, 44);
+            this.dataGridViewGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewGroup.Name = "dataGridViewGroup";
-            this.dataGridViewGroup.Size = new System.Drawing.Size(656, 484);
+            this.dataGridViewGroup.Size = new System.Drawing.Size(654, 474);
             this.dataGridViewGroup.TabIndex = 0;
             // 
             // tabApplications
@@ -580,7 +581,7 @@
             this.tabApplications.Location = new System.Drawing.Point(104, 4);
             this.tabApplications.Margin = new System.Windows.Forms.Padding(0);
             this.tabApplications.Name = "tabApplications";
-            this.tabApplications.Size = new System.Drawing.Size(676, 554);
+            this.tabApplications.Size = new System.Drawing.Size(674, 547);
             this.tabApplications.TabIndex = 2;
             this.tabApplications.Text = "Applications";
             this.tabApplications.UseVisualStyleBackColor = true;
@@ -594,7 +595,7 @@
             this.label8.Location = new System.Drawing.Point(4, 18);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(197, 19);
+            this.label8.Size = new System.Drawing.Size(242, 24);
             this.label8.TabIndex = 13;
             this.label8.Text = "Application Management";
             // 
@@ -605,10 +606,10 @@
             this.btnAppDelete.ForeColor = System.Drawing.Color.White;
             this.btnAppDelete.Image = global::WindowsFormClient.Properties.Resources.delete;
             this.btnAppDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAppDelete.Location = new System.Drawing.Point(560, 11);
-            this.btnAppDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAppDelete.Location = new System.Drawing.Point(559, 11);
+            this.btnAppDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAppDelete.Name = "btnAppDelete";
-            this.btnAppDelete.Size = new System.Drawing.Size(112, 32);
+            this.btnAppDelete.Size = new System.Drawing.Size(112, 31);
             this.btnAppDelete.TabIndex = 11;
             this.btnAppDelete.Text = "Delete";
             this.btnAppDelete.UseVisualStyleBackColor = false;
@@ -621,10 +622,10 @@
             this.btnAppEdit.ForeColor = System.Drawing.Color.White;
             this.btnAppEdit.Image = global::WindowsFormClient.Properties.Resources.edit;
             this.btnAppEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAppEdit.Location = new System.Drawing.Point(440, 11);
-            this.btnAppEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAppEdit.Location = new System.Drawing.Point(439, 11);
+            this.btnAppEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAppEdit.Name = "btnAppEdit";
-            this.btnAppEdit.Size = new System.Drawing.Size(112, 32);
+            this.btnAppEdit.Size = new System.Drawing.Size(112, 31);
             this.btnAppEdit.TabIndex = 10;
             this.btnAppEdit.Text = "Edit";
             this.btnAppEdit.UseVisualStyleBackColor = false;
@@ -637,10 +638,10 @@
             this.btnAppAdd.ForeColor = System.Drawing.Color.White;
             this.btnAppAdd.Image = global::WindowsFormClient.Properties.Resources.Add;
             this.btnAppAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAppAdd.Location = new System.Drawing.Point(320, 11);
-            this.btnAppAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAppAdd.Location = new System.Drawing.Point(319, 11);
+            this.btnAppAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAppAdd.Name = "btnAppAdd";
-            this.btnAppAdd.Size = new System.Drawing.Size(112, 32);
+            this.btnAppAdd.Size = new System.Drawing.Size(112, 31);
             this.btnAppAdd.TabIndex = 9;
             this.btnAppAdd.Text = "Add";
             this.btnAppAdd.UseVisualStyleBackColor = false;
@@ -655,9 +656,9 @@
             this.dataGridViewApp.BackgroundColor = System.Drawing.SystemColors.Menu;
             this.dataGridViewApp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewApp.Location = new System.Drawing.Point(4, 51);
-            this.dataGridViewApp.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewApp.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewApp.Name = "dataGridViewApp";
-            this.dataGridViewApp.Size = new System.Drawing.Size(668, 494);
+            this.dataGridViewApp.Size = new System.Drawing.Size(668, 487);
             this.dataGridViewApp.TabIndex = 8;
             // 
             // tabMonitors
@@ -671,7 +672,7 @@
             this.tabMonitors.Location = new System.Drawing.Point(104, 4);
             this.tabMonitors.Margin = new System.Windows.Forms.Padding(0);
             this.tabMonitors.Name = "tabMonitors";
-            this.tabMonitors.Size = new System.Drawing.Size(676, 554);
+            this.tabMonitors.Size = new System.Drawing.Size(674, 547);
             this.tabMonitors.TabIndex = 3;
             this.tabMonitors.Text = "Monitors";
             this.tabMonitors.UseVisualStyleBackColor = true;
@@ -685,7 +686,7 @@
             this.label5.Location = new System.Drawing.Point(4, 18);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(169, 19);
+            this.label5.Size = new System.Drawing.Size(210, 24);
             this.label5.TabIndex = 17;
             this.label5.Text = "Monitor Management";
             // 
@@ -696,10 +697,10 @@
             this.btnMonitorsDelete.ForeColor = System.Drawing.Color.White;
             this.btnMonitorsDelete.Image = global::WindowsFormClient.Properties.Resources.delete;
             this.btnMonitorsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitorsDelete.Location = new System.Drawing.Point(560, 11);
-            this.btnMonitorsDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnMonitorsDelete.Location = new System.Drawing.Point(559, 11);
+            this.btnMonitorsDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnMonitorsDelete.Name = "btnMonitorsDelete";
-            this.btnMonitorsDelete.Size = new System.Drawing.Size(112, 32);
+            this.btnMonitorsDelete.Size = new System.Drawing.Size(112, 31);
             this.btnMonitorsDelete.TabIndex = 15;
             this.btnMonitorsDelete.Text = "Delete";
             this.btnMonitorsDelete.UseVisualStyleBackColor = false;
@@ -712,10 +713,10 @@
             this.btnMonitorsEdit.ForeColor = System.Drawing.Color.White;
             this.btnMonitorsEdit.Image = global::WindowsFormClient.Properties.Resources.edit;
             this.btnMonitorsEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitorsEdit.Location = new System.Drawing.Point(440, 11);
-            this.btnMonitorsEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnMonitorsEdit.Location = new System.Drawing.Point(439, 11);
+            this.btnMonitorsEdit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnMonitorsEdit.Name = "btnMonitorsEdit";
-            this.btnMonitorsEdit.Size = new System.Drawing.Size(112, 32);
+            this.btnMonitorsEdit.Size = new System.Drawing.Size(112, 31);
             this.btnMonitorsEdit.TabIndex = 14;
             this.btnMonitorsEdit.Text = "Edit";
             this.btnMonitorsEdit.UseVisualStyleBackColor = false;
@@ -728,10 +729,10 @@
             this.btnMonitorsAdd.ForeColor = System.Drawing.Color.White;
             this.btnMonitorsAdd.Image = global::WindowsFormClient.Properties.Resources.Add;
             this.btnMonitorsAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitorsAdd.Location = new System.Drawing.Point(320, 11);
-            this.btnMonitorsAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnMonitorsAdd.Location = new System.Drawing.Point(319, 11);
+            this.btnMonitorsAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnMonitorsAdd.Name = "btnMonitorsAdd";
-            this.btnMonitorsAdd.Size = new System.Drawing.Size(112, 32);
+            this.btnMonitorsAdd.Size = new System.Drawing.Size(112, 31);
             this.btnMonitorsAdd.TabIndex = 13;
             this.btnMonitorsAdd.Text = "Add";
             this.btnMonitorsAdd.UseVisualStyleBackColor = false;
@@ -746,9 +747,9 @@
             this.dataGridViewMonitors.BackgroundColor = System.Drawing.SystemColors.Menu;
             this.dataGridViewMonitors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMonitors.Location = new System.Drawing.Point(4, 51);
-            this.dataGridViewMonitors.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewMonitors.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridViewMonitors.Name = "dataGridViewMonitors";
-            this.dataGridViewMonitors.Size = new System.Drawing.Size(668, 494);
+            this.dataGridViewMonitors.Size = new System.Drawing.Size(668, 487);
             this.dataGridViewMonitors.TabIndex = 12;
             // 
             // tabDrivers
@@ -757,19 +758,18 @@
             this.tabDrivers.Location = new System.Drawing.Point(104, 4);
             this.tabDrivers.Margin = new System.Windows.Forms.Padding(0);
             this.tabDrivers.Name = "tabDrivers";
-            this.tabDrivers.Size = new System.Drawing.Size(676, 554);
+            this.tabDrivers.Size = new System.Drawing.Size(674, 547);
             this.tabDrivers.TabIndex = 4;
             this.tabDrivers.Text = "Drivers";
             this.tabDrivers.UseVisualStyleBackColor = true;
             // 
             // FormServer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(782, 555);
             this.Controls.Add(this.tabControl);
-            this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormServer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Vistrol Server";

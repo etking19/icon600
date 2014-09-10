@@ -59,16 +59,16 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(14, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 16);
+            this.label1.Size = new System.Drawing.Size(56, 19);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Display Name:";
+            this.label1.Text = "Name:";
             // 
             // textBoxDisplayName
             // 
             this.textBoxDisplayName.Location = new System.Drawing.Point(108, 15);
             this.textBoxDisplayName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxDisplayName.Name = "textBoxDisplayName";
-            this.textBoxDisplayName.Size = new System.Drawing.Size(325, 22);
+            this.textBoxDisplayName.Size = new System.Drawing.Size(325, 27);
             this.textBoxDisplayName.TabIndex = 1;
             // 
             // groupBox1
@@ -93,7 +93,7 @@
             this.comboBoxWindows.Location = new System.Drawing.Point(48, 198);
             this.comboBoxWindows.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.comboBoxWindows.Name = "comboBoxWindows";
-            this.comboBoxWindows.Size = new System.Drawing.Size(334, 24);
+            this.comboBoxWindows.Size = new System.Drawing.Size(334, 27);
             this.comboBoxWindows.TabIndex = 11;
             this.comboBoxWindows.SelectedIndexChanged += new System.EventHandler(this.comboBoxWindows_SelectedIndexChanged);
             // 
@@ -120,7 +120,7 @@
             this.textBoxHeight.Location = new System.Drawing.Point(280, 55);
             this.textBoxHeight.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxHeight.Name = "textBoxHeight";
-            this.textBoxHeight.Size = new System.Drawing.Size(69, 22);
+            this.textBoxHeight.Size = new System.Drawing.Size(69, 27);
             this.textBoxHeight.TabIndex = 10;
             this.textBoxHeight.Text = "0";
             // 
@@ -129,7 +129,7 @@
             this.textBoxX.Location = new System.Drawing.Point(90, 23);
             this.textBoxX.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxX.Name = "textBoxX";
-            this.textBoxX.Size = new System.Drawing.Size(69, 22);
+            this.textBoxX.Size = new System.Drawing.Size(69, 27);
             this.textBoxX.TabIndex = 7;
             this.textBoxX.Text = "0";
             // 
@@ -138,7 +138,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(202, 59);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(49, 16);
+            this.label5.Size = new System.Drawing.Size(60, 19);
             this.label5.TabIndex = 27;
             this.label5.Text = "Height:";
             // 
@@ -147,16 +147,16 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 16);
+            this.label2.Size = new System.Drawing.Size(58, 19);
             this.label2.TabIndex = 21;
-            this.label2.Text = "Location X:";
+            this.label2.Text = "Pos X:";
             // 
             // textBoxWidth
             // 
             this.textBoxWidth.Location = new System.Drawing.Point(90, 58);
             this.textBoxWidth.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxWidth.Name = "textBoxWidth";
-            this.textBoxWidth.Size = new System.Drawing.Size(69, 22);
+            this.textBoxWidth.Size = new System.Drawing.Size(69, 27);
             this.textBoxWidth.TabIndex = 9;
             this.textBoxWidth.Text = "0";
             // 
@@ -165,16 +165,16 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(202, 27);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 16);
+            this.label3.Size = new System.Drawing.Size(57, 19);
             this.label3.TabIndex = 23;
-            this.label3.Text = "Location Y:";
+            this.label3.Text = "Pos Y:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 62);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 16);
+            this.label4.Size = new System.Drawing.Size(57, 19);
             this.label4.TabIndex = 25;
             this.label4.Text = "Width:";
             // 
@@ -183,7 +183,7 @@
             this.textBoxY.Location = new System.Drawing.Point(280, 23);
             this.textBoxY.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxY.Name = "textBoxY";
-            this.textBoxY.Size = new System.Drawing.Size(69, 22);
+            this.textBoxY.Size = new System.Drawing.Size(69, 27);
             this.textBoxY.TabIndex = 8;
             this.textBoxY.Text = "0";
             // 
@@ -193,7 +193,7 @@
             this.radioButtonAuto.Location = new System.Drawing.Point(7, 169);
             this.radioButtonAuto.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonAuto.Name = "radioButtonAuto";
-            this.radioButtonAuto.Size = new System.Drawing.Size(188, 20);
+            this.radioButtonAuto.Size = new System.Drawing.Size(231, 23);
             this.radioButtonAuto.TabIndex = 5;
             this.radioButtonAuto.TabStop = true;
             this.radioButtonAuto.Text = "Detect Using Window\'s Title";
@@ -206,7 +206,7 @@
             this.radioButtonManual.Location = new System.Drawing.Point(8, 25);
             this.radioButtonManual.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonManual.Name = "radioButtonManual";
-            this.radioButtonManual.Size = new System.Drawing.Size(68, 20);
+            this.radioButtonManual.Size = new System.Drawing.Size(82, 23);
             this.radioButtonManual.TabIndex = 5;
             this.radioButtonManual.TabStop = true;
             this.radioButtonManual.Text = "Manual";
@@ -243,7 +243,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(14, 50);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(39, 16);
+            this.label6.Size = new System.Drawing.Size(47, 19);
             this.label6.TabIndex = 7;
             this.label6.Text = "Path:";
             // 
@@ -253,12 +253,12 @@
             this.textBoxPath.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.ReadOnly = true;
-            this.textBoxPath.Size = new System.Drawing.Size(230, 22);
+            this.textBoxPath.Size = new System.Drawing.Size(230, 27);
             this.textBoxPath.TabIndex = 2;
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(346, 44);
+            this.buttonBrowse.Location = new System.Drawing.Point(343, 46);
             this.buttonBrowse.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(87, 28);
@@ -272,7 +272,7 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(14, 82);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(71, 16);
+            this.label7.Size = new System.Drawing.Size(87, 19);
             this.label7.TabIndex = 16;
             this.label7.Text = "Arguments";
             // 
@@ -281,13 +281,12 @@
             this.textBoxArguments.Location = new System.Drawing.Point(108, 79);
             this.textBoxArguments.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxArguments.Name = "textBoxArguments";
-            this.textBoxArguments.Size = new System.Drawing.Size(325, 22);
+            this.textBoxArguments.Size = new System.Drawing.Size(325, 27);
             this.textBoxArguments.TabIndex = 4;
             // 
             // FormApplication
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
             this.ClientSize = new System.Drawing.Size(448, 450);
             this.Controls.Add(this.label7);
@@ -300,7 +299,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxDisplayName);
-            this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormApplication";
