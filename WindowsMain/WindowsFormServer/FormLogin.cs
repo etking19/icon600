@@ -22,6 +22,8 @@ namespace WindowsFormClient
         {
             InitializeComponent();
 
+            Region = System.Drawing.Region.FromHrgn(Utils.Windows.NativeMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+
             mUsername = correctUsername;
             mPassword = correctPassword;
         }
@@ -58,7 +60,21 @@ namespace WindowsFormClient
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == Constant.WM_NCHITTEST)
+            if (m.Msg == Constant.WM_SYSCOMMAND)
+            {
+                switch ((UInt32)m.WParam)
+                {
+                    case Constant.SC_MINIMIZE:
+                    case Constant.SC_MAXIMIZE:
+                    case Constant.SC_RESTORE:
+                    case Constant.SC_MAXIMIZE2:
+                        // do not handle sizing
+                        return;
+                    default:
+                        break;
+                }
+            }
+            else if (m.Msg == Constant.WM_NCHITTEST)
             {
                 // to allow move by clicking the window's body
                 base.WndProc(ref m);

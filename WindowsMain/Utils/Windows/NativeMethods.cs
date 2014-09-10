@@ -45,6 +45,13 @@ namespace Utils.Windows
             public int Attr;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Point
+        {
+            public Int32 x;
+            public Int32 y;
+        }
+
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
@@ -129,6 +136,23 @@ namespace Utils.Windows
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("User32.dll")]
-        public static extern IntPtr GetWindowDC(IntPtr hWnd); 
+        public static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        public static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect, // x-coordinate of upper-left corner
+            int nTopRect, // y-coordinate of upper-left corner
+            int nRightRect, // x-coordinate of lower-right corner
+            int nBottomRect, // y-coordinate of lower-right corner
+            int nWidthEllipse, // height of ellipse
+            int nHeightEllipse // width of ellipse
+         );
+
+        [DllImport("Kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetCurrentThreadId();
+
+        [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref Point lpPoint);
     }
 }

@@ -104,10 +104,12 @@
             // 
             // buttonClose
             // 
+            this.buttonClose.AutoSize = true;
+            this.buttonClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonClose.ForeColor = System.Drawing.Color.Black;
             this.buttonClose.Location = new System.Drawing.Point(545, 12);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(29, 23);
+            this.buttonClose.Size = new System.Drawing.Size(29, 28);
             this.buttonClose.TabIndex = 5;
             this.buttonClose.Text = "X";
             this.buttonClose.UseVisualStyleBackColor = true;

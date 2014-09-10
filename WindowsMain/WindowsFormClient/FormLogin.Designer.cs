@@ -79,13 +79,15 @@
             // 
             // buttonLogin
             // 
+            this.buttonLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonLogin.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLogin.ForeColor = System.Drawing.Color.White;
             this.buttonLogin.Location = new System.Drawing.Point(384, 355);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(94, 32);
             this.buttonLogin.TabIndex = 4;
             this.buttonLogin.Text = "Login";
-            this.buttonLogin.UseVisualStyleBackColor = true;
+            this.buttonLogin.UseVisualStyleBackColor = false;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
             // pictureBox1
@@ -164,10 +166,12 @@
             // 
             // buttonClose
             // 
+            this.buttonClose.AutoSize = true;
+            this.buttonClose.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonClose.BackColor = System.Drawing.Color.Transparent;
             this.buttonClose.Location = new System.Drawing.Point(550, 12);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(24, 24);
+            this.buttonClose.Size = new System.Drawing.Size(24, 23);
             this.buttonClose.TabIndex = 11;
             this.buttonClose.Text = "X";
             this.buttonClose.UseVisualStyleBackColor = false;
@@ -190,6 +194,7 @@
             this.BackgroundImage = global::WindowsFormClient.Properties.Resources.login;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(586, 441);
+            this.ControlBox = false;
             this.Controls.Add(this.label6);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.label5);

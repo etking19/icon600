@@ -348,6 +348,7 @@ namespace Utils.Windows
         public const UInt32 SC_MAXIMIZE = 0xF030;
         public const UInt32 SC_MINIMIZE = 0xF020;
         public const UInt32 SC_RESTORE = 0xF120;
+        public const UInt32 SC_MAXIMIZE2 = 0xF032;
 
         // WM_SIZE wParam
         public const Int32 SIZE_MAXHIDE = 4;

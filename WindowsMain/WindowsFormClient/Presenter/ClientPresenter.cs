@@ -351,6 +351,26 @@ namespace WindowsFormClient.Presenter
                 vncCommand);
         }
 
+        public void StartMouseMonitoring()
+        {
+
+        }
+
+        public void StopMouseMonitoring()
+        {
+
+        }
+
+        public void StartKeyboardMonitoring()
+        {
+
+        }
+
+        public void StopKeyboardMonitoring()
+        {
+
+        }
+
         public void Dispose()
         {
             vncServer.StopVncServer();

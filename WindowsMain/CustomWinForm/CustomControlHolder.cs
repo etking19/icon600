@@ -50,20 +50,6 @@ namespace CustomWinForm
         /// </summary>
         public int ReferenceXPos { get; set; }
         public int ReferenceYPos { get; set; }
-
-        /// <summary>
-        /// keep the size of the control if parent maximized
-        /// </summary>
-        public Size MaximizedSize { get; set; }
-
-        /// <summary>
-        /// keep the current control size, used when restore called
-        /// </summary>
-        public Size CurrentSize { get; set; }
-        private bool isMaximized = false;
-
-        public int MatrixRow { get; set; }
-        public int MatrixColumn { get; set; }
         
         public struct ControlAttributes
         {
@@ -165,7 +151,8 @@ namespace CustomWinForm
 
                 // set size and pos after add
                 winForm.ActualPos = new Point(controlAttr.Xpos, controlAttr.Ypos);
-                winForm.Location = getRelativePoint(controlAttr.Xpos, controlAttr.Ypos);
+                Point relativePoint = getRelativePoint(controlAttr.Xpos, controlAttr.Ypos);
+                winForm.SetWindowLocation(relativePoint.X, relativePoint.Y);
             }
 
             // register the event callback
@@ -218,14 +205,25 @@ namespace CustomWinForm
                 return;
             }*/
 
+            if ((winForm.Style & Constant.WS_MINIMIZE) != 0)
+            {
+                // winform location change due to the minimize behavior
+                // set back to initial point
+                Trace.WriteLine("in minimize state, ignore position change");
+                winForm.ActualPos = new Point(-int.MaxValue, -int.MaxValue);
+                // Point initialPt = getRelativePoint(xPos, yPos);
+                //winForm.SetWindowLocation(initialPt.X, initialPt.Y);
+                return;
+            }
+
             if (onDelegatePosChangedEvt != null)
             {
-                
                 Point actual = getActualPoint(xPos, yPos);
                 if (actual.Equals(winForm.ActualPos))
                 {
                     return;
                 }
+
                 Trace.WriteLine(String.Format("delegate {0} pos changed: {1},{2}, previous:{3},{4}", winForm.Name, xPos, yPos, winForm.ActualPos.X, winForm.ActualPos.Y));
                 winForm.ActualPos = actual;
                 onDelegatePosChangedEvt(winForm.Id, actual.X, actual.Y);
@@ -284,12 +282,6 @@ namespace CustomWinForm
                 if (control.ActualSize.Equals(newSize))
                 {
                     // callback from server on size changed
-                    return;
-                }
-
-                if ((control.Style & Constant.WS_MINIMIZE) != 0)
-                {
-                    Trace.WriteLine("in minimize state, ignore sizing");
                     return;
                 }
 
