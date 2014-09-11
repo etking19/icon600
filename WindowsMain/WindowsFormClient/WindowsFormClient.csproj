@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>client.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -238,6 +241,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\system_tray.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\img_client.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\client.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="client.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

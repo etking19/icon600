@@ -74,12 +74,12 @@ namespace WindowsFormClient
         {
             notifyIconClient.BalloonTipTitle = "Vistrol Client";
             notifyIconClient.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIconClient.Icon = Properties.Resources.system_tray;
+            notifyIconClient.Icon = Properties.Resources.client;
             notifyIconClient.Visible = true;
             notifyIconClient.DoubleClick += notifyIconClient_DoubleClick;
 
-            this.IsMdiContainer = true;
-            dockPanel.DocumentStyle = DocumentStyle.DockingMdi;
+            this.IsMdiContainer = false;
+            dockPanel.DocumentStyle = DocumentStyle.DockingSdi;
 
             // create the dock controls
             createControls();
@@ -449,10 +449,13 @@ namespace WindowsFormClient
                 return;
             }
 
-            holder.ReferenceXPos = viewingArea.PosLeft;
-            holder.ReferenceYPos = viewingArea.PosTop;
-            holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
-
+            if (holder != null)
+            {
+                holder.ReferenceXPos = viewingArea.PosLeft;
+                holder.ReferenceYPos = viewingArea.PosTop;
+                holder.VirtualSize = new Size(viewingArea.Width, viewingArea.Height);
+            }
+            
             formMimic.Row = layout.LayoutRow;
             formMimic.Column = layout.LayoutColumn;
             formMimic.FullSize = new Size(layout.DesktopLayout.Width, layout.DesktopLayout.Height);

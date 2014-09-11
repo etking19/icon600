@@ -92,7 +92,7 @@ namespace WindowsFormClient
             notifyIconServer.Text = "Vistrol server is offline";
             notifyIconServer.BalloonTipTitle = "Vistrol Server";
             notifyIconServer.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIconServer.Icon = Properties.Resources.SystemTray;
+            notifyIconServer.Icon = Properties.Resources.server1;
             notifyIconServer.Visible = true;
             notifyIconServer.DoubleClick += notifyIconServer_DoubleClick;
 

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("License")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP")]
+[assembly: AssemblyCompany("Vistrol Pte Ltd")]
 [assembly: AssemblyProduct("License")]
 [assembly: AssemblyCopyright("Copyright © HP 2014")]
 [assembly: AssemblyTrademark("")]

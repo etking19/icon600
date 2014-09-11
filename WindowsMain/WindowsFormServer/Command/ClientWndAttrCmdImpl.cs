@@ -39,7 +39,8 @@ namespace WindowsFormClient.Command
                     NativeMethods.SendMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                     break;
                 case ClientWndCmd.CommandId.ESetForeground:
-                    NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
+                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOPMOST, 0, 0, 0, 0, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_NOSIZE | Constant.SWP_SHOWWINDOW));
+                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_NOTOPMOST, 0, 0, 0, 0, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_NOSIZE | Constant.SWP_SHOWWINDOW));
                     break;
                 default:
                     break;

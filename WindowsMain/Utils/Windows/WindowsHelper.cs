@@ -122,5 +122,8 @@ namespace Utils.Windows
             NativeMethods.EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, testDelegate, IntPtr.Zero);
             return col.AsReadOnly();
         }
+
     }
+
+    
 }

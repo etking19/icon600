@@ -71,6 +71,26 @@ namespace WindowsFormClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon client {
+            get {
+                object obj = ResourceManager.GetObject("client", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap img_client {
+            get {
+                object obj = ResourceManager.GetObject("img_client", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap keyboard {
@@ -127,16 +147,6 @@ namespace WindowsFormClient.Properties {
             get {
                 object obj = ResourceManager.GetObject("server_maintenance", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon system_tray {
-            get {
-                object obj = ResourceManager.GetObject("system_tray", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         

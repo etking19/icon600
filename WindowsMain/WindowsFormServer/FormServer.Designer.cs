@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormServer));
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.notifyIconServer = new System.Windows.Forms.NotifyIcon(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList();
+            this.notifyIconServer = new System.Windows.Forms.NotifyIcon();
             this.tabControl = new WindowsFormClient.CustomTabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.groupBoxGeneral = new System.Windows.Forms.GroupBox();
@@ -464,7 +463,7 @@
             this.dataGridViewUsers.Location = new System.Drawing.Point(8, 44);
             this.dataGridViewUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewUsers.Name = "dataGridViewUsers";
-            this.dataGridViewUsers.Size = new System.Drawing.Size(655, 479);
+            this.dataGridViewUsers.Size = new System.Drawing.Size(655, 489);
             this.dataGridViewUsers.TabIndex = 1;
             // 
             // dataGridUsers
@@ -487,10 +486,10 @@
             this.tabPageGroup.Controls.Add(this.btnGroupsEdit);
             this.tabPageGroup.Controls.Add(this.btnGroupsAdd);
             this.tabPageGroup.Controls.Add(this.dataGridViewGroup);
-            this.tabPageGroup.Location = new System.Drawing.Point(4, 22);
+            this.tabPageGroup.Location = new System.Drawing.Point(4, 27);
             this.tabPageGroup.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageGroup.Name = "tabPageGroup";
-            this.tabPageGroup.Size = new System.Drawing.Size(668, 528);
+            this.tabPageGroup.Size = new System.Drawing.Size(668, 523);
             this.tabPageGroup.TabIndex = 1;
             this.tabPageGroup.Text = "Group Management";
             // 
@@ -566,7 +565,7 @@
             this.dataGridViewGroup.Location = new System.Drawing.Point(8, 44);
             this.dataGridViewGroup.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewGroup.Name = "dataGridViewGroup";
-            this.dataGridViewGroup.Size = new System.Drawing.Size(656, 484);
+            this.dataGridViewGroup.Size = new System.Drawing.Size(656, 489);
             this.dataGridViewGroup.TabIndex = 0;
             // 
             // tabApplications
@@ -769,7 +768,9 @@
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "FormServer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Vistrol Server";

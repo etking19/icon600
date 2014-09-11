@@ -143,6 +143,26 @@ namespace WindowsFormClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap server {
+            get {
+                object obj = ResourceManager.GetObject("server", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon server1 {
+            get {
+                object obj = ResourceManager.GetObject("server1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap start_server {
             get {
                 object obj = ResourceManager.GetObject("start_server", resourceCulture);
@@ -157,16 +177,6 @@ namespace WindowsFormClient.Properties {
             get {
                 object obj = ResourceManager.GetObject("stop_serve", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon SystemTray {
-            get {
-                object obj = ResourceManager.GetObject("SystemTray", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
