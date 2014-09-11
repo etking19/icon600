@@ -172,12 +172,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D10B81BDF8AF1E63FE06823F6B5545F9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_4F53485CE323463A204937A30C8E740B"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -197,6 +191,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E195EA8423538BB901939D3018F3DB26"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D10B81BDF8AF1E63FE06823F6B5545F9"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -271,7 +271,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\InstallerSetup.msi"
+        "OutputFilename" = "8:Release\\VistrolServer.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -798,7 +798,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VistrolServer"
         "ProductCode" = "8:{CD954B65-E3E9-43FF-B0E3-E5798A4535DB}"
-        "PackageCode" = "8:{30629DFB-637B-4636-83BD-1EB9430E4BAA}"
+        "PackageCode" = "8:{B336651E-753E-4099-89DF-3BA32A0DDB8C}"
         "UpgradeCode" = "8:{A413E825-6F80-44E4-AEC6-32CA836572D8}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
