@@ -74,16 +74,5 @@ namespace WindowsFormClient.Server
         {
             return connectedClientList.Values.ToList().AsReadOnly();
         }
-        
-        public List<VncModel> GetAllUsersVnc()
-        {
-            List<VncModel> vncModelList = new List<VncModel>();
-            foreach (ClientInfoModel model in connectedClientList.Values)
-            {
-                vncModelList.AddRange(model.VncInfoList);
-            }
-
-            return vncModelList;
-        }
     }
 }

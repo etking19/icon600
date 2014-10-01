@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using WcfServiceLibrary1;
 using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
@@ -27,7 +28,7 @@ namespace WindowsFormClient.Presenter
             table.Columns.Add("Name", typeof(string)).ReadOnly = true;
             table.Columns.Add("Area (left,top,right,bottom)", typeof(string)).ReadOnly = true;
 
-            foreach (WindowsFormClient.Server.ServerDbHelper.MonitorData data in Server.ServerDbHelper.GetInstance().GetMonitorsList())
+            foreach (MonitorData data in Server.ServerDbHelper.GetInstance().GetMonitorsList())
             {
                 table.Rows.Add(data.MonitorId, data.Name, String.Format("{0}, {1}, {2}, {3}", data.Left, data.Top, data.Right, data.Bottom));
             }
@@ -54,10 +55,10 @@ namespace WindowsFormClient.Presenter
             return usersSocketList;
         }
 
-        private List<WindowsFormClient.Server.ServerDbHelper.GroupData> getGroupsFromMonitorId(int monitorId)
+        private List<GroupData> getGroupsFromMonitorId(int monitorId)
         {
-            List<WindowsFormClient.Server.ServerDbHelper.GroupData> groupsId = new List<WindowsFormClient.Server.ServerDbHelper.GroupData>();
-            foreach(WindowsFormClient.Server.ServerDbHelper.GroupData groupData in Server.ServerDbHelper.GetInstance().GetAllGroups())
+            List<GroupData> groupsId = new List<GroupData>();
+            foreach(GroupData groupData in Server.ServerDbHelper.GetInstance().GetAllGroups())
             {
                 if(Server.ServerDbHelper.GetInstance().GetMonitorByGroupId(groupData.id).MonitorId == monitorId)
                 {
@@ -71,7 +72,7 @@ namespace WindowsFormClient.Presenter
         public void RemoveMonitor(int monitorId)
         {
             List<string> usersList = getUsersSocketIdFromMonitorId(monitorId);
-            List<WindowsFormClient.Server.ServerDbHelper.GroupData> groupDataList = getGroupsFromMonitorId(monitorId);
+            List<GroupData> groupDataList = getGroupsFromMonitorId(monitorId);
 
             if(Server.ServerDbHelper.GetInstance().RemoveMonitor(monitorId))
             {
@@ -80,7 +81,7 @@ namespace WindowsFormClient.Presenter
                     connectionMgr.RemoveClient(userSocketId);
                 }
 
-                foreach (WindowsFormClient.Server.ServerDbHelper.GroupData groupData in groupDataList)
+                foreach (GroupData groupData in groupDataList)
                 {
                     Server.ServerDbHelper.GetInstance().EditGroup(groupData.id, groupData.name, true, groupData.allow_maintenance, -1, getApplicationsId(groupData.id));
                 }
@@ -90,7 +91,7 @@ namespace WindowsFormClient.Presenter
         private List<int> getApplicationsId(int groupId)
         {
             List<int> appList = new List<int>();
-            foreach (WindowsFormClient.Server.ServerDbHelper.ApplicationData data in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
+            foreach (ApplicationData data in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
             {
                 appList.Add(data.id);
             }

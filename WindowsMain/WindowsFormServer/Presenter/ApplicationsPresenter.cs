@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using WcfServiceLibrary1;
 using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
@@ -30,7 +31,7 @@ namespace WindowsFormClient.Presenter
             table.Columns.Add("Arguments", typeof(string)).ReadOnly = true;
             table.Columns.Add("Display Area", typeof(string)).ReadOnly = true;
 
-            foreach (WindowsFormClient.Server.ServerDbHelper.ApplicationData data in Server.ServerDbHelper.GetInstance().GetAllApplications())
+            foreach (ApplicationData data in Server.ServerDbHelper.GetInstance().GetAllApplications())
             {
                 table.Rows.Add(data.id, data.name, data.applicationPath, data.arguments, String.Format("{0}, {1}, {2}, {3}", data.rect.Left, data.rect.Top, data.rect.Right, data.rect.Bottom));
             }
@@ -70,8 +71,8 @@ namespace WindowsFormClient.Presenter
                 foreach (KeyValuePair<int, string> dbSocketPair in userList)
                 {
                     List<ApplicationEntry> appsEntries = new List<ApplicationEntry>();
-                    List<WindowsFormClient.Server.ServerDbHelper.ApplicationData> appDataList = Server.ServerDbHelper.GetInstance().GetAppsWithUserId(dbSocketPair.Key);
-                    foreach (WindowsFormClient.Server.ServerDbHelper.ApplicationData data in appDataList)
+                    List<ApplicationData> appDataList = Server.ServerDbHelper.GetInstance().GetAppsWithUserId(dbSocketPair.Key);
+                    foreach (ApplicationData data in appDataList)
                     {
                         appsEntries.Add(new ApplicationEntry()
                         {

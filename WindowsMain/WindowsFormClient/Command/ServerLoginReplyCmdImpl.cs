@@ -94,6 +94,10 @@ namespace WindowsFormClient.Command
             // update presets saved
             ServerPresetCmdImpl presetCmdImpl = new ServerPresetCmdImpl(client);
             presetCmdImpl.ExecuteCommand(userId, loginData.UserPresets.getCommandString());
+
+            // update vnc saved
+            ServerVncStatusCmdImpl vncCmdImp = new ServerVncStatusCmdImpl(client);
+            vncCmdImp.ExecuteCommand(userId, loginData.VncStatus.getCommandString());
         }
     }
 }

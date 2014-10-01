@@ -38,7 +38,7 @@
             this.listBoxVnc.FormattingEnabled = true;
             this.listBoxVnc.ItemHeight = 18;
             this.listBoxVnc.Location = new System.Drawing.Point(0, 0);
-            this.listBoxVnc.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listBoxVnc.Margin = new System.Windows.Forms.Padding(4);
             this.listBoxVnc.Name = "listBoxVnc";
             this.listBoxVnc.Size = new System.Drawing.Size(426, 363);
             this.listBoxVnc.TabIndex = 0;
@@ -51,9 +51,9 @@
             this.ClientSize = new System.Drawing.Size(426, 363);
             this.Controls.Add(this.listBoxVnc);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormVnc";
-            this.Text = "VNC Servers";
+            this.Text = "Network Sources";
             this.Load += new System.EventHandler(this.FormVnc_Load);
             this.ResumeLayout(false);
 

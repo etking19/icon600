@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Utils.Windows;
+using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Command
 {
@@ -23,7 +24,7 @@ namespace WindowsFormClient.Command
 
         public override void ExecuteCommand(string userId, string command)
         {
-            ClientPresetsControl presetData = deserialize.Deserialize<ClientPresetsControl>(command);
+            ClientPresetsCmd presetData = deserialize.Deserialize<ClientPresetsCmd>(command);
             if (presetData == null)
             {
                 return;
@@ -32,18 +33,18 @@ namespace WindowsFormClient.Command
             bool broadcastChanges = false;
             switch (presetData.ControlType)
             {
-                case ClientPresetsControl.EControlType.Add:
+                case ClientPresetsCmd.EControlType.Add:
                     AddPreset(clientId, presetData);
                     broadcastChanges = true;
                     break;
-                case ClientPresetsControl.EControlType.Delete:
+                case ClientPresetsCmd.EControlType.Delete:
                     RemovePreset(presetData);
                     broadcastChanges = true;
                     break;
-                case ClientPresetsControl.EControlType.Launch:
+                case ClientPresetsCmd.EControlType.Launch:
                     LaunchPreset(clientId, presetData);
                     break;
-                case ClientPresetsControl.EControlType.Modify:
+                case ClientPresetsCmd.EControlType.Modify:
                     ModifyPreset(clientId, presetData);
                     break;
                 default:
@@ -56,10 +57,10 @@ namespace WindowsFormClient.Command
                 // get user's preset list
                 ServerPresetsStatus serverPresetStatus = new ServerPresetsStatus();
                 serverPresetStatus.UserPresetList = new List<PresetsEntry>();
-                foreach (Server.ServerDbHelper.PresetData data in Server.ServerDbHelper.GetInstance().GetPresetByUserId(clientId))
+                foreach (PresetData data in Server.ServerDbHelper.GetInstance().GetPresetByUserId(clientId))
                 {
                     List<ApplicationEntry> presetAppEntries = new List<ApplicationEntry>();
-                    foreach (Server.ServerDbHelper.ApplicationData appData in data.AppDataList)
+                    foreach (ApplicationData appData in data.AppDataList)
                     {
                         presetAppEntries.Add(new ApplicationEntry()
                         {
@@ -83,7 +84,7 @@ namespace WindowsFormClient.Command
             }
         }
 
-        private void AddPreset(int userId, ClientPresetsControl presetData)
+        private void AddPreset(int userId, ClientPresetsCmd presetData)
         {
             // save preset to database
             List<int> applicationIds = new List<int>();
@@ -98,13 +99,13 @@ namespace WindowsFormClient.Command
                 applicationIds);
         }
 
-        private void RemovePreset(ClientPresetsControl presetData)
+        private void RemovePreset(ClientPresetsCmd presetData)
         {
             // remove preset from database
             Server.ServerDbHelper.GetInstance().RemovePreset(presetData.PresetEntry.Identifier);
         }
 
-        private void ModifyPreset(int userId, ClientPresetsControl presetData)
+        private void ModifyPreset(int userId, ClientPresetsCmd presetData)
         {
             List<int> applicationIds = new List<int>();
             foreach (ApplicationEntry entry in presetData.PresetEntry.ApplicationList)
@@ -115,7 +116,7 @@ namespace WindowsFormClient.Command
             Server.ServerDbHelper.GetInstance().EditPreset(presetData.PresetEntry.Identifier, presetData.PresetEntry.Name, userId, applicationIds);
         }
 
-        private void LaunchPreset(int userId, ClientPresetsControl presetData)
+        private void LaunchPreset(int userId, ClientPresetsCmd presetData)
         {
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
@@ -127,8 +128,8 @@ namespace WindowsFormClient.Command
             }
 
             // 2. trigger the apps in the preset by giving preset's id
-            WindowsFormClient.Server.ServerDbHelper.PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(userId).First(PresetData => PresetData.Id == presetData.PresetEntry.Identifier);
-            foreach (WindowsFormClient.Server.ServerDbHelper.ApplicationData appData in preset.AppDataList)
+            PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(userId).First(PresetData => PresetData.Id == presetData.PresetEntry.Identifier);
+            foreach (ApplicationData appData in preset.AppDataList)
             {
                 ProcessStartInfo info = new ProcessStartInfo()
                 {

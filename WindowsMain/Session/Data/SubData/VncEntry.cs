@@ -7,9 +7,7 @@ namespace Session.Data.SubData
 {
     public class VncEntry
     {
-        public string OwnerPCName { get; set; }
-        public int MonitorCount { get; set; }
-
+        public string DisplayName { get; set; }
         /// <summary>
         /// Used when client login to server
         /// </summary>

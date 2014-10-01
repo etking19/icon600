@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Presenter
 {
@@ -27,7 +28,7 @@ namespace WindowsFormClient.Presenter
             table.Columns.Add("Group Name", typeof(string)).ReadOnly = true;
             
 
-            foreach(WindowsFormClient.Server.ServerDbHelper.UserData data in Server.ServerDbHelper.GetInstance().GetAllUsers())
+            foreach(UserData data in Server.ServerDbHelper.GetInstance().GetAllUsers())
             {
                 string groupName = Server.ServerDbHelper.GetInstance().GetGroupByUserId(data.id).name;
                 table.Rows.Add(data.id, data.name, data.username, data.password, groupName);
@@ -75,7 +76,7 @@ namespace WindowsFormClient.Presenter
         public Dictionary<int, string> GetGroupsList()
         {
             Dictionary<int, string> dicGroup = new Dictionary<int, string>();
-            foreach (WindowsFormClient.Server.ServerDbHelper.GroupData data in Server.ServerDbHelper.GetInstance().GetAllGroups())
+            foreach (GroupData data in Server.ServerDbHelper.GetInstance().GetAllGroups())
             {
                 dicGroup.Add(data.id, data.name);
             }

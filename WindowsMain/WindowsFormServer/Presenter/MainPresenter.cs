@@ -1,8 +1,8 @@
-﻿using Database.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Presenter
 {
@@ -12,18 +12,18 @@ namespace WindowsFormClient.Presenter
         { 
             get
             {
-                return Server.ServerDbHelper.GetInstance().GetSetting().port_start;
+                return Server.ServerDbHelper.GetInstance().GetSetting().PortStart;
             }
 
             set
             {
-                Setting currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
+                SettingData currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
                 Server.ServerDbHelper.GetInstance().AddOrEditSetting(
                     value,
-                    currentSetting.port_end,
-                    currentSetting.matrix_col,
-                    currentSetting.matrix_row,
-                    currentSetting.vnc_path);
+                    currentSetting.PortStart,
+                    currentSetting.MatrixColumn,
+                    currentSetting.MatrixRow,
+                    currentSetting.VncPath);
             }
         }
 
@@ -31,18 +31,18 @@ namespace WindowsFormClient.Presenter
         {
             get
             {
-                return Server.ServerDbHelper.GetInstance().GetSetting().port_end;
+                return Server.ServerDbHelper.GetInstance().GetSetting().PortEnd;
             }
 
             set
             {
-                Setting currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
+                SettingData currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
                 Server.ServerDbHelper.GetInstance().AddOrEditSetting(
-                    currentSetting.port_start,
+                    currentSetting.PortStart,
                     value,
-                    currentSetting.matrix_col,
-                    currentSetting.matrix_row,
-                    currentSetting.vnc_path);
+                    currentSetting.MatrixColumn,
+                    currentSetting.MatrixRow,
+                    currentSetting.VncPath);
             }
         }
 
@@ -50,18 +50,18 @@ namespace WindowsFormClient.Presenter
         {
             get
             {
-                return Server.ServerDbHelper.GetInstance().GetSetting().matrix_row;
+                return Server.ServerDbHelper.GetInstance().GetSetting().MatrixRow;
             }
 
             set
             {
-                Setting currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
+                SettingData currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
                 Server.ServerDbHelper.GetInstance().AddOrEditSetting(
-                    currentSetting.port_start,
-                    currentSetting.port_end,
-                    currentSetting.matrix_col,
+                    currentSetting.PortStart,
+                    currentSetting.PortEnd,
+                    currentSetting.MatrixColumn,
                     value,
-                    currentSetting.vnc_path);
+                    currentSetting.VncPath);
             }
         }
 
@@ -69,18 +69,18 @@ namespace WindowsFormClient.Presenter
         {
             get
             {
-                return Server.ServerDbHelper.GetInstance().GetSetting().matrix_col;
+                return Server.ServerDbHelper.GetInstance().GetSetting().MatrixColumn;
             }
 
             set
             {
-                Setting currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
+                SettingData currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
                 Server.ServerDbHelper.GetInstance().AddOrEditSetting(
-                    currentSetting.port_start,
-                    currentSetting.port_end,
+                    currentSetting.PortStart,
+                    currentSetting.PortEnd,
                     value,
-                    currentSetting.matrix_row,
-                    currentSetting.vnc_path);
+                    currentSetting.MatrixRow,
+                    currentSetting.VncPath);
             }
         }
 
@@ -88,17 +88,17 @@ namespace WindowsFormClient.Presenter
         {
             get
             {
-                return Server.ServerDbHelper.GetInstance().GetSetting().vnc_path;
+                return Server.ServerDbHelper.GetInstance().GetSetting().VncPath;
             }
 
             set
             {
-                Setting currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
+                SettingData currentSetting = Server.ServerDbHelper.GetInstance().GetSetting();
                 Server.ServerDbHelper.GetInstance().AddOrEditSetting(
-                    currentSetting.port_start,
-                    currentSetting.port_end,
-                    currentSetting.matrix_col,
-                    currentSetting.matrix_row,
+                    currentSetting.PortStart,
+                    currentSetting.PortEnd,
+                    currentSetting.MatrixColumn,
+                    currentSetting.MatrixRow,
                     value);
             }
         }

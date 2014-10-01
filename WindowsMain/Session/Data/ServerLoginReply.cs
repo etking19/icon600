@@ -20,5 +20,7 @@ namespace Session.Data
         public ServerMaintenanceStatus UserMaintenance { get; set; }
 
         public ServerApplicationStatus UserApplications { get; set; }
+
+        public ServerVncStatus VncStatus { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using Utils.Windows;
+using WcfServiceLibrary1;
 using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
@@ -31,7 +32,7 @@ namespace WindowsFormClient.Presenter
             table.Columns.Add("Allow Maintenance", typeof(bool)).ReadOnly = true;
             table.Columns.Add("Users Count", typeof(int)).ReadOnly = true;
 
-            foreach (WindowsFormClient.Server.ServerDbHelper.GroupData data in Server.ServerDbHelper.GetInstance().GetAllGroups())
+            foreach (GroupData data in Server.ServerDbHelper.GetInstance().GetAllGroups())
             {
                 int numberOfUsers = Server.ServerDbHelper.GetInstance().GetUsersInGroup(data.id).Count();
                 table.Rows.Add(data.id, data.name, data.share_full_desktop, data.allow_maintenance, numberOfUsers);
@@ -62,10 +63,10 @@ namespace WindowsFormClient.Presenter
         private List<string> getSocketIdentifierFromGroupId(int groupId)
         {
             // get any connected clients with this group id
-            List<WindowsFormClient.Server.ServerDbHelper.UserData> userDataList = Server.ServerDbHelper.GetInstance().GetUsersInGroup(groupId);
+            List<UserData> userDataList = Server.ServerDbHelper.GetInstance().GetUsersInGroup(groupId);
 
             List<string> disconnectionUserIdList = new List<string>();
-            foreach (WindowsFormClient.Server.ServerDbHelper.UserData dbUserData in userDataList)
+            foreach (UserData dbUserData in userDataList)
             {
                 var disconnectList = Server.ConnectedClientHelper.GetInstance().GetAllUsers().Where(clientInfo => clientInfo.DbUserId == dbUserData.id);
                 foreach (ClientInfoModel model in disconnectList)
@@ -90,7 +91,7 @@ namespace WindowsFormClient.Presenter
         public List<int> GetApplicationsId(int groupId)
         {
             List<int> appList = new List<int>();
-            foreach(WindowsFormClient.Server.ServerDbHelper.ApplicationData data in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
+            foreach(ApplicationData data in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
             {
                 appList.Add(data.id);
             }
@@ -102,7 +103,7 @@ namespace WindowsFormClient.Presenter
         {
             Dictionary<int, string> dicApp = new Dictionary<int, string>();
 
-            foreach(WindowsFormClient.Server.ServerDbHelper.ApplicationData data in Server.ServerDbHelper.GetInstance().GetAllApplications())
+            foreach(ApplicationData data in Server.ServerDbHelper.GetInstance().GetAllApplications())
             {
                 dicApp.Add(data.id, data.name);
             }
@@ -113,7 +114,7 @@ namespace WindowsFormClient.Presenter
         public Dictionary<int, string> GetMonitorsList()
         {
             Dictionary<int, string> dicMonitors = new Dictionary<int, string>();
-            foreach (WindowsFormClient.Server.ServerDbHelper.MonitorData data in Server.ServerDbHelper.GetInstance().GetMonitorsList())
+            foreach (MonitorData data in Server.ServerDbHelper.GetInstance().GetMonitorsList())
             {
                 dicMonitors.Add(data.MonitorId, data.Name);
             }
@@ -130,7 +131,7 @@ namespace WindowsFormClient.Presenter
             }
 
             // get the current setting of the group
-            WindowsFormClient.Server.ServerDbHelper.GroupData oldData = Server.ServerDbHelper.GetInstance().GetAllGroups().First(groupData => groupData.id == groupId);
+            GroupData oldData = Server.ServerDbHelper.GetInstance().GetAllGroups().First(groupData => groupData.id == groupId);
             int oldMonitorId = GetMonitorId(groupId);
             List<int> oldAppIdList = GetApplicationsId(groupId);
 
@@ -189,7 +190,7 @@ namespace WindowsFormClient.Presenter
                 if(applicationListChanged)
                 {
                     List<ApplicationEntry> applicationList = new List<ApplicationEntry>();
-                    foreach (Server.ServerDbHelper.ApplicationData appData in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
+                    foreach (ApplicationData appData in Server.ServerDbHelper.GetInstance().GetAppsWithGroupId(groupId))
                     {
                         applicationList.Add(new ApplicationEntry()
                         {
@@ -240,7 +241,7 @@ namespace WindowsFormClient.Presenter
         {
             MonitorInfo monitor = new Session.Data.SubData.MonitorInfo();
 
-            WindowsFormClient.Server.ServerDbHelper.MonitorData monitorData = Server.ServerDbHelper.GetInstance().GetMonitorByGroupId(groupId);
+            MonitorData monitorData = Server.ServerDbHelper.GetInstance().GetMonitorByGroupId(groupId);
             monitor.LeftPos = monitorData.Left;
             monitor.TopPos = monitorData.Top;
             monitor.RightPos = monitorData.Right;

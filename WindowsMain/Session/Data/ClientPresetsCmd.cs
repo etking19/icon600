@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Session.Data
 {
-    public class ClientPresetsControl : BaseCmd
+    public class ClientPresetsCmd : BaseCmd
     {
         public enum EControlType
         {

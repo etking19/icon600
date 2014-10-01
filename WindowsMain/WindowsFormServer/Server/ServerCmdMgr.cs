@@ -2,6 +2,7 @@
 using Session.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using WindowsFormClient.Command;
@@ -55,6 +56,12 @@ namespace WindowsFormClient.Server
                     break;
                 case (int)CommandConst.SubCommandClient.MessageBox:
                     implementor = new Command.ClientMessageBoxImpl(server);
+                    break;
+                case (int)CommandConst.SubCommandClient.Application:
+                    implementor = new Command.ClientAppCmdImpl();
+                    break;
+                default:
+                    Trace.WriteLine("No command implementor found with sub id: " + subId);
                     break;
             }
 

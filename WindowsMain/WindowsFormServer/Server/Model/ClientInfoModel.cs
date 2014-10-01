@@ -21,10 +21,5 @@ namespace WindowsFormClient.Server.Model
         /// Display name
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Vnc info
-        /// </summary>
-        public List<VncModel> VncInfoList { get; set; }
     }
 }

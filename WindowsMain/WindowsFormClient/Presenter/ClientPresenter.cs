@@ -14,7 +14,7 @@ using WindowsFormClient.Client.Model;
 
 namespace WindowsFormClient.Presenter
 {
-    class ClientPresenter : IDisposable
+    class ClientPresenter
     {
         public enum ServerMaintenanceMode
         {
@@ -25,7 +25,6 @@ namespace WindowsFormClient.Presenter
 
         private IClient client;
         private ConnectionManager connectionMgr;
-        private VncMarshall.Server vncServer;
         private Client.ClientCmdMgr clientCmdMgr;
 
         public ClientPresenter(IClient client, ConnectionManager connectionMgr, string username, string password)
@@ -37,10 +36,6 @@ namespace WindowsFormClient.Presenter
             this.connectionMgr = connectionMgr;
             connectionMgr.EvtDisconnected += connectionMgr_EvtDisconnected;
             connectionMgr.EvtServerDataReceived += connectionMgr_EvtServerDataReceived;
-
-            // create new vnc instance
-            vncServer = new VncMarshall.Server(Properties.Settings.Default.TightVncServerPath);
-            vncServer.StartVncServer();
 
             // send credential to server
             SendCredential(username, password);
@@ -63,42 +58,6 @@ namespace WindowsFormClient.Presenter
             loginCmd.Username = username;
             loginCmd.Password = password;
 
-            // get the VNC status, if there is VNC server installed, get the ip address and port shared
-            List<VncEntry> vncList = new List<VncEntry>();
-            int port;
-            if ((port = VncMarshall.VncRegistryHelper.GetListeningPort()) != -1)
-            {
-                // clean up current extra ports on vnc server
-                VncMarshall.VncRegistryHelper.RemoveExtrasListeningPort();
-
-                // add the current monitors as extra listening port on vnc server
-                int monitorCount = 1;
-                foreach (WindowsHelper.MonitorInfo info in Utils.Windows.WindowsHelper.GetMonitorList())
-                {
-                    int extraPort = ++port;
-                    VncMarshall.VncRegistryHelper.AddExtraListeningPorts(
-                        extraPort, 
-                        info.WorkArea.Left,
-                        info.WorkArea.Top,
-                        info.WorkArea.Right - info.WorkArea.Left,
-                        info.WorkArea.Bottom - info.WorkArea.Top);
-
-                    vncList.Add(new VncEntry() 
-                    { 
-                        IpAddress = Utils.Socket.LocalIPAddress(),
-                        Port = extraPort,
-                        OwnerPCName = Dns.GetHostName(),
-                        MonitorCount = monitorCount,
-                    });
-
-                    monitorCount++;
-                }
-            }
-
-            // reload the vnc server
-            vncServer.refreshVncServer();
-
-            loginCmd.VncList = vncList;
             connectionMgr.BroadcastMessage((int)CommandConst.MainCommandClient.LoginInfo, (int)CommandConst.SubCommandClient.Credential, loginCmd);
         }
 
@@ -190,9 +149,9 @@ namespace WindowsFormClient.Presenter
                 ApplicationList = appList,
             };
 
-            ClientPresetsControl presetCmd = new ClientPresetsControl()
+            ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {
-                ControlType = ClientPresetsControl.EControlType.Add,
+                ControlType = ClientPresetsCmd.EControlType.Add,
                 PresetEntry = presetEntry,
             };
 
@@ -213,9 +172,9 @@ namespace WindowsFormClient.Presenter
                 });
             }
 
-            ClientPresetsControl presetCmd = new ClientPresetsControl()
+            ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {
-                ControlType = ClientPresetsControl.EControlType.Delete,
+                ControlType = ClientPresetsCmd.EControlType.Delete,
                 PresetEntry = new PresetsEntry { Identifier = presetModel.PresetId, Name = presetModel.PresetName, ApplicationList = appEntriesList }
             };
 
@@ -227,9 +186,9 @@ namespace WindowsFormClient.Presenter
 
         public void TriggerPreset(Client.Model.PresetModel presetModel)
         {
-            ClientPresetsControl presetCmd = new ClientPresetsControl()
+            ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {
-                ControlType = ClientPresetsControl.EControlType.Launch,
+                ControlType = ClientPresetsCmd.EControlType.Launch,
                 PresetEntry = new PresetsEntry()
                 {
                     Identifier = presetModel.PresetId,
@@ -340,8 +299,7 @@ namespace WindowsFormClient.Presenter
                 { 
                     IpAddress = model.VncServerIp,
                     Port = model.VncServerPort,
-                    OwnerPCName = model.DisplayName,
-                    MonitorCount = model.DisplayCount
+                    DisplayName = model.DisplayName,
                 }
             };
 
@@ -351,29 +309,21 @@ namespace WindowsFormClient.Presenter
                 vncCommand);
         }
 
-        public void StartMouseMonitoring()
+        public void TriggerApplication(Client.Model.ApplicationModel model)
         {
+            ClientApplicationCmd appCommand = new ClientApplicationCmd()
+            {
+                ApplicationEntry = new ApplicationEntry()
+                {
+                    Identifier = model.AppliationId,
+                    Name = model.ApplicationName,
+                }
+            };
 
-        }
-
-        public void StopMouseMonitoring()
-        {
-
-        }
-
-        public void StartKeyboardMonitoring()
-        {
-
-        }
-
-        public void StopKeyboardMonitoring()
-        {
-
-        }
-
-        public void Dispose()
-        {
-            vncServer.StopVncServer();
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.Functionality,
+                (int)CommandConst.SubCommandClient.Application,
+                appCommand);
         }
     }
 }

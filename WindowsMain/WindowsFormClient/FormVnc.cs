@@ -37,7 +37,7 @@ namespace WindowsFormClient
         {
             listBoxVnc.DataSource = new BindingSource(vncList, null);
             listBoxVnc.DisplayMember = "DisplayName";
-            listBoxVnc.ValueMember = "DisplayCount";
+            listBoxVnc.ValueMember = "VncServerIp";
         }
     }
 }

@@ -38,6 +38,7 @@ namespace WindowsFormClient
         private FormRunningApps formRunningApps;
         private FormVnc formVnc;
         private FormMimic formMimic;
+        private FormApplications formApps;
         private CustomControlHolder holder;
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace WindowsFormClient
         private delegate void DelegateMaintenanceStatus(Client.Model.UserPriviledgeModel priviledge);
         private delegate void DelegateRefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout, WindowsModel viewingArea);
         private delegate void DelegateRefreshViewArea(WindowsModel viewingArea);
+        private delegate void DelegateRefreshAppList(IList<Client.Model.ApplicationModel> appsList);
 
         public FormClient(ConnectionManager mgr, string username, string password)
         {
@@ -214,6 +216,10 @@ namespace WindowsFormClient
             formRunningApps.CloseButtonVisible = false;
             formRunningApps.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
 
+            formApps = new FormApplications();
+            formApps.CloseButtonVisible = false;
+            formApps.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
+
             formMimic = new FormMimic();
             formMimic.CloseButtonVisible = false;
             formMimic.DockAreas = DockAreas.Document;
@@ -278,6 +284,14 @@ namespace WindowsFormClient
                     }
                 }
             }
+            else if (e.Data.GetDataPresent(typeof(Client.Model.ApplicationModel)))
+            {
+                Client.Model.ApplicationModel applicationData = null;
+                if ((applicationData = (Client.Model.ApplicationModel)e.Data.GetData(typeof(Client.Model.ApplicationModel))) != null)
+                {
+                    clientPresenter.TriggerApplication(applicationData);
+                }
+            }
         }
 
         private IDockContent getContentFromPersistString(string persistString)
@@ -288,6 +302,8 @@ namespace WindowsFormClient
                 return formVnc;
             else if (persistString == typeof(FormRunningApps).ToString())
                 return formRunningApps;
+            else if (persistString == typeof(FormApplications).ToString())
+                return formApps;
             else
                 return formMimic;
         }
@@ -300,6 +316,7 @@ namespace WindowsFormClient
             // load the dock form
             formPreset.Show(dockPanel, DockState.DockLeft);
             formVnc.Show(formPreset.Pane, DockAlignment.Bottom, 0.6);
+            formApps.Show(formVnc.Pane, DockAlignment.Bottom, 0.5);
             formRunningApps.Show(formVnc.Pane, DockAlignment.Bottom, 0.5);
             formMimic.Show(dockPanel, DockState.Document);
 
@@ -493,7 +510,13 @@ namespace WindowsFormClient
 
         public void RefreshAppList(IList<Client.Model.ApplicationModel> appList)
         {
-            // do nothing as it will not affect current windows
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateRefreshAppList(RefreshAppList), appList);
+                return;
+            }
+
+            formApps.SetApplicationsListData(appList);
         }
 
         public void RefreshWndList(IList<Client.Model.WindowsModel> wndsList)
@@ -679,7 +702,6 @@ namespace WindowsFormClient
             dockPanel.SaveAsXml(configFile);
 
             // clean up connection
-            clientPresenter.Dispose();
             holder.RemoveAllControls();
         }
 

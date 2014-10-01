@@ -62,6 +62,7 @@ namespace Session
             Preset = 201,
             Maintenance = 202,
             MessageBox = 203,
+            Application = 204,
         }
     }
 }

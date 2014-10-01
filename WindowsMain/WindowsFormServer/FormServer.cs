@@ -21,6 +21,7 @@ namespace WindowsFormClient
         private MonitorsPresenter monitorPresenter;
         private ApplicationsPresenter applicationPresenter;
         private ConnectionPresenter connectionPresenter;
+        private RemoteVncPresenter remoteVncPresenter;
 
         private ConnectionManager connectionMgr;
         private VncMarshall.Client vncClient;
@@ -43,6 +44,7 @@ namespace WindowsFormClient
             monitorPresenter = new MonitorsPresenter(connectionMgr);
             applicationPresenter = new ApplicationsPresenter(connectionMgr);
             connectionPresenter = new ConnectionPresenter(this, connectionMgr);
+            remoteVncPresenter = new RemoteVncPresenter(connectionMgr);
 
            // tabControl.ImageList = new ImageList();
         }
@@ -102,6 +104,7 @@ namespace WindowsFormClient
             setupDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
             setupDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
             setupDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
+            setupDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
 
             textBoxGeneralMin.Text = mainPresenter.PortMin.ToString();
             textBoxGeneralMax.Text = mainPresenter.PortMax.ToString();
@@ -323,7 +326,7 @@ namespace WindowsFormClient
 
         System.Windows.Forms.DialogResult showDeleteMessageBox()
         {
-            return MessageBox.Show("Are you sure want to delete checked data?" + Environment.NewLine + "Group and/or User assosiate wit");
+            return MessageBox.Show("Are you sure want to delete checked data?");
         }
 
         System.Windows.Forms.DialogResult showDeleteMessageBoxMonitor()
@@ -717,12 +720,85 @@ namespace WindowsFormClient
             
             connectionMgr.StopServer();
             connectionPresenter.Dispose();
+
+            Server.ServerDbHelper.GetInstance().Shutdown();
         }
 
 
         public ConnectionManager GetConnectionMgr()
         {
             return this.connectionMgr;
+        }
+
+        private void buttonRemoteAdd_Click(object sender, EventArgs e)
+        {
+            FormRemoteVnc formVnc = new FormRemoteVnc();
+            formVnc.Text = "Add Remote Data";
+            if (formVnc.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            {
+                // add to database
+                remoteVncPresenter.AddVnc(
+                    formVnc.DisplayName,
+                    formVnc.RemoteIp,
+                    formVnc.RemotePort);
+
+                reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
+            }
+        }
+
+        private void buttonRemoteEdit_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridViewRemote.Rows)
+            {
+                if (row.Cells[0].Value != null &&
+                        (bool)row.Cells[0].Value)
+                {
+                    // show the form user
+                    int vncDataId = (int)row.Cells[1].Value;
+                    string vncLabel = (string)row.Cells[2].Value;
+                    string remoteIp = (string)row.Cells[3].Value;
+                    int remotePort = (int)row.Cells[4].Value;
+
+                    FormRemoteVnc formVnc = new FormRemoteVnc();
+                    formVnc.Text = "Edit Remote Data";
+                    formVnc.DisplayName = vncLabel;
+                    formVnc.RemoteIp = remoteIp;
+                    formVnc.RemotePort = remotePort;
+
+                    if (formVnc.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
+                        formVnc.IsDirty)
+                    {
+                        // add to database
+                        remoteVncPresenter.EditVnc(
+                            vncDataId,
+                            formVnc.DisplayName,
+                            formVnc.RemoteIp,
+                            formVnc.RemotePort);
+                    }
+                }
+            }
+
+            reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
+        }
+
+        private void buttonRemoteDelete_Click(object sender, EventArgs e)
+        {
+            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            foreach (DataGridViewRow row in dataGridViewRemote.Rows)
+            {
+                if (row.Cells[0].Value != null &&
+                    (bool)row.Cells[0].Value)
+                {
+                    int vncDataId = (int)row.Cells[1].Value;
+                    remoteVncPresenter.RemoveVnc(vncDataId);
+                }
+            }
+
+            reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
         }
     }
 }

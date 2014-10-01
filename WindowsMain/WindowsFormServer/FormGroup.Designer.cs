@@ -76,9 +76,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 16);
+            this.label1.Size = new System.Drawing.Size(56, 19);
             this.label1.TabIndex = 13;
-            this.label1.Text = "Group Name:";
+            this.label1.Text = "Name:";
             // 
             // textBoxGroupName
             // 
@@ -87,7 +87,7 @@
             this.textBoxGroupName.Location = new System.Drawing.Point(111, 15);
             this.textBoxGroupName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxGroupName.Name = "textBoxGroupName";
-            this.textBoxGroupName.Size = new System.Drawing.Size(260, 22);
+            this.textBoxGroupName.Size = new System.Drawing.Size(260, 27);
             this.textBoxGroupName.TabIndex = 1;
             // 
             // groupBox1
@@ -101,7 +101,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox1.Size = new System.Drawing.Size(351, 124);
+            this.groupBox1.Size = new System.Drawing.Size(413, 124);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Share Area";
@@ -113,7 +113,7 @@
             this.comboBoxMonitors.Location = new System.Drawing.Point(91, 82);
             this.comboBoxMonitors.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.comboBoxMonitors.Name = "comboBoxMonitors";
-            this.comboBoxMonitors.Size = new System.Drawing.Size(176, 24);
+            this.comboBoxMonitors.Size = new System.Drawing.Size(219, 27);
             this.comboBoxMonitors.TabIndex = 4;
             // 
             // radioButtonMonitor
@@ -122,7 +122,7 @@
             this.radioButtonMonitor.Location = new System.Drawing.Point(8, 54);
             this.radioButtonMonitor.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonMonitor.Name = "radioButtonMonitor";
-            this.radioButtonMonitor.Size = new System.Drawing.Size(154, 20);
+            this.radioButtonMonitor.Size = new System.Drawing.Size(191, 23);
             this.radioButtonMonitor.TabIndex = 3;
             this.radioButtonMonitor.TabStop = true;
             this.radioButtonMonitor.Text = "Selected Monitor Area";
@@ -134,7 +134,7 @@
             this.radioButtonDesktop.Location = new System.Drawing.Point(8, 25);
             this.radioButtonDesktop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonDesktop.Name = "radioButtonDesktop";
-            this.radioButtonDesktop.Size = new System.Drawing.Size(115, 20);
+            this.radioButtonDesktop.Size = new System.Drawing.Size(141, 23);
             this.radioButtonDesktop.TabIndex = 3;
             this.radioButtonDesktop.TabStop = true;
             this.radioButtonDesktop.Text = "Whole Desktop";
@@ -148,7 +148,7 @@
             this.checkedListBoxApplications.Location = new System.Drawing.Point(20, 210);
             this.checkedListBoxApplications.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkedListBoxApplications.Name = "checkedListBoxApplications";
-            this.checkedListBoxApplications.Size = new System.Drawing.Size(413, 174);
+            this.checkedListBoxApplications.Size = new System.Drawing.Size(413, 158);
             this.checkedListBoxApplications.TabIndex = 5;
             // 
             // checkBoxMaintenance
@@ -157,15 +157,14 @@
             this.checkBoxMaintenance.Location = new System.Drawing.Point(111, 53);
             this.checkBoxMaintenance.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxMaintenance.Name = "checkBoxMaintenance";
-            this.checkBoxMaintenance.Size = new System.Drawing.Size(176, 20);
+            this.checkBoxMaintenance.Size = new System.Drawing.Size(219, 23);
             this.checkBoxMaintenance.TabIndex = 2;
             this.checkBoxMaintenance.Text = "Allow Server Maintenance";
             this.checkBoxMaintenance.UseVisualStyleBackColor = true;
             // 
             // FormGroup
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
             this.ClientSize = new System.Drawing.Size(448, 450);
             this.Controls.Add(this.checkBoxMaintenance);
@@ -175,7 +174,7 @@
             this.Controls.Add(this.textBoxGroupName);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
-            this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormGroup";

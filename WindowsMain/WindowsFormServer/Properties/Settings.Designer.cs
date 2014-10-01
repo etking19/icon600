@@ -31,5 +31,14 @@ namespace WindowsFormClient.Properties {
                 return ((bool)(this["CheckLicense"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://localhost:8080/Service1")]
+        public string WcfServer {
+            get {
+                return ((string)(this["WcfServer"]));
+            }
+        }
     }
 }

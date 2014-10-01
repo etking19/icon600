@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Utils.Windows;
+using WcfServiceLibrary1;
 using Windows;
 using WindowsFormClient.Server;
 using WindowsFormClient.Server.Model;
@@ -140,36 +141,7 @@ namespace WindowsFormClient.Presenter
 
                 // add the user to list
                 ConnectedClientHelper.GetInstance().AddClient(model.SocketUserId, model);
-
-                // broadcast vnc to all
-                sendVncToAll();
             }  
-        }
-
-        private void sendVncToAll()
-        {
-            List<VncEntry> vncEntries = new List<VncEntry>();
-            foreach(VncModel model in ConnectedClientHelper.GetInstance().GetAllUsersVnc())
-            {
-                vncEntries.Add(new VncEntry()
-                    {
-                        OwnerPCName = model.OwnerPCName,
-                        IpAddress = model.IpAddress,
-                        MonitorCount = model.MonitorCount,
-                        Port = model.ListeningPort
-                    });
-            }
-
-            ServerVncStatus serverVncCmd = new ServerVncStatus()
-            {
-                UserVncList = vncEntries,
-            };
-
-
-            connectionMgr.BroadcastMessage(
-                (int)CommandConst.MainCommandServer.Presents,
-                (int)CommandConst.SubCommandServer.VncList,
-                serverVncCmd);
         }
 
         private void sendLoginReply(Server.Model.ClientInfoModel model, int dekstopRow, int desktopCol)
@@ -215,7 +187,7 @@ namespace WindowsFormClient.Presenter
             // get user's application list
             ServerApplicationStatus serverAppStatus = new ServerApplicationStatus();
             serverAppStatus.UserApplicationList = new List<ApplicationEntry>();
-            foreach (Server.ServerDbHelper.ApplicationData appData in Server.ServerDbHelper.GetInstance().GetAppsWithUserId(model.DbUserId))
+            foreach (ApplicationData appData in Server.ServerDbHelper.GetInstance().GetAppsWithUserId(model.DbUserId))
             {
                 serverAppStatus.UserApplicationList.Add(new ApplicationEntry()
                 {
@@ -227,10 +199,10 @@ namespace WindowsFormClient.Presenter
             // get user's preset list
             ServerPresetsStatus serverPresetStatus = new ServerPresetsStatus();
             serverPresetStatus.UserPresetList = new List<PresetsEntry>();
-            foreach (Server.ServerDbHelper.PresetData presetData in Server.ServerDbHelper.GetInstance().GetPresetByUserId(model.DbUserId))
+            foreach (PresetData presetData in Server.ServerDbHelper.GetInstance().GetPresetByUserId(model.DbUserId))
             {
                 List<ApplicationEntry> presetAppEntries = new List<ApplicationEntry>();
-                foreach (Server.ServerDbHelper.ApplicationData appData in presetData.AppDataList)
+                foreach (ApplicationData appData in presetData.AppDataList)
                 {
                     presetAppEntries.Add(new ApplicationEntry()
                     {
@@ -248,7 +220,7 @@ namespace WindowsFormClient.Presenter
 
             // get user's priviledge
             ServerMaintenanceStatus maintenanceStatus = new ServerMaintenanceStatus();
-            WindowsFormClient.Server.ServerDbHelper.GroupData groupData = Server.ServerDbHelper.GetInstance().GetGroupByUserId(model.DbUserId);
+            GroupData groupData = Server.ServerDbHelper.GetInstance().GetGroupByUserId(model.DbUserId);
             maintenanceStatus.AllowMaintenance = groupData.allow_maintenance;
 
             MonitorInfo allowViewingArea = new MonitorInfo();
@@ -263,12 +235,26 @@ namespace WindowsFormClient.Presenter
             else
             {
                 // get monitor info
-                WindowsFormClient.Server.ServerDbHelper.MonitorData monitorData = Server.ServerDbHelper.GetInstance().GetMonitorByGroupId(groupData.id);
+                MonitorData monitorData = Server.ServerDbHelper.GetInstance().GetMonitorByGroupId(groupData.id);
 
                 allowViewingArea.LeftPos = monitorData.Left;
                 allowViewingArea.TopPos = monitorData.Top;
                 allowViewingArea.RightPos = monitorData.Right;
                 allowViewingArea.BottomPos = monitorData.Bottom;
+            }
+
+            // prepare the VNC list
+            ServerVncStatus vncStatus = new ServerVncStatus();
+            List<VncEntry> vncEntries = new List<VncEntry>();
+            vncStatus.UserVncList = vncEntries;
+            foreach (RemoteVncData vncData in ServerDbHelper.GetInstance().GetRemoteVncList())
+            {
+                vncEntries.Add(new VncEntry()
+                    {
+                        DisplayName = vncData.name,
+                        IpAddress = vncData.remoteIp,
+                        Port = vncData.remotePort,
+                    });
             }
 
             ServerLoginReply reply = new ServerLoginReply()
@@ -292,6 +278,9 @@ namespace WindowsFormClient.Presenter
 
                 // allowed viewing area
                 ViewingArea = allowViewingArea,
+
+                // Current vnc list
+                VncStatus = vncStatus,
             };
 
             connectionMgr.SendData(
@@ -299,7 +288,6 @@ namespace WindowsFormClient.Presenter
                 (int)CommandConst.SubCommandServer.DisplayInfo,
                 reply,
                 new List<string>() { model.SocketUserId });
-
         }
 
         public void Dispose()

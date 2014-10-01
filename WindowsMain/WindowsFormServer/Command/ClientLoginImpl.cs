@@ -1,11 +1,11 @@
-﻿using Database.Data;
-using Session.Data;
+﻿using Session.Data;
 using Session.Data.SubData;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using WcfServiceLibrary1;
 using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Command
@@ -26,6 +26,7 @@ namespace WindowsFormClient.Command
                 return;
             }
 
+            /*
             // get the login status matches with database
             string displayName = string.Empty;
             int dbUserId = -1;
@@ -43,34 +44,24 @@ namespace WindowsFormClient.Command
                     displayName = dataRow[User.LABEL].ToString();
                     break;
                 }
-            }
+            }*/
 
-            if (displayName.Length == 0)
+            UserData userData = Server.ServerDbHelper.GetInstance().GetAllUsers().Find(user 
+                => 
+                (user.username.CompareTo(data.Username) == 0 && 
+                user.password.CompareTo(data.Password) == 0));
+            if (userData == null)
             {
-                // no match found
+                // no matched 
                 return;
-            }
-
-            // get the vnc info
-            List<VncModel> vncList = new List<VncModel>();
-            foreach(VncEntry entry in data.VncList)
-            {
-                vncList.Add(new VncModel() 
-                {
-                    OwnerPCName = entry.OwnerPCName,
-                    MonitorCount = entry.MonitorCount,
-                    IpAddress = entry.IpAddress,
-                    ListeningPort = entry.Port
-                });
             }
 
             // notify UI
             ClientInfoModel clientModel = new ClientInfoModel()
             {
-                DbUserId = dbUserId,
+                DbUserId = userData.id,
                 SocketUserId = userId,
-                Name = displayName,
-                VncInfoList = vncList,
+                Name = userData.name,
             };
 
             server.ClientLogin(clientModel);
