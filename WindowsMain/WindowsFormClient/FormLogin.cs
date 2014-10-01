@@ -40,31 +40,31 @@ namespace WindowsFormClient
             textBoxServerIp.Text = Properties.Settings.Default.ServerIp;
             textBoxServerPort.Text = Properties.Settings.Default.ServerPort;
 
-            if (Properties.Settings.Default.TightVncServerPath == String.Empty)
-            {
-                // auto search the tight vnc server
-                DriveInfo[] allDrives = DriveInfo.GetDrives();
-                foreach (DriveInfo d in allDrives)
-                {
-                    foreach (String vncPath in Utils.Files.DirSearch(d.RootDirectory.FullName + "Program Files", "tvnserver.exe"))
-                    {
-                        vncServerPath = vncPath;
-                        break;
-                    }
+            //if (Properties.Settings.Default.TightVncServerPath == String.Empty)
+            //{
+            //    // auto search the tight vnc server
+            //    DriveInfo[] allDrives = DriveInfo.GetDrives();
+            //    foreach (DriveInfo d in allDrives)
+            //    {
+            //        foreach (String vncPath in Utils.Files.DirSearch(d.RootDirectory.FullName + "Program Files", "tvnserver.exe"))
+            //        {
+            //            vncServerPath = vncPath;
+            //            break;
+            //        }
 
-                    if (vncServerPath != String.Empty)
-                    {
-                        break;
-                    }
-                }
+            //        if (vncServerPath != String.Empty)
+            //        {
+            //            break;
+            //        }
+            //    }
 
-                if (vncServerPath == String.Empty)
-                {
-                    MessageBox.Show("Tight VNC executable path not found." + Environment.NewLine + "Please install Tight VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                    return;
-                }
-            }
+            //    if (vncServerPath == String.Empty)
+            //    {
+            //        MessageBox.Show("Tight VNC executable path not found." + Environment.NewLine + "Please install Tight VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //        Application.Exit();
+            //        return;
+            //    }
+            //}
         }
 
 

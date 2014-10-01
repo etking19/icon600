@@ -9,7 +9,7 @@ namespace WindowsFormClient
 {
     static class Program
     {
-        static Mutex mutex = new Mutex(true, "00bdd546-a42b-42b4-bc49-48749d88a2e8");
+        //static Mutex mutex = new Mutex(true, "00bdd546-a42b-42b4-bc49-48749d88a2e8");
 
         /// <summary>
         /// The main entry point for the application.
@@ -17,17 +17,17 @@ namespace WindowsFormClient
         [STAThread]
         static void Main()
         {
-            if (mutex.WaitOne(TimeSpan.Zero, true))
-            {
+            //if (mutex.WaitOne(TimeSpan.Zero, true))
+            //{
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new FormLogin());
-                mutex.ReleaseMutex();
-            }
-            else
-            {
-                MessageBox.Show("Only one instance of Vistrol application allowed.");
-            }
+               // mutex.ReleaseMutex();
+           // }
+           // else
+           // {
+            //    MessageBox.Show("Only one instance of Vistrol application allowed.");
+           // }
 
             
         }
