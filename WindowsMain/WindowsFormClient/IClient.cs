@@ -1,4 +1,5 @@
 ﻿using Session.Connection;
+using Session.Data.SubData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,12 @@ namespace WindowsFormClient
         /// </summary>
         /// <param name="privilegde"></param>
         void RefreshMaintenanceStatus(UserPriviledgeModel privilegde);
+
+        /// <summary>
+        /// Vision input list updated by server
+        /// </summary>
+        /// <param name="inputAttrList"></param>
+        void RefreshVisionInputStatus(List<InputAttributes> inputAttrList);
 
         void CloseApplication();
     }

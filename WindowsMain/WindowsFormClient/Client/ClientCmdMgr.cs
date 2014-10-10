@@ -51,6 +51,9 @@ namespace WindowsFormClient.Client
                 case (int)CommandConst.SubCommandServer.ViewingArea:
                     implementor = new Command.ServerViewingAreaCmdImpl(client);
                     break;
+                case (int)CommandConst.SubCommandServer.VisionInput:
+                    implementor = new Command.ServerVisionInputCmdImpl(client);
+                    break;
                 default:
                     break;
             }

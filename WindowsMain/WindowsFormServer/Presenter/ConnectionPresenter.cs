@@ -288,6 +288,19 @@ namespace WindowsFormClient.Presenter
                 (int)CommandConst.SubCommandServer.DisplayInfo,
                 reply,
                 new List<string>() { model.SocketUserId });
+
+
+            // send Input info to client
+            Session.Data.ServerInputStatus inputStatus = new Session.Data.ServerInputStatus()
+            {
+                InputAttributesList = Server.ServerVisionHelper.getInstance().GetAllVisionInputsAttributes(),
+            };
+
+            connectionMgr.SendData(
+                   (int)CommandConst.MainCommandServer.Presents,
+                   (int)CommandConst.SubCommandServer.VisionInput,
+                   inputStatus,
+                   new List<string>() { model.SocketUserId });
         }
 
         public void Dispose()

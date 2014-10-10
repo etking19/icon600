@@ -35,6 +35,7 @@ namespace Session
             // User Presents
             PresetList = 300,
             VncList = 301,
+            VisionInput = 302,
         }
 
         /// <summary>
@@ -63,6 +64,7 @@ namespace Session
             Maintenance = 202,
             MessageBox = 203,
             Application = 204,
+            VisionInput = 205,
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Datapath.RGBEasy;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Windows.Forms;
+using WindowsFormClient.Server;
 
 namespace WindowsFormClient
 {
@@ -31,6 +33,7 @@ namespace WindowsFormClient
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            formLicense = new FormLicense();
 
             LicenseChecker.LicenseChecker licenceChecker = null;
             DriveInfo[] allDrives = DriveInfo.GetDrives();
@@ -41,7 +44,6 @@ namespace WindowsFormClient
                 {
                     licenceChecker = new LicenseChecker.LicenseChecker(filePath);
                     licenceChecker.EvtLicenseCheckStatus += licenceChecker_EvtLicenseCheckStatus;
-                    licenceChecker.StartCheck();
                 }
             }
 
@@ -51,10 +53,47 @@ namespace WindowsFormClient
                 return;
             }
 
-            formLicense = new FormLicense();
+            // initialize database
+            Server.ServerDbHelper.GetInstance().Initialize();
+            
+            RGBERROR error = 0;
+            IntPtr hRGBDLL = IntPtr.Zero;
+            try
+            {
+                error = RGB.Load(out hRGBDLL);
+                if (error != RGBERROR.NO_ERROR)
+                {
+                    string msg = "Load RGB Driver Failed: 0x" + error.ToString("X");
+                    MessageBox.Show(msg, "Dependencies Loading", MessageBoxButtons.OK);
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                string msg = "Load Failed: 0x" + error.ToString("X");
+                MessageBox.Show(msg, "Dependencies Loading", MessageBoxButtons.OK);
+            }
+
+            try
+            {
+                // initialize the Vision driver
+                ServerVisionHelper.getInstance().InitializeVisionDB();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Load Capture Card Data Failed", "Dependencies Loading", MessageBoxButtons.OK);
+            }
+
             formServer = new FormServer();
+            licenceChecker.StartCheck();
             Application.Run(formServer);
 
+            // clean up
+            if (hRGBDLL != IntPtr.Zero)
+            {
+                RGB.Free(hRGBDLL);
+            }
+            
             licenceChecker.StopCheck();
         }
 
@@ -71,7 +110,6 @@ namespace WindowsFormClient
             catch (Exception)
             {
             }
-            
 
             if (!isValid)
             {

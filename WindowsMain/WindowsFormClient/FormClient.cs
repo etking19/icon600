@@ -1,5 +1,6 @@
 ﻿using CustomWinForm;
 using Session.Connection;
+using Session.Data.SubData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -39,6 +40,7 @@ namespace WindowsFormClient
         private FormVnc formVnc;
         private FormMimic formMimic;
         private FormApplications formApps;
+        private FormInput formInput;
         private CustomControlHolder holder;
 
         /// <summary>
@@ -62,6 +64,7 @@ namespace WindowsFormClient
         private delegate void DelegateRefreshLayout(Client.Model.UserInfoModel user, Client.Model.ServerLayoutModel layout, WindowsModel viewingArea);
         private delegate void DelegateRefreshViewArea(WindowsModel viewingArea);
         private delegate void DelegateRefreshAppList(IList<Client.Model.ApplicationModel> appsList);
+        private delegate void DelegateRefreshVisionInputList(List<InputAttributes> attributeList);
 
         public FormClient(ConnectionManager mgr, string username, string password)
         {
@@ -87,7 +90,7 @@ namespace WindowsFormClient
             createControls();
             deserializeDockContent = new DeserializeDockContent(getContentFromPersistString);
 
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), CONFIG_FILE_NAME);
+            string configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create), CONFIG_FILE_NAME);
             if (File.Exists(configFile))
             {
                 dockPanel.LoadFromXml(configFile, deserializeDockContent);
@@ -220,6 +223,10 @@ namespace WindowsFormClient
             formApps.CloseButtonVisible = false;
             formApps.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
 
+            formInput = new FormInput();
+            formInput.CloseButtonVisible = false;
+            formInput.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
+
             formMimic = new FormMimic();
             formMimic.CloseButtonVisible = false;
             formMimic.DockAreas = DockAreas.Document;
@@ -292,6 +299,14 @@ namespace WindowsFormClient
                     clientPresenter.TriggerApplication(applicationData);
                 }
             }
+            else if (e.Data.GetDataPresent(typeof(InputAttributes)))
+            {
+                InputAttributes attributeData = null;
+                if ((attributeData = (InputAttributes)e.Data.GetData(typeof(InputAttributes))) != null)
+                {
+                    clientPresenter.TriggerVisionInput(attributeData);
+                }
+            }
         }
 
         private IDockContent getContentFromPersistString(string persistString)
@@ -304,6 +319,8 @@ namespace WindowsFormClient
                 return formRunningApps;
             else if (persistString == typeof(FormApplications).ToString())
                 return formApps;
+            else if (persistString == typeof(FormInput).ToString())
+                return formInput;
             else
                 return formMimic;
         }
@@ -315,9 +332,12 @@ namespace WindowsFormClient
 
             // load the dock form
             formPreset.Show(dockPanel, DockState.DockLeft);
-            formVnc.Show(formPreset.Pane, DockAlignment.Bottom, 0.6);
+            formVnc.Show(formPreset.Pane, DockAlignment.Bottom, 0.7);
+            formInput.Show(formVnc.Pane, formVnc);
+
             formApps.Show(formVnc.Pane, DockAlignment.Bottom, 0.5);
-            formRunningApps.Show(formVnc.Pane, DockAlignment.Bottom, 0.5);
+            formRunningApps.Show(formApps.Pane, formApps);
+
             formMimic.Show(dockPanel, DockState.Document);
 
             dockPanel.ResumeLayout(true, true);
@@ -698,7 +718,7 @@ namespace WindowsFormClient
             keyboardHook.StopHook();
 
             // save current UI state
-            string configFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), CONFIG_FILE_NAME);
+            string configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create), CONFIG_FILE_NAME);
             dockPanel.SaveAsXml(configFile);
 
             // clean up connection
@@ -787,6 +807,18 @@ namespace WindowsFormClient
                 button.BackColor = Color.FromArgb(79, 169, 236);
                 keyboardHook.StopHook();
             }
+        }
+
+
+        public void RefreshVisionInputStatus(List<Session.Data.SubData.InputAttributes> inputAttrList)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateRefreshVisionInputList(RefreshVisionInputStatus), inputAttrList);
+                return;
+            }
+
+            formInput.SetVisionInputList(inputAttrList);
         }
     }
 }

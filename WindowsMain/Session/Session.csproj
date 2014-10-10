@@ -45,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandConst.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="Connection\ConnectionManager.cs" />
     <Compile Include="Data\BaseCmd.cs" />
     <Compile Include="Data\ClientApplicationCmd.cs" />
+    <Compile Include="Data\ClientInputCommand.cs" />
     <Compile Include="Data\ClientKeyboardCmd.cs" />
     <Compile Include="Data\ClientMaintenanceCmd.cs" />
     <Compile Include="Data\ClientMessageBoxCmd.cs" />
@@ -59,12 +61,14 @@
     <Compile Include="Data\MainCommand.cs" />
     <Compile Include="Data\ClientLoginCmd.cs" />
     <Compile Include="Data\ServerApplicationStatus.cs" />
+    <Compile Include="Data\ServerInputStatus.cs" />
     <Compile Include="Data\ServerLoginReply.cs" />
     <Compile Include="Data\ServerMaintenanceStatus.cs" />
     <Compile Include="Data\ServerPresetsStatus.cs" />
     <Compile Include="Data\ServerViewingAreaStatus.cs" />
     <Compile Include="Data\ServerVncStatus.cs" />
     <Compile Include="Data\SubData\ApplicationEntry.cs" />
+    <Compile Include="Data\SubData\InputAttrinbutes.cs" />
     <Compile Include="Data\SubData\MonitorInfo.cs" />
     <Compile Include="Data\ServerScreenInfo.cs" />
     <Compile Include="Data\ServerWindowsPos.cs" />

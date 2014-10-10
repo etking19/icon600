@@ -81,6 +81,11 @@
             this.buttonRemoteAdd = new System.Windows.Forms.Button();
             this.dataGridViewRemote = new System.Windows.Forms.DataGridView();
             this.tabDrivers = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.buttonVisionDelete = new System.Windows.Forms.Button();
+            this.buttonVisionEdit = new System.Windows.Forms.Button();
+            this.buttonVisionAdd = new System.Windows.Forms.Button();
+            this.dataGridVisionInput = new System.Windows.Forms.DataGridView();
             this.tabControl.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.groupBoxGeneral.SuspendLayout();
@@ -97,6 +102,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMonitors)).BeginInit();
             this.tabVnc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRemote)).BeginInit();
+            this.tabDrivers.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridVisionInput)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -484,10 +491,10 @@
             this.tabPageUser.Controls.Add(this.btnUsersAdd);
             this.tabPageUser.Controls.Add(this.dataGridViewUsers);
             this.tabPageUser.Controls.Add(this.dataGridUsers);
-            this.tabPageUser.Location = new System.Drawing.Point(4, 25);
+            this.tabPageUser.Location = new System.Drawing.Point(4, 22);
             this.tabPageUser.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageUser.Name = "tabPageUser";
-            this.tabPageUser.Size = new System.Drawing.Size(718, 635);
+            this.tabPageUser.Size = new System.Drawing.Size(718, 638);
             this.tabPageUser.TabIndex = 0;
             this.tabPageUser.Text = "User Management";
             this.tabPageUser.UseVisualStyleBackColor = true;
@@ -564,7 +571,7 @@
             this.dataGridViewUsers.Location = new System.Drawing.Point(4, 44);
             this.dataGridViewUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewUsers.Name = "dataGridViewUsers";
-            this.dataGridViewUsers.Size = new System.Drawing.Size(710, 587);
+            this.dataGridViewUsers.Size = new System.Drawing.Size(710, 590);
             this.dataGridViewUsers.TabIndex = 1;
             // 
             // dataGridUsers
@@ -576,7 +583,7 @@
             this.dataGridUsers.Location = new System.Drawing.Point(0, 0);
             this.dataGridUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridUsers.Name = "dataGridUsers";
-            this.dataGridUsers.Size = new System.Drawing.Size(718, 635);
+            this.dataGridUsers.Size = new System.Drawing.Size(718, 638);
             this.dataGridUsers.TabIndex = 0;
             // 
             // tabApplications
@@ -853,6 +860,11 @@
             // 
             // tabDrivers
             // 
+            this.tabDrivers.Controls.Add(this.label9);
+            this.tabDrivers.Controls.Add(this.buttonVisionDelete);
+            this.tabDrivers.Controls.Add(this.buttonVisionEdit);
+            this.tabDrivers.Controls.Add(this.buttonVisionAdd);
+            this.tabDrivers.Controls.Add(this.dataGridVisionInput);
             this.tabDrivers.ImageIndex = 4;
             this.tabDrivers.Location = new System.Drawing.Point(104, 4);
             this.tabDrivers.Margin = new System.Windows.Forms.Padding(0);
@@ -861,6 +873,81 @@
             this.tabDrivers.TabIndex = 4;
             this.tabDrivers.Text = "Drivers";
             this.tabDrivers.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(85)))), ((int)(((byte)(111)))));
+            this.label9.Location = new System.Drawing.Point(3, 17);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(213, 19);
+            this.label9.TabIndex = 27;
+            this.label9.Text = "Capture Card Management";
+            // 
+            // buttonVisionDelete
+            // 
+            this.buttonVisionDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonVisionDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.buttonVisionDelete.ForeColor = System.Drawing.Color.White;
+            this.buttonVisionDelete.Image = global::WindowsFormClient.Properties.Resources.delete;
+            this.buttonVisionDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonVisionDelete.Location = new System.Drawing.Point(610, 10);
+            this.buttonVisionDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonVisionDelete.Name = "buttonVisionDelete";
+            this.buttonVisionDelete.Size = new System.Drawing.Size(112, 31);
+            this.buttonVisionDelete.TabIndex = 26;
+            this.buttonVisionDelete.Text = "Delete";
+            this.buttonVisionDelete.UseVisualStyleBackColor = false;
+            this.buttonVisionDelete.Click += new System.EventHandler(this.buttonVisionDelete_Click);
+            // 
+            // buttonVisionEdit
+            // 
+            this.buttonVisionEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonVisionEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.buttonVisionEdit.ForeColor = System.Drawing.Color.White;
+            this.buttonVisionEdit.Image = global::WindowsFormClient.Properties.Resources.edit;
+            this.buttonVisionEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonVisionEdit.Location = new System.Drawing.Point(490, 10);
+            this.buttonVisionEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonVisionEdit.Name = "buttonVisionEdit";
+            this.buttonVisionEdit.Size = new System.Drawing.Size(112, 31);
+            this.buttonVisionEdit.TabIndex = 25;
+            this.buttonVisionEdit.Text = "Edit";
+            this.buttonVisionEdit.UseVisualStyleBackColor = false;
+            this.buttonVisionEdit.Click += new System.EventHandler(this.buttonVisionEdit_Click);
+            // 
+            // buttonVisionAdd
+            // 
+            this.buttonVisionAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonVisionAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
+            this.buttonVisionAdd.ForeColor = System.Drawing.Color.White;
+            this.buttonVisionAdd.Image = global::WindowsFormClient.Properties.Resources.Add;
+            this.buttonVisionAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonVisionAdd.Location = new System.Drawing.Point(370, 10);
+            this.buttonVisionAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonVisionAdd.Name = "buttonVisionAdd";
+            this.buttonVisionAdd.Size = new System.Drawing.Size(112, 31);
+            this.buttonVisionAdd.TabIndex = 24;
+            this.buttonVisionAdd.Text = "Add";
+            this.buttonVisionAdd.UseVisualStyleBackColor = false;
+            this.buttonVisionAdd.Click += new System.EventHandler(this.buttonVisionAdd_Click);
+            // 
+            // dataGridVisionInput
+            // 
+            this.dataGridVisionInput.AllowUserToOrderColumns = true;
+            this.dataGridVisionInput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridVisionInput.BackgroundColor = System.Drawing.SystemColors.Menu;
+            this.dataGridVisionInput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridVisionInput.Location = new System.Drawing.Point(4, 51);
+            this.dataGridVisionInput.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridVisionInput.Name = "dataGridVisionInput";
+            this.dataGridVisionInput.Size = new System.Drawing.Size(720, 604);
+            this.dataGridVisionInput.TabIndex = 23;
             // 
             // FormServer
             // 
@@ -898,6 +985,9 @@
             this.tabVnc.ResumeLayout(false);
             this.tabVnc.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRemote)).EndInit();
+            this.tabDrivers.ResumeLayout(false);
+            this.tabDrivers.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridVisionInput)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -955,6 +1045,11 @@
         private System.Windows.Forms.Button buttonRemoteEdit;
         private System.Windows.Forms.Button buttonRemoteAdd;
         private System.Windows.Forms.DataGridView dataGridViewRemote;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button buttonVisionDelete;
+        private System.Windows.Forms.Button buttonVisionEdit;
+        private System.Windows.Forms.Button buttonVisionAdd;
+        private System.Windows.Forms.DataGridView dataGridVisionInput;
 
     }
 }

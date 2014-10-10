@@ -120,6 +120,31 @@ namespace WcfServiceLibrary1
 
         [OperationContract]
         bool EditRemoteVnc(int dataId, string name, string ipAdd, int port);
+
+        /// <summary>
+        /// param int: id of the db table
+        /// param string: window
+        /// param string: input
+        /// param string: osd
+        /// </summary>
+        /// <returns></returns>
+        [OperationContract]
+        List<Tuple<int, string, string, string>> GetAllVisionInputs();
+
+        [OperationContract]
+        bool AddVisionInput(string windowObj, string inputObj, string osdObj);
+
+        [OperationContract]
+        bool RemoveVisionInput(int id);
+
+        [OperationContract]
+        bool EditVisionData(int id, string windowObj, string inputObj, string osdObj);
+
+        [OperationContract]
+        int GetSystemSettingsInputCount();
+
+        [OperationContract]
+        bool SetSystemSettingsInputCount(int count);
     }
 
     [DataContract]

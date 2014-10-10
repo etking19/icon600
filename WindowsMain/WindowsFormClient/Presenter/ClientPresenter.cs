@@ -66,7 +66,7 @@ namespace WindowsFormClient.Presenter
             ClientMessageBoxCmd msgBoxCmd = new ClientMessageBoxCmd()
             {
                 Message = text,
-                TextFont = new SerializableFont(font).SerializeFontAttribute,
+                TextFont = new Session.Common.SerializableFont(font).SerializeFontAttribute,
                 TextColor = System.Drawing.ColorTranslator.ToHtml(color),
                 BackgroundColor = System.Drawing.ColorTranslator.ToHtml(backgroundColor),
                 Duration = duration,
@@ -324,6 +324,20 @@ namespace WindowsFormClient.Presenter
                 (int)CommandConst.MainCommandClient.Functionality,
                 (int)CommandConst.SubCommandClient.Application,
                 appCommand);
+        }
+
+        public void TriggerVisionInput(InputAttributes attributes)
+        {
+            ClientInputCommand visionCmd = new ClientInputCommand()
+            {
+                Action = ClientInputCommand.EAction.Launch,
+                Attribute = attributes,
+            };
+
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.Functionality,
+                (int)CommandConst.SubCommandClient.VisionInput,
+                visionCmd);
         }
     }
 }

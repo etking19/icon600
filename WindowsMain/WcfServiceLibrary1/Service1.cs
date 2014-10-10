@@ -11,7 +11,7 @@ using System.Text;
 
 namespace WcfServiceLibrary1
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode=ConcurrencyMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Single)]
     public class Service1 : IService1
     {
         private const string DB_FOLDER = @"\Vistrol";
@@ -41,6 +41,8 @@ namespace WcfServiceLibrary1
                 Database.DbHelper.GetInstance().CreateTable(new PresetApplications());
                 Database.DbHelper.GetInstance().CreateTable(new Setting());
                 Database.DbHelper.GetInstance().CreateTable(new RemoteVnc());
+                Database.DbHelper.GetInstance().CreateTable(new VisionInput());
+                Database.DbHelper.GetInstance().CreateTable(new SystemSettings());
             }
         }
 
@@ -70,6 +72,7 @@ namespace WcfServiceLibrary1
             }
         }
 
+        
         public int AddUser(string name, string userName, string password, int groupId)
         {
             User dbUser = new User() { label = name, password = password, username = userName, group = groupId };
@@ -88,18 +91,21 @@ namespace WcfServiceLibrary1
             return -1;
         }
 
+        
         public bool EditUser(int userId, string name, string userName, string password, int groupId)
         {
             User dbUser = new User() { id = userId, label = name, password = password, username = userName, group = groupId };
             return DbHelper.GetInstance().UpdateData(dbUser);
         }
 
+        
         public bool RemoveUser(int userId)
         {
             User dbUser = new User() { id = userId };
             return DbHelper.GetInstance().RemoveData(dbUser);
         }
 
+        
         public List<UserData> GetAllUsers()
         {
             List<UserData> usersList = new List<UserData>();
@@ -123,6 +129,7 @@ namespace WcfServiceLibrary1
             return usersList;
         }
 
+        
         public UserData GetUser(int userId)
         {
             UserData userData = new UserData();
@@ -146,6 +153,7 @@ namespace WcfServiceLibrary1
             return userData;
         }
 
+        
         public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> allowApps)
         {
             int groupId = -1;
@@ -183,6 +191,7 @@ namespace WcfServiceLibrary1
             return groupId;
         }
 
+        
         public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> appIds)
         {
             // modify the group info
@@ -214,12 +223,14 @@ namespace WcfServiceLibrary1
             return result;
         }
 
+        
         public bool RemoveGroup(int groupId)
         {
             Group dbGroup = new Group { id = groupId };
             return DbHelper.GetInstance().RemoveData(dbGroup);
         }
 
+        
         public IList<GroupData> GetAllGroups()
         {
             List<GroupData> groupsList = new List<GroupData>();
@@ -244,6 +255,7 @@ namespace WcfServiceLibrary1
             return groupsList.AsReadOnly();
         }
 
+        
         public GroupData GetGroupByUserId(int userId)
         {
             UserData userData = GetUser(userId);
@@ -253,11 +265,13 @@ namespace WcfServiceLibrary1
             return groupData;
         }
 
+        
         public List<UserData> GetUsersInGroup(int groupId)
         {
             return GetAllUsers().Where(userData => userData.group == groupId).ToList();
         }
 
+        
         public int AddApplication(string appName, string extraArguments, string exePath, int left, int top, int right, int bottom)
         {
             Application dbApp = new Application()
@@ -285,6 +299,7 @@ namespace WcfServiceLibrary1
             return -1;
         }
 
+        
         public bool EditApplication(int appId, string appName, string exePath, string extraArguments, int left, int top, int right, int bottom)
         {
             Application dbApp = new Application()
@@ -302,6 +317,7 @@ namespace WcfServiceLibrary1
             return DbHelper.GetInstance().UpdateData(dbApp);
         }
 
+        
         public bool RemoveApplication(int appId)
         {
             Application dbApp = new Application()
@@ -312,6 +328,7 @@ namespace WcfServiceLibrary1
             return DbHelper.GetInstance().RemoveData(dbApp);
         }
 
+        
         public IList<ApplicationData> GetAllApplications()
         {
             List<ApplicationData> appsList = new List<ApplicationData>();
@@ -341,6 +358,7 @@ namespace WcfServiceLibrary1
             return appsList.AsReadOnly();
         }
 
+        
         public List<ApplicationData> GetAppsWithGroupId(int groupId)
         {
             List<ApplicationData> appsList = new List<ApplicationData>();
@@ -366,6 +384,7 @@ namespace WcfServiceLibrary1
             return appsList;
         }
 
+        
         public List<ApplicationData> GetAppsWithUserId(int userId)
         {
             foreach (UserData userData in GetAllUsers())
@@ -379,6 +398,7 @@ namespace WcfServiceLibrary1
             return null;
         }
 
+        
         public int AddPreset(string presetName, int userId, List<int> appIds)
         {
             int count = 0;
@@ -412,6 +432,7 @@ namespace WcfServiceLibrary1
             return count;
         }
 
+        
         public void RemovePreset(int presetId)
         {
             PresetName dbPreset = new PresetName()
@@ -422,6 +443,7 @@ namespace WcfServiceLibrary1
             DbHelper.GetInstance().RemoveData(dbPreset);
         }
 
+        
         public void EditPreset(int presetId, string presetName, int userId, List<int> appIds)
         {
             // update the possible name change
@@ -454,6 +476,7 @@ namespace WcfServiceLibrary1
             }
         }
 
+        
         public IList<PresetData> GetPresetByUserId(int userId)
         {
             List<PresetData> presetList = new List<PresetData>();
@@ -517,6 +540,7 @@ namespace WcfServiceLibrary1
             return presetList.AsReadOnly();
         }
 
+        
         public int GetPresetIdByPresetNameUserId(string presetName, int userId)
         {
             int presetId = -1;
@@ -535,6 +559,7 @@ namespace WcfServiceLibrary1
             return presetId;
         }
 
+        
         public void AddOrEditSetting(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath)
         {
             Setting dbSetting = new Setting()
@@ -549,16 +574,19 @@ namespace WcfServiceLibrary1
             DbHelper.GetInstance().AddData(dbSetting);
         }
 
+        
         public void RemoveSetting()
         {
             DbHelper.GetInstance().RemoveData(new Setting());
         }
 
+        
         public bool IsSettingAdded()
         {
             return (DbHelper.GetInstance().ReadData(new Setting()).Rows.Count != 0);
         }
 
+        
         public SettingData GetSetting()
         {
             SettingData userSetting = new SettingData();
@@ -576,6 +604,7 @@ namespace WcfServiceLibrary1
             return userSetting;
         }
 
+        
         public List<MonitorData> GetMonitorsList()
         {
             List<MonitorData> monitorList = new List<MonitorData>();
@@ -599,6 +628,7 @@ namespace WcfServiceLibrary1
             return monitorList;
         }
 
+        
         public bool AddMonitor(string name, int left, int top, int right, int bottom)
         {
             Monitor dbMonitor = new Monitor()
@@ -613,6 +643,7 @@ namespace WcfServiceLibrary1
             return DbHelper.GetInstance().AddData(dbMonitor);
         }
 
+        
         public bool RemoveMonitor(int monitorId)
         {
             Monitor dbMonitor = new Monitor()
@@ -623,6 +654,7 @@ namespace WcfServiceLibrary1
             return DbHelper.GetInstance().RemoveData(dbMonitor);
         }
 
+        
         public bool EditMonitor(int monitorId, string name, int left, int top, int right, int bottom)
         {
             Monitor dbMonitor = new Monitor()
@@ -638,6 +670,7 @@ namespace WcfServiceLibrary1
             return DbHelper.GetInstance().UpdateData(dbMonitor);
         }
 
+        
         public MonitorData GetMonitorByGroupId(int groupId)
         {
             MonitorData monitorData = new MonitorData();
@@ -661,6 +694,7 @@ namespace WcfServiceLibrary1
             return monitorData;
         }
 
+        
         public MonitorData GetMonitorDataByUserId(int userId)
         {
             MonitorData monitorData = new MonitorData();
@@ -683,7 +717,7 @@ namespace WcfServiceLibrary1
             return monitorData;
         }
 
-
+        
         public List<RemoteVncData> GetRemoteVncList()
         {
             List<RemoteVncData> remoteVncList = new List<RemoteVncData>();
@@ -705,6 +739,7 @@ namespace WcfServiceLibrary1
             return remoteVncList;
         }
 
+        
         public bool AddRemoteVnc(string name, string ipAdd, int port)
         {
             RemoteVnc remoteVnc = new RemoteVnc()
@@ -717,6 +752,7 @@ namespace WcfServiceLibrary1
             return DbHelper.GetInstance().AddData(remoteVnc);
         }
 
+        
         public bool RemoveRemoteVnc(int dataId)
         {
             RemoteVnc remoteVnc = new RemoteVnc()
@@ -727,6 +763,7 @@ namespace WcfServiceLibrary1
             return DbHelper.GetInstance().RemoveData(remoteVnc);
         }
 
+        
         public bool EditRemoteVnc(int dataId, string name, string ipAdd, int port)
         {
             RemoteVnc remoteVnc = new RemoteVnc()
@@ -738,6 +775,87 @@ namespace WcfServiceLibrary1
             };
 
             return DbHelper.GetInstance().UpdateData(remoteVnc);
+        }
+
+        
+        public bool AddVisionInput(string windowObj, string inputObj, string osdObj)
+        {
+            VisionInput visionInput = new VisionInput()
+            {
+                Window = windowObj,
+                Input = inputObj,
+                OSD = osdObj,
+            };
+
+            return DbHelper.GetInstance().AddData(visionInput);
+        }
+
+        
+        public bool RemoveVisionInput(int id)
+        {
+            VisionInput visionInput = new VisionInput()
+            {
+                Id = id,
+            };
+
+            return DbHelper.GetInstance().RemoveData(visionInput);
+        }
+
+        
+        public bool EditVisionData(int id, string windowObj, string inputObj, string osdObj)
+        {
+            VisionInput visionInput = new VisionInput()
+            {
+                Id = id,
+                Window = windowObj,
+                Input = inputObj,
+                OSD = osdObj,
+            };
+
+            return DbHelper.GetInstance().UpdateData(visionInput);
+        }
+
+        
+
+        public List<Tuple<int, string, string, string>> GetAllVisionInputs()
+        {
+            List<Tuple<int, string, string, string>> result = new List<Tuple<int, string, string, string>>();
+
+            DataTable dataTableVision = DbHelper.GetInstance().ReadData(new VisionInput());
+            foreach (DataRow visionDataRow in dataTableVision.Rows)
+            {
+                Tuple<int, string, string, string> tuple = new Tuple<int, string, string, string>
+                    (
+                        int.Parse(visionDataRow[VisionInput.VISION_TABLE_ID].ToString()),
+                        visionDataRow[VisionInput.VISION_WINDOW].ToString(),
+                        visionDataRow[VisionInput.VISION_INPUT].ToString(),
+                        visionDataRow[VisionInput.VISION_OSD].ToString()
+                    );
+                result.Add(tuple);
+            }
+
+            return result;
+        }
+
+
+        public int GetSystemSettingsInputCount()
+        {
+            int inputCount = 0;
+            DataTable dataTableSettings = DbHelper.GetInstance().ReadData(new SystemSettings());
+            foreach (DataRow settingDataRow in dataTableSettings.Rows)
+            {
+                inputCount = int.Parse(settingDataRow[SystemSettings.INPUT].ToString());
+            }
+
+            return inputCount;
+        }
+
+        public bool SetSystemSettingsInputCount(int count)
+        {
+            return DbHelper.GetInstance().AddData(new SystemSettings()
+                    {
+                        InputCount = count,
+                    });
         }
     }
 }

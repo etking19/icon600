@@ -32,12 +32,15 @@ namespace WindowsFormClient.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://localhost:8080/Service1")]
-        public string WcfServer {
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp://127.0.0.1:45100/Service1")]
+        public string RemoteIP {
             get {
-                return ((string)(this["WcfServer"]));
+                return ((string)(this["RemoteIP"]));
+            }
+            set {
+                this["RemoteIP"] = value;
             }
         }
     }

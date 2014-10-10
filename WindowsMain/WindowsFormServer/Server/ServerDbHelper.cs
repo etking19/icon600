@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using System.Text;
 using WcfServiceLibrary1;
 
@@ -45,11 +46,16 @@ namespace WindowsFormClient.Server
             try
             {
                 InstanceContext instanceContext = new InstanceContext(new CallbackHandler());
-                EndpointAddress address = new EndpointAddress(new Uri(Properties.Settings.Default.WcfServer));
-                dupFactory = new DuplexChannelFactory<IService1>(instanceContext, new NetTcpBinding(), address);
+                EndpointAddress address = new EndpointAddress(new Uri(Properties.Settings.Default.RemoteIP));
+                
+                NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None);
+
+                dupFactory = new DuplexChannelFactory<IService1>(instanceContext, tcpBinding, address);
                 dupFactory.Open();
 
                 wcfService = dupFactory.CreateChannel();
+
+
             }
             catch (Exception)
             {
@@ -288,6 +294,42 @@ namespace WindowsFormClient.Server
         public bool EditRemoteVnc(int dataId, string name, string ipAdd, int port)
         {
             return wcfService.EditRemoteVnc(dataId, name, ipAdd, port);
+        }
+
+        /// <summary>
+        /// string: window
+        /// string: input
+        /// string: osd
+        /// </summary>
+        /// <returns></returns>
+        public List<Tuple<int, string, string, string>> GetAllVisionInputs()
+        {
+            return wcfService.GetAllVisionInputs();
+        }
+
+        public bool AddVisionInput(string window, string input, string osd)
+        {
+            return wcfService.AddVisionInput(window, input, osd);
+        }
+
+        public bool EditVisionInput(int id, string window, string input, string osd)
+        {
+            return wcfService.EditVisionData(id, window, input, osd);
+        }
+
+        public bool RemoveVisionInput(int id)
+        {
+            return wcfService.RemoveVisionInput(id);
+        }
+
+        public bool AddSystemInputCount(int count)
+        {
+            return wcfService.SetSystemSettingsInputCount(count);
+        }
+
+        public int GetSystemInputCount()
+        {
+            return wcfService.GetSystemSettingsInputCount();
         }
     }
 }

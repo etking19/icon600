@@ -22,6 +22,7 @@ namespace WindowsFormClient
         private ApplicationsPresenter applicationPresenter;
         private ConnectionPresenter connectionPresenter;
         private RemoteVncPresenter remoteVncPresenter;
+        private VisionInputPresenter visionInputPresenter;
 
         private ConnectionManager connectionMgr;
         private VncMarshall.Client vncClient;
@@ -45,15 +46,13 @@ namespace WindowsFormClient
             applicationPresenter = new ApplicationsPresenter(connectionMgr);
             connectionPresenter = new ConnectionPresenter(this, connectionMgr);
             remoteVncPresenter = new RemoteVncPresenter(connectionMgr);
+            visionInputPresenter = new VisionInputPresenter(connectionMgr);
 
            // tabControl.ImageList = new ImageList();
         }
 
         private void onFormLoad(object sender, EventArgs e)
         {
-            // initialize database
-            Server.ServerDbHelper.GetInstance().Initialize();
-
             string vncClientPath = mainPresenter.VncPath;
             if (vncClientPath == String.Empty)
             {
@@ -105,6 +104,12 @@ namespace WindowsFormClient
             setupDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
             setupDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
             setupDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
+            setupDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
+
+            // customize for vision control
+            dataGridVisionInput.Columns[2].Visible = false;
+            dataGridVisionInput.Columns[3].Visible = false;
+            dataGridVisionInput.Columns[4].Visible = false;
 
             textBoxGeneralMin.Text = mainPresenter.PortMin.ToString();
             textBoxGeneralMax.Text = mainPresenter.PortMax.ToString();
@@ -799,6 +804,83 @@ namespace WindowsFormClient
             }
 
             reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
+        }
+
+        private void buttonVisionAdd_Click(object sender, EventArgs e)
+        {
+            FormVision visionFrm = new FormVision();
+            visionFrm.Text = "Add Capture Card Entry";
+            WindowsFormClient.RgbInput.Window window = new RgbInput.Window();
+            WindowsFormClient.RgbInput.Input input = new RgbInput.Input();
+            WindowsFormClient.RgbInput.OnScreenDisplay osd = new RgbInput.OnScreenDisplay();
+
+            // set the empty object to the form
+            visionFrm.WindowObj = window;
+            visionFrm.InputObj = input;
+            visionFrm.OnScreenDisplayObj = osd;
+            visionFrm.NumberOfInputs = ServerDbHelper.GetInstance().GetSystemInputCount();
+
+            if( visionFrm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                // add to db
+                visionInputPresenter.AddVisionInput(visionFrm.WindowObj, visionFrm.InputObj, visionFrm.OnScreenDisplayObj);
+
+                // reload the GUI
+                reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
+            }
+        }
+
+        private void buttonVisionEdit_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridVisionInput.Rows)
+            {
+                if (row.Cells[0].Value != null &&
+                        (bool)row.Cells[0].Value)
+                {
+                    // show the form user
+                    uint visionDataId = (uint)row.Cells[1].Value;
+                    string visionWnd = (string)row.Cells[2].Value;
+                    string visionInput = (string)row.Cells[3].Value;
+                    string visionOSD = (string)row.Cells[4].Value;
+
+                    FormVision formVision = new FormVision();
+                    formVision.WindowObj = visionInputPresenter.GetWindowFromString(visionWnd);
+                    formVision.InputObj = visionInputPresenter.GetInputFromString(visionInput);
+                    formVision.OnScreenDisplayObj = visionInputPresenter.GetOSDFromString(visionOSD);
+                    formVision.NumberOfInputs = ServerDbHelper.GetInstance().GetSystemInputCount();
+
+                    if (formVision.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+                    {
+                        visionInputPresenter.EditVisionInput(
+                            visionDataId,
+                            formVision.WindowObj,
+                            formVision.InputObj,
+                            formVision.OnScreenDisplayObj);
+                    }
+                }
+            }
+
+            reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
+        }
+
+        private void buttonVisionDelete_Click(object sender, EventArgs e)
+        {
+            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+
+            foreach (DataGridViewRow row in dataGridVisionInput.Rows)
+            {
+                if (row.Cells[0].Value != null &&
+                    (bool)row.Cells[0].Value)
+                {
+                    uint visionDataId = (uint)row.Cells[1].Value;
+                    visionInputPresenter.RemoveVisionInput(visionDataId);
+                }
+            }
+
+            reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
         }
     }
 }
