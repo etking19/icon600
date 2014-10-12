@@ -133,6 +133,9 @@ namespace Utils.Windows
         public static extern bool ExitWindowsEx(int flg, int rea);
 
         [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
+
+        [DllImport("user32.dll")]
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("User32.dll")]

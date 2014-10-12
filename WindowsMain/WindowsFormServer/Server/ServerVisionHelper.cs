@@ -262,7 +262,7 @@ namespace WindowsFormClient.Server
             startInfo.CreateNoWindow = false;
             startInfo.UseShellExecute = false;
             startInfo.FileName = rgbExecutablePath;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.WindowStyle = ProcessWindowStyle.Normal;
             startInfo.Arguments = argumentList;
 
             try

@@ -17,6 +17,7 @@ namespace Windows
         
         public void DoWork()
         {
+            int currentProcessId = Process.GetCurrentProcess().Id;
             while (!_shouldStop)
             {
                 wndList.Clear();
@@ -25,6 +26,13 @@ namespace Windows
                 var collection = new List<Windows.WindowsAppMgr.WndAttributes>();
                 NativeMethods.EnumDelegate filter = delegate(IntPtr hWnd, int lParam)
                 {
+                    uint processId = 0;
+                    NativeMethods.GetWindowThreadProcessId(hWnd, out processId);
+                    if (processId == currentProcessId)
+                    {
+                        return true;
+                    }
+
                     if (IsAltTabWindow(hWnd) == false)
                     {
                         return true;
@@ -32,7 +40,32 @@ namespace Windows
 
                     StringBuilder strbTitle = new StringBuilder(255);
                     int nLength = NativeMethods.GetWindowText(hWnd, strbTitle, strbTitle.Capacity + 1);
-                    string strTitle = strbTitle.ToString();
+                    string strTitle = string.Empty;
+                    try
+                    {
+                       strTitle = strbTitle.ToString();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                    Process process = Process.GetProcessById((int)processId);
+                    string processName = process.ProcessName;
+                    if (processName.Contains("rgbxsvr"))
+                    {
+                        // for video capture window
+                        NativeMethods.Rect wndRect = new NativeMethods.Rect();
+                        NativeMethods.GetWindowRect(hWnd, ref wndRect);
+
+                        int style = NativeMethods.GetWindowLong(hWnd, Constant.GWL_STYLE);
+                        style |= (int)Constant.WS_THICKFRAME;       // always able to resize the window
+                        style |= (int)Constant.WS_CAPTION;          // always able to close the window
+                        collection.Add(new Windows.WindowsAppMgr.WndAttributes { id = hWnd.ToInt32(), name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
+
+                        return true;
+                    }
+
 
                     if (string.IsNullOrEmpty(strTitle) == false)
                     {
@@ -42,6 +75,7 @@ namespace Windows
                         int style = NativeMethods.GetWindowLong(hWnd, Constant.GWL_STYLE);
                         collection.Add(new Windows.WindowsAppMgr.WndAttributes { id = hWnd.ToInt32(), name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
                     }
+
                     return true;
                 };
 
