@@ -167,7 +167,7 @@ namespace WindowsFormClient
         {
             // launch the file search dialog
             OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Programs (*.exe)|*.exe";
+            fileDialog.Filter = "Programs (*.exe, *.bat)|*.exe; *.bat|All Files (*.*)|*.*";
             fileDialog.CheckPathExists = true;
             fileDialog.CheckFileExists = true;
             fileDialog.Multiselect = false;
@@ -191,10 +191,10 @@ namespace WindowsFormClient
             {
                 if (selectedWnd.id == appInfo.id)
                 {
-                    textBoxX.Text = selectedWnd.posX.ToString();
-                    textBoxY.Text = selectedWnd.posY.ToString();
-                    textBoxWidth.Text = selectedWnd.width.ToString();
-                    textBoxHeight.Text = selectedWnd.height.ToString();
+                    textBoxX.Text = appInfo.posX.ToString();
+                    textBoxY.Text = appInfo.posY.ToString();
+                    textBoxWidth.Text = appInfo.width.ToString();
+                    textBoxHeight.Text = appInfo.height.ToString();
 
                     break;
                 }

@@ -386,5 +386,9 @@ namespace Utils.Windows
             BottomRight = 17,
             Border = 18
         }
+
+        // WM_COMMAND
+        public const int MIN_ALL = 419;
+        public const int MIN_ALL_UNDO = 416;
     }
 }

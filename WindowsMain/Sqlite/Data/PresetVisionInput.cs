@@ -21,7 +21,7 @@ namespace Database.Data
             string query = "CREATE TABLE IF NOT EXISTS {0} ({1} REFERENCES {2}({3}) ON DELETE CASCADE, {4} REFERENCES {5}({6}) ON DELETE CASCADE, {7} INTEGER PRIMARY KEY AUTOINCREMENT)";
             return String.Format(query, TABLE_NAME,
                 PRESET_NAME_ID, PresetName.TABLE_NAME, PresetName.PRESET_ID,
-                VISION_ID, Application.TABLE_NAME, Application.APPLICATION_ID,
+                VISION_ID, VisionInput.TABLE_NAME, VisionInput.VISION_TABLE_ID,
                 PRESET_VISION_ID);
         }
 

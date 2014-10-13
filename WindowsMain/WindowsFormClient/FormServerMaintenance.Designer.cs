@@ -30,14 +30,13 @@
         {
             this.buttonShutdown = new System.Windows.Forms.Button();
             this.buttonRestart = new System.Windows.Forms.Button();
-            this.buttonStandby = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonShutdown
             // 
             this.buttonShutdown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonShutdown.Location = new System.Drawing.Point(18, 47);
-            this.buttonShutdown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonShutdown.Margin = new System.Windows.Forms.Padding(4);
             this.buttonShutdown.Name = "buttonShutdown";
             this.buttonShutdown.Size = new System.Drawing.Size(390, 86);
             this.buttonShutdown.TabIndex = 0;
@@ -48,8 +47,8 @@
             // buttonRestart
             // 
             this.buttonRestart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
-            this.buttonRestart.Location = new System.Drawing.Point(18, 138);
-            this.buttonRestart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonRestart.Location = new System.Drawing.Point(23, 192);
+            this.buttonRestart.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRestart.Name = "buttonRestart";
             this.buttonRestart.Size = new System.Drawing.Size(390, 86);
             this.buttonRestart.TabIndex = 1;
@@ -57,30 +56,17 @@
             this.buttonRestart.UseVisualStyleBackColor = false;
             this.buttonRestart.Click += new System.EventHandler(this.buttonRestart_Click);
             // 
-            // buttonStandby
-            // 
-            this.buttonStandby.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
-            this.buttonStandby.Location = new System.Drawing.Point(18, 233);
-            this.buttonStandby.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.buttonStandby.Name = "buttonStandby";
-            this.buttonStandby.Size = new System.Drawing.Size(390, 86);
-            this.buttonStandby.TabIndex = 2;
-            this.buttonStandby.Text = "Put Server on Standby";
-            this.buttonStandby.UseVisualStyleBackColor = false;
-            this.buttonStandby.Click += new System.EventHandler(this.buttonStandby_Click);
-            // 
             // FormServerMaintenance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
             this.ClientSize = new System.Drawing.Size(426, 363);
-            this.Controls.Add(this.buttonStandby);
             this.Controls.Add(this.buttonRestart);
             this.Controls.Add(this.buttonShutdown);
             this.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormServerMaintenance";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Server Maintenance";
@@ -93,6 +79,5 @@
 
         private System.Windows.Forms.Button buttonShutdown;
         private System.Windows.Forms.Button buttonRestart;
-        private System.Windows.Forms.Button buttonStandby;
     }
 }

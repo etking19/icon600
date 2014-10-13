@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Utils.Windows;
 using WcfServiceLibrary1;
 
@@ -41,8 +42,23 @@ namespace WindowsFormClient.Command
 
             using (Process process = Process.Start(info))
             {
-                NativeMethods.SetWindowPos(new IntPtr(process.Id), Constant.HWND_TOP, appData.rect.Left, appData.rect.Top, 0, 0, (Int32)(Constant.SWP_NOSIZE));
-                NativeMethods.SetWindowPos(new IntPtr(process.Id), Constant.HWND_TOP, 0, 0, appData.rect.Right - appData.rect.Left, appData.rect.Bottom - appData.rect.Top, (Int32)Constant.SWP_NOMOVE);
+                int tryMax = 1000;
+                while ((process.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(process.MainWindowHandle))
+                {
+                    System.Threading.Thread.Sleep(10);
+                    process.Refresh();
+                    if (tryMax-- <= 0)
+                    {
+                        break;
+                    }
+                }
+                process.WaitForInputIdle(1000);
+                NativeMethods.MoveWindow(process.MainWindowHandle,
+                        appData.rect.Left,
+                        appData.rect.Top,
+                        appData.rect.Right - appData.rect.Left,
+                        appData.rect.Bottom - appData.rect.Top,
+                        true);
             }
         }
     }

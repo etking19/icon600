@@ -16,11 +16,13 @@ namespace WindowsFormClient.Command
     {
         private int clientId;
         private IServer server;
+        private VncMarshall.Client vncClient;
 
-        public ClientPresetCmdImpl(IServer server, int userId)
+        public ClientPresetCmdImpl(IServer server, int userId, VncMarshall.Client vncClient)
         {
             this.clientId = userId;
             this.server = server;
+            this.vncClient = vncClient;
         }
 
         public override void ExecuteCommand(string userId, string command)
@@ -174,8 +176,14 @@ namespace WindowsFormClient.Command
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
             {
-                if (false == info.name.Contains("Vistrol Server"))
+                if (info.name.Contains("Vistrol"))
                 {
+                    // minimize Vistrol control application
+                    Utils.Windows.NativeMethods.ShowWindow(new IntPtr(info.id), Constant.SW_FORCEMINIMIZE);
+                }
+                else
+                {
+                    // close other running application
                     Utils.Windows.NativeMethods.SendMessage(new IntPtr(info.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
             }
@@ -191,9 +199,36 @@ namespace WindowsFormClient.Command
                 };
                 using(Process process = Process.Start(info))
                 {
-                    NativeMethods.SetWindowPos(new IntPtr(process.Id), Constant.HWND_TOP, appData.rect.Left, appData.rect.Top, 0, 0, (Int32)(Constant.SWP_NOSIZE));
-                    NativeMethods.SetWindowPos(new IntPtr(process.Id), Constant.HWND_TOP, 0, 0, appData.rect.Right - appData.rect.Left, appData.rect.Bottom - appData.rect.Top, (Int32)Constant.SWP_NOMOVE);
+                    int tryMax = 1000;
+                    while ((process.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(process.MainWindowHandle))
+                    {
+                        System.Threading.Thread.Sleep(10);
+                        process.Refresh();
+                        if (tryMax-- <= 0)
+                        {
+                            break;
+                        }
+                    }
+                    process.WaitForInputIdle(1000);
+                    NativeMethods.MoveWindow(process.MainWindowHandle,
+                            appData.rect.Left,
+                            appData.rect.Top,
+                            appData.rect.Right - appData.rect.Left,
+                            appData.rect.Bottom - appData.rect.Top,
+                            true);
                 }
+            }
+
+            // start vnc
+            foreach (RemoteVncData remoteData in preset.VncDataList)
+            {
+                vncClient.StartClient(remoteData.remoteIp, remoteData.remotePort);
+            }
+
+            // start source input
+            foreach (Tuple<int, string, string, string> inputData in preset.InputDataList)
+            {
+                ServerVisionHelper.getInstance().LaunchVisionWindow(inputData.Item1);
             }
         }
     }

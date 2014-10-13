@@ -22,7 +22,7 @@ namespace VncMarshall
         {
             try
             {
-                process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -showcontrols=no -scale=auto {0}::{1}", vncServerIp, vncServerPort);
+                process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
                 using(Process clientProcess = Process.Start(process))
                 {
                     return clientProcess.Id;

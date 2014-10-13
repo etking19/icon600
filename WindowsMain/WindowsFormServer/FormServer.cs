@@ -114,8 +114,8 @@ namespace WindowsFormClient
             textBoxGeneralMin.Text = mainPresenter.PortMin.ToString();
             textBoxGeneralMax.Text = mainPresenter.PortMax.ToString();
 
-            comboBoxGeneralRow.SelectedIndex = (mainPresenter.ScreenRow - 1) < 0 ? 0 : mainPresenter.ScreenRow - 1;
-            comboBoxGeneralColumn.SelectedIndex = (mainPresenter.ScreenColumn - 1) < 0 ? 0 : mainPresenter.ScreenColumn - 1;
+            numericUpDownRow.Value = mainPresenter.ScreenRow == 0 ? 1 : mainPresenter.ScreenRow;
+            numericUpDownCol.Value = mainPresenter.ScreenColumn == 0 ? 1 : mainPresenter.ScreenColumn;
 
             refreshGeneralPanel();
         }
@@ -167,8 +167,8 @@ namespace WindowsFormClient
             vncClient = new VncMarshall.Client(mainPresenter.VncPath);
 
             // save the matrix setting
-            desktopRow = comboBoxGeneralRow.SelectedIndex + 1;
-            desktopColumn = comboBoxGeneralColumn.SelectedIndex + 1;
+            desktopRow = Convert.ToInt32(numericUpDownRow.Value);
+            desktopColumn = Convert.ToInt32(numericUpDownCol.Value);
 
             // start the server
             int portOpened = connectionMgr.StartServer(portMin, portMax);
@@ -357,6 +357,7 @@ namespace WindowsFormClient
                 userPresenter.AddUser(formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
 
                 reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
+                reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
             }
         }
 

@@ -53,11 +53,12 @@ namespace Database.Data
 
         public string GetUpdateDataCommand()
         {
-            string query = "UPDATE {0} SET {1}='{2}', {3}='{4}', {5}='{6}' WHERE {7}={8};";
+            string query = "UPDATE {0} SET {1}='{2}', {3}='{4}', {5}='{6}', {7}={8} WHERE {9}={10};";
             return String.Format(query, TABLE_NAME, 
                 PASSWORD, password, 
                 LABEL, label, 
                 USERNAME, username,
+                GROUP_ID, group,
                 USER_ID, id);
         }
     }

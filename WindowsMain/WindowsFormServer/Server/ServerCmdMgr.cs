@@ -46,7 +46,7 @@ namespace WindowsFormClient.Server
                     break;
                 case (int)CommandConst.SubCommandClient.Preset:
                     // get user table primary key from user id string
-                    implementor = new Command.ClientPresetCmdImpl(server, server.GetClientInfo(userId).DbUserId);
+                    implementor = new Command.ClientPresetCmdImpl(server, server.GetClientInfo(userId).DbUserId, server.GetVncClient());
                     break;
                 case (int)CommandConst.SubCommandClient.Vnc:
                     implementor = new Command.ClientVncCmdImpl(server, server.GetVncClient());

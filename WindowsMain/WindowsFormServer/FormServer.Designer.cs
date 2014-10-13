@@ -39,11 +39,9 @@
             this.textBoxGeneralMin = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBoxGeneralColumn = new System.Windows.Forms.ComboBox();
             this.labelMin = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.labelServerPort = new System.Windows.Forms.Label();
-            this.comboBoxGeneralRow = new System.Windows.Forms.ComboBox();
             this.btnGeneralStop = new System.Windows.Forms.Button();
             this.btnGeneralStart = new System.Windows.Forms.Button();
             this.labelGeneral = new System.Windows.Forms.Label();
@@ -86,6 +84,8 @@
             this.buttonVisionEdit = new System.Windows.Forms.Button();
             this.buttonVisionAdd = new System.Windows.Forms.Button();
             this.dataGridVisionInput = new System.Windows.Forms.DataGridView();
+            this.numericUpDownRow = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCol = new System.Windows.Forms.NumericUpDown();
             this.tabControl.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.groupBoxGeneral.SuspendLayout();
@@ -104,6 +104,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRemote)).BeginInit();
             this.tabDrivers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridVisionInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRow)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCol)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -166,15 +168,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBoxGeneral.BackColor = System.Drawing.Color.Transparent;
+            this.groupBoxGeneral.Controls.Add(this.numericUpDownCol);
+            this.groupBoxGeneral.Controls.Add(this.numericUpDownRow);
             this.groupBoxGeneral.Controls.Add(this.textBoxGeneralMax);
             this.groupBoxGeneral.Controls.Add(this.textBoxGeneralMin);
             this.groupBoxGeneral.Controls.Add(this.label3);
             this.groupBoxGeneral.Controls.Add(this.label1);
-            this.groupBoxGeneral.Controls.Add(this.comboBoxGeneralColumn);
             this.groupBoxGeneral.Controls.Add(this.labelMin);
             this.groupBoxGeneral.Controls.Add(this.label2);
             this.groupBoxGeneral.Controls.Add(this.labelServerPort);
-            this.groupBoxGeneral.Controls.Add(this.comboBoxGeneralRow);
             this.groupBoxGeneral.Location = new System.Drawing.Point(10, 29);
             this.groupBoxGeneral.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxGeneral.Name = "groupBoxGeneral";
@@ -208,7 +210,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(138, 208);
+            this.label3.Location = new System.Drawing.Point(138, 206);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(16, 20);
@@ -225,37 +227,6 @@
             this.label1.Size = new System.Drawing.Size(33, 16);
             this.label1.TabIndex = 3;
             this.label1.Text = "Max";
-            // 
-            // comboBoxGeneralColumn
-            // 
-            this.comboBoxGeneralColumn.FormattingEnabled = true;
-            this.comboBoxGeneralColumn.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20"});
-            this.comboBoxGeneralColumn.Location = new System.Drawing.Point(163, 208);
-            this.comboBoxGeneralColumn.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBoxGeneralColumn.Name = "comboBoxGeneralColumn";
-            this.comboBoxGeneralColumn.Size = new System.Drawing.Size(72, 24);
-            this.comboBoxGeneralColumn.TabIndex = 8;
-            this.comboBoxGeneralColumn.Text = "1";
             // 
             // labelMin
             // 
@@ -291,37 +262,6 @@
             this.labelServerPort.Size = new System.Drawing.Size(155, 19);
             this.labelServerPort.TabIndex = 1;
             this.labelServerPort.Text = "Server Port Range:";
-            // 
-            // comboBoxGeneralRow
-            // 
-            this.comboBoxGeneralRow.FormattingEnabled = true;
-            this.comboBoxGeneralRow.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20"});
-            this.comboBoxGeneralRow.Location = new System.Drawing.Point(51, 208);
-            this.comboBoxGeneralRow.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBoxGeneralRow.Name = "comboBoxGeneralRow";
-            this.comboBoxGeneralRow.Size = new System.Drawing.Size(79, 24);
-            this.comboBoxGeneralRow.TabIndex = 7;
-            this.comboBoxGeneralRow.Text = "1";
             // 
             // btnGeneralStop
             // 
@@ -949,6 +889,40 @@
             this.dataGridVisionInput.Size = new System.Drawing.Size(720, 604);
             this.dataGridVisionInput.TabIndex = 23;
             // 
+            // numericUpDownRow
+            // 
+            this.numericUpDownRow.Location = new System.Drawing.Point(51, 207);
+            this.numericUpDownRow.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownRow.Name = "numericUpDownRow";
+            this.numericUpDownRow.Size = new System.Drawing.Size(80, 23);
+            this.numericUpDownRow.TabIndex = 10;
+            this.numericUpDownRow.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownCol
+            // 
+            this.numericUpDownCol.Location = new System.Drawing.Point(161, 207);
+            this.numericUpDownCol.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownCol.Name = "numericUpDownCol";
+            this.numericUpDownCol.Size = new System.Drawing.Size(80, 23);
+            this.numericUpDownCol.TabIndex = 11;
+            this.numericUpDownCol.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // FormServer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -956,7 +930,7 @@
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(850, 710);
+            this.MinimumSize = new System.Drawing.Size(300, 710);
             this.Name = "FormServer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Vistrol Server";
@@ -988,6 +962,8 @@
             this.tabDrivers.ResumeLayout(false);
             this.tabDrivers.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridVisionInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRow)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCol)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1009,8 +985,6 @@
         private System.Windows.Forms.Label labelMin;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBoxGeneralColumn;
-        private System.Windows.Forms.ComboBox comboBoxGeneralRow;
         private System.Windows.Forms.TabControl tabUsersUser;
         private System.Windows.Forms.TabPage tabPageUser;
         private System.Windows.Forms.TabPage tabPageGroup;
@@ -1050,6 +1024,8 @@
         private System.Windows.Forms.Button buttonVisionEdit;
         private System.Windows.Forms.Button buttonVisionAdd;
         private System.Windows.Forms.DataGridView dataGridVisionInput;
+        private System.Windows.Forms.NumericUpDown numericUpDownCol;
+        private System.Windows.Forms.NumericUpDown numericUpDownRow;
 
     }
 }

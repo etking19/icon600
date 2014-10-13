@@ -21,7 +21,7 @@ namespace Database.Data
             string query = "CREATE TABLE IF NOT EXISTS {0} ({1} REFERENCES {2}({3}) ON DELETE CASCADE, {4} REFERENCES {5}({6}) ON DELETE CASCADE, {7} INTEGER PRIMARY KEY AUTOINCREMENT)";
             return String.Format(query, TABLE_NAME,
                 PRESET_NAME_ID, PresetName.TABLE_NAME, PresetName.PRESET_ID,
-                PRESET_NAME_ID, Application.TABLE_NAME, Application.APPLICATION_ID,
+                VNC_ID, RemoteVnc.TABLE_NAME, RemoteVnc.REMOTEVNC_ID,
                 PRESET_VNC_ID);
         }
 
