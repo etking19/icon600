@@ -55,6 +55,8 @@
     <Compile Include="Data\Monitor.cs" />
     <Compile Include="Data\PresetApplications.cs" />
     <Compile Include="Data\PresetName.cs" />
+    <Compile Include="Data\PresetVisionInput.cs" />
+    <Compile Include="Data\PresetVnc.cs" />
     <Compile Include="Data\RemoteVnc.cs" />
     <Compile Include="Data\Setting.cs" />
     <Compile Include="Data\SystemSettings.cs" />

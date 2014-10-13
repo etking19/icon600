@@ -190,9 +190,9 @@ namespace WindowsFormClient.Server
         /// <param name="userId"></param>
         /// <param name="appIds"></param>
         /// <returns>number of data added</returns>
-        public int AddPreset(string presetName, int userId, List<int> appIds)
+        public void AddPreset(string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
         {
-            return wcfService.AddPreset(presetName, userId, appIds);
+            wcfService.AddPreset(presetName, userId, appIds, vncIds, inputIds);
         }
 
         public void RemovePreset(int presetId)
@@ -200,9 +200,9 @@ namespace WindowsFormClient.Server
             wcfService.RemovePreset(presetId);
         }
 
-        public void EditPreset(int presetId, string presetName, int userId, List<int> appIds)
+        public void EditPreset(int presetId, string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
         {
-            wcfService.EditPreset(presetId, presetName, userId, appIds);
+            wcfService.EditPreset(presetId, presetName, userId, appIds, vncIds, inputIds);
         }
 
         public IList<PresetData> GetPresetByUserId(int userId)

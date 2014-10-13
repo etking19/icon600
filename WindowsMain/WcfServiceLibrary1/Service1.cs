@@ -39,6 +39,8 @@ namespace WcfServiceLibrary1
                 Database.DbHelper.GetInstance().CreateTable(new GroupApplications());
                 Database.DbHelper.GetInstance().CreateTable(new PresetName());
                 Database.DbHelper.GetInstance().CreateTable(new PresetApplications());
+                Database.DbHelper.GetInstance().CreateTable(new PresetVnc());
+                Database.DbHelper.GetInstance().CreateTable(new PresetVisionInput());
                 Database.DbHelper.GetInstance().CreateTable(new Setting());
                 Database.DbHelper.GetInstance().CreateTable(new RemoteVnc());
                 Database.DbHelper.GetInstance().CreateTable(new VisionInput());
@@ -399,9 +401,8 @@ namespace WcfServiceLibrary1
         }
 
         
-        public int AddPreset(string presetName, int userId, List<int> appIds)
+        public void AddPreset(string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
         {
-            int count = 0;
             PresetName dbPreset = new PresetName()
             {
                 preset_name = presetName,
@@ -421,15 +422,31 @@ namespace WcfServiceLibrary1
                         preset_application_id = appId,
                     };
 
-                    if (DbHelper.GetInstance().AddData(dbPresetApp))
+                    DbHelper.GetInstance().AddData(dbPresetApp);
+                }
+
+                foreach (int vncId in vncIds)
+                {
+                    PresetVnc dbPresetVnc = new PresetVnc()
                     {
-                        count++;
-                    }
+                        preset_name_id = presetId,
+                        preset_vnc_id = vncId,
+                    };
+
+                    DbHelper.GetInstance().AddData(dbPresetVnc);
+                }
+
+                foreach (int inputId in inputIds)
+                {
+                    PresetVisionInput dbPresetInput = new PresetVisionInput()
+                    {
+                        preset_name_id = presetId,
+                        preset_vision_id = inputId,
+                    };
+
+                    DbHelper.GetInstance().AddData(dbPresetInput);
                 }
             }
-
-
-            return count;
         }
 
         
@@ -443,8 +460,8 @@ namespace WcfServiceLibrary1
             DbHelper.GetInstance().RemoveData(dbPreset);
         }
 
-        
-        public void EditPreset(int presetId, string presetName, int userId, List<int> appIds)
+
+        public void EditPreset(int presetId, string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
         {
             // update the possible name change
             PresetName dbPreset = new PresetName()
@@ -474,6 +491,40 @@ namespace WcfServiceLibrary1
                 };
                 DbHelper.GetInstance().AddData(dbPresetAppAdd);
             }
+
+            PresetVnc dbPresetVncPre = new PresetVnc()
+            {
+                preset_name_id = presetId,
+            };
+            DbHelper.GetInstance().RemoveData(dbPresetVncPre);
+
+            foreach (int vncId in vncIds)
+            {
+                PresetVnc dbPresetVnc = new PresetVnc()
+                {
+                    preset_name_id = presetId,
+                    preset_vnc_id = vncId,
+                };
+
+                DbHelper.GetInstance().AddData(dbPresetVnc);
+            }
+
+            PresetVisionInput dbPresetInputPre = new PresetVisionInput()
+            {
+                preset_name_id = presetId,
+            };
+            DbHelper.GetInstance().RemoveData(dbPresetInputPre);
+
+            foreach (int inputId in inputIds)
+            {
+                PresetVisionInput dbPresetInput = new PresetVisionInput()
+                {
+                    preset_name_id = presetId,
+                    preset_vision_id = inputId,
+                };
+
+                DbHelper.GetInstance().AddData(dbPresetInput);
+            }
         }
 
         
@@ -497,12 +548,14 @@ namespace WcfServiceLibrary1
                 presetData.Id = int.Parse(presetNameDataRow[PresetName.PRESET_ID].ToString());
 
                 // get the application ids releated to this preset
-                List<ApplicationData> presetAppList = new List<ApplicationData>();
                 PresetApplications dbPresetApp = new PresetApplications()
                 {
                     // preset id
                     preset_name_id = presetData.Id,
                 };
+
+                
+                List<ApplicationData> presetAppList = new List<ApplicationData>();
                 DataTable dataTablePresetApp = DbHelper.GetInstance().ReadData(dbPresetApp);
                 foreach (DataRow presetAppDataRow in dataTablePresetApp.Rows)
                 {
@@ -516,7 +569,59 @@ namespace WcfServiceLibrary1
                     presetAppList.Add(appData);
                 }
 
+                // get all the VNC
+                IList<RemoteVncData> vncList = GetRemoteVncList();
+
+                // get the vnc ids releated to this preset
+                PresetVnc dbPresetVnc = new PresetVnc()
+                {
+                    // preset id
+                    preset_name_id = presetData.Id,
+                };
+
+
+                List<RemoteVncData> presetVncList = new List<RemoteVncData>();
+                DataTable dataTablePresetVnc = DbHelper.GetInstance().ReadData(dbPresetVnc);
+                foreach (DataRow presetVncDataRow in dataTablePresetVnc.Rows)
+                {
+                    // get the application id from table
+                    int vncId = int.Parse(presetVncDataRow[PresetVnc.VNC_ID].ToString());
+
+                    // get the application data from app full list with match appId
+                    RemoteVncData remoteVnc = vncList.First(RemoteVncData => RemoteVncData.id == vncId);
+
+                    // add to the app list
+                    presetVncList.Add(remoteVnc);
+                }
+
+                // get all the Vision input
+                IList<Tuple<int, string, string, string>> visionList = GetAllVisionInputs();
+
+                // get the vnc ids releated to this preset
+                PresetVisionInput dbPresetVision = new PresetVisionInput()
+                {
+                    // preset id
+                    preset_name_id = presetData.Id,
+                };
+
+
+                List<Tuple<int, string, string, string>> presetInputList = new List<Tuple<int, string, string, string>>();
+                DataTable dataTablePresetInput = DbHelper.GetInstance().ReadData(dbPresetVision);
+                foreach (DataRow presetVisionDataRow in dataTablePresetInput.Rows)
+                {
+                    // get the application id from table
+                    int visionId = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_ID].ToString());
+
+                    // get the application data from app full list with match appId
+                    Tuple<int, string, string, string> visionVnc = visionList.First(VisionData => VisionData.Item1 == visionId);
+
+                    // add to the app list
+                    presetInputList.Add(visionVnc);
+                }
+
                 presetData.AppDataList = presetAppList;
+                presetData.VncDataList = presetVncList;
+                presetData.InputDataList = presetInputList;
                 presetList.Add(presetData);
             }
 

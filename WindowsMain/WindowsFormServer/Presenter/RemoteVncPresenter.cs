@@ -76,6 +76,7 @@ namespace WindowsFormClient.Presenter
             {
                 vncEntries.Add(new VncEntry()
                 {
+                    Identifier = vncData.id,
                     DisplayName = vncData.name,
                     IpAddress = vncData.remoteIp,
                     Port = vncData.remotePort,

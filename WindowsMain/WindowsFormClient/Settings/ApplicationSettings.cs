@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Session.Data.SubData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,10 @@ namespace WindowsFormClient.Settings
     {
         private static ApplicationSettings sInstance;
 
-        public List<Session.Data.SubData.PresetsEntry> PresetList { get; set; }
-        public List<Session.Data.SubData.ApplicationEntry> ApplicationList { get; set; }
+        public List<PresetsEntry> PresetList { get; set; }
+        public List<ApplicationEntry> ApplicationList { get; set; }
+        public List<VncEntry> VncList { get; set; }
+        public List<InputAttributes> InputList { get; set; }
 
         private ApplicationSettings()
         {

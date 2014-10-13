@@ -7,6 +7,7 @@ namespace Session.Data.SubData
 {
     public class VncEntry
     {
+        public int Identifier { get; set; }
         public string DisplayName { get; set; }
         /// <summary>
         /// Used when client login to server

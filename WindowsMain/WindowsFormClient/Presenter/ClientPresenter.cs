@@ -141,12 +141,14 @@ namespace WindowsFormClient.Presenter
                 keyboardCmd);
         }
 
-        public void AddPreset(string name, List<ApplicationEntry> appList)
+        public void AddPreset(string name, List<ApplicationEntry> appList, List<VncEntry> vncList, List<InputAttributes> inputList)
         {
             PresetsEntry presetEntry = new PresetsEntry()
             {
                 Name = name,
                 ApplicationList = appList,
+                VncList = vncList,
+                InputList = inputList,
             };
 
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()
@@ -163,19 +165,10 @@ namespace WindowsFormClient.Presenter
 
         public void RemovePreset(Client.Model.PresetModel presetModel)
         {
-            List<ApplicationEntry> appEntriesList = new List<ApplicationEntry>();
-            foreach (ApplicationModel model in presetModel.ApplicationList)
-            {
-                appEntriesList.Add(new ApplicationEntry() {
-                    Identifier = model.AppliationId,
-                    Name = model.ApplicationName,
-                });
-            }
-
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {
                 ControlType = ClientPresetsCmd.EControlType.Delete,
-                PresetEntry = new PresetsEntry { Identifier = presetModel.PresetId, Name = presetModel.PresetName, ApplicationList = appEntriesList }
+                PresetEntry = new PresetsEntry { Identifier = presetModel.PresetId }
             };
 
             connectionMgr.BroadcastMessage(
@@ -192,7 +185,6 @@ namespace WindowsFormClient.Presenter
                 PresetEntry = new PresetsEntry()
                 {
                     Identifier = presetModel.PresetId,
-                    Name = presetModel.PresetName
                 }
             };
 
@@ -297,6 +289,7 @@ namespace WindowsFormClient.Presenter
                 CommandId = ClientVncCmd.ECommandId.Start,
                 UserVncData = new VncEntry() 
                 { 
+                    Identifier = model.Identifier,
                     IpAddress = model.VncServerIp,
                     Port = model.VncServerPort,
                     DisplayName = model.DisplayName,

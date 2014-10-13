@@ -65,13 +65,13 @@ namespace WcfServiceLibrary1
         List<ApplicationData> GetAppsWithUserId(int userId);
 
         [OperationContract]
-        int AddPreset(string presetName, int userId, List<int> appIds);
+        void AddPreset(string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds);
 
         [OperationContract(IsOneWay=true)]
         void RemovePreset(int presetId);
         
         [OperationContract(IsOneWay = true)]
-        void EditPreset(int presetId, string presetName, int userId, List<int> appIds);
+        void EditPreset(int presetId, string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds);
 
         [OperationContract]
         IList<PresetData> GetPresetByUserId(int userId);
@@ -244,6 +244,12 @@ namespace WcfServiceLibrary1
 
         [DataMember]
         public List<ApplicationData> AppDataList { get; set; }
+
+        [DataMember]
+        public List<RemoteVncData> VncDataList { get; set; }
+
+        [DataMember]
+        public List<Tuple<int, string, string, string>> InputDataList { get; set; }
     }
 
     [DataContract]

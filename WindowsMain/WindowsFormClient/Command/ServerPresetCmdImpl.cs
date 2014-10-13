@@ -40,11 +40,27 @@ namespace WindowsFormClient.Command
                     appList.Add(appModel);
                 }
 
+                List<VncModel> vncList = new List<VncModel>();
+                foreach (VncEntry vncEntry in entry.VncList)
+                {
+                    VncModel vncModel = new VncModel()
+                    {
+                        Identifier = vncEntry.Identifier,
+                        DisplayName = vncEntry.DisplayName,
+                        VncServerIp = vncEntry.IpAddress,
+                        VncServerPort = vncEntry.Port,
+                    };
+
+                    vncList.Add(vncModel);
+                }
+
                 PresetModel model = new PresetModel()
                 {
                     PresetId = entry.Identifier,
                     PresetName = entry.Name,
                     ApplicationList = appList,
+                    VncList = vncList,
+                    VisionInputList = entry.InputList,
                 };
 
                 presetList.Add(model);

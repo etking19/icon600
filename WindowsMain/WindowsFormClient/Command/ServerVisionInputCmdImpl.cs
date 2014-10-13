@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient.Command
 {
@@ -22,6 +23,7 @@ namespace WindowsFormClient.Command
                 return;
             }
 
+            ApplicationSettings.GetInstance().InputList = visionInputStatusData.InputAttributesList;
             client.RefreshVisionInputStatus(visionInputStatusData.InputAttributesList);
         }
     }

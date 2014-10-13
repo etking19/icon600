@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WindowsFormClient.Client.Model;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient.Command
 {
@@ -30,6 +31,7 @@ namespace WindowsFormClient.Command
             {
                 VncModel model = new VncModel()
                 {
+                    Identifier = entry.Identifier,
                     DisplayName = entry.DisplayName,
                     VncServerIp = entry.IpAddress,
                     VncServerPort = entry.Port
@@ -38,6 +40,7 @@ namespace WindowsFormClient.Command
                 vncList.Add(model);
             }
 
+            ApplicationSettings.GetInstance().VncList = vncData.UserVncList;
             client.RefreshVncList(vncList);
         }
     }

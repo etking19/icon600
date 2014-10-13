@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Utils.Windows;
 using WcfServiceLibrary1;
+using WindowsFormClient.Server;
 
 namespace WindowsFormClient.Command
 {
@@ -68,11 +69,34 @@ namespace WindowsFormClient.Command
                             Name = appData.name
                         });
                     }
+
+                    List<VncEntry> presetVncEntries = new List<VncEntry>();
+                    foreach (RemoteVncData vncData in data.VncDataList)
+                    {
+                        presetVncEntries.Add(new VncEntry()
+                        {
+                            Identifier = vncData.id,
+                            DisplayName = vncData.name,
+                            IpAddress = vncData.remoteIp,
+                            Port = vncData.remotePort,
+                        });
+                    }
+
+                    List<InputAttributes> presetInputEntries = new List<InputAttributes>();
+                    foreach (Tuple<int, string, string, string> inputData in data.InputDataList)
+                    {
+                        presetInputEntries.Add(
+                            ServerVisionHelper.getInstance().GetAllVisionInputsAttributes().First(InputAttributes 
+                                => InputAttributes.InputId == inputData.Item1));
+                    }
+
                     serverPresetStatus.UserPresetList.Add(new PresetsEntry()
                     {
                         Identifier = data.Id,
                         Name = data.Name,
-                        ApplicationList = presetAppEntries
+                        ApplicationList = presetAppEntries,
+                        VncList = presetVncEntries,
+                        InputList = presetInputEntries,
                     });
                 }
 
@@ -93,10 +117,24 @@ namespace WindowsFormClient.Command
                 applicationIds.Add(entry.Identifier);
             }
 
+            List<int> vncIds = new List<int>();
+            foreach (VncEntry vnc in presetData.PresetEntry.VncList)
+            {
+                vncIds.Add(vnc.Identifier);
+            }
+
+            List<int> inputIds = new List<int>();
+            foreach (InputAttributes input in presetData.PresetEntry.InputList)
+            {
+                inputIds.Add(input.InputId);
+            }
+
             Server.ServerDbHelper.GetInstance().AddPreset(
                 presetData.PresetEntry.Name,
                 userId,
-                applicationIds);
+                applicationIds, 
+                vncIds,
+                inputIds);
         }
 
         private void RemovePreset(ClientPresetsCmd presetData)
@@ -107,13 +145,28 @@ namespace WindowsFormClient.Command
 
         private void ModifyPreset(int userId, ClientPresetsCmd presetData)
         {
+            /*
             List<int> applicationIds = new List<int>();
             foreach (ApplicationEntry entry in presetData.PresetEntry.ApplicationList)
             {
                 applicationIds.Add(entry.Identifier);
             }
 
-            Server.ServerDbHelper.GetInstance().EditPreset(presetData.PresetEntry.Identifier, presetData.PresetEntry.Name, userId, applicationIds);
+            List<int> vncIds = new List<int>();
+            foreach (VncEntry vnc in presetData.PresetEntry.VncList)
+            {
+                vncIds.Add(vnc.Identifier);
+            }
+
+            List<int> inputIds = new List<int>();
+            foreach (InputAttributes input in presetData.PresetEntry.InputList)
+            {
+                inputIds.Add(input.InputId);
+            }
+
+
+            Server.ServerDbHelper.GetInstance().EditPreset(presetData.PresetEntry.Identifier, presetData.PresetEntry.Name, userId, applicationIds, vncIds, inputIds);
+             * */
         }
 
         private void LaunchPreset(int userId, ClientPresetsCmd presetData)

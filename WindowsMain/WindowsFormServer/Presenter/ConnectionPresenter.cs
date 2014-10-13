@@ -210,11 +210,38 @@ namespace WindowsFormClient.Presenter
                         Name = appData.name
                     });
                 }
+
+                List<VncEntry> presetVncEntries = new List<VncEntry>();
+                foreach (RemoteVncData vncData in presetData.VncDataList)
+                {
+                    presetVncEntries.Add(new VncEntry()
+                    {
+                        Identifier = vncData.id,
+                        DisplayName = vncData.name,
+                        IpAddress = vncData.remoteIp,
+                        Port = vncData.remotePort,
+                    });
+                }
+
+                // get all vision inputs
+                List<InputAttributes> allInputList = Server.ServerVisionHelper.getInstance().GetAllVisionInputsAttributes();
+                List<InputAttributes> inputEntries = new List<InputAttributes>();
+                foreach (Tuple<int, string, string, string> inputData in presetData.InputDataList)
+                {
+                    inputEntries.Add(new InputAttributes()
+                    {
+                        InputId = inputData.Item1,
+                        DisplayName = allInputList.First(inputAtt => inputAtt.InputId == inputData.Item1).DisplayName,
+                    });
+                }
+
                 serverPresetStatus.UserPresetList.Add(new PresetsEntry()
                 {
                     Identifier = presetData.Id,
                     Name = presetData.Name,
-                    ApplicationList = presetAppEntries
+                    ApplicationList = presetAppEntries,
+                    VncList = presetVncEntries,
+                    InputList = inputEntries,
                 });
             }
 
@@ -251,6 +278,7 @@ namespace WindowsFormClient.Presenter
             {
                 vncEntries.Add(new VncEntry()
                     {
+                        Identifier = vncData.id,
                         DisplayName = vncData.name,
                         IpAddress = vncData.remoteIp,
                         Port = vncData.remotePort,

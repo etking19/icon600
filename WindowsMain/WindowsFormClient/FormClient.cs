@@ -246,9 +246,15 @@ namespace WindowsFormClient
             // add a preset
             FormAddPreset addPreset = new FormAddPreset();
             addPreset.SetAppList(Settings.ApplicationSettings.GetInstance().ApplicationList);
+            addPreset.SetVncList(Settings.ApplicationSettings.GetInstance().VncList);
+            addPreset.SetInputList(Settings.ApplicationSettings.GetInstance().InputList);
+
             if (addPreset.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                clientPresenter.AddPreset(addPreset.PresetName, addPreset.GetSelectedAppList());
+                clientPresenter.AddPreset(addPreset.PresetName, 
+                    addPreset.GetSelectedAppList(), 
+                    addPreset.GetSelectedVncList(), 
+                    addPreset.GetSelectedInputList());
             }
         }
 
