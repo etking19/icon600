@@ -49,11 +49,11 @@ namespace Utils.Windows
         [StructLayout(LayoutKind.Sequential)]
         public struct MOUSEINPUT
         {
-            public Int32 dx;
-            public Int32 dy;
-            public UInt32 mouseData;
-            public UInt32 dwFlags;
-            public UInt32 time;
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
+            public uint time;
             public UIntPtr dwExtraInfo;
         }
 
@@ -61,10 +61,10 @@ namespace Utils.Windows
         [StructLayout(LayoutKind.Sequential)]
         public struct KEYBOARDINPUT
         {
-            public UInt16 wVk;
-            public UInt16 wScan;
-            public UInt32 dwFlags;
-            public UInt32 time;
+            public ushort wVk;
+            public ushort wScan;
+            public uint dwFlags;
+            public uint time;
             public IntPtr dwExtraInfo;
         }
 
@@ -72,25 +72,30 @@ namespace Utils.Windows
         [StructLayout(LayoutKind.Sequential)]
         public struct HARDWAREINPUT
         {
-            public UInt32 uMsg;
-            public UInt16 wParamL;
-            public UInt16 wParamH;
+            public int uMsg;
+            public short wParamL;
+            public short wParamH;
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        public struct INPUT
+        public struct MouseKeyboardHardwareInputUnion
         {
             [FieldOffset(0)]
-            public int type;
-
-            [FieldOffset(4)]
             public MOUSEINPUT mi;
 
-            [FieldOffset(4)]
+            [FieldOffset(0)]
             public KEYBOARDINPUT ki;
 
-            [FieldOffset(4)]
+            [FieldOffset(0)]
             public HARDWAREINPUT hi;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct INPUT
+        {
+            public uint type;
+            public MouseKeyboardHardwareInputUnion mkhi;
+            
         }
     }
 }

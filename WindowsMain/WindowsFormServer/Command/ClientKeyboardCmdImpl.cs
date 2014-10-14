@@ -28,7 +28,10 @@ namespace WindowsFormClient.Command
             // create input object
             InputConstants.INPUT input = new InputConstants.INPUT();
             input.type = InputConstants.KEYBOARD;
-            input.ki = keyboardInput;
+            input.mkhi = new InputConstants.MouseKeyboardHardwareInputUnion()
+                {
+                    ki = keyboardInput,
+                };
 
             // send input to Windows
             InputConstants.INPUT[] inputArray = new InputConstants.INPUT[] { input };
