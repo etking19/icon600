@@ -215,7 +215,7 @@ namespace CustomWinForm
         private bool doSnap(int pos, int edge)
         {
             int delta = pos - edge;
-            return delta > 0 && delta <= 10;     // within 10 pixels
+            return delta > 0 && delta <= 20;     // within 10 pixels
         }
 
         private bool performSizeSnap(int xPos, int yPos, int width, int height, out int snapWidth, out int snapHeight)

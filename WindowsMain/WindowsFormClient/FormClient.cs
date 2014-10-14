@@ -195,7 +195,18 @@ namespace WindowsFormClient
 
         void holder_onDelegateMaximizedEvt(int id)
         {
-            clientPresenter.SetApplicationMaximize(id);
+            // check if the client view the whole desktop
+            // else just maximize to window its belong (set pos and width/height)
+            if(formMimic.VisibleSize.Equals(formMimic.FullSize))
+            {
+                clientPresenter.SetApplicationMaximize(id);
+            }
+            else
+            {
+                // just fill the visible area
+                clientPresenter.SetApplicationPos(id, formMimic.ReferenceLeft, formMimic.ReferenceTop);
+                clientPresenter.SetApplicationSize(id, formMimic.VisibleSize);
+            }       
         }
 
         void holder_onDelegateClosedEvt(int id)
