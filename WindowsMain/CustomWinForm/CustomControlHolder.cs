@@ -24,6 +24,8 @@ namespace CustomWinForm
         public event OnControlRestore onDelegateRestoredEvt;
         public event OnControlClose onDelegateClosedEvt;
 
+        private ToolTip windowToolTip;
+
         /// <summary>
         /// keep the row and column grid view (reference size) so can perform snap to border feature
         /// </summary>
@@ -116,6 +118,9 @@ namespace CustomWinForm
 
             this.Controls.Add(winForm);
             this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
+
+            // add the tooltip control
+            windowToolTip.SetToolTip(winForm, controlAttr.WindowName);
 
             try
             {
@@ -317,6 +322,7 @@ namespace CustomWinForm
             CustomWinForm control;
             if (mControlsDic.TryGetValue(id, out control))
             {
+                windowToolTip.SetToolTip(control, name);
                 control.SetWindowName(name);
             }
         }
@@ -342,7 +348,15 @@ namespace CustomWinForm
         
         public void RefreshLayout()
         {
-            HandleSizing();
+            foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
+            {
+                // change location
+                Point ratioPoint = new Point((int)Math.Round((float)(map.Value.ActualPos.X - ReferenceXPos) * mScaleX),
+                   (int)Math.Round((float)(map.Value.ActualPos.Y - ReferenceYPos) * mScaleY));
+                map.Value.Location = ratioPoint;
+
+                map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.ActualSize.Width * mScaleX), (int)Math.Round((float)map.Value.ActualSize.Height * mScaleY)));
+            }
         }
 
         /*
@@ -447,6 +461,15 @@ namespace CustomWinForm
         private void CustomControlHolder_Load(object sender, EventArgs e)
         {
             this.SizeChanged += CustomControlHolder_SizeChanged;
+
+            // Create the ToolTip and associate with the Form container.
+            windowToolTip = new ToolTip();
+
+            // Set up the delays for the ToolTip.
+            windowToolTip.AutoPopDelay = 2000;
+            windowToolTip.InitialDelay = 500;
+            windowToolTip.ReshowDelay = 500;
+            windowToolTip.ShowAlways = true;
         }
 
         void CustomControlHolder_SizeChanged(object sender, EventArgs e)
