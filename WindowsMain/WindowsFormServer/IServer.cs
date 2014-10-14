@@ -32,6 +32,6 @@ namespace WindowsFormClient
 
         ConnectionManager GetConnectionMgr();
 
-        void AddMessageBox(string message, Font font, Color color, Color backgroundColor, int duration, int left, int top, int width, int height);
+        void AddMessageBox(string message, Font font, Color color, Color backgroundColor, int duration, int left, int top, int width, int height, bool animation);
     }
 }

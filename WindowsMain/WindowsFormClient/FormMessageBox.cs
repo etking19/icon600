@@ -27,6 +27,8 @@ namespace WindowsFormClient
         public int Width { get { return width; } }
         public int Height { get { return height; } }
         public int Duration { get { return duration; } }
+
+        public bool AnimationEnabled { get; set; }
         public string Message 
         {
             get
@@ -65,6 +67,16 @@ namespace WindowsFormClient
 
             bgndColorDialog = new ColorDialog();
             bgndColorDialog.AnyColor = true;
+
+            radioButtonInfinite.Checked = true;
+            numericUpDownDuration.Enabled = false;
+            radioButtonInfinite.CheckedChanged += radioButtonInfinite_CheckedChanged;
+        }
+
+        void radioButtonInfinite_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radioBtn = (RadioButton)sender;
+            numericUpDownDuration.Enabled = !radioBtn.Checked;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -86,13 +98,16 @@ namespace WindowsFormClient
                 return;
             }
 
-            if (textBoxDuration.Text.Length == 0 ||
-                int.TryParse(textBoxDuration.Text, out duration) == false)
+            if(radioButtonInfinite.Checked)
             {
-                MessageBox.Show("Invalid Data");
-                this.DialogResult = System.Windows.Forms.DialogResult.None;
-                return;
+                duration = -1;
             }
+            else
+            {
+                duration = Convert.ToInt32(numericUpDownDuration.Value);
+            }
+            
+            AnimationEnabled = checkBoxAnimation.Checked;
         }
 
         private void buttonFont_Click(object sender, EventArgs e)

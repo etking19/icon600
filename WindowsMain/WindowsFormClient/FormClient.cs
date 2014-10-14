@@ -218,6 +218,11 @@ namespace WindowsFormClient
             formRunningApps = new FormRunningApps();
             formRunningApps.CloseButtonVisible = false;
             formRunningApps.DockAreas = DockAreas.DockLeft | DockAreas.DockTop | DockAreas.DockRight | DockAreas.DockBottom | DockAreas.Float;
+            formRunningApps.EvtAppBringToFront += formRunningApps_EvtAppBringToFront;
+            formRunningApps.EvtAppClose += formRunningApps_EvtAppClose;
+            formRunningApps.EvtAppMaximize += formRunningApps_EvtAppMaximize;
+            formRunningApps.EvtAppMinimize += formRunningApps_EvtAppMinimize;
+            formRunningApps.EvtAppRestore += formRunningApps_EvtAppRestore;
 
             formApps = new FormApplications();
             formApps.CloseButtonVisible = false;
@@ -233,6 +238,31 @@ namespace WindowsFormClient
             formMimic.AllowDrop = true;
             formMimic.DragEnter += formMimic_DragEnter;
             formMimic.DragDrop += formMimic_DragDrop;
+        }
+
+        void formRunningApps_EvtAppRestore(FormRunningApps form, WindowsModel model)
+        {
+            clientPresenter.SetApplicationRestore(model.WindowsId);
+        }
+
+        void formRunningApps_EvtAppMinimize(FormRunningApps form, WindowsModel model)
+        {
+            clientPresenter.SetApplicationMinimize(model.WindowsId);
+        }
+
+        void formRunningApps_EvtAppMaximize(FormRunningApps form, WindowsModel model)
+        {
+            clientPresenter.SetApplicationMaximize(model.WindowsId);
+        }
+
+        void formRunningApps_EvtAppClose(FormRunningApps form, WindowsModel model)
+        {
+            clientPresenter.SetApplicationClose(model.WindowsId);
+        }
+
+        void formRunningApps_EvtAppBringToFront(FormRunningApps form, WindowsModel model)
+        {
+            clientPresenter.SetApplicationForeground(model.WindowsId);
         }
 
         void formPreset_EvtPresetRemoved(FormPresets form, Client.Model.PresetModel item)
@@ -448,7 +478,8 @@ namespace WindowsFormClient
                     messageBox.LocationX,
                     messageBox.LocationY,
                     messageBox.Width,
-                    messageBox.Height);
+                    messageBox.Height,
+                    messageBox.AnimationEnabled);
             }
         }
 

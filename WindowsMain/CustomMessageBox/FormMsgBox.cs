@@ -64,7 +64,7 @@ namespace CustomMessageBox
 
         private void FormMsgBox_Load(object sender, EventArgs e)
         {
-            this.FormClosed += FormMsgBox_FormClosed;
+            this.FormClosing += FormMsgBox_FormClosing;
 
             // set the background color
             this.BackColor = backgroundColor;
@@ -73,7 +73,10 @@ namespace CustomMessageBox
             SizeF size = labelMessage.CreateGraphics().MeasureString(message, messageFont);
             this.Size = new Size((int)size.Width + 10, (int)size.Height + 10);
             this.TopMost = true;
+            this.Left = messageBoxRect.X;
+            this.Top = messageBoxRect.Y;
 
+            // visible message
             labelMessage.Text = message;
             labelMessage.Font = messageFont;
             labelMessage.ForeColor = messageColor;
@@ -83,6 +86,7 @@ namespace CustomMessageBox
             int locationX = offsetX;
             int locationY = offsetX;
             labelMessage.Location = new Point(locationX, locationY);
+            labelMessage.LocationChanged += labelMessage_LocationChanged;
 
             if(duration != -1)
             {
@@ -92,10 +96,53 @@ namespace CustomMessageBox
                 workerClose.RunWorkerAsync();
             }
 
-            workerFlying = new BackgroundWorker();
-            workerFlying.DoWork += workerFlying_DoWork;
-            workerFlying.WorkerSupportsCancellation = true;
-            workerFlying.RunWorkerAsync();
+            labelMessageFollow.Text = "";
+            if (animationEnabled)
+            {
+                workerFlying = new BackgroundWorker();
+                workerFlying.DoWork += workerFlying_DoWork;
+                workerFlying.WorkerSupportsCancellation = true;
+                workerFlying.RunWorkerAsync();
+            }
+            else
+            {
+                // following message
+                labelMessageFollow.Text = message;
+                labelMessageFollow.Font = messageFont;
+                labelMessageFollow.ForeColor = messageColor;
+                labelMessageFollow.BackColor = Color.Transparent;
+                labelMessageFollow.Location = new Point(labelMessage.Location.X + labelMessage.Size.Width + 5, labelMessage.Location.Y);
+            }
+        }
+
+        void labelMessage_LocationChanged(object sender, EventArgs e)
+        {
+            labelMessageFollow.Location = new Point(labelMessage.Location.X + labelMessage.Size.Width + 5, labelMessage.Location.Y);
+        }
+
+        void FormMsgBox_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                if (workerClose != null)
+                {
+                    workerClose.CancelAsync();
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
+                if (workerFlying != null)
+                {
+                    workerFlying.CancelAsync();
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
@@ -114,28 +161,6 @@ namespace CustomMessageBox
                 return;
             }
             base.WndProc(ref m);
-        }
-
-        void FormMsgBox_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            try
-            {
-                if (workerClose != null)
-                {
-                    workerClose.CancelAsync();
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            try
-            {
-                workerFlying.CancelAsync();
-            }
-            catch (Exception)
-            {
-            }
         }
 
         void workerFlying_DoWork(object sender, DoWorkEventArgs e)
@@ -177,7 +202,7 @@ namespace CustomMessageBox
             Point latestPost = new Point(currentLocation.X - 1, currentLocation.Y);
             if (latestPost.X <= (-labelMessage.Width))
             {
-                latestPost.X = this.Width;
+                latestPost.X = labelMessageFollow.Location.X;
             }
             labelMessage.Location = latestPost;
         }

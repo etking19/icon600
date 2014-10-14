@@ -66,7 +66,6 @@ namespace Windows
                         return true;
                     }
 
-
                     if (string.IsNullOrEmpty(strTitle) == false)
                     {
                         NativeMethods.Rect wndRect = new NativeMethods.Rect();

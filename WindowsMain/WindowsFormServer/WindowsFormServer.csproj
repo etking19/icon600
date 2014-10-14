@@ -205,6 +205,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomMessageBox\CustomMessageBox.csproj">
+      <Project>{8f71af73-2a13-4a8f-8992-4d33aa67b496}</Project>
+      <Name>CustomMessageBox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomWinForm\CustomControlHolder.csproj">
       <Project>{e3832688-c985-44e6-97a2-7bd33821095d}</Project>
       <Name>CustomControlHolder</Name>

@@ -61,7 +61,7 @@ namespace WindowsFormClient.Presenter
             connectionMgr.BroadcastMessage((int)CommandConst.MainCommandClient.LoginInfo, (int)CommandConst.SubCommandClient.Credential, loginCmd);
         }
 
-        public void ShowMessage(string text, Font font, Color color, Color backgroundColor, int duration, int left, int top, int width, int height)
+        public void ShowMessage(string text, Font font, Color color, Color backgroundColor, int duration, int left, int top, int width, int height, bool animation)
         {
             ClientMessageBoxCmd msgBoxCmd = new ClientMessageBoxCmd()
             {
@@ -73,7 +73,8 @@ namespace WindowsFormClient.Presenter
                 Left = left,
                 Top = top,
                 Width = width,
-                Height = height
+                Height = height,
+                AnimationEnabled = animation,
             };
 
             connectionMgr.BroadcastMessage(

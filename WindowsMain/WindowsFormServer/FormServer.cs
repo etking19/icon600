@@ -699,8 +699,9 @@ namespace WindowsFormClient
         }
         #endregion
 
-        public void AddMessageBox(string message, Font font, Color color, Color bgndColor, int duration, int left, int top, int width, int height)
+        public void AddMessageBox(string message, Font font, Color color, Color bgndColor, int duration, int left, int top, int width, int height, bool animation)
         {
+            /*
             if(this.InvokeRequired)
             {
                 this.Invoke(new DelegateAddMessageBox(AddMessageBox), message, font, color, bgndColor, duration, left, top, width, height);
@@ -715,6 +716,34 @@ namespace WindowsFormClient
             formMessage.Show(null);
             formMessage.Location = new Point(left, top);
             formMessage.BackColor = bgndColor;
+             */
+
+            string arg = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" {4} {5} {6} {7} {8} {9}", 
+                message,
+                new Session.Common.SerializableFont(font).SerializeFontAttribute,
+                System.Drawing.ColorTranslator.ToHtml(color),
+                System.Drawing.ColorTranslator.ToHtml(bgndColor),
+                duration,
+                left,
+                top,
+                width,
+                height,
+                animation);
+            ProcessStartInfo info = new ProcessStartInfo()
+            {
+                FileName = "CustomMessageBox.exe",
+                Arguments = arg
+            };
+
+            try
+            {
+                Process.Start(info);
+            }
+            catch (Exception)
+            {
+
+            }
+            
         }
 
         private void onFormClosed(object sender, FormClosedEventArgs e)

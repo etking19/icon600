@@ -31,7 +31,8 @@ namespace WindowsFormClient.Command
                 messageBoxData.Left,
                 messageBoxData.Top,
                 messageBoxData.Width,
-                messageBoxData.Height);
+                messageBoxData.Height,
+                messageBoxData.AnimationEnabled);
         }
     }
 }

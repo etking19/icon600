@@ -32,7 +32,6 @@
             this.buttonFont = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBoxDuration = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxLocationY = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,7 +39,12 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonBgnd = new System.Windows.Forms.Button();
+            this.radioButtonInfinite = new System.Windows.Forms.RadioButton();
+            this.radioButtonDuration = new System.Windows.Forms.RadioButton();
+            this.numericUpDownDuration = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxAnimation = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuration)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxMessage
@@ -72,8 +76,11 @@
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.checkBoxAnimation);
+            this.groupBox1.Controls.Add(this.numericUpDownDuration);
+            this.groupBox1.Controls.Add(this.radioButtonDuration);
+            this.groupBox1.Controls.Add(this.radioButtonInfinite);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.textBoxDuration);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textBoxLocationY);
             this.groupBox1.Controls.Add(this.label1);
@@ -82,7 +89,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(614, 123);
+            this.groupBox1.Size = new System.Drawing.Size(614, 175);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Placement";
@@ -90,26 +97,17 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 82);
+            this.label5.Location = new System.Drawing.Point(296, 43);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(93, 18);
             this.label5.TabIndex = 9;
             this.label5.Text = "Duration (s):";
             // 
-            // textBoxDuration
-            // 
-            this.textBoxDuration.Location = new System.Drawing.Point(112, 79);
-            this.textBoxDuration.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxDuration.Name = "textBoxDuration";
-            this.textBoxDuration.Size = new System.Drawing.Size(148, 26);
-            this.textBoxDuration.TabIndex = 5;
-            this.textBoxDuration.Text = "10";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(330, 43);
+            this.label2.Location = new System.Drawing.Point(12, 76);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 18);
@@ -118,7 +116,7 @@
             // 
             // textBoxLocationY
             // 
-            this.textBoxLocationY.Location = new System.Drawing.Point(430, 39);
+            this.textBoxLocationY.Location = new System.Drawing.Point(112, 73);
             this.textBoxLocationY.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLocationY.Name = "textBoxLocationY";
             this.textBoxLocationY.Size = new System.Drawing.Size(148, 26);
@@ -185,6 +183,59 @@
             this.buttonBgnd.UseVisualStyleBackColor = false;
             this.buttonBgnd.Click += new System.EventHandler(this.buttonBgnd_Click);
             // 
+            // radioButtonInfinite
+            // 
+            this.radioButtonInfinite.AutoSize = true;
+            this.radioButtonInfinite.Location = new System.Drawing.Point(399, 42);
+            this.radioButtonInfinite.Name = "radioButtonInfinite";
+            this.radioButtonInfinite.Size = new System.Drawing.Size(70, 22);
+            this.radioButtonInfinite.TabIndex = 10;
+            this.radioButtonInfinite.TabStop = true;
+            this.radioButtonInfinite.Text = "Infinite";
+            this.radioButtonInfinite.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonDuration
+            // 
+            this.radioButtonDuration.AutoSize = true;
+            this.radioButtonDuration.Location = new System.Drawing.Point(399, 78);
+            this.radioButtonDuration.Name = "radioButtonDuration";
+            this.radioButtonDuration.Size = new System.Drawing.Size(14, 13);
+            this.radioButtonDuration.TabIndex = 11;
+            this.radioButtonDuration.TabStop = true;
+            this.radioButtonDuration.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDownDuration
+            // 
+            this.numericUpDownDuration.Location = new System.Drawing.Point(419, 73);
+            this.numericUpDownDuration.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDownDuration.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownDuration.Name = "numericUpDownDuration";
+            this.numericUpDownDuration.Size = new System.Drawing.Size(128, 26);
+            this.numericUpDownDuration.TabIndex = 12;
+            this.numericUpDownDuration.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // checkBoxAnimation
+            // 
+            this.checkBoxAnimation.AutoSize = true;
+            this.checkBoxAnimation.Location = new System.Drawing.Point(15, 122);
+            this.checkBoxAnimation.Name = "checkBoxAnimation";
+            this.checkBoxAnimation.Size = new System.Drawing.Size(168, 22);
+            this.checkBoxAnimation.TabIndex = 13;
+            this.checkBoxAnimation.Text = "Flying text animation";
+            this.checkBoxAnimation.UseVisualStyleBackColor = true;
+            // 
             // FormMessageBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -205,6 +256,7 @@
             this.Load += new System.EventHandler(this.FormMessageBox_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDuration)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,7 +274,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxLocationY;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBoxDuration;
         private System.Windows.Forms.Button buttonBgnd;
+        private System.Windows.Forms.NumericUpDown numericUpDownDuration;
+        private System.Windows.Forms.RadioButton radioButtonDuration;
+        private System.Windows.Forms.RadioButton radioButtonInfinite;
+        private System.Windows.Forms.CheckBox checkBoxAnimation;
     }
 }
