@@ -441,8 +441,8 @@ namespace WindowsFormClient
 
             UInt32 actualFlags;
 
-            float relativePosX = (float)relativePt.X * 65535.0f / (float)holder.Width;
-            float relativePosY = (float)relativePt.Y * 65535.0f / (float)holder.Height;
+            float relativePosX = (float)(relativePt.X + holder.ReferenceXPos) * 65535.0f / (float)holder.Width * (float)formMimic.VisibleSize.Width / (float)formMimic.FullSize.Width;
+            float relativePosY = (float)(relativePt.Y + holder.ReferenceYPos) * 65535.0f / (float)holder.Height * (float)formMimic.VisibleSize.Height / (float)formMimic.FullSize.Height;
 
             switch(arg.wParam.ToInt32())
             {
