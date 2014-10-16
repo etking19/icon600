@@ -39,7 +39,9 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.ServiceName = "Service1";
+            this.serviceInstaller1.Description = "Auto start Vistrol WCF connection";
+            this.serviceInstaller1.DisplayName = "Vistrol Window Service";
+            this.serviceInstaller1.ServiceName = "Vistrol Window Service";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
