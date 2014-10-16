@@ -293,9 +293,32 @@ namespace WcfServiceLibrary1
         public string VncPath { get; set; }
     }
 
+    [DataContract(Name = "DBType")]
+    public enum DBTypeEnum
+    {
+        [EnumMember]
+        Group = 1,
+        [EnumMember]
+        User = 2,
+        [EnumMember]
+        Application = 3,
+        [EnumMember]
+        Preset = 4,
+        [EnumMember]
+        VisionInput = 5,
+        [EnumMember]
+        RemoteVnc = 6,
+    }
+
     public interface IServiceCallback
     {
         [OperationContract(IsOneWay = true)]
-        void OnUserDBChanged();
+        void OnUserDBAdded(DBTypeEnum dbType, int dbIndex);
+
+        [OperationContract(IsOneWay = true)]
+        void OnUserDBEditing(DBTypeEnum dbType, int dbIndex);
+
+        [OperationContract(IsOneWay = true)]
+        void OnUserDBRemoving(DBTypeEnum dbType, int dbIndex);
     }
 }

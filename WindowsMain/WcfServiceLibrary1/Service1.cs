@@ -53,14 +53,14 @@ namespace WcfServiceLibrary1
             callbackList.Add(OperationContext.Current.GetCallbackChannel<IServiceCallback>());
         }
 
-        private void NotifyUser()
+        private void NotifyUserEditing(DBTypeEnum dbType, int dbIndex)
         {
             List<IServiceCallback> removeList = new List<IServiceCallback>();
             foreach(IServiceCallback callback in callbackList)
             {
                 try
                 {
-                    callback.OnUserDBChanged();
+                    callback.OnUserDBEditing(dbType, dbIndex);
                 }
                 catch (Exception)
                 {
@@ -74,6 +74,47 @@ namespace WcfServiceLibrary1
             }
         }
 
+        private void NotifyUserAdded(DBTypeEnum dbType, int dbIndex)
+        {
+            List<IServiceCallback> removeList = new List<IServiceCallback>();
+            foreach (IServiceCallback callback in callbackList)
+            {
+                try
+                {
+                    callback.OnUserDBAdded(dbType, dbIndex);
+                }
+                catch (Exception)
+                {
+                    removeList.Add(callback);
+                }
+            }
+
+            foreach (IServiceCallback callback in removeList)
+            {
+                callbackList.Remove(callback);
+            }
+        }
+
+        private void NotifyUserRemoved(DBTypeEnum dbType, int dbIndex)
+        {
+            List<IServiceCallback> removeList = new List<IServiceCallback>();
+            foreach (IServiceCallback callback in callbackList)
+            {
+                try
+                {
+                    callback.OnUserDBEditing(dbType, dbIndex);
+                }
+                catch (Exception)
+                {
+                    removeList.Add(callback);
+                }
+            }
+
+            foreach (IServiceCallback callback in removeList)
+            {
+                callbackList.Remove(callback);
+            }
+        }
         
         public int AddUser(string name, string userName, string password, int groupId)
         {
@@ -97,6 +138,8 @@ namespace WcfServiceLibrary1
         public bool EditUser(int userId, string name, string userName, string password, int groupId)
         {
             User dbUser = new User() { id = userId, label = name, password = password, username = userName, group = groupId };
+
+            NotifyUserEditing(DBTypeEnum.User, userId);
             return DbHelper.GetInstance().UpdateData(dbUser);
         }
 
@@ -854,6 +897,7 @@ namespace WcfServiceLibrary1
                 remotePort = port
             };
 
+            NotifyUserAdded(DBTypeEnum.RemoteVnc, -1);
             return DbHelper.GetInstance().AddData(remoteVnc);
         }
 

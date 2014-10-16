@@ -8,7 +8,7 @@ using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Presenter
 {
-    class UsersPresenter
+    public class UsersPresenter
     {
         private ConnectionManager connectionMgr;
 

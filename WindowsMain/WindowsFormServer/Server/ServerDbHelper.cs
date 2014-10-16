@@ -11,20 +11,11 @@ using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Server
 {
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
-    public class CallbackHandler : IServiceCallback
-    {
-        public void OnUserDBChanged()
-        {
-            int a = 0;
-        }
-    }
-
     public class ServerDbHelper
     {
         private static ServerDbHelper sInstance = null;
-        private static DuplexChannelFactory<IService1> dupFactory;
-        private static IService1 wcfService;
+        private DuplexChannelFactory<IService1> dupFactory;
+        private IService1 wcfService;
 
         private ServerDbHelper()
         {
@@ -41,11 +32,11 @@ namespace WindowsFormClient.Server
             return sInstance;
         }
 
-        public bool Initialize()
+        public bool Initialize(IServiceCallback callbackHandler)
         {
             try
             {
-                InstanceContext instanceContext = new InstanceContext(new CallbackHandler());
+                InstanceContext instanceContext = new InstanceContext(callbackHandler);
                 EndpointAddress address = new EndpointAddress(new Uri(Properties.Settings.Default.RemoteIP));
                 
                 NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None);
@@ -55,8 +46,7 @@ namespace WindowsFormClient.Server
                 dupFactory.Open();
 
                 wcfService = dupFactory.CreateChannel();
-
-
+                wcfService.RegisterCallback();
             }
             catch (Exception)
             {
@@ -64,6 +54,11 @@ namespace WindowsFormClient.Server
             }
 
             return true;
+        }
+
+        public void Initialize(IService1 wcfService)
+        {
+            this.wcfService = wcfService;
         }
 
         public void Shutdown()

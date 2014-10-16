@@ -13,7 +13,7 @@ using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
 {
-    class GroupsPresenter
+    public class GroupsPresenter
     {
         private ConnectionManager connectionMgr;
 

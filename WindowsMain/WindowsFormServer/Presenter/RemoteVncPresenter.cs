@@ -11,13 +11,10 @@ using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Presenter
 {
-    class RemoteVncPresenter
+    public class RemoteVncPresenter
     {
-        private ConnectionManager connectionMgr;
-
-        public RemoteVncPresenter(ConnectionManager connectionMgr)
+        public RemoteVncPresenter()
         {
-            this.connectionMgr = connectionMgr;
         }
 
         public DataTable GetRemoteVncData()
@@ -46,48 +43,16 @@ namespace WindowsFormClient.Presenter
         public void AddVnc(string label, string ipAdd, int port)
         {
             Server.ServerDbHelper.GetInstance().AddRemoteVnc(label, ipAdd, port);
-
-            sendUpdateToConnectedClients();
         }
 
         public void RemoveVnc(int dataId)
         {
             Server.ServerDbHelper.GetInstance().RemoveRemoteVnc(dataId);
-
-            // notify all connected clients
-            sendUpdateToConnectedClients();
         }
 
         public void EditVnc(int dataId, string label, string ipAdd, int port)
         {
             Server.ServerDbHelper.GetInstance().EditRemoteVnc(dataId, label, ipAdd, port);
-
-            // notify all connected clients
-            sendUpdateToConnectedClients();
-        }
-
-        private void sendUpdateToConnectedClients()
-        {
-            // notify all connected clients
-            ServerVncStatus vncStatus = new ServerVncStatus();
-            List<VncEntry> vncEntries = new List<VncEntry>();
-            vncStatus.UserVncList = vncEntries;
-            foreach (RemoteVncData vncData in Server.ServerDbHelper.GetInstance().GetRemoteVncList())
-            {
-                vncEntries.Add(new VncEntry()
-                {
-                    Identifier = vncData.id,
-                    DisplayName = vncData.name,
-                    IpAddress = vncData.remoteIp,
-                    Port = vncData.remotePort,
-                });
-            }
-
-            connectionMgr.SendData(
-                (int)CommandConst.MainCommandServer.UserPriviledge,
-                (int)CommandConst.SubCommandServer.VncList,
-                vncStatus,
-                Server.ConnectedClientHelper.GetInstance().GetAllClientsSocketId());
         }
     }
 }

@@ -45,16 +45,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="FormConnect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="FormConnect.Designer.cs">
+      <DependentUpon>FormConnect.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormRemoteConfigure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRemoteConfigure.Designer.cs">
+      <DependentUpon>FormRemoteConfigure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\RemoteDirectoryHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="FormConnect.resx">
+      <DependentUpon>FormConnect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRemoteConfigure.resx">
+      <DependentUpon>FormRemoteConfigure.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -64,6 +74,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="App.config">
       <SubType>Designer</SubType>
@@ -82,10 +93,61 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomWinForm\CustomControlHolder.csproj">
+      <Project>{e3832688-c985-44e6-97a2-7bd33821095d}</Project>
+      <Name>CustomControlHolder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{6fd8ccde-eaa0-4295-922b-e59d4b62b659}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WcfServiceLibrary1\WcfServiceLibrary1.csproj">
       <Project>{c5ede427-b58c-4de4-aea9-87211d13fe40}</Project>
       <Name>WcfServiceLibrary1</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WindowsFormServer\WindowsFormServer.csproj">
+      <Project>{9e745bef-0857-48f3-b987-a77516f1d422}</Project>
+      <Name>WindowsFormServer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\app_management.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\driver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login-server.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\main.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\monitor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\server.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\start_server.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop_serve.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vistrol-logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

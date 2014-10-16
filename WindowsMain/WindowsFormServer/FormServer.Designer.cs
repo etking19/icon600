@@ -35,6 +35,8 @@
             this.tabControl = new WindowsFormClient.CustomTabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.groupBoxGeneral = new System.Windows.Forms.GroupBox();
+            this.numericUpDownCol = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownRow = new System.Windows.Forms.NumericUpDown();
             this.textBoxGeneralMax = new System.Windows.Forms.TextBox();
             this.textBoxGeneralMin = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -84,11 +86,11 @@
             this.buttonVisionEdit = new System.Windows.Forms.Button();
             this.buttonVisionAdd = new System.Windows.Forms.Button();
             this.dataGridVisionInput = new System.Windows.Forms.DataGridView();
-            this.numericUpDownRow = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownCol = new System.Windows.Forms.NumericUpDown();
             this.tabControl.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.groupBoxGeneral.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCol)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRow)).BeginInit();
             this.tabUsers.SuspendLayout();
             this.tabUsersUser.SuspendLayout();
             this.tabPageGroup.SuspendLayout();
@@ -104,8 +106,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRemote)).BeginInit();
             this.tabDrivers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridVisionInput)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRow)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCol)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -184,6 +184,40 @@
             this.groupBoxGeneral.Size = new System.Drawing.Size(709, 407);
             this.groupBoxGeneral.TabIndex = 16;
             this.groupBoxGeneral.TabStop = false;
+            // 
+            // numericUpDownCol
+            // 
+            this.numericUpDownCol.Location = new System.Drawing.Point(161, 207);
+            this.numericUpDownCol.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownCol.Name = "numericUpDownCol";
+            this.numericUpDownCol.Size = new System.Drawing.Size(80, 23);
+            this.numericUpDownCol.TabIndex = 11;
+            this.numericUpDownCol.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownRow
+            // 
+            this.numericUpDownRow.Location = new System.Drawing.Point(51, 207);
+            this.numericUpDownRow.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownRow.Name = "numericUpDownRow";
+            this.numericUpDownRow.Size = new System.Drawing.Size(80, 23);
+            this.numericUpDownRow.TabIndex = 10;
+            this.numericUpDownRow.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // textBoxGeneralMax
             // 
@@ -889,40 +923,6 @@
             this.dataGridVisionInput.Size = new System.Drawing.Size(720, 604);
             this.dataGridVisionInput.TabIndex = 23;
             // 
-            // numericUpDownRow
-            // 
-            this.numericUpDownRow.Location = new System.Drawing.Point(51, 207);
-            this.numericUpDownRow.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownRow.Name = "numericUpDownRow";
-            this.numericUpDownRow.Size = new System.Drawing.Size(80, 23);
-            this.numericUpDownRow.TabIndex = 10;
-            this.numericUpDownRow.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownCol
-            // 
-            this.numericUpDownCol.Location = new System.Drawing.Point(161, 207);
-            this.numericUpDownCol.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownCol.Name = "numericUpDownCol";
-            this.numericUpDownCol.Size = new System.Drawing.Size(80, 23);
-            this.numericUpDownCol.TabIndex = 11;
-            this.numericUpDownCol.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // FormServer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -930,7 +930,7 @@
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(300, 710);
+            this.MinimumSize = new System.Drawing.Size(700, 710);
             this.Name = "FormServer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Vistrol Server";
@@ -941,6 +941,8 @@
             this.tabGeneral.PerformLayout();
             this.groupBoxGeneral.ResumeLayout(false);
             this.groupBoxGeneral.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCol)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRow)).EndInit();
             this.tabUsers.ResumeLayout(false);
             this.tabUsersUser.ResumeLayout(false);
             this.tabPageGroup.ResumeLayout(false);
@@ -962,8 +964,6 @@
             this.tabDrivers.ResumeLayout(false);
             this.tabDrivers.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridVisionInput)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRow)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCol)).EndInit();
             this.ResumeLayout(false);
 
         }
