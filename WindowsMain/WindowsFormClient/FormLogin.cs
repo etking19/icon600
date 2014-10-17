@@ -25,7 +25,7 @@ namespace WindowsFormClient
             InitializeComponent();
 
             // create round edge region
-            Region = System.Drawing.Region.FromHrgn(Utils.Windows.NativeMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            //Region = System.Drawing.Region.FromHrgn(Utils.Windows.NativeMethods.CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
 
             connectionManager = new ConnectionManager();
             connectionManager.EvtConnected += connectionManager_EvtConnected;

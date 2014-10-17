@@ -12,7 +12,7 @@ using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
 {
-    class ApplicationsPresenter
+    public class ApplicationsPresenter
     {
         private ConnectionManager connectionMgr;
 

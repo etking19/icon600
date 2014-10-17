@@ -30,13 +30,11 @@ namespace WindowsFormClient
         private int desktopRow = 1;
         private int desktopColumn = 1;
 
-        private delegate void DelegateAddMessageBox(string message, Font font, Color color, Color bgndColor, int duration, int left, int top, int width, int height);
-
-        public FormServer()
+        public FormServer(ConnectionManager connectionMgr)
         {
             InitializeComponent();
 
-            this.connectionMgr = new ConnectionManager();
+            this.connectionMgr = connectionMgr;
 
             // initialize presenters
             mainPresenter = new MainPresenter();
@@ -45,7 +43,7 @@ namespace WindowsFormClient
             monitorPresenter = new MonitorsPresenter(connectionMgr);
             applicationPresenter = new ApplicationsPresenter(connectionMgr);
             connectionPresenter = new ConnectionPresenter(this, connectionMgr);
-            remoteVncPresenter = new RemoteVncPresenter(connectionMgr);
+            remoteVncPresenter = new RemoteVncPresenter();
             visionInputPresenter = new VisionInputPresenter(connectionMgr);
 
            // tabControl.ImageList = new ImageList();

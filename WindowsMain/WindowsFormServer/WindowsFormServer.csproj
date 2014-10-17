@@ -151,6 +151,7 @@
     <Compile Include="Server\ServerDbHelper.cs" />
     <Compile Include="Server\ServerVisionHelper.cs" />
     <Compile Include="Server\ThreadClientLogin.cs" />
+    <Compile Include="Server\WcfCallbackHandler.cs" />
     <EmbeddedResource Include="CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
     </EmbeddedResource>

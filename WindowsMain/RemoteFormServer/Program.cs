@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using WindowsFormClient;
 
 namespace RemoteFormServer
 {
@@ -15,7 +16,9 @@ namespace RemoteFormServer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            FormConnect formConnect = new FormConnect("username", "password");
+            Application.Run(formConnect);
         }
     }
 }

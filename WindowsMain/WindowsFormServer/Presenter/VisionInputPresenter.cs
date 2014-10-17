@@ -11,7 +11,7 @@ using WindowsFormClient.Server;
 
 namespace WindowsFormClient.Presenter
 {
-    class VisionInputPresenter
+    public class VisionInputPresenter
     {
         private ConnectionManager connectionMgr;
 

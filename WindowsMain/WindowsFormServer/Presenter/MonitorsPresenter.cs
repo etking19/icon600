@@ -11,7 +11,7 @@ using WindowsFormClient.Server.Model;
 
 namespace WindowsFormClient.Presenter
 {
-    class MonitorsPresenter
+    public class MonitorsPresenter
     {
         private ConnectionManager connectionMgr;
 

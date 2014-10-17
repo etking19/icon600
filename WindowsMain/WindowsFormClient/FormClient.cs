@@ -66,6 +66,8 @@ namespace WindowsFormClient
         private delegate void DelegateRefreshAppList(IList<Client.Model.ApplicationModel> appsList);
         private delegate void DelegateRefreshVisionInputList(List<InputAttributes> attributeList);
 
+        private delegate void DelegateMouseHookEvt(Object sender, MouseHook.MouseHookEventArgs arg);
+
         public FormClient(ConnectionManager mgr, string username, string password)
         {
             InitializeComponent();
@@ -111,7 +113,6 @@ namespace WindowsFormClient
             holder.onDelegatePosChangedEvt += holder_onDelegatePosChangedEvt;
             holder.onDelegateRestoredEvt += holder_onDelegateRestoredEvt;
             holder.onDelegateSizeChangedEvt += holder_onDelegateSizeChangedEvt;
-            holderPointer = holder.Handle;
 
             // initialize helper classes
             mouseHook = new MouseHook();
@@ -411,7 +412,6 @@ namespace WindowsFormClient
                 data.lParam.flags);
         }
 
-        private IntPtr holderPointer;
         void mouseHook_HookInvoked(object sender, MouseHook.MouseHookEventArgs arg)
         {
             if (arg.lParam.flags == 1)
@@ -420,35 +420,30 @@ namespace WindowsFormClient
                 return;
             }
 
-            int relativeX = arg.lParam.pt.x - this.Location.X - formMimic.Location.X - 10;      // 10 is offset for the control size
-            int relativeY = arg.lParam.pt.y - this.Location.Y - formMimic.Location.Y - 30;      // offset for title bar and dock panel header
-
-            NativeMethods.Point relativePt = new NativeMethods.Point() {x = arg.lParam.pt.x, y = arg.lParam.pt.y };
-
-            if (Utils.Windows.NativeMethods.ScreenToClient(holderPointer, ref relativePt))
+            if(this.InvokeRequired)
             {
-                if (relativePt.x < -2 ||
-                    relativePt.y < -2 ||
-                    relativePt.x > (holder.Bounds.Width + 2) ||
-                    relativePt.y > (holder.Bounds.Height + 2))
-                {
-                    Trace.WriteLine("not in client");
-                    return;
-                }
-            }
-            if (relativeX < -2 ||
-                relativeY < -2 ||
-                relativeX > (holder.Bounds.Width + 2) ||
-                relativeY > (holder.Bounds.Height + 2))         // 2 pixel offset to allow hidden control visible in server when mouse move
-            {
-                // not in client bound
+                this.BeginInvoke(new DelegateMouseHookEvt(mouseHook_HookInvoked), sender, arg);
                 return;
             }
 
-            float relativePosX = (float)relativeX * 65535.0f / (float)holder.Width;
-            float relativePosY = (float)relativeY * 65535.0f / (float)holder.Height;
+            Point relativePt = holder.PointToClient(new Point(arg.lParam.pt.x, arg.lParam.pt.y));
+            if(relativePt.X < -2 ||
+                relativePt.X > (holder.Size.Width+2))
+            {
+                return;
+            }
 
-            UInt32 actualFlags = InputConstants.MOUSEEVENTF_MOVE | InputConstants.MOUSEEVENTF_ABSOLUTE | InputConstants.MOUSEEVENTF_VIRTUALDESK;
+            if(relativePt.Y < -2 ||
+                relativePt.Y > (holder.Size.Height+2))
+            {
+                return;
+            }
+
+            UInt32 actualFlags;
+
+            float relativePosX = (float)(relativePt.X + holder.ReferenceXPos) * 65535.0f / (float)holder.Width * (float)formMimic.VisibleSize.Width / (float)formMimic.FullSize.Width;
+            float relativePosY = (float)(relativePt.Y + holder.ReferenceYPos) * 65535.0f / (float)holder.Height * (float)formMimic.VisibleSize.Height / (float)formMimic.FullSize.Height;
+
             switch(arg.wParam.ToInt32())
             {
                 case (Int32)InputConstants.WM_LBUTTONDOWN:
@@ -468,6 +463,7 @@ namespace WindowsFormClient
                     actualFlags = InputConstants.MOUSEEVENTF_RIGHTUP;
                     break;
                 default:
+                    actualFlags = InputConstants.MOUSEEVENTF_MOVE | InputConstants.MOUSEEVENTF_ABSOLUTE | InputConstants.MOUSEEVENTF_VIRTUALDESK;
                     break;
             }
 
