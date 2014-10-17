@@ -74,6 +74,27 @@ namespace WcfServiceLibrary1
             }
         }
 
+        private void NotifyUserEdited(DBTypeEnum dbType, int dbIndex)
+        {
+            List<IServiceCallback> removeList = new List<IServiceCallback>();
+            foreach (IServiceCallback callback in callbackList)
+            {
+                try
+                {
+                    callback.OnUserDBEdited(dbType, dbIndex);
+                }
+                catch (Exception)
+                {
+                    removeList.Add(callback);
+                }
+            }
+
+            foreach (IServiceCallback callback in removeList)
+            {
+                callbackList.Remove(callback);
+            }
+        }
+
         private void NotifyUserAdded(DBTypeEnum dbType, int dbIndex)
         {
             List<IServiceCallback> removeList = new List<IServiceCallback>();
@@ -95,6 +116,27 @@ namespace WcfServiceLibrary1
             }
         }
 
+        private void NotifyUserRemoving(DBTypeEnum dbType, int dbIndex)
+        {
+            List<IServiceCallback> removeList = new List<IServiceCallback>();
+            foreach (IServiceCallback callback in callbackList)
+            {
+                try
+                {
+                    callback.onUserDBRemoving(dbType, dbIndex);
+                }
+                catch (Exception)
+                {
+                    removeList.Add(callback);
+                }
+            }
+
+            foreach (IServiceCallback callback in removeList)
+            {
+                callbackList.Remove(callback);
+            }
+        }
+
         private void NotifyUserRemoved(DBTypeEnum dbType, int dbIndex)
         {
             List<IServiceCallback> removeList = new List<IServiceCallback>();
@@ -102,7 +144,7 @@ namespace WcfServiceLibrary1
             {
                 try
                 {
-                    callback.OnUserDBEditing(dbType, dbIndex);
+                    callback.onUserDBRemoved(dbType, dbIndex);
                 }
                 catch (Exception)
                 {
@@ -119,6 +161,7 @@ namespace WcfServiceLibrary1
         public int AddUser(string name, string userName, string password, int groupId)
         {
             User dbUser = new User() { label = name, password = password, username = userName, group = groupId };
+            int userId = -1;
             if (DbHelper.GetInstance().AddData(dbUser))
             {
                 // get the added index number
@@ -126,28 +169,38 @@ namespace WcfServiceLibrary1
                 {
                     if (data.username.CompareTo(userName) == 0)
                     {
-                        return data.id;
+                        userId = data.id;
+                        break;
                     }
                 }
             }
 
-            return -1;
+            NotifyUserAdded(DBTypeEnum.User, userId);
+            return userId;
         }
 
         
         public bool EditUser(int userId, string name, string userName, string password, int groupId)
         {
-            User dbUser = new User() { id = userId, label = name, password = password, username = userName, group = groupId };
-
             NotifyUserEditing(DBTypeEnum.User, userId);
-            return DbHelper.GetInstance().UpdateData(dbUser);
+
+            User dbUser = new User() { id = userId, label = name, password = password, username = userName, group = groupId };
+            bool result = DbHelper.GetInstance().UpdateData(dbUser);
+
+            NotifyUserEdited(DBTypeEnum.User, userId);
+            return result;
         }
 
         
         public bool RemoveUser(int userId)
         {
+            NotifyUserRemoving(DBTypeEnum.User, userId);
+
             User dbUser = new User() { id = userId };
-            return DbHelper.GetInstance().RemoveData(dbUser);
+            bool result = DbHelper.GetInstance().RemoveData(dbUser);
+
+            NotifyUserRemoved(DBTypeEnum.User, userId);
+            return result;
         }
 
         
@@ -233,12 +286,15 @@ namespace WcfServiceLibrary1
                 DbHelper.GetInstance().AddData(groupMonitor);
             }
 
+            NotifyUserAdded(DBTypeEnum.Group, groupId);
             return groupId;
         }
 
         
         public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> appIds)
         {
+            NotifyUserEditing(DBTypeEnum.Group, groupId);
+
             // modify the group info
             Group dbGroup = new Group { id = groupId, label = groupName, share_full_desktop = shareDesktop, allow_maintenance = allowMaintenace };
             bool result = DbHelper.GetInstance().UpdateData(dbGroup);
@@ -265,14 +321,20 @@ namespace WcfServiceLibrary1
                 result &= DbHelper.GetInstance().AddData(groupApps);
             }
 
+            NotifyUserEdited(DBTypeEnum.Group, groupId);
             return result;
         }
 
         
         public bool RemoveGroup(int groupId)
         {
+            NotifyUserRemoving(DBTypeEnum.Group, groupId);
+
             Group dbGroup = new Group { id = groupId };
-            return DbHelper.GetInstance().RemoveData(dbGroup);
+            bool result = DbHelper.GetInstance().RemoveData(dbGroup);
+
+            NotifyUserRemoved(DBTypeEnum.Group, groupId);
+            return result;
         }
 
         
@@ -330,23 +392,27 @@ namespace WcfServiceLibrary1
                 pos_bottom = bottom,
             };
 
+            int groupId = -1;
             if (DbHelper.GetInstance().AddData(dbApp))
             {
                 foreach (ApplicationData data in GetAllApplications())
                 {
                     if (data.name.CompareTo(appName) == 0)
                     {
-                        return data.id;
+                        groupId = data.id;
                     }
                 }
             }
 
-            return -1;
+            NotifyUserAdded(DBTypeEnum.Application, groupId);
+            return groupId;
         }
 
         
         public bool EditApplication(int appId, string appName, string exePath, string extraArguments, int left, int top, int right, int bottom)
         {
+            NotifyUserEditing(DBTypeEnum.Application, appId);
+
             Application dbApp = new Application()
             {
                 id = appId,
@@ -359,18 +425,26 @@ namespace WcfServiceLibrary1
                 pos_bottom = bottom,
             };
 
-            return DbHelper.GetInstance().UpdateData(dbApp);
+            bool result = DbHelper.GetInstance().UpdateData(dbApp);
+            NotifyUserEdited(DBTypeEnum.Application, appId);
+            
+            return result;
         }
 
         
         public bool RemoveApplication(int appId)
         {
+            NotifyUserRemoving(DBTypeEnum.Application, appId);
+
             Application dbApp = new Application()
             {
                 id = appId
             };
 
-            return DbHelper.GetInstance().RemoveData(dbApp);
+            bool result = DbHelper.GetInstance().RemoveData(dbApp);
+            NotifyUserRemoved(DBTypeEnum.Application, appId);
+
+            return result;
         }
 
         
@@ -490,22 +564,30 @@ namespace WcfServiceLibrary1
                     DbHelper.GetInstance().AddData(dbPresetInput);
                 }
             }
+
+            NotifyUserAdded(DBTypeEnum.Preset, -1);
         }
 
         
         public void RemovePreset(int presetId)
         {
+            NotifyUserRemoving(DBTypeEnum.Preset, presetId);
+
             PresetName dbPreset = new PresetName()
             {
                 preset_id = presetId,
             };
 
             DbHelper.GetInstance().RemoveData(dbPreset);
+
+            NotifyUserRemoved(DBTypeEnum.Preset, presetId);
         }
 
 
         public void EditPreset(int presetId, string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
         {
+            NotifyUserEditing(DBTypeEnum.Preset, presetId);
+
             // update the possible name change
             PresetName dbPreset = new PresetName()
             {
@@ -568,6 +650,8 @@ namespace WcfServiceLibrary1
 
                 DbHelper.GetInstance().AddData(dbPresetInput);
             }
+
+            NotifyUserEdited(DBTypeEnum.Preset, presetId);
         }
 
         
@@ -788,23 +872,33 @@ namespace WcfServiceLibrary1
                 monitor_bottom = bottom
             };
 
-            return DbHelper.GetInstance().AddData(dbMonitor);
+            bool result = DbHelper.GetInstance().AddData(dbMonitor);
+            NotifyUserAdded(DBTypeEnum.Monitor, -1);
+
+            return result;
         }
 
         
         public bool RemoveMonitor(int monitorId)
         {
+            NotifyUserRemoving(DBTypeEnum.Monitor, monitorId);
+
             Monitor dbMonitor = new Monitor()
             {
                 id = monitorId
             };
 
-            return DbHelper.GetInstance().RemoveData(dbMonitor);
+            bool result = DbHelper.GetInstance().RemoveData(dbMonitor);
+            NotifyUserRemoved(DBTypeEnum.Monitor, monitorId);
+
+            return result;
         }
 
         
         public bool EditMonitor(int monitorId, string name, int left, int top, int right, int bottom)
         {
+            NotifyUserEditing(DBTypeEnum.Monitor, monitorId);
+
             Monitor dbMonitor = new Monitor()
             {
                 id = monitorId,
@@ -815,7 +909,10 @@ namespace WcfServiceLibrary1
                 monitor_bottom = bottom
             };
 
-            return DbHelper.GetInstance().UpdateData(dbMonitor);
+            bool result = DbHelper.GetInstance().UpdateData(dbMonitor);
+            NotifyUserEdited(DBTypeEnum.Monitor, monitorId);
+
+            return result;
         }
 
         
@@ -897,24 +994,33 @@ namespace WcfServiceLibrary1
                 remotePort = port
             };
 
+            bool result = DbHelper.GetInstance().AddData(remoteVnc);
             NotifyUserAdded(DBTypeEnum.RemoteVnc, -1);
-            return DbHelper.GetInstance().AddData(remoteVnc);
+
+            return result;
         }
 
         
         public bool RemoveRemoteVnc(int dataId)
         {
+            NotifyUserRemoving(DBTypeEnum.RemoteVnc, dataId);
+
             RemoteVnc remoteVnc = new RemoteVnc()
             {
                 id = dataId
             };
 
-            return DbHelper.GetInstance().RemoveData(remoteVnc);
+            bool result = DbHelper.GetInstance().RemoveData(remoteVnc);
+            NotifyUserRemoved(DBTypeEnum.RemoteVnc, dataId);
+
+            return result;
         }
 
         
         public bool EditRemoteVnc(int dataId, string name, string ipAdd, int port)
         {
+            NotifyUserEditing(DBTypeEnum.RemoteVnc, dataId);
+
             RemoteVnc remoteVnc = new RemoteVnc()
             {
                 id = dataId,
@@ -923,7 +1029,11 @@ namespace WcfServiceLibrary1
                 remotePort = port
             };
 
-            return DbHelper.GetInstance().UpdateData(remoteVnc);
+            bool result = DbHelper.GetInstance().UpdateData(remoteVnc);
+
+            NotifyUserEdited(DBTypeEnum.RemoteVnc, dataId);
+
+            return result;
         }
 
         
@@ -936,23 +1046,32 @@ namespace WcfServiceLibrary1
                 OSD = osdObj,
             };
 
-            return DbHelper.GetInstance().AddData(visionInput);
+            bool result = DbHelper.GetInstance().AddData(visionInput);
+            NotifyUserAdded(DBTypeEnum.VisionInput, -1);
+
+            return result;
         }
 
         
         public bool RemoveVisionInput(int id)
         {
+            NotifyUserRemoving(DBTypeEnum.VisionInput, id);
+
             VisionInput visionInput = new VisionInput()
             {
                 Id = id,
             };
 
-            return DbHelper.GetInstance().RemoveData(visionInput);
+            bool result = DbHelper.GetInstance().RemoveData(visionInput);
+            NotifyUserRemoved(DBTypeEnum.VisionInput, id);
+            return result;
         }
 
         
         public bool EditVisionData(int id, string windowObj, string inputObj, string osdObj)
         {
+            NotifyUserEditing(DBTypeEnum.VisionInput, id);
+
             VisionInput visionInput = new VisionInput()
             {
                 Id = id,
@@ -961,7 +1080,10 @@ namespace WcfServiceLibrary1
                 OSD = osdObj,
             };
 
-            return DbHelper.GetInstance().UpdateData(visionInput);
+            bool result = DbHelper.GetInstance().UpdateData(visionInput);
+            NotifyUserEdited(DBTypeEnum.VisionInput, id);
+
+            return result;
         }
 
         

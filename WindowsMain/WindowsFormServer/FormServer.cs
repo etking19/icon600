@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using WcfServiceLibrary1;
 using WindowsFormClient.Presenter;
 using WindowsFormClient.Server;
 
@@ -30,6 +31,8 @@ namespace WindowsFormClient
         private int desktopRow = 1;
         private int desktopColumn = 1;
 
+        private delegate void updateDataDelegate(DBTypeEnum dbType);
+
         public FormServer(ConnectionManager connectionMgr)
         {
             InitializeComponent();
@@ -38,13 +41,13 @@ namespace WindowsFormClient
 
             // initialize presenters
             mainPresenter = new MainPresenter();
-            userPresenter = new UsersPresenter(connectionMgr);
-            groupPresenter = new GroupsPresenter(connectionMgr);
-            monitorPresenter = new MonitorsPresenter(connectionMgr);
-            applicationPresenter = new ApplicationsPresenter(connectionMgr);
+            userPresenter = new UsersPresenter();
+            groupPresenter = new GroupsPresenter();
+            monitorPresenter = new MonitorsPresenter();
+            applicationPresenter = new ApplicationsPresenter();
             connectionPresenter = new ConnectionPresenter(this, connectionMgr);
             remoteVncPresenter = new RemoteVncPresenter();
-            visionInputPresenter = new VisionInputPresenter(connectionMgr);
+            visionInputPresenter = new VisionInputPresenter();
 
            // tabControl.ImageList = new ImageList();
         }
@@ -353,9 +356,6 @@ namespace WindowsFormClient
             {
                 // add to database
                 userPresenter.AddUser(formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
-
-                reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
-                reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
             }
         }
 
@@ -386,9 +386,6 @@ namespace WindowsFormClient
                     }
                 }                
             }
-
-            reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
-            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
         }
 
         private void btnUsersDelete_Click(object sender, EventArgs e)
@@ -407,9 +404,6 @@ namespace WindowsFormClient
                     userPresenter.RemoveUser(userId);
                 }
             }
-
-            reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
-            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
         }
 
         #endregion
@@ -431,8 +425,6 @@ namespace WindowsFormClient
                     formGroup.AllowMaintenance, 
                     formGroup.MonitorId,
                     formGroup.GetSelectedApplicationsId());
-
-                reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
             }
         }
 
@@ -476,8 +468,6 @@ namespace WindowsFormClient
                     }
                 }
             }
-
-            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
         }
 
         private void btnGroupsDelete_Click(object sender, EventArgs e)
@@ -496,9 +486,6 @@ namespace WindowsFormClient
                     groupPresenter.RemoveGroup(groupId);
                 }
             }
-
-            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
-            reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
         }
 
         #endregion
@@ -520,8 +507,6 @@ namespace WindowsFormClient
                     fromApp.PositionTop,
                     fromApp.PositionLeft + fromApp.Width,
                     fromApp.PositionTop + fromApp.Height);
-
-                reloadDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
             }
         }
 
@@ -569,8 +554,6 @@ namespace WindowsFormClient
                     }
                 }
             }
-
-            reloadDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
         }
 
         private void btnAppDelete_Click(object sender, EventArgs e)
@@ -589,8 +572,6 @@ namespace WindowsFormClient
                     applicationPresenter.RemoveApplication(appId);
                 }
             }
-
-            reloadDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
         }
         #endregion
 
@@ -609,8 +590,6 @@ namespace WindowsFormClient
                     formMonitor.LocationY,
                     formMonitor.LocationX + formMonitor.Width,
                     formMonitor.LocationY + formMonitor.Height);
-
-                reloadDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
             }
         }
 
@@ -654,8 +633,6 @@ namespace WindowsFormClient
                     }
                 }
             }
-
-            reloadDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
         }
 
         private void btnMonitorsDelete_Click(object sender, EventArgs e)
@@ -675,8 +652,6 @@ namespace WindowsFormClient
                 }
             }
 
-            reloadDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
-            reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
         }
         #endregion
 
@@ -774,8 +749,6 @@ namespace WindowsFormClient
                     formVnc.DisplayName,
                     formVnc.RemoteIp,
                     formVnc.RemotePort);
-
-                reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
             }
         }
 
@@ -810,8 +783,6 @@ namespace WindowsFormClient
                     }
                 }
             }
-
-            reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
         }
 
         private void buttonRemoteDelete_Click(object sender, EventArgs e)
@@ -830,8 +801,6 @@ namespace WindowsFormClient
                     remoteVncPresenter.RemoveVnc(vncDataId);
                 }
             }
-
-            reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
         }
 
         private void buttonVisionAdd_Click(object sender, EventArgs e)
@@ -852,9 +821,6 @@ namespace WindowsFormClient
             {
                 // add to db
                 visionInputPresenter.AddVisionInput(visionFrm.WindowObj, visionFrm.InputObj, visionFrm.OnScreenDisplayObj);
-
-                // reload the GUI
-                reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
             }
         }
 
@@ -887,8 +853,6 @@ namespace WindowsFormClient
                     }
                 }
             }
-
-            reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
         }
 
         private void buttonVisionDelete_Click(object sender, EventArgs e)
@@ -907,8 +871,108 @@ namespace WindowsFormClient
                     visionInputPresenter.RemoveVisionInput(visionDataId);
                 }
             }
+        }
 
-            reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
+
+        public void OnGridDataUpdateRequest(WindowsFormClient.ServerCommandType command, WcfServiceLibrary1.DBTypeEnum dbType)
+        {
+            switch (command)
+            {
+                case ServerCommandType.Added:
+                    OnUserDBAdded(dbType);
+                    break;
+                case ServerCommandType.Edited:
+                    OnUserDBEdited(dbType);
+                    break;
+                case ServerCommandType.Removed:
+                    onUserDBRemoved(dbType);
+                    break;
+            }
+        }
+
+        private void OnUserDBAdded(DBTypeEnum dbType)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new updateDataDelegate(OnUserDBAdded), dbType);
+                return;
+            }
+
+            UpdateUIView(dbType);
+
+            switch (dbType)
+            {
+                case DBTypeEnum.User:
+                    reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
+                    break;
+            }
+        }
+
+        private void OnUserDBEdited(DBTypeEnum dbType)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new updateDataDelegate(OnUserDBEdited), dbType);
+                return;
+            }
+
+            UpdateUIView(dbType);
+
+            switch (dbType)
+            {
+                case DBTypeEnum.User:
+                    reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
+                    break;
+            }
+        }
+
+        private void onUserDBRemoved(DBTypeEnum dbType)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new updateDataDelegate(onUserDBRemoved), dbType);
+                return;
+            }
+
+            UpdateUIView(dbType);
+
+            switch (dbType)
+            {
+                case DBTypeEnum.User:
+                    reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
+                    break;
+                case DBTypeEnum.Group:
+                    reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
+                    break;
+                case DBTypeEnum.Monitor:
+                    reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
+                    break;
+            }
+        }
+
+        private void UpdateUIView(DBTypeEnum dbType)
+        {
+            switch (dbType)
+            {
+                case DBTypeEnum.RemoteVnc:
+                    reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
+                    break;
+                case DBTypeEnum.Application:
+                    reloadDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
+                    break;
+                case DBTypeEnum.Group:
+                    reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
+                    break;
+                case DBTypeEnum.User:
+                    reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
+                    break;
+                case DBTypeEnum.VisionInput:
+                    reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
+                    break;
+                case DBTypeEnum.Monitor:
+                    reloadDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
+                    break;
+            }
         }
     }
 }

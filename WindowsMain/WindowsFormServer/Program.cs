@@ -56,7 +56,8 @@ namespace WindowsFormClient
 
             // initialize database
             ConnectionManager connMgr = new ConnectionManager();
-            Server.ServerDbHelper.GetInstance().Initialize(new WcfCallbackHandler(connMgr));
+            formServer = new FormServer(connMgr);
+            Server.ServerDbHelper.GetInstance().Initialize(new WcfCallbackHandler(connMgr, formServer));
             
             RGBERROR error = 0;
             IntPtr hRGBDLL = IntPtr.Zero;
@@ -86,7 +87,7 @@ namespace WindowsFormClient
                 MessageBox.Show("Load Capture Card Data Failed", "Dependencies Loading", MessageBoxButtons.OK);
             }
 
-            formServer = new FormServer(connMgr);
+            
             licenceChecker.StartCheck();
             Application.Run(formServer);
 

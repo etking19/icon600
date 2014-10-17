@@ -308,6 +308,8 @@ namespace WcfServiceLibrary1
         VisionInput = 5,
         [EnumMember]
         RemoteVnc = 6,
+        [EnumMember]
+        Monitor = 7,
     }
 
     public interface IServiceCallback
@@ -319,6 +321,12 @@ namespace WcfServiceLibrary1
         void OnUserDBEditing(DBTypeEnum dbType, int dbIndex);
 
         [OperationContract(IsOneWay = true)]
-        void OnUserDBRemoving(DBTypeEnum dbType, int dbIndex);
+        void OnUserDBEdited(DBTypeEnum dbType, int dbIndex);
+
+        [OperationContract(IsOneWay = true)]
+        void onUserDBRemoving(DBTypeEnum dbType, int dbIndex);
+
+        [OperationContract(IsOneWay = true)]
+        void onUserDBRemoved(DBTypeEnum dbType, int dbIndex);
     }
 }

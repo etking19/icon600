@@ -14,11 +14,8 @@ namespace WindowsFormClient.Presenter
 {
     public class ApplicationsPresenter
     {
-        private ConnectionManager connectionMgr;
-
-        public ApplicationsPresenter(ConnectionManager connectionMgr)
+        public ApplicationsPresenter()
         {
-            this.connectionMgr = connectionMgr;
         }
 
         public DataTable GetApplicationTable()
@@ -39,25 +36,6 @@ namespace WindowsFormClient.Presenter
             return table;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="appId"></param>
-        /// <returns> int: userDBid, string: userSocketId</returns>
-        private Dictionary<int, string> getUsersSocketListByAppId(int appId)
-        {
-            Dictionary<int, string> usersSocketList = new Dictionary<int, string>();
-            foreach (ClientInfoModel clientInfo in Server.ConnectedClientHelper.GetInstance().GetAllUsers())
-            {
-                if (Server.ServerDbHelper.GetInstance().GetAppsWithUserId(clientInfo.DbUserId).Where(t => t.id == appId).Count() > 0)
-                {
-                    usersSocketList.Add(clientInfo.DbUserId, clientInfo.SocketUserId);
-                }
-            }
-
-            return usersSocketList;
-        }
-
         public void AddApplication(string appName, string exePath, string arguments, int left, int top, int right, int bottom)
         {
             Server.ServerDbHelper.GetInstance().AddApplication(appName, arguments, exePath, left, top, right, bottom);
@@ -65,35 +43,7 @@ namespace WindowsFormClient.Presenter
 
         public void RemoveApplication(int appId)
         {
-            Dictionary<int, string> userList = getUsersSocketListByAppId(appId);
-            if(Server.ServerDbHelper.GetInstance().RemoveApplication(appId))
-            {
-                foreach (KeyValuePair<int, string> dbSocketPair in userList)
-                {
-                    List<ApplicationEntry> appsEntries = new List<ApplicationEntry>();
-                    List<ApplicationData> appDataList = Server.ServerDbHelper.GetInstance().GetAppsWithUserId(dbSocketPair.Key);
-                    foreach (ApplicationData data in appDataList)
-                    {
-                        appsEntries.Add(new ApplicationEntry()
-                        {
-                            Identifier = data.id,
-                            Name = data.name
-                        });
-                    }
-
-                    // notify new application list
-                    ServerApplicationStatus appStatus = new ServerApplicationStatus()
-                    {
-                        UserApplicationList = appsEntries,
-                    };
-
-                    connectionMgr.SendData(
-                    (int)CommandConst.MainCommandServer.UserPriviledge,
-                    (int)CommandConst.SubCommandServer.ApplicationList,
-                    appStatus,
-                    new List<string>() { dbSocketPair.Value });
-                }
-            }
+            Server.ServerDbHelper.GetInstance().RemoveApplication(appId);
         }
 
         public void EditApplication(int appId, string appName, string exePath, string arguments, int left, int top, int right, int bottom)

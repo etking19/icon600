@@ -13,11 +13,8 @@ namespace WindowsFormClient.Presenter
 {
     public class MonitorsPresenter
     {
-        private ConnectionManager connectionMgr;
-
-        public MonitorsPresenter(ConnectionManager connectionMgr)
+        public MonitorsPresenter()
         {
-            this.connectionMgr = connectionMgr;
         }
 
         public DataTable GetMonitorsTable()
@@ -40,21 +37,7 @@ namespace WindowsFormClient.Presenter
         {
             Server.ServerDbHelper.GetInstance().AddMonitor(monitorName, left, top, right, bottom);
         }
-
-        private List<string> getUsersSocketIdFromMonitorId(int monitorId)
-        {
-            List<string> usersSocketList = new List<string>();
-            foreach(ClientInfoModel clientInfo in Server.ConnectedClientHelper.GetInstance().GetAllUsers())
-            {
-                if (Server.ServerDbHelper.GetInstance().GetMonitorDataByUserId(clientInfo.DbUserId).MonitorId == monitorId)
-                {
-                    usersSocketList.Add(clientInfo.SocketUserId);
-                }
-            }
-
-            return usersSocketList;
-        }
-
+        
         private List<GroupData> getGroupsFromMonitorId(int monitorId)
         {
             List<GroupData> groupsId = new List<GroupData>();
@@ -71,16 +54,10 @@ namespace WindowsFormClient.Presenter
 
         public void RemoveMonitor(int monitorId)
         {
-            List<string> usersList = getUsersSocketIdFromMonitorId(monitorId);
             List<GroupData> groupDataList = getGroupsFromMonitorId(monitorId);
 
             if(Server.ServerDbHelper.GetInstance().RemoveMonitor(monitorId))
             {
-                foreach(string userSocketId in usersList)
-                {
-                    connectionMgr.RemoveClient(userSocketId);
-                }
-
                 foreach (GroupData groupData in groupDataList)
                 {
                     Server.ServerDbHelper.GetInstance().EditGroup(groupData.id, groupData.name, true, groupData.allow_maintenance, -1, getApplicationsId(groupData.id));
@@ -101,30 +78,7 @@ namespace WindowsFormClient.Presenter
 
         public void EditMonitor(int monitorId, string monitorName, int left, int top, int right, int bottom)
         {
-            List<string> usersList = getUsersSocketIdFromMonitorId(monitorId);
-
-            if (Server.ServerDbHelper.GetInstance().EditMonitor(monitorId, monitorName, left, top, right, bottom))
-            {
-                foreach (string userSocketId in usersList)
-                {
-                    //connectionMgr.RemoveClient(userSocketId);
-
-                    ServerViewingAreaStatus viewingAreaCmd = new ServerViewingAreaStatus()
-                    {
-                        ViewingArea = new Session.Data.SubData.MonitorInfo()
-                        {
-                            LeftPos = left,
-                            TopPos = top,
-                            RightPos = right,
-                            BottomPos = bottom
-                        },
-                    };
-                    connectionMgr.SendData((int)CommandConst.MainCommandServer.UserPriviledge,
-                    (int)CommandConst.SubCommandServer.ViewingArea,
-                    viewingAreaCmd,
-                    new List<string> { userSocketId }); 
-                }
-            }
+            Server.ServerDbHelper.GetInstance().EditMonitor(monitorId, monitorName, left, top, right, bottom);
         }
     }
 }

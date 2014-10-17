@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using Utils.Windows;
 using WcfServiceLibrary1;
 
-namespace WindowsFormClient
+namespace RemoteFormServer
 {
     public partial class FormConnect : Form
     {
@@ -35,6 +35,10 @@ namespace WindowsFormClient
         private void FormLogin_Load(object sender, EventArgs e)
         {
             this.AcceptButton = buttonLogin;
+
+            // load default
+            textBoxServerIp.Text = Properties.Settings.Default.lastServerIp;
+            numericUpDownServerPort.Value = Properties.Settings.Default.lastServerPort;
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -48,6 +52,11 @@ namespace WindowsFormClient
                 MessageBox.Show("Please insert proper server IP address!");
                 return;
             }
+
+            // save the setting
+            Properties.Settings.Default.lastServerIp = ServerIp;
+            Properties.Settings.Default.lastServerPort = ServerPort;
+            Properties.Settings.Default.Save();
 
             if (mUsername.CompareTo(textBoxUsername.Text) == 0 &&
                 mPassword.CompareTo(textBoxPassword.Text) == 0)

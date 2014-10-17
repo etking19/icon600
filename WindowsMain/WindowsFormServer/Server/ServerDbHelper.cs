@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.ServiceModel;
-using System.ServiceModel.Security;
-using System.Text;
 using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Server

@@ -1,20 +1,13 @@
-﻿using Session.Connection;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Presenter
 {
     public class UsersPresenter
     {
-        private ConnectionManager connectionMgr;
-
-        public UsersPresenter(ConnectionManager connectionMgr)
+        public UsersPresenter()
         {
-            this.connectionMgr = connectionMgr;
         }
 
         public DataTable GetUsersTable()
@@ -40,37 +33,16 @@ namespace WindowsFormClient.Presenter
         public void AddUser(string displayName, string userName, string password, int groupId)
         {
             Server.ServerDbHelper.GetInstance().AddUser(displayName, userName, password, groupId);
-        }
-
-        private List<string> getSocketIdFromUserId(int dbUserId)
-        {
-            return Server.ConnectedClientHelper.GetInstance().GetAllUsers()
-                .Where(clientInfo => clientInfo.DbUserId == dbUserId)
-                .Select(t => t.SocketUserId).ToList();
-        }
+        }       
 
         public void RemoveUser(int userId)
         {
-            List<string> usersList = getSocketIdFromUserId(userId);
-            if(Server.ServerDbHelper.GetInstance().RemoveUser(userId))
-            {
-                foreach (string socketId in usersList)
-                {
-                    connectionMgr.RemoveClient(socketId);
-                }
-            }
+            Server.ServerDbHelper.GetInstance().RemoveUser(userId);
         }
 
         public void EditUser(int userId, string displayName, string userName, string password, int groupId)
         {
-            List<string> usersList = getSocketIdFromUserId(userId);
-            if (Server.ServerDbHelper.GetInstance().EditUser(userId, displayName, userName, password, groupId))
-            {
-                foreach (string socketId in usersList)
-                {
-                    connectionMgr.RemoveClient(socketId);
-                }
-            }
+            Server.ServerDbHelper.GetInstance().EditUser(userId, displayName, userName, password, groupId);
         }
 
         public Dictionary<int, string> GetGroupsList()

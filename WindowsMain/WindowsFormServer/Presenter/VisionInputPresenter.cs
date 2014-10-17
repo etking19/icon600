@@ -13,11 +13,8 @@ namespace WindowsFormClient.Presenter
 {
     public class VisionInputPresenter
     {
-        private ConnectionManager connectionMgr;
-
-        public VisionInputPresenter(ConnectionManager connectionMgr)
+        public VisionInputPresenter()
         {
-            this.connectionMgr = connectionMgr;
         }
 
         public DataTable GetVisionInputTable()
@@ -88,17 +85,11 @@ namespace WindowsFormClient.Presenter
         public void AddVisionInput(Window window, Input input, OnScreenDisplay osd)
         {
             Server.ServerVisionHelper.getInstance().AddVisionInput(window, input, osd);
-
-            // notify all connected clients
-            NotifyAllConnectedClients();
         }
 
         public void RemoveVisionInput(uint id)
         {
             Server.ServerVisionHelper.getInstance().RemoveVisionInput(id);
-
-            // notify all connected clients
-            NotifyAllConnectedClients();
         }
 
         public void EditVisionInput(uint id, Window window, Input input, OnScreenDisplay osd)
@@ -109,20 +100,6 @@ namespace WindowsFormClient.Presenter
         public uint GetNumberOfInputs()
         {
             return Server.ServerVisionHelper.getInstance().GetNumberOfInputs();
-        }
-
-        private void NotifyAllConnectedClients()
-        {
-            Session.Data.ServerInputStatus inputStatus = new Session.Data.ServerInputStatus()
-            {
-                InputAttributesList = Server.ServerVisionHelper.getInstance().GetAllVisionInputsAttributes(),
-            };
-
-            connectionMgr.SendData(
-                   (int)CommandConst.MainCommandServer.Presents,
-                   (int)CommandConst.SubCommandServer.VisionInput,
-                   inputStatus,
-                   ConnectedClientHelper.GetInstance().GetAllClientsSocketId());
         }
     }
 }

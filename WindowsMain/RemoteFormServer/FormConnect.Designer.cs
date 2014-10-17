@@ -1,4 +1,4 @@
-﻿namespace WindowsFormClient
+﻿namespace RemoteFormServer
 {
     partial class FormConnect
     {
@@ -92,7 +92,7 @@
             this.buttonLogin.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(292, 32);
-            this.buttonLogin.TabIndex = 3;
+            this.buttonLogin.TabIndex = 5;
             this.buttonLogin.Text = "Connect";
             this.buttonLogin.UseVisualStyleBackColor = false;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
@@ -116,7 +116,7 @@
             this.buttonClose.Location = new System.Drawing.Point(545, 12);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(29, 28);
-            this.buttonClose.TabIndex = 5;
+            this.buttonClose.TabIndex = 6;
             this.buttonClose.Text = "X";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
@@ -150,7 +150,7 @@
             this.textBoxServerIp.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxServerIp.Name = "textBoxServerIp";
             this.textBoxServerIp.Size = new System.Drawing.Size(184, 26);
-            this.textBoxServerIp.TabIndex = 8;
+            this.textBoxServerIp.TabIndex = 3;
             // 
             // label4
             // 
@@ -178,7 +178,7 @@
             0});
             this.numericUpDownServerPort.Name = "numericUpDownServerPort";
             this.numericUpDownServerPort.Size = new System.Drawing.Size(104, 26);
-            this.numericUpDownServerPort.TabIndex = 10;
+            this.numericUpDownServerPort.TabIndex = 4;
             this.numericUpDownServerPort.Value = new decimal(new int[] {
             5000,
             0,
