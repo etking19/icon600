@@ -322,5 +322,10 @@ namespace WindowsFormClient.Server
         {
             return wcfService.GetSystemSettingsInputCount();
         }
+
+        public IList<ApplicationData> GetRunningApplicationList()
+        {
+            return wcfService.GetRunningApplicationList();
+        }
     }
 }

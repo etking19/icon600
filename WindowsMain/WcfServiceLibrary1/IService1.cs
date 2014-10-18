@@ -145,6 +145,9 @@ namespace WcfServiceLibrary1
 
         [OperationContract]
         bool SetSystemSettingsInputCount(int count);
+
+        [OperationContract]
+        IList<ApplicationData> GetRunningApplicationList();
     }
 
     [DataContract]

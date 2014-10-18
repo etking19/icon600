@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using WcfServiceLibrary1;
 
 namespace WindowsFormClient
 {
@@ -20,6 +17,7 @@ namespace WindowsFormClient
         private int top;
         private int width;
         private int height;
+        private bool browseEnabled = true;
 
         public string DisplayName
         {
@@ -65,6 +63,18 @@ namespace WindowsFormClient
 
         public bool IsDirty { get; set; }
 
+        public bool BrowseButtonEnabled 
+        { 
+            get
+            {
+                return browseEnabled;
+            }
+            set
+            {
+                browseEnabled = value;
+            }
+        }
+
         public FormApplication(string initialName)
         {
             InitializeComponent();
@@ -90,6 +100,7 @@ namespace WindowsFormClient
             textBoxWidth.TextChanged += textBoxWidth_TextChanged;
             textBoxHeight.TextChanged += textBoxHeight_TextChanged;
 
+            buttonBrowse.Visible = BrowseButtonEnabled;
             this.IsDirty = false;
         }
 
@@ -155,7 +166,7 @@ namespace WindowsFormClient
 
             if (radioBtn.Checked)
             {
-                comboBoxWindows.DataSource = new BindingSource(Utils.Windows.WindowsHelper.GetRunningApplicationInfo(), null);
+                comboBoxWindows.DataSource = new BindingSource(Server.ServerDbHelper.GetInstance().GetRunningApplicationList(), null);
                 comboBoxWindows.DisplayMember = "name";
                 comboBoxWindows.ValueMember = "id";
             }
@@ -186,18 +197,14 @@ namespace WindowsFormClient
         {
             // load the current window's title positioning to textbox
             ComboBox cmb = (ComboBox)sender;
-             Utils.Windows.WindowsHelper.ApplicationInfo selectedWnd = (Utils.Windows.WindowsHelper.ApplicationInfo)cmb.SelectedItem;
-            foreach(Utils.Windows.WindowsHelper.ApplicationInfo appInfo in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
+            ApplicationData selectedWnd = (ApplicationData)cmb.SelectedItem;
+            ApplicationData appData = Server.ServerDbHelper.GetInstance().GetRunningApplicationList().First(data => data.id == selectedWnd.id);
+            if (appData != null)
             {
-                if (selectedWnd.id == appInfo.id)
-                {
-                    textBoxX.Text = appInfo.posX.ToString();
-                    textBoxY.Text = appInfo.posY.ToString();
-                    textBoxWidth.Text = appInfo.width.ToString();
-                    textBoxHeight.Text = appInfo.height.ToString();
-
-                    break;
-                }
+                textBoxX.Text = appData.rect.Left.ToString();
+                textBoxY.Text = appData.rect.Top.ToString();
+                textBoxWidth.Text = (appData.rect.Right - appData.rect.Left).ToString();
+                textBoxHeight.Text = (appData.rect.Bottom - appData.rect.Top).ToString();
             }
 
             this.IsDirty = true;

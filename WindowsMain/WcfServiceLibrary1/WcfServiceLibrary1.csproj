@@ -63,6 +63,10 @@
       <Project>{8972a841-d69b-4f4c-bada-30e671f3df50}</Project>
       <Name>Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{6fd8ccde-eaa0-4295-922b-e59d4b62b659}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

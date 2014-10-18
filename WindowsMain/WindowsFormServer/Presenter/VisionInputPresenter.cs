@@ -1,13 +1,7 @@
-﻿using Session;
-using Session.Connection;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
 using WindowsFormClient.RgbInput;
-using WindowsFormClient.Server;
 
 namespace WindowsFormClient.Presenter
 {
@@ -32,30 +26,22 @@ namespace WindowsFormClient.Presenter
             table.Columns.Add("Cropping Width", typeof(uint)).ReadOnly = true;
             table.Columns.Add("Cropping Height", typeof(uint)).ReadOnly = true;
 
-            foreach (Tuple<int, Window, Input, OnScreenDisplay> data in Server.ServerVisionHelper.getInstance().GetAllVisionInputs())
+            foreach (Tuple<int, string, string, string> data in Server.ServerDbHelper.GetInstance().GetAllVisionInputs())
             {
-                System.Xml.Serialization.XmlSerializer wndSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Window));
-                StringWriter wndTextWriter = new StringWriter();
-                wndSerializer.Serialize(wndTextWriter, data.Item2);
-
                 System.Xml.Serialization.XmlSerializer inputSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Input));
-                StringWriter inputTextWriter = new StringWriter();
-                inputSerializer.Serialize(inputTextWriter, data.Item3);
-
-                System.Xml.Serialization.XmlSerializer osdSerializer = new System.Xml.Serialization.XmlSerializer(typeof(OnScreenDisplay));
-                StringWriter osdTextWriter = new StringWriter();
-                osdSerializer.Serialize(osdTextWriter, data.Item4);
+                TextReader inputReader = new StringReader(data.Item3);
+                Input input = (Input)inputSerializer.Deserialize(inputReader);
 
                 table.Rows.Add(
                     data.Item1, 
-                    wndTextWriter.ToString(),
-                    inputTextWriter.ToString(),
-                    osdTextWriter.ToString(),
-                    data.Item3.InputNumber, 
-                    data.Item3.LabelName,
-                    data.Item3.InputCropping,
-                    data.Item3.InputCropWidth,
-                    data.Item3.InputCropHeight);
+                    data.Item2,
+                    data.Item3,
+                    data.Item4,
+                    input.InputNumber,
+                    input.LabelName,
+                    input.InputCropping,
+                    input.InputCropWidth,
+                    input.InputCropHeight);
             }
 
             return table;

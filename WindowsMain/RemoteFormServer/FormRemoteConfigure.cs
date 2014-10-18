@@ -293,6 +293,7 @@ namespace RemoteFormServer
         private void btnAppAdd_Click(object sender, System.EventArgs e)
         {
             FormApplication fromApp = new FormApplication(String.Empty);
+            fromApp.BrowseButtonEnabled = false;
             fromApp.Text = "Add Application";
 
             if (fromApp.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
@@ -321,6 +322,7 @@ namespace RemoteFormServer
                     string appName = (string)row.Cells[2].Value;
                     FormApplication formApp = new FormApplication(appName);
                     formApp.Text = "Edit Application";
+                    formApp.BrowseButtonEnabled = false;
 
                     formApp.DisplayName = appName;
                     formApp.ExecutablePath = (string)row.Cells[3].Value;
