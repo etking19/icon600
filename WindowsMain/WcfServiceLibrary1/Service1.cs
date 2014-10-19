@@ -1164,30 +1164,5 @@ namespace WcfServiceLibrary1
                         InputCount = count,
                     });
         }
-
-        IList<ApplicationData> IService1.GetRunningApplicationList()
-        {
-            List<ApplicationData> appDataList = new List<ApplicationData>();
-
-            foreach (Utils.Windows.WindowsHelper.ApplicationInfo appInfo in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
-            {
-                ApplicationData appData = new ApplicationData()
-                {
-                    id = appInfo.id,
-                    name = appInfo.name,
-                    rect = new WindowsRect()
-                    {
-                        Left = appInfo.posX,
-                        Top = appInfo.posY,
-                        Right = appInfo.posX + appInfo.width,
-                        Bottom = appInfo.posY + appInfo.height,
-                    }
-                };
-
-                appDataList.Add(appData);
-            }
-
-            return appDataList;
-        }
     }
 }

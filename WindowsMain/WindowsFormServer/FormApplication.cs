@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -101,6 +102,9 @@ namespace WindowsFormClient
             textBoxHeight.TextChanged += textBoxHeight_TextChanged;
 
             buttonBrowse.Visible = BrowseButtonEnabled;
+            radioButtonAuto.Visible = BrowseButtonEnabled;
+            comboBoxWindows.Visible = BrowseButtonEnabled;
+
             this.IsDirty = false;
         }
 
@@ -153,6 +157,7 @@ namespace WindowsFormClient
             this.IsDirty = true;
         }
 
+        
         private void radioButtonAuto_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radioBtn = (RadioButton)sender;
@@ -166,7 +171,8 @@ namespace WindowsFormClient
 
             if (radioBtn.Checked)
             {
-                comboBoxWindows.DataSource = new BindingSource(Server.ServerDbHelper.GetInstance().GetRunningApplicationList(), null);
+                IList<Utils.Windows.WindowsHelper.ApplicationInfo> appDataList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
+                comboBoxWindows.DataSource = new BindingSource(appDataList, null);
                 comboBoxWindows.DisplayMember = "name";
                 comboBoxWindows.ValueMember = "id";
             }
@@ -197,17 +203,24 @@ namespace WindowsFormClient
         {
             // load the current window's title positioning to textbox
             ComboBox cmb = (ComboBox)sender;
-            ApplicationData selectedWnd = (ApplicationData)cmb.SelectedItem;
-            ApplicationData appData = Server.ServerDbHelper.GetInstance().GetRunningApplicationList().First(data => data.id == selectedWnd.id);
-            if (appData != null)
-            {
-                textBoxX.Text = appData.rect.Left.ToString();
-                textBoxY.Text = appData.rect.Top.ToString();
-                textBoxWidth.Text = (appData.rect.Right - appData.rect.Left).ToString();
-                textBoxHeight.Text = (appData.rect.Bottom - appData.rect.Top).ToString();
-            }
+            Utils.Windows.WindowsHelper.ApplicationInfo selectedWnd = (Utils.Windows.WindowsHelper.ApplicationInfo)cmb.SelectedItem;
 
-            this.IsDirty = true;
+            try
+            {
+                Utils.Windows.WindowsHelper.ApplicationInfo appData = Utils.Windows.WindowsHelper.GetRunningApplicationInfo().First(data => data.id == selectedWnd.id);
+
+                textBoxX.Text = appData.posX.ToString();
+                textBoxY.Text = appData.posY.ToString();
+                textBoxWidth.Text = appData.width.ToString();
+                textBoxHeight.Text = appData.height.ToString();
+
+                this.IsDirty = true;
+            }
+            catch (Exception)
+            {
+
+            }
+            
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
