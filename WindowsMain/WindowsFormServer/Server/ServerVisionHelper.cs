@@ -37,8 +37,8 @@ namespace WindowsFormClient.Server
         public void InitializeVisionDB()
         {
             // get the installed rgb executable path
-            if (Properties.Settings.Default.VisionPath == string.Empty)
-            {
+            //if (Properties.Settings.Default.VisionPath == string.Empty)
+            //{
                 // auto search the rgb exe
                 foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "rgbxcmd.com"))
                 {
@@ -55,9 +55,9 @@ namespace WindowsFormClient.Server
                     }
                 }
 
-                Properties.Settings.Default.VisionPath = rgbExecutablePath;
-                Properties.Settings.Default.Save();
-            }
+                //Properties.Settings.Default.VisionPath = rgbExecutablePath;
+                //Properties.Settings.Default.Save();
+            //}
 
             // check if the db has data
             // if have return and do nothing, else proceed initialization
