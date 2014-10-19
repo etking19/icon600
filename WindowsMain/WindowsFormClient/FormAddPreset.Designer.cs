@@ -32,9 +32,6 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkedListBoxApp = new System.Windows.Forms.CheckedListBox();
-            this.checkedListBoxVnc = new System.Windows.Forms.CheckedListBox();
-            this.checkedListBoxInput = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // textBoxName
@@ -49,7 +46,7 @@
             // 
             this.buttonOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonOK.ForeColor = System.Drawing.Color.White;
-            this.buttonOK.Location = new System.Drawing.Point(139, 402);
+            this.buttonOK.Location = new System.Drawing.Point(142, 65);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(0);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(87, 28);
@@ -62,7 +59,7 @@
             // 
             this.buttonCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonCancel.ForeColor = System.Drawing.Color.White;
-            this.buttonCancel.Location = new System.Drawing.Point(229, 402);
+            this.buttonCancel.Location = new System.Drawing.Point(232, 65);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(87, 28);
@@ -79,45 +76,12 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Preset Name:";
             // 
-            // checkedListBoxApp
-            // 
-            this.checkedListBoxApp.BackColor = System.Drawing.SystemColors.Window;
-            this.checkedListBoxApp.FormattingEnabled = true;
-            this.checkedListBoxApp.Location = new System.Drawing.Point(17, 47);
-            this.checkedListBoxApp.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.checkedListBoxApp.Name = "checkedListBoxApp";
-            this.checkedListBoxApp.Size = new System.Drawing.Size(299, 106);
-            this.checkedListBoxApp.TabIndex = 1;
-            // 
-            // checkedListBoxVnc
-            // 
-            this.checkedListBoxVnc.BackColor = System.Drawing.SystemColors.Window;
-            this.checkedListBoxVnc.FormattingEnabled = true;
-            this.checkedListBoxVnc.Location = new System.Drawing.Point(17, 161);
-            this.checkedListBoxVnc.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.checkedListBoxVnc.Name = "checkedListBoxVnc";
-            this.checkedListBoxVnc.Size = new System.Drawing.Size(299, 106);
-            this.checkedListBoxVnc.TabIndex = 4;
-            // 
-            // checkedListBoxInput
-            // 
-            this.checkedListBoxInput.BackColor = System.Drawing.SystemColors.Window;
-            this.checkedListBoxInput.FormattingEnabled = true;
-            this.checkedListBoxInput.Location = new System.Drawing.Point(17, 275);
-            this.checkedListBoxInput.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.checkedListBoxInput.Name = "checkedListBoxInput";
-            this.checkedListBoxInput.Size = new System.Drawing.Size(299, 106);
-            this.checkedListBoxInput.TabIndex = 5;
-            // 
             // FormAddPreset
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
-            this.ClientSize = new System.Drawing.Size(331, 435);
-            this.Controls.Add(this.checkedListBoxInput);
-            this.Controls.Add(this.checkedListBoxVnc);
-            this.Controls.Add(this.checkedListBoxApp);
+            this.ClientSize = new System.Drawing.Size(331, 106);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
@@ -140,8 +104,5 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckedListBox checkedListBoxApp;
-        private System.Windows.Forms.CheckedListBox checkedListBoxVnc;
-        private System.Windows.Forms.CheckedListBox checkedListBoxInput;
     }
 }

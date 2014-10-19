@@ -34,5 +34,17 @@ namespace WindowsFormClient.Properties {
                 this["RemoteIP"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string VisionPath {
+            get {
+                return ((string)(this["VisionPath"]));
+            }
+            set {
+                this["VisionPath"] = value;
+            }
+        }
     }
 }

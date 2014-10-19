@@ -65,7 +65,7 @@ namespace WcfServiceLibrary1
         List<ApplicationData> GetAppsWithUserId(int userId);
 
         [OperationContract]
-        void AddPreset(string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds);
+        void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds);
 
         [OperationContract(IsOneWay=true)]
         void RemovePreset(int presetId);
@@ -129,7 +129,7 @@ namespace WcfServiceLibrary1
         /// </summary>
         /// <returns></returns>
         [OperationContract]
-        List<Tuple<int, string, string, string>> GetAllVisionInputs();
+        List<VisionData> GetAllVisionInputs();
 
         [OperationContract]
         bool AddVisionInput(string windowObj, string inputObj, string osdObj);
@@ -164,6 +164,28 @@ namespace WcfServiceLibrary1
 
         [DataMember]
         public int remotePort { get; set; }
+
+        [DataMember]
+        public WindowsRect rect { get; set; }
+    }
+
+    [DataContract]
+    public class VisionData
+    {
+        [DataMember]
+        public int id { get; set; }
+
+        [DataMember]
+        public string windowStr { get; set; }
+
+        [DataMember]
+        public string inputStr { get; set; }
+
+        [DataMember]
+        public string osdStr { get; set; }
+
+        [DataMember]
+        public WindowsRect rect { get; set; }
     }
 
     [DataContract]
@@ -252,7 +274,7 @@ namespace WcfServiceLibrary1
         public List<RemoteVncData> VncDataList { get; set; }
 
         [DataMember]
-        public List<Tuple<int, string, string, string>> InputDataList { get; set; }
+        public List<VisionData> InputDataList { get; set; }
     }
 
     [DataContract]

@@ -74,5 +74,114 @@ namespace WindowsFormClient.Server
         {
             return connectedClientList.Values.ToList().AsReadOnly();
         }
+
+        public void AddLaunchedApp(object identifier, int mainWinId, int dbAppIndex)
+        {
+            ClientInfoModel model = null;
+            connectedClientList.TryGetValue(identifier, out model);
+            if(model == null)
+            {
+                return;
+            }
+
+            model.LaunchedAppList.Add(mainWinId, dbAppIndex);
+        }
+
+        public void RemoveLaunchedApp(object identifier, int mainWinId)
+        {
+            ClientInfoModel model = null;
+            connectedClientList.TryGetValue(identifier, out model);
+            if (model == null)
+            {
+                return;
+            }
+
+            model.LaunchedAppList.Remove(mainWinId);
+        }
+
+        public void AddLaunchedVnc(object identifier, int mainWinId, int dbAppVnc)
+        {
+            ClientInfoModel model = null;
+            connectedClientList.TryGetValue(identifier, out model);
+            if (model == null)
+            {
+                return;
+            }
+
+            model.LaunchedVncList.Add(mainWinId, dbAppVnc);
+        }
+
+        public void RemoveLaunchedVnc(object identifier, int mainWinId)
+        {
+            ClientInfoModel model = null;
+            connectedClientList.TryGetValue(identifier, out model);
+            if (model == null)
+            {
+                return;
+            }
+
+            model.LaunchedVncList.Remove(mainWinId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <param name="processId"></param>
+        /// <param name="dbAppSource"></param>
+        public void AddLaunchedInputSource(object identifier, uint processId, int dbAppSource)
+        {
+            ClientInfoModel model = null;
+            connectedClientList.TryGetValue(identifier, out model);
+            if (model == null)
+            {
+                return;
+            }
+
+            model.LaunchedSourceList.Add(processId, dbAppSource);
+        }
+
+        public void RemoveLaunchedInputSource(object identifier, uint mainWinId)
+        {
+            ClientInfoModel model = null;
+            connectedClientList.TryGetValue(identifier, out model);
+            if (model == null)
+            {
+                return;
+            }
+
+            model.LaunchedSourceList.Remove(mainWinId);
+        }
+
+        public void UpdateLaunchedList(List<int> currentWndId)
+        {
+            foreach(ClientInfoModel model in connectedClientList.Values)
+            {
+                List<int> removedAppList = model.LaunchedAppList.Keys.Except(currentWndId).ToList();
+                foreach (int wndId in removedAppList)
+                {
+                    model.LaunchedAppList.Remove(wndId);
+                }
+
+                List<int> removedVncList = model.LaunchedVncList.Keys.Except(currentWndId).ToList();
+                foreach (int wndId in removedVncList)
+                {
+                    model.LaunchedVncList.Remove(wndId);
+                }
+            }
+        }
+
+        public void UpdateLaunchedSourceList(List<uint> currentProcessId)
+        {
+            foreach (ClientInfoModel model in connectedClientList.Values)
+            {
+                List<uint> removedSourceList = model.LaunchedSourceList.Keys.Except(currentProcessId).ToList();
+                foreach (uint processId in removedSourceList)
+                {
+                    model.LaunchedSourceList.Remove(processId);
+                }
+            }
+            
+        }
     }
 }

@@ -91,6 +91,14 @@ namespace WindowsFormClient.Presenter
                 return;
             }
 
+            // pass to connection connected info to remove all removed windows
+            var wndIds = wndAttributes.Select(p => p.id);
+            ConnectedClientHelper.GetInstance().UpdateLaunchedList(wndIds.ToList());
+
+            // TODO: check closed app
+            //var processIds = wndAttributes.Select(p => p.processId);
+            //ConnectedClientHelper.GetInstance().UpdateLaunchedSourceList(processIds.ToList());
+
             ServerWindowsPos windowsPos = new ServerWindowsPos();
 
             List<WndPos> windowList = new List<WndPos>();
@@ -106,7 +114,8 @@ namespace WindowsFormClient.Presenter
                     width = attribute.width,
                     height = attribute.height,
                     style = attribute.style,
-                    ZOrder = zOrderCounter
+                    ZOrder = zOrderCounter,
+                    ProcessId = attribute.processId,
                 };
 
                 windowList.Add(wndPos);
@@ -226,12 +235,12 @@ namespace WindowsFormClient.Presenter
                 // get all vision inputs
                 List<InputAttributes> allInputList = Server.ServerVisionHelper.getInstance().GetAllVisionInputsAttributes();
                 List<InputAttributes> inputEntries = new List<InputAttributes>();
-                foreach (Tuple<int, string, string, string> inputData in presetData.InputDataList)
+                foreach (VisionData inputData in presetData.InputDataList)
                 {
                     inputEntries.Add(new InputAttributes()
                     {
-                        InputId = inputData.Item1,
-                        DisplayName = allInputList.First(inputAtt => inputAtt.InputId == inputData.Item1).DisplayName,
+                        InputId = inputData.id,
+                        DisplayName = allInputList.First(inputAtt => inputAtt.InputId == inputData.id).DisplayName,
                     });
                 }
 

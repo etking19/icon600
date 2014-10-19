@@ -19,6 +19,8 @@ namespace Utils.Windows
             public int height { get; set; }
 
             public int style { get; set; }
+
+            public uint processId { get; set; }
         }
 
         public struct MonitorInfo
@@ -50,8 +52,11 @@ namespace Utils.Windows
                     NativeMethods.Rect wndRect = new NativeMethods.Rect();
                     NativeMethods.GetWindowRect(hWnd, ref wndRect);
 
+                    uint processId;
+                    NativeMethods.GetWindowThreadProcessId(hWnd, out processId);
+
                     int style = NativeMethods.GetWindowLong(hWnd, Constant.GWL_STYLE);
-                    collection.Add(new ApplicationInfo { id = hWnd.ToInt32(), name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
+                    collection.Add(new ApplicationInfo { id = hWnd.ToInt32(), processId=processId, name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
                 }
                 return true;
             };

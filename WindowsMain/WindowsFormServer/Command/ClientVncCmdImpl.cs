@@ -31,16 +31,19 @@ namespace WindowsFormClient.Command
             switch (data.CommandId)
             {
                 case ClientVncCmd.ECommandId.Start:
-                    StartVnc(data.UserVncData);
+                    StartVnc(userId, data.UserVncData);
                     break;
                 default:
                     break;
             }
         }
 
-        private void StartVnc(VncEntry data)
+        private void StartVnc(string userId, VncEntry data)
         {
-            vncClientImpl.StartClient(data.IpAddress, data.Port);
+            int moduleId = vncClientImpl.StartClient(data.IpAddress, data.Port);
+
+            // save to user list
+            Server.ConnectedClientHelper.GetInstance().AddLaunchedVnc(userId, moduleId, data.Identifier);
         }
     }
 }

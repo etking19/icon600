@@ -27,6 +27,8 @@ namespace Windows
             public int height { get; set; }
 
             public int style { get; set; }
+
+            public uint processId { get; set; }
         }
 
         ~WindowsAppMgr()

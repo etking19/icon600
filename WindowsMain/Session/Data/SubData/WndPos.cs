@@ -18,5 +18,6 @@ namespace Session.Data.SubData
         public Int32 style { get; set; }
 
         public int ZOrder { get; set; }
+        public uint ProcessId { get; set; }
     }
 }

@@ -287,16 +287,11 @@ namespace WindowsFormClient
         {
             // add a preset
             FormAddPreset addPreset = new FormAddPreset();
-            addPreset.SetAppList(Settings.ApplicationSettings.GetInstance().ApplicationList);
-            addPreset.SetVncList(Settings.ApplicationSettings.GetInstance().VncList);
-            addPreset.SetInputList(Settings.ApplicationSettings.GetInstance().InputList);
+            addPreset.Text = "Add Preset";
 
             if (addPreset.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                clientPresenter.AddPreset(addPreset.PresetName, 
-                    addPreset.GetSelectedAppList(), 
-                    addPreset.GetSelectedVncList(), 
-                    addPreset.GetSelectedInputList());
+                clientPresenter.AddPreset(addPreset.PresetName);
             }
         }
 
@@ -629,6 +624,8 @@ namespace WindowsFormClient
             bool refreshAppList = false;
             foreach (Client.Model.WindowsModel windows in addedQuery)
             {
+                Trace.WriteLine("Added window processId: " + windows.ProcessId + ":" + windows.DisplayName);
+
                 refreshAppList |= true;
                 AddWindow(windows);
             }

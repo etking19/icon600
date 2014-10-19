@@ -37,7 +37,8 @@ namespace WindowsFormClient.Command
                     Width = wndPos.width,
                     Height = wndPos.height,
                     Style = wndPos.style,
-                    ZOrder = wndPos.ZOrder
+                    ZOrder = wndPos.ZOrder,
+                    ProcessId = wndPos.ProcessId,
                 };
 
                 wndsModelList.Add(model);

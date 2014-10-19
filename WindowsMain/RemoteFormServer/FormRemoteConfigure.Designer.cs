@@ -345,7 +345,7 @@ namespace RemoteFormServer
             this.tabApplications.Location = new System.Drawing.Point(104, 4);
             this.tabApplications.Margin = new System.Windows.Forms.Padding(0);
             this.tabApplications.Name = "tabApplications";
-            this.tabApplications.Size = new System.Drawing.Size(726, 664);
+            this.tabApplications.Size = new System.Drawing.Size(676, 554);
             this.tabApplications.TabIndex = 2;
             this.tabApplications.Text = "Applications";
             this.tabApplications.UseVisualStyleBackColor = true;
@@ -369,7 +369,7 @@ namespace RemoteFormServer
             this.btnAppDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.btnAppDelete.ForeColor = System.Drawing.Color.White;
             this.btnAppDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAppDelete.Location = new System.Drawing.Point(611, 11);
+            this.btnAppDelete.Location = new System.Drawing.Point(555, 9);
             this.btnAppDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btnAppDelete.Name = "btnAppDelete";
             this.btnAppDelete.Size = new System.Drawing.Size(112, 31);
@@ -384,7 +384,7 @@ namespace RemoteFormServer
             this.btnAppEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.btnAppEdit.ForeColor = System.Drawing.Color.White;
             this.btnAppEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAppEdit.Location = new System.Drawing.Point(491, 11);
+            this.btnAppEdit.Location = new System.Drawing.Point(435, 9);
             this.btnAppEdit.Margin = new System.Windows.Forms.Padding(4);
             this.btnAppEdit.Name = "btnAppEdit";
             this.btnAppEdit.Size = new System.Drawing.Size(112, 31);
@@ -399,7 +399,7 @@ namespace RemoteFormServer
             this.btnAppAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.btnAppAdd.ForeColor = System.Drawing.Color.White;
             this.btnAppAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAppAdd.Location = new System.Drawing.Point(371, 11);
+            this.btnAppAdd.Location = new System.Drawing.Point(315, 9);
             this.btnAppAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAppAdd.Name = "btnAppAdd";
             this.btnAppAdd.Size = new System.Drawing.Size(112, 31);
@@ -433,7 +433,7 @@ namespace RemoteFormServer
             this.tabMonitors.Location = new System.Drawing.Point(104, 4);
             this.tabMonitors.Margin = new System.Windows.Forms.Padding(0);
             this.tabMonitors.Name = "tabMonitors";
-            this.tabMonitors.Size = new System.Drawing.Size(726, 664);
+            this.tabMonitors.Size = new System.Drawing.Size(676, 554);
             this.tabMonitors.TabIndex = 3;
             this.tabMonitors.Text = "Monitors";
             this.tabMonitors.UseVisualStyleBackColor = true;
@@ -457,7 +457,7 @@ namespace RemoteFormServer
             this.btnMonitorsDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.btnMonitorsDelete.ForeColor = System.Drawing.Color.White;
             this.btnMonitorsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitorsDelete.Location = new System.Drawing.Point(611, 11);
+            this.btnMonitorsDelete.Location = new System.Drawing.Point(555, 9);
             this.btnMonitorsDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btnMonitorsDelete.Name = "btnMonitorsDelete";
             this.btnMonitorsDelete.Size = new System.Drawing.Size(112, 31);
@@ -472,7 +472,7 @@ namespace RemoteFormServer
             this.btnMonitorsEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.btnMonitorsEdit.ForeColor = System.Drawing.Color.White;
             this.btnMonitorsEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitorsEdit.Location = new System.Drawing.Point(491, 11);
+            this.btnMonitorsEdit.Location = new System.Drawing.Point(435, 9);
             this.btnMonitorsEdit.Margin = new System.Windows.Forms.Padding(4);
             this.btnMonitorsEdit.Name = "btnMonitorsEdit";
             this.btnMonitorsEdit.Size = new System.Drawing.Size(112, 31);
@@ -487,7 +487,7 @@ namespace RemoteFormServer
             this.btnMonitorsAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.btnMonitorsAdd.ForeColor = System.Drawing.Color.White;
             this.btnMonitorsAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnMonitorsAdd.Location = new System.Drawing.Point(371, 11);
+            this.btnMonitorsAdd.Location = new System.Drawing.Point(315, 9);
             this.btnMonitorsAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnMonitorsAdd.Name = "btnMonitorsAdd";
             this.btnMonitorsAdd.Size = new System.Drawing.Size(112, 31);
@@ -520,7 +520,7 @@ namespace RemoteFormServer
             this.tabVnc.ImageIndex = 1;
             this.tabVnc.Location = new System.Drawing.Point(104, 4);
             this.tabVnc.Name = "tabVnc";
-            this.tabVnc.Size = new System.Drawing.Size(726, 664);
+            this.tabVnc.Size = new System.Drawing.Size(676, 554);
             this.tabVnc.TabIndex = 7;
             this.tabVnc.Text = "Remote";
             this.tabVnc.UseVisualStyleBackColor = true;
@@ -544,7 +544,7 @@ namespace RemoteFormServer
             this.buttonRemoteDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonRemoteDelete.ForeColor = System.Drawing.Color.White;
             this.buttonRemoteDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRemoteDelete.Location = new System.Drawing.Point(610, 10);
+            this.buttonRemoteDelete.Location = new System.Drawing.Point(555, 9);
             this.buttonRemoteDelete.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoteDelete.Name = "buttonRemoteDelete";
             this.buttonRemoteDelete.Size = new System.Drawing.Size(112, 31);
@@ -559,7 +559,7 @@ namespace RemoteFormServer
             this.buttonRemoteEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonRemoteEdit.ForeColor = System.Drawing.Color.White;
             this.buttonRemoteEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRemoteEdit.Location = new System.Drawing.Point(490, 10);
+            this.buttonRemoteEdit.Location = new System.Drawing.Point(435, 9);
             this.buttonRemoteEdit.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoteEdit.Name = "buttonRemoteEdit";
             this.buttonRemoteEdit.Size = new System.Drawing.Size(112, 31);
@@ -574,7 +574,7 @@ namespace RemoteFormServer
             this.buttonRemoteAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonRemoteAdd.ForeColor = System.Drawing.Color.White;
             this.buttonRemoteAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRemoteAdd.Location = new System.Drawing.Point(370, 10);
+            this.buttonRemoteAdd.Location = new System.Drawing.Point(315, 9);
             this.buttonRemoteAdd.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoteAdd.Name = "buttonRemoteAdd";
             this.buttonRemoteAdd.Size = new System.Drawing.Size(112, 31);
@@ -608,7 +608,7 @@ namespace RemoteFormServer
             this.tabDrivers.Location = new System.Drawing.Point(104, 4);
             this.tabDrivers.Margin = new System.Windows.Forms.Padding(0);
             this.tabDrivers.Name = "tabDrivers";
-            this.tabDrivers.Size = new System.Drawing.Size(726, 664);
+            this.tabDrivers.Size = new System.Drawing.Size(676, 554);
             this.tabDrivers.TabIndex = 4;
             this.tabDrivers.Text = "Drivers";
             this.tabDrivers.UseVisualStyleBackColor = true;
@@ -632,7 +632,7 @@ namespace RemoteFormServer
             this.buttonVisionDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonVisionDelete.ForeColor = System.Drawing.Color.White;
             this.buttonVisionDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonVisionDelete.Location = new System.Drawing.Point(610, 10);
+            this.buttonVisionDelete.Location = new System.Drawing.Point(555, 9);
             this.buttonVisionDelete.Margin = new System.Windows.Forms.Padding(4);
             this.buttonVisionDelete.Name = "buttonVisionDelete";
             this.buttonVisionDelete.Size = new System.Drawing.Size(112, 31);
@@ -647,7 +647,7 @@ namespace RemoteFormServer
             this.buttonVisionEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonVisionEdit.ForeColor = System.Drawing.Color.White;
             this.buttonVisionEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonVisionEdit.Location = new System.Drawing.Point(490, 10);
+            this.buttonVisionEdit.Location = new System.Drawing.Point(435, 9);
             this.buttonVisionEdit.Margin = new System.Windows.Forms.Padding(4);
             this.buttonVisionEdit.Name = "buttonVisionEdit";
             this.buttonVisionEdit.Size = new System.Drawing.Size(112, 31);
@@ -662,7 +662,7 @@ namespace RemoteFormServer
             this.buttonVisionAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(169)))), ((int)(((byte)(236)))));
             this.buttonVisionAdd.ForeColor = System.Drawing.Color.White;
             this.buttonVisionAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonVisionAdd.Location = new System.Drawing.Point(370, 10);
+            this.buttonVisionAdd.Location = new System.Drawing.Point(315, 9);
             this.buttonVisionAdd.Margin = new System.Windows.Forms.Padding(4);
             this.buttonVisionAdd.Name = "buttonVisionAdd";
             this.buttonVisionAdd.Size = new System.Drawing.Size(112, 31);
@@ -691,6 +691,7 @@ namespace RemoteFormServer
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.tabControl);
             this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(700, 600);
             this.Name = "FormRemoteConfigure";

@@ -18,9 +18,7 @@ namespace WindowsFormClient.Server
     class WcfCallbackHandler : IServiceCallback
     {
         private IServer server;
-
         private ConnectionManager connectionManager;
-        private Dictionary<int, Dictionary<int, string>> appUsersList = new Dictionary<int, Dictionary<int, string>>();
 
         public WcfCallbackHandler(ConnectionManager connectionMgr, IServer server)
         {
@@ -68,6 +66,12 @@ namespace WindowsFormClient.Server
                 case DBTypeEnum.VisionInput:
                     sendVisionInputUpdate();
                     break;
+                case DBTypeEnum.Application:
+                    onApplicationEdited(dbIndex);
+                    break;
+                case DBTypeEnum.Monitor:
+                    onMonitorEdited(dbIndex);
+                    break;
             }
         }
 
@@ -75,14 +79,14 @@ namespace WindowsFormClient.Server
         {
             switch (dbType)
             {
-                case DBTypeEnum.Application:
-                    onApplicationRemoving(dbIndex);
-                    break;
                 case DBTypeEnum.Group:
                     onGroupRemoving(dbIndex);
                     break;
                 case DBTypeEnum.User:
                     removeUserConnection(dbIndex);
+                    break;
+                case DBTypeEnum.Monitor:
+                    onMonitorRemoving(dbIndex);
                     break;
             }
         }
@@ -96,15 +100,37 @@ namespace WindowsFormClient.Server
                 case DBTypeEnum.RemoteVnc:
                     sendVncUpdateToConnectedClients();
                     break;
-                case DBTypeEnum.Application:
-                    onApplicationRemoved(dbIndex);
-                    break;
-                case DBTypeEnum.Monitor:
-                    onMonitorEdited(dbIndex);
-                    break;
                 case DBTypeEnum.VisionInput:
                     sendVisionInputUpdate();
                     break;
+                case DBTypeEnum.Application:
+                    onApplicationRemoved(dbIndex);
+                    break;
+            }
+        }
+
+        private void onApplicationRemoved(int appId)
+        {
+            // TODO: should notify client with this appId only
+            IList<ClientInfoModel> userList = new List<ClientInfoModel>(Server.ConnectedClientHelper.GetInstance().GetAllUsers());
+            foreach (ClientInfoModel clientInfo in userList)
+            {
+                // notify new application list
+                ServerApplicationStatus appStatus = new ServerApplicationStatus()
+                {
+                    UserApplicationList = Server.ServerDbHelper.GetInstance().GetAppsWithUserId(clientInfo.DbUserId).Select(
+                        t => new ApplicationEntry() 
+                        { 
+                            Identifier = t.id,
+                            Name = t.name
+                        }).ToList(),
+                };
+
+                connectionManager.SendData(
+                    (int)CommandConst.MainCommandServer.UserPriviledge,
+                    (int)CommandConst.SubCommandServer.ApplicationList,
+                    appStatus,
+                    new List<string>() { clientInfo.SocketUserId });
             }
         }
 
@@ -317,23 +343,9 @@ namespace WindowsFormClient.Server
             return disconnectionUserIdList;
         }
 
-        private void onApplicationRemoving(int appId)
+        private void onApplicationEdited(int appId)
         {
             Dictionary<int, string> userList = getUsersSocketListByAppId(appId);
-            appUsersList.Add(appId, userList);
-        }
-
-        private void onApplicationRemoved(int appId)
-        {
-            Dictionary<int, string> userList;
-            appUsersList.TryGetValue(appId, out userList);
-
-            if (userList == null)
-            {
-                Trace.WriteLine("Application update failed");
-                return;
-            }
-            appUsersList.Remove(appId);
 
             foreach (KeyValuePair<int, string> dbSocketPair in userList)
             {

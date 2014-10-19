@@ -59,6 +59,9 @@ namespace WindowsFormClient.Command
                         appData.rect.Right - appData.rect.Left,
                         appData.rect.Bottom - appData.rect.Top,
                         true);
+
+                // save to user list
+                Server.ConnectedClientHelper.GetInstance().AddLaunchedApp(userId, process.MainWindowHandle.ToInt32(), appData.id);
             }
         }
     }

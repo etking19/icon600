@@ -46,9 +46,9 @@ namespace WindowsFormClient.Command
                 }
             }*/
 
-            UserData userData = Server.ServerDbHelper.GetInstance().GetAllUsers().Find(user 
-                => 
-                (user.username.CompareTo(data.Username) == 0 && 
+            UserData userData = Server.ServerDbHelper.GetInstance().GetAllUsers().Find(user
+                =>
+                (user.username.CompareTo(data.Username) == 0 &&
                 user.password.CompareTo(data.Password) == 0));
             if (userData == null)
             {
@@ -62,6 +62,9 @@ namespace WindowsFormClient.Command
                 DbUserId = userData.id,
                 SocketUserId = userId,
                 Name = userData.name,
+                LaunchedAppList = new Dictionary<int, int>(),
+                LaunchedSourceList = new Dictionary<uint, int>(),
+                LaunchedVncList = new Dictionary<int, int>(),
             };
 
             server.ClientLogin(clientModel);

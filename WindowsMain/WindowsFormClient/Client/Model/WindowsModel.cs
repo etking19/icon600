@@ -19,5 +19,7 @@ namespace WindowsFormClient.Client.Model
 
         public int Style { get; set; }
         public int ZOrder { get; set; }
+
+        public uint ProcessId { get; set; }
     }
 }

@@ -181,7 +181,7 @@ namespace WindowsFormClient.Server
         /// <param name="userId"></param>
         /// <param name="appIds"></param>
         /// <returns>number of data added</returns>
-        public void AddPreset(string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
+        public void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds)
         {
             wcfService.AddPreset(presetName, userId, appIds, vncIds, inputIds);
         }
@@ -293,7 +293,7 @@ namespace WindowsFormClient.Server
         /// string: osd
         /// </summary>
         /// <returns></returns>
-        public List<Tuple<int, string, string, string>> GetAllVisionInputs()
+        public List<VisionData> GetAllVisionInputs()
         {
             return wcfService.GetAllVisionInputs();
         }

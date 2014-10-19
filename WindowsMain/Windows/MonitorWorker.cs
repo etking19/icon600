@@ -61,7 +61,7 @@ namespace Windows
                         int style = NativeMethods.GetWindowLong(hWnd, Constant.GWL_STYLE);
                         style |= (int)Constant.WS_THICKFRAME;       // always able to resize the window
                         style |= (int)Constant.WS_CAPTION;          // always able to close the window
-                        collection.Add(new Windows.WindowsAppMgr.WndAttributes { id = hWnd.ToInt32(), name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
+                        collection.Add(new Windows.WindowsAppMgr.WndAttributes { id = hWnd.ToInt32(), processId=processId, name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
 
                         return true;
                     }
@@ -72,7 +72,7 @@ namespace Windows
                         NativeMethods.GetWindowRect(hWnd, ref wndRect);
 
                         int style = NativeMethods.GetWindowLong(hWnd, Constant.GWL_STYLE);
-                        collection.Add(new Windows.WindowsAppMgr.WndAttributes { id = hWnd.ToInt32(), name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
+                        collection.Add(new Windows.WindowsAppMgr.WndAttributes { id = hWnd.ToInt32(), processId = processId, name = strTitle, posX = wndRect.Left, posY = wndRect.Top, width = wndRect.Right - wndRect.Left, height = wndRect.Bottom - wndRect.Top, style = style });
                     }
 
                     return true;

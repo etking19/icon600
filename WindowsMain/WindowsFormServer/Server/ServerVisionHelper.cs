@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using WcfServiceLibrary1;
 using WindowsFormClient.RgbInput;
 
 namespace WindowsFormClient.Server
@@ -20,22 +21,7 @@ namespace WindowsFormClient.Server
 
         private ServerVisionHelper()
         {
-            // get the installed rgb executable path
-            // auto search the rgb exe
-            foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "rgbxcmd.com"))
-            {
-                rgbExecutablePath = matchPath;
-                break;
-            }
 
-            if (rgbExecutablePath == String.Empty)
-            {
-                foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "rgbxcmd.com"))
-                {
-                    rgbExecutablePath = matchPath;
-                    break;
-                }
-            }
         }
 
         public static ServerVisionHelper getInstance()
@@ -49,7 +35,30 @@ namespace WindowsFormClient.Server
         }
 
         public void InitializeVisionDB()
-        {          
+        {
+            // get the installed rgb executable path
+            if (Properties.Settings.Default.VisionPath == string.Empty)
+            {
+                // auto search the rgb exe
+                foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "rgbxcmd.com"))
+                {
+                    rgbExecutablePath = matchPath;
+                    break;
+                }
+
+                if (rgbExecutablePath == String.Empty)
+                {
+                    foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "rgbxcmd.com"))
+                    {
+                        rgbExecutablePath = matchPath;
+                        break;
+                    }
+                }
+
+                Properties.Settings.Default.VisionPath = rgbExecutablePath;
+                Properties.Settings.Default.Save();
+            }
+
             // check if the db has data
             // if have return and do nothing, else proceed initialization
             if (GetAllVisionInputs().Count() > 0)
@@ -145,21 +154,21 @@ namespace WindowsFormClient.Server
             List<Tuple<int, Window, Input, OnScreenDisplay>> result = new List<Tuple<int, Window, Input, OnScreenDisplay>>();
             
             // get data from database
-            List<Tuple<int, string, string, string>> visionList = ServerDbHelper.GetInstance().GetAllVisionInputs();
-            foreach (Tuple<int, string, string, string> data in visionList)
+            List<VisionData> visionList = ServerDbHelper.GetInstance().GetAllVisionInputs();
+            foreach (VisionData data in visionList)
             {
                 System.Xml.Serialization.XmlSerializer wndSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Window));
-                TextReader wndReader = new StringReader(data.Item2);
+                TextReader wndReader = new StringReader(data.windowStr);
                 
                 System.Xml.Serialization.XmlSerializer inputSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Input));
-                TextReader inputReader = new StringReader(data.Item3);
+                TextReader inputReader = new StringReader(data.inputStr);
 
                 System.Xml.Serialization.XmlSerializer osdSerializer = new System.Xml.Serialization.XmlSerializer(typeof(OnScreenDisplay));
-                TextReader osdReader = new StringReader(data.Item4);
+                TextReader osdReader = new StringReader(data.osdStr);
 
                 Tuple<int, Window, Input, OnScreenDisplay> resultData = new Tuple<int, Window, Input, OnScreenDisplay>
                 (
-                    data.Item1,
+                    data.id,
                     (Window)wndSerializer.Deserialize(wndReader),
                     (Input)inputSerializer.Deserialize(inputReader),
                     (OnScreenDisplay)osdSerializer.Deserialize(osdReader)
@@ -227,27 +236,33 @@ namespace WindowsFormClient.Server
             return ServerDbHelper.GetInstance().RemoveVisionInput((int)id);
         }
 
-        public void LaunchVisionWindow(int dbId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbId"></param>
+        /// <returns> window main module id matched with wnd id in client mimic screen</returns>
+        public int LaunchVisionWindow(int dbId)
         {
+            int returnValue = -1;
             // get the info from db
-            var result = ServerDbHelper.GetInstance().GetAllVisionInputs().First(t => t.Item1 == dbId);
+            var result = ServerDbHelper.GetInstance().GetAllVisionInputs().First(t => t.id == dbId);
             if (result == null)
             {
                 Trace.WriteLine("unable to launch vision window with db id: " + dbId);
-                return;
+                return returnValue;
             }
 
             // create the lauching parameters
             System.Xml.Serialization.XmlSerializer wndSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Window));
-            TextReader wndReader = new StringReader(result.Item2);
+            TextReader wndReader = new StringReader(result.windowStr);
             Window window = (Window)wndSerializer.Deserialize(wndReader);
 
             System.Xml.Serialization.XmlSerializer inputSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Input));
-            TextReader inputReader = new StringReader(result.Item3);
+            TextReader inputReader = new StringReader(result.inputStr);
             Input input = (Input)inputSerializer.Deserialize(inputReader);
 
             System.Xml.Serialization.XmlSerializer osdSerializer = new System.Xml.Serialization.XmlSerializer(typeof(OnScreenDisplay));
-            TextReader osdReader = new StringReader(result.Item4);
+            TextReader osdReader = new StringReader(result.osdStr);
             OnScreenDisplay osd = (OnScreenDisplay)osdSerializer.Deserialize(osdReader);
 
             // construct the param list
@@ -259,7 +274,7 @@ namespace WindowsFormClient.Server
 
             // Use ProcessStartInfo class
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = false;
+            startInfo.CreateNoWindow = true;
             startInfo.UseShellExecute = false;
             startInfo.FileName = rgbExecutablePath;
             startInfo.WindowStyle = ProcessWindowStyle.Normal;
@@ -271,13 +286,81 @@ namespace WindowsFormClient.Server
                 // Call WaitForExit and then the using statement will close.
                 using (Process exeProcess = Process.Start(startInfo))
                 {
-                    exeProcess.WaitForExit();
+                    exeProcess.WaitForInputIdle(1000);
+                    returnValue = exeProcess.MainWindowHandle.ToInt32();
                 }
             }
             catch
             {
                 // Log error.
             }
+
+            return returnValue;
+        }
+
+        public int LaunchVisionWindow(int dbId, int left, int top, int width, int height)
+        {
+            int returnValue = -1;
+            // get the info from db
+            var result = ServerDbHelper.GetInstance().GetAllVisionInputs().First(t => t.id == dbId);
+            if (result == null)
+            {
+                Trace.WriteLine("unable to launch vision window with db id: " + dbId);
+                return returnValue;
+            }
+
+            // create the lauching parameters
+            System.Xml.Serialization.XmlSerializer wndSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Window));
+            TextReader wndReader = new StringReader(result.windowStr);
+            Window window = (Window)wndSerializer.Deserialize(wndReader);
+            
+            /* TODO: matched the latest pos
+            // modify to match
+            window.WndPostLeft = left;
+            window.WndPosTop = top;
+            window.WndPostWidth = width;
+            window.WndPosHeight = height;
+            */
+
+            System.Xml.Serialization.XmlSerializer inputSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Input));
+            TextReader inputReader = new StringReader(result.inputStr);
+            Input input = (Input)inputSerializer.Deserialize(inputReader);
+
+            System.Xml.Serialization.XmlSerializer osdSerializer = new System.Xml.Serialization.XmlSerializer(typeof(OnScreenDisplay));
+            TextReader osdReader = new StringReader(result.osdStr);
+            OnScreenDisplay osd = (OnScreenDisplay)osdSerializer.Deserialize(osdReader);
+
+            // construct the param list
+            string argumentList = string.Empty;
+            argumentList += constructWinParams(window);
+            argumentList += constructInputParams(input);
+            argumentList += constructOSDParams(osd);
+            argumentList += string.Format("-ID={0} ", getrandom.Next(1, 65535));
+
+            // Use ProcessStartInfo class
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = true;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = rgbExecutablePath;
+            startInfo.WindowStyle = ProcessWindowStyle.Normal;
+            startInfo.Arguments = argumentList;
+
+            try
+            {
+                // Start the process with the info we specified.
+                // Call WaitForExit and then the using statement will close.
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForInputIdle(1000);
+                    returnValue = exeProcess.MainWindowHandle.ToInt32();
+                }
+            }
+            catch
+            {
+                // Log error.
+            }
+
+            return returnValue;
         }
 
         private string constructOSDParams(OnScreenDisplay osd)

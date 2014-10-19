@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using WcfServiceLibrary1;
 using WindowsFormClient.RgbInput;
 
 namespace WindowsFormClient.Presenter
@@ -26,17 +27,17 @@ namespace WindowsFormClient.Presenter
             table.Columns.Add("Cropping Width", typeof(uint)).ReadOnly = true;
             table.Columns.Add("Cropping Height", typeof(uint)).ReadOnly = true;
 
-            foreach (Tuple<int, string, string, string> data in Server.ServerDbHelper.GetInstance().GetAllVisionInputs())
+            foreach (VisionData data in Server.ServerDbHelper.GetInstance().GetAllVisionInputs())
             {
                 System.Xml.Serialization.XmlSerializer inputSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Input));
-                TextReader inputReader = new StringReader(data.Item3);
+                TextReader inputReader = new StringReader(data.inputStr);
                 Input input = (Input)inputSerializer.Deserialize(inputReader);
 
                 table.Rows.Add(
-                    data.Item1, 
-                    data.Item2,
-                    data.Item3,
-                    data.Item4,
+                    data.id, 
+                    data.windowStr,
+                    data.inputStr,
+                    data.osdStr,
                     input.InputNumber,
                     input.LabelName,
                     input.InputCropping,

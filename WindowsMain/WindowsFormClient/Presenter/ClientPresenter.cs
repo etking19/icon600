@@ -142,14 +142,11 @@ namespace WindowsFormClient.Presenter
                 keyboardCmd);
         }
 
-        public void AddPreset(string name, List<ApplicationEntry> appList, List<VncEntry> vncList, List<InputAttributes> inputList)
+        public void AddPreset(string name)
         {
             PresetsEntry presetEntry = new PresetsEntry()
             {
                 Name = name,
-                ApplicationList = appList,
-                VncList = vncList,
-                InputList = inputList,
             };
 
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()

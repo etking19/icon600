@@ -22,7 +22,8 @@ namespace WindowsFormClient.Command
                 return;
             }
 
-            ServerVisionHelper.getInstance().LaunchVisionWindow(visionData.Attribute.InputId);
+            uint processId = (uint)ServerVisionHelper.getInstance().LaunchVisionWindow(visionData.Attribute.InputId);
+            Server.ConnectedClientHelper.GetInstance().AddLaunchedInputSource(userId, processId, visionData.Attribute.InputId);
         }
     }
 }

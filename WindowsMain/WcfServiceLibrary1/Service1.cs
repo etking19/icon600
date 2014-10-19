@@ -517,8 +517,8 @@ namespace WcfServiceLibrary1
             return null;
         }
 
-        
-        public void AddPreset(string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
+
+        public void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds)
         {
             PresetName dbPreset = new PresetName()
             {
@@ -531,34 +531,46 @@ namespace WcfServiceLibrary1
                 // get the preset id just added
                 int presetId = GetPresetIdByPresetNameUserId(presetName, userId);
 
-                foreach (int appId in appIds)
+                foreach (KeyValuePair<int, WindowsRect> appId in appIds)
                 {
                     PresetApplications dbPresetApp = new PresetApplications()
                     {
                         preset_name_id = presetId,
-                        preset_application_id = appId,
+                        preset_application_id = appId.Key,
+                        app_latest_pos_left = appId.Value.Left,
+                        app_latest_pos_top = appId.Value.Top,
+                        app_latest_pos_right = appId.Value.Right,
+                        app_latest_pos_bottom = appId.Value.Bottom,
                     };
 
                     DbHelper.GetInstance().AddData(dbPresetApp);
                 }
 
-                foreach (int vncId in vncIds)
+                foreach (KeyValuePair<int, WindowsRect> vncId in vncIds)
                 {
                     PresetVnc dbPresetVnc = new PresetVnc()
                     {
                         preset_name_id = presetId,
-                        preset_vnc_id = vncId,
+                        preset_vnc_id = vncId.Key,
+                        vnc_latest_pos_left = vncId.Value.Left,
+                        vnc_latest_pos_top = vncId.Value.Top,
+                        vnc_latest_pos_right = vncId.Value.Right,
+                        vnc_latest_pos_bottom = vncId.Value.Bottom,
                     };
 
                     DbHelper.GetInstance().AddData(dbPresetVnc);
                 }
 
-                foreach (int inputId in inputIds)
+                foreach (KeyValuePair<int, WindowsRect> inputId in inputIds)
                 {
                     PresetVisionInput dbPresetInput = new PresetVisionInput()
                     {
                         preset_name_id = presetId,
-                        preset_vision_id = inputId,
+                        preset_vision_id = inputId.Key,
+                        vision_latest_pos_left = inputId.Value.Left,
+                        vision_latest_pos_top = inputId.Value.Top,
+                        vision_latest_pos_right = inputId.Value.Right,
+                        vision_latest_pos_bottom = inputId.Value.Bottom,
                     };
 
                     DbHelper.GetInstance().AddData(dbPresetInput);
@@ -692,6 +704,12 @@ namespace WcfServiceLibrary1
                     // get the application data from app full list with match appId
                     ApplicationData appData = applicationList.First(ApplicationData => ApplicationData.id == appId);
 
+                    // modify the data according to latest position
+                    appData.rect.Left = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_LEFT].ToString());
+                    appData.rect.Top = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_TOP].ToString());
+                    appData.rect.Right = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_RIGHT].ToString());
+                    appData.rect.Bottom = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_BOTTOM].ToString());
+
                     // add to the app list
                     presetAppList.Add(appData);
                 }
@@ -717,12 +735,21 @@ namespace WcfServiceLibrary1
                     // get the application data from app full list with match appId
                     RemoteVncData remoteVnc = vncList.First(RemoteVncData => RemoteVncData.id == vncId);
 
+                    // modify based on latest input
+                    remoteVnc.rect = new WindowsRect()
+                    {
+                        Left = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_LEFT].ToString()),
+                        Top = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_TOP].ToString()),
+                        Right = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_RIGHT].ToString()),
+                        Bottom = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_BOTTOM].ToString()),
+                    };
+
                     // add to the app list
                     presetVncList.Add(remoteVnc);
                 }
 
                 // get all the Vision input
-                IList<Tuple<int, string, string, string>> visionList = GetAllVisionInputs();
+                IList<VisionData> visionList = GetAllVisionInputs();
 
                 // get the vnc ids releated to this preset
                 PresetVisionInput dbPresetVision = new PresetVisionInput()
@@ -732,7 +759,7 @@ namespace WcfServiceLibrary1
                 };
 
 
-                List<Tuple<int, string, string, string>> presetInputList = new List<Tuple<int, string, string, string>>();
+                List<VisionData> presetInputList = new List<VisionData>();
                 DataTable dataTablePresetInput = DbHelper.GetInstance().ReadData(dbPresetVision);
                 foreach (DataRow presetVisionDataRow in dataTablePresetInput.Rows)
                 {
@@ -740,7 +767,16 @@ namespace WcfServiceLibrary1
                     int visionId = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_ID].ToString());
 
                     // get the application data from app full list with match appId
-                    Tuple<int, string, string, string> visionVnc = visionList.First(VisionData => VisionData.Item1 == visionId);
+                    VisionData visionVnc = visionList.First(VisionData => VisionData.id == visionId);
+
+                    // get the updated rect
+                    visionVnc.rect = new WindowsRect()
+                    {
+                        Left = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_LEFT].ToString()),
+                        Top = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_TOP].ToString()),
+                        Right = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_RIGHT].ToString()),
+                        Bottom = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_BOTTOM].ToString()),
+                    };
 
                     // add to the app list
                     presetInputList.Add(visionVnc);
@@ -1086,22 +1122,22 @@ namespace WcfServiceLibrary1
             return result;
         }
 
-        
 
-        public List<Tuple<int, string, string, string>> GetAllVisionInputs()
+
+        public List<VisionData> GetAllVisionInputs()
         {
-            List<Tuple<int, string, string, string>> result = new List<Tuple<int, string, string, string>>();
+            List<VisionData> result = new List<VisionData>();
 
             DataTable dataTableVision = DbHelper.GetInstance().ReadData(new VisionInput());
             foreach (DataRow visionDataRow in dataTableVision.Rows)
             {
-                Tuple<int, string, string, string> tuple = new Tuple<int, string, string, string>
-                    (
-                        int.Parse(visionDataRow[VisionInput.VISION_TABLE_ID].ToString()),
-                        visionDataRow[VisionInput.VISION_WINDOW].ToString(),
-                        visionDataRow[VisionInput.VISION_INPUT].ToString(),
-                        visionDataRow[VisionInput.VISION_OSD].ToString()
-                    );
+                VisionData tuple = new VisionData()
+                    {
+                        id = int.Parse(visionDataRow[VisionInput.VISION_TABLE_ID].ToString()),
+                        windowStr = visionDataRow[VisionInput.VISION_WINDOW].ToString(),
+                        inputStr = visionDataRow[VisionInput.VISION_INPUT].ToString(),
+                        osdStr = visionDataRow[VisionInput.VISION_OSD].ToString()
+                    };
                 result.Add(tuple);
             }
 

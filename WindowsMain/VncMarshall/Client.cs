@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Utils.Windows;
 
 namespace VncMarshall
 {
@@ -25,7 +26,30 @@ namespace VncMarshall
                 process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
                 using(Process clientProcess = Process.Start(process))
                 {
-                    return clientProcess.Id;
+                    //int tryMax = 1000;
+                    //while ((clientProcess.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(clientProcess.MainWindowHandle))
+                    //{
+                    //    System.Threading.Thread.Sleep(10);
+                    //    clientProcess.Refresh();
+                    //    if (tryMax-- <= 0)
+                    //    {
+                    //        break;
+                    //    }
+                    //}
+                    clientProcess.WaitForInputIdle(1000);
+                    // test code
+                    string arg = string.Format("\"{0}, {1}, {2}\" \"Arial, 12pt\" \"windowtext\" \"window\" -1 0 0 0 0 False",
+                        clientProcess.MainWindowHandle.ToInt32(),
+                        clientProcess.Id,
+                        clientProcess.MainModule);
+                    ProcessStartInfo info = new ProcessStartInfo()
+                    {
+                        FileName = "CustomMessageBox.exe",
+                        Arguments = arg
+                    };
+                    Process.Start(info);
+
+                    return clientProcess.MainWindowHandle.ToInt32();
                 }
             }
             catch(Exception)
@@ -33,6 +57,21 @@ namespace VncMarshall
             }
 
             return -1;
+        }
+
+        public int StartClient(string vncServerIp, int vncServerPort, int left, int top, int width, int height)
+        {
+            int result = StartClient(vncServerIp, vncServerPort);
+
+            // set to desired location
+            NativeMethods.MoveWindow(new IntPtr(result),
+                            left,
+                            top,
+                            width,
+                            height,
+                            true);
+
+            return result;
         }
 
         public void StopClient(int processId)
