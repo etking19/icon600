@@ -23,15 +23,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VncMarshall", "VncMarshall\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "License", "License\License.csproj", "{37B5E272-8D1D-4635-9F82-FC03F69F223B}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerServerx64", "InstallerSetup\InstallerSetup.vdproj", "{03E8E961-877C-4849-A439-C0892F426876}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerServer", "InstallerSetup\InstallerSetup.vdproj", "{03E8E961-877C-4849-A439-C0892F426876}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormServer", "WindowsFormServer\WindowsFormServer.csproj", "{9E745BEF-0857-48F3-B987-A77516F1D422}"
 	ProjectSection(ProjectDependencies) = postProject
-		{B2074304-63A4-4C8B-9232-75CCF643CDBF} = {B2074304-63A4-4C8B-9232-75CCF643CDBF}
-		{8972A841-D69B-4F4C-BADA-30E671F3DF50} = {8972A841-D69B-4F4C-BADA-30E671F3DF50}
-		{37B5E272-8D1D-4635-9F82-FC03F69F223B} = {37B5E272-8D1D-4635-9F82-FC03F69F223B}
 		{88E5C082-DC7B-4E86-9710-F41961604A81} = {88E5C082-DC7B-4E86-9710-F41961604A81}
-		{8FE423A8-2A17-42D4-A0D4-CF2CC8D5EB6E} = {8FE423A8-2A17-42D4-A0D4-CF2CC8D5EB6E}
+		{3E43CBDE-B04F-4232-9F91-B701E2A9B624} = {3E43CBDE-B04F-4232-9F91-B701E2A9B624}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormClient", "WindowsFormClient\WindowsFormClient.csproj", "{DD9D2EA6-01B9-44E0-A16D-1B09DB3340FF}"
@@ -51,6 +48,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RGBEasy", "RGBEasy\RGBEasy.csproj", "{ECA0C117-A374-4DEF-A69A-203FD012EE01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomMessageBox", "CustomMessageBox\CustomMessageBox.csproj", "{8F71AF73-2A13-4A8F-8992-4D33AA67B496}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerRemoteServer", "InstallerRemoteServer\InstallerRemoteServer.vdproj", "{6277CB49-E329-4C47-BCFB-989028CE1934}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerWindowService", "InstallerWindowService\InstallerWindowService.vdproj", "{965F6840-257B-4BCC-A704-60F0FD9BA870}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -594,6 +595,42 @@ Global
 		{8F71AF73-2A13-4A8F-8992-4D33AA67B496}.Release-Server|Any CPU.Build.0 = Release|Any CPU
 		{8F71AF73-2A13-4A8F-8992-4D33AA67B496}.Release-Server|x64.ActiveCfg = Release|Any CPU
 		{8F71AF73-2A13-4A8F-8992-4D33AA67B496}.Release-Server|x86.ActiveCfg = Release|Any CPU
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug|Any CPU.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug|x64.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug|x86.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug-Client|Any CPU.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug-Client|x64.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug-Client|x86.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug-Server|Any CPU.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug-Server|x64.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Debug-Server|x86.ActiveCfg = Debug
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release|Any CPU.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release|x64.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release|x86.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release-Client|Any CPU.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release-Client|x64.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release-Client|x86.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release-Server|Any CPU.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release-Server|x64.ActiveCfg = Release
+		{6277CB49-E329-4C47-BCFB-989028CE1934}.Release-Server|x86.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug|Any CPU.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug|x64.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug|x86.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug-Client|Any CPU.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug-Client|x64.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug-Client|x86.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug-Server|Any CPU.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug-Server|x64.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Debug-Server|x86.ActiveCfg = Debug
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release|Any CPU.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release|x64.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release|x86.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Client|Any CPU.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Client|x64.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Client|x86.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Server|Any CPU.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Server|x64.ActiveCfg = Release
+		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Server|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

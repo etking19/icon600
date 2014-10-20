@@ -15,7 +15,7 @@ using WindowsFormClient.Server.Model;
 namespace WindowsFormClient.Server
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant, UseSynchronizationContext = false)]
-    class WcfCallbackHandler : IServiceCallback
+    class WcfCallbackHandler : IService1Callback
     {
         private IServer server;
         private ConnectionManager connectionManager;
@@ -26,84 +26,84 @@ namespace WindowsFormClient.Server
             this.server = server;
         }
 
-        public void OnUserDBAdded(DBTypeEnum dbType, int dbIndex)
+        public void OnUserDBAdded(DBType dbType, int dbIndex)
         {
             server.OnGridDataUpdateRequest(ServerCommandType.Added, dbType);
 
             switch(dbType)
             {
-                case DBTypeEnum.RemoteVnc:
+                case DBType.RemoteVnc:
                     sendVncUpdateToConnectedClients();
                     break;
-                case DBTypeEnum.VisionInput:
+                case DBType.VisionInput:
                     sendVisionInputUpdate();
                     break;
             }
         }
 
-        public void OnUserDBEditing(DBTypeEnum dbType, int dbIndex)
+        public void OnUserDBEditing(DBType dbType, int dbIndex)
         {
             switch (dbType)
             {
-                case DBTypeEnum.User:
+                case DBType.User:
                     removeUserConnection(dbIndex);
                     break;
             }
         }
 
-        public void OnUserDBEdited(DBTypeEnum dbType, int dbIndex)
+        public void OnUserDBEdited(DBType dbType, int dbIndex)
         {
             server.OnGridDataUpdateRequest(ServerCommandType.Edited, dbType);
 
             switch (dbType)
             {
-                case DBTypeEnum.RemoteVnc:
+                case DBType.RemoteVnc:
                     sendVncUpdateToConnectedClients();
                     break;
-                case DBTypeEnum.Group:
+                case DBType.Group:
                     onGroupEdited(dbIndex);
                     break;
-                case DBTypeEnum.VisionInput:
+                case DBType.VisionInput:
                     sendVisionInputUpdate();
                     break;
-                case DBTypeEnum.Application:
+                case DBType.Application:
                     onApplicationEdited(dbIndex);
                     break;
-                case DBTypeEnum.Monitor:
+                case DBType.Monitor:
                     onMonitorEdited(dbIndex);
                     break;
             }
         }
 
-        public void onUserDBRemoving(DBTypeEnum dbType, int dbIndex)
+        public void onUserDBRemoving(DBType dbType, int dbIndex)
         {
             switch (dbType)
             {
-                case DBTypeEnum.Group:
+                case DBType.Group:
                     onGroupRemoving(dbIndex);
                     break;
-                case DBTypeEnum.User:
+                case DBType.User:
                     removeUserConnection(dbIndex);
                     break;
-                case DBTypeEnum.Monitor:
+                case DBType.Monitor:
                     onMonitorRemoving(dbIndex);
                     break;
             }
         }
 
-        public void onUserDBRemoved(DBTypeEnum dbType, int dbIndex)
+        public void onUserDBRemoved(DBType dbType, int dbIndex)
         {
             server.OnGridDataUpdateRequest(ServerCommandType.Removed, dbType);
 
             switch (dbType)
             {
-                case DBTypeEnum.RemoteVnc:
+                case DBType.RemoteVnc:
                     sendVncUpdateToConnectedClients();
                     break;
-                case DBTypeEnum.VisionInput:
+                case DBType.VisionInput:
                     sendVisionInputUpdate();
                     break;
-                case DBTypeEnum.Application:
+                case DBType.Application:
                     onApplicationRemoved(dbIndex);
                     break;
             }
@@ -328,7 +328,7 @@ namespace WindowsFormClient.Server
         private List<string> getSocketIdentifierFromGroupId(int groupId)
         {
             // get any connected clients with this group id
-            List<UserData> userDataList = Server.ServerDbHelper.GetInstance().GetUsersInGroup(groupId);
+            List<UserData> userDataList = new List<UserData>(Server.ServerDbHelper.GetInstance().GetUsersInGroup(groupId));
 
             List<string> disconnectionUserIdList = new List<string>();
             foreach (UserData dbUserData in userDataList)
@@ -350,7 +350,7 @@ namespace WindowsFormClient.Server
             foreach (KeyValuePair<int, string> dbSocketPair in userList)
             {
                 List<ApplicationEntry> appsEntries = new List<ApplicationEntry>();
-                List<ApplicationData> appDataList = Server.ServerDbHelper.GetInstance().GetAppsWithUserId(dbSocketPair.Key);
+                List<ApplicationData> appDataList = new List<ApplicationData>(Server.ServerDbHelper.GetInstance().GetAppsWithUserId(dbSocketPair.Key));
                 foreach (ApplicationData data in appDataList)
                 {
                     appsEntries.Add(new ApplicationEntry()

@@ -1,13 +1,7 @@
 ﻿using CustomUI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using WcfServiceLibrary1;
 using WindowsFormClient;
@@ -17,7 +11,7 @@ using WindowsFormClient.Server;
 namespace RemoteFormServer
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant, UseSynchronizationContext = false)]
-    public partial class FormRemoteConfigure : Form, IServiceCallback
+    public partial class FormRemoteConfigure : Form, IService1Callback
     {
         IService1 wcfService;
 
@@ -625,9 +619,9 @@ namespace RemoteFormServer
         }
 
 
-        private delegate void updateDataDelegate(DBTypeEnum dbType, int index);
+        private delegate void updateDataDelegate(DBType dbType, int index);
 
-        public void OnUserDBAdded(DBTypeEnum dbType, int dbIndex)
+        public void OnUserDBAdded(DBType dbType, int dbIndex)
         {
             if (this.InvokeRequired)
             {
@@ -639,23 +633,23 @@ namespace RemoteFormServer
 
             switch (dbType)
             {
-                case DBTypeEnum.User:
+                case DBType.User:
                     reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
                     break;
             }
         }
 
-        public void OnUserDBEditing(DBTypeEnum dbType, int dbIndex)
+        public void OnUserDBEditing(DBType dbType, int dbIndex)
         {
             // do nothing
         }
 
-        public void onUserDBRemoving(DBTypeEnum dbType, int dbIndex)
+        public void onUserDBRemoving(DBType dbType, int dbIndex)
         {
             // do nothing
         }
 
-        public void OnUserDBEdited(DBTypeEnum dbType, int dbIndex)
+        public void OnUserDBEdited(DBType dbType, int dbIndex)
         {
             if (this.InvokeRequired)
             {
@@ -667,13 +661,13 @@ namespace RemoteFormServer
 
             switch (dbType)
             {
-                case DBTypeEnum.User:
+                case DBType.User:
                     reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
                     break;
             }
         }
 
-        public void onUserDBRemoved(DBTypeEnum dbType, int dbIndex)
+        public void onUserDBRemoved(DBType dbType, int dbIndex)
         {
             if (this.InvokeRequired)
             {
@@ -685,38 +679,38 @@ namespace RemoteFormServer
 
             switch (dbType)
             {
-                case DBTypeEnum.User:
+                case DBType.User:
                     reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
                     break;
-                case DBTypeEnum.Group:
+                case DBType.Group:
                     reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
                     break;
-                case DBTypeEnum.Monitor:
+                case DBType.Monitor:
                     reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
                     break;
             }
         }
 
-        private void UpdateUIView(DBTypeEnum dbType)
+        private void UpdateUIView(DBType dbType)
         {
             switch (dbType)
             {
-                case DBTypeEnum.RemoteVnc:
+                case DBType.RemoteVnc:
                     reloadDataGrid(dataGridViewRemote, remoteVncPresenter.GetRemoteVncData());
                     break;
-                case DBTypeEnum.Application:
+                case DBType.Application:
                     reloadDataGrid(dataGridViewApp, applicationPresenter.GetApplicationTable());
                     break;
-                case DBTypeEnum.Group:
+                case DBType.Group:
                     reloadDataGrid(dataGridViewGroup, groupPresenter.GetGroupsTable());
                     break;
-                case DBTypeEnum.User:
+                case DBType.User:
                     reloadDataGrid(dataGridViewUsers, userPresenter.GetUsersTable());
                     break;
-                case DBTypeEnum.VisionInput:
+                case DBType.VisionInput:
                     reloadDataGrid(dataGridVisionInput, visionInputPresenter.GetVisionInputTable());
                     break;
-                case DBTypeEnum.Monitor:
+                case DBType.Monitor:
                     reloadDataGrid(dataGridViewMonitors, monitorPresenter.GetMonitorsTable());
                     break;
             }

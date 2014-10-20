@@ -46,7 +46,8 @@ namespace WindowsFormClient.Command
                 }
             }*/
 
-            UserData userData = Server.ServerDbHelper.GetInstance().GetAllUsers().Find(user
+            List<UserData> userDataList = new List<UserData>(Server.ServerDbHelper.GetInstance().GetAllUsers());
+            UserData userData = userDataList.Find(user
                 =>
                 (user.username.CompareTo(data.Username) == 0 &&
                 user.password.CompareTo(data.Password) == 0));

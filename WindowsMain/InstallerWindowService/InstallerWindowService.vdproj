@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:InstallerServer"
+"ProjectName" = "8:InstallerWindowService"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -15,236 +15,104 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_07CE23B1EEB7D12F4035D72A505418A7"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_082B7996937E481C9A9F8D6607FF874A"
+        "MsmKey" = "8:_0D362B1C31FA4B3793E1FC457F5BFBC1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B85BBDC57BCD8CE040989771983205F"
-        "OwnerKey" = "8:_E5F40BE3D2D737C52E67CF4231AC8871"
+        "MsmKey" = "8:_1E1E3B0026586A9D4007B664E6AA79EB"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B85BBDC57BCD8CE040989771983205F"
-        "OwnerKey" = "8:_082B7996937E481C9A9F8D6607FF874A"
+        "MsmKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B85BBDC57BCD8CE040989771983205F"
-        "OwnerKey" = "8:_A52A9D38E4661F34F28F4C2C9F0DEFDC"
+        "MsmKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
+        "OwnerKey" = "8:_1E1E3B0026586A9D4007B664E6AA79EB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B85BBDC57BCD8CE040989771983205F"
-        "OwnerKey" = "8:_4A3F5A626587A676D453E36D074787FE"
+        "MsmKey" = "8:_52E4A1FD2878A60A77EFAD459CABC803"
+        "OwnerKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B85BBDC57BCD8CE040989771983205F"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
+        "MsmKey" = "8:_52E4A1FD2878A60A77EFAD459CABC803"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0B85BBDC57BCD8CE040989771983205F"
-        "OwnerKey" = "8:_4F53485CE323463A204937A30C8E740B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_12DC173787E44A6CBF8058347F121428"
+        "MsmKey" = "8:_74BE5253727F4EC8BD8F89DC3F08256E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1A9129C48D03C798C94C17FDC26A57D2"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4A3F5A626587A676D453E36D074787FE"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4F53485CE323463A204937A30C8E740B"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A52A9D38E4661F34F28F4C2C9F0DEFDC"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C232167D6BE3593A37AB22A9FC181C16"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C3FF81CFFB7CB494E32C1B5E5955555C"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
+        "MsmKey" = "8:_9219A91C124C47D88D80F5D08D9896A3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E10C3E2E6AF42C4A7AA2E89B8F5A4976"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
+        "MsmKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E10C3E2E6AF42C4A7AA2E89B8F5A4976"
-        "OwnerKey" = "8:_082B7996937E481C9A9F8D6607FF874A"
+        "MsmKey" = "8:_B58FBD26C69F4C86B91BD9BA609962B8"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E10C3E2E6AF42C4A7AA2E89B8F5A4976"
-        "OwnerKey" = "8:_E5F40BE3D2D737C52E67CF4231AC8871"
+        "MsmKey" = "8:_D9B7079F17BB40C1B6FB22C880DA4EB8"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_E195EA8423538BB901939D3018F3DB26"
-        "OwnerKey" = "8:_E10C3E2E6AF42C4A7AA2E89B8F5A4976"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E195EA8423538BB901939D3018F3DB26"
-        "OwnerKey" = "8:_082B7996937E481C9A9F8D6607FF874A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E195EA8423538BB901939D3018F3DB26"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E195EA8423538BB901939D3018F3DB26"
-        "OwnerKey" = "8:_E5F40BE3D2D737C52E67CF4231AC8871"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E5F40BE3D2D737C52E67CF4231AC8871"
-        "OwnerKey" = "8:_07CE23B1EEB7D12F4035D72A505418A7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E5F40BE3D2D737C52E67CF4231AC8871"
-        "OwnerKey" = "8:_082B7996937E481C9A9F8D6607FF874A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E5F40BE3D2D737C52E67CF4231AC8871"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
+        "MsmKey" = "8:_E39B9AD1A151464F90EFFF4710E8866C"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A52A9D38E4661F34F28F4C2C9F0DEFDC"
+        "OwnerKey" = "8:_52E4A1FD2878A60A77EFAD459CABC803"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_082B7996937E481C9A9F8D6607FF874A"
+        "OwnerKey" = "8:_9219A91C124C47D88D80F5D08D9896A3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4A3F5A626587A676D453E36D074787FE"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C3FF81CFFB7CB494E32C1B5E5955555C"
+        "OwnerKey" = "8:_1E1E3B0026586A9D4007B664E6AA79EB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C232167D6BE3593A37AB22A9FC181C16"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4F53485CE323463A204937A30C8E740B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_07CE23B1EEB7D12F4035D72A505418A7"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E5F40BE3D2D737C52E67CF4231AC8871"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0B85BBDC57BCD8CE040989771983205F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E10C3E2E6AF42C4A7AA2E89B8F5A4976"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E195EA8423538BB901939D3018F3DB26"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1A9129C48D03C798C94C17FDC26A57D2"
+        "OwnerKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -255,7 +123,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\VistrolServer.msi"
+        "OutputFilename" = "8:Debug\\InstallerWindowService.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -265,98 +133,13 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
-            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
-            {
-            "Enabled" = "11:TRUE"
-            "PromptEnabled" = "11:TRUE"
-            "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
-            "ComponentsUrl" = "8:"
-                "Items"
-                {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
-                    }
-                }
-            }
-        }
-        "Debug-Client"
-        {
-        "DisplayName" = "8:Debug-Client"
-        "IsDebugOnly" = "11:FALSE"
-        "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug-Client\\InstallerSetup.msi"
-        "PackageFilesAs" = "3:2"
-        "PackageFileSize" = "3:-2147483648"
-        "CabType" = "3:1"
-        "Compression" = "3:2"
-        "SignOutput" = "11:FALSE"
-        "CertificateFile" = "8:"
-        "PrivateKeyFile" = "8:"
-        "TimeStampServer" = "8:"
-        "InstallerBootstrapper" = "3:2"
-            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
-            {
-            "Enabled" = "11:TRUE"
-            "PromptEnabled" = "11:TRUE"
-            "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
-            "ComponentsUrl" = "8:"
-                "Items"
-                {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
-                    }
-                }
-            }
         }
         "Release"
         {
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\VistrolServer.msi"
-        "PackageFilesAs" = "3:2"
-        "PackageFileSize" = "3:-2147483648"
-        "CabType" = "3:1"
-        "Compression" = "3:2"
-        "SignOutput" = "11:FALSE"
-        "CertificateFile" = "8:"
-        "PrivateKeyFile" = "8:"
-        "TimeStampServer" = "8:"
-        "InstallerBootstrapper" = "3:2"
-            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
-            {
-            "Enabled" = "11:TRUE"
-            "PromptEnabled" = "11:TRUE"
-            "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
-            "ComponentsUrl" = "8:"
-                "Items"
-                {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.0"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
-                    {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
-                    }
-                }
-            }
-        }
-        "Release-Client"
-        {
-        "DisplayName" = "8:Release-Client"
-        "IsDebugOnly" = "11:FALSE"
-        "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Release-Client\\InstallerSetup.msi"
+        "OutputFilename" = "8:Release\\InstallerWindowService.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -399,7 +182,7 @@
         {
             "LaunchCondition"
             {
-                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_6F6AFFC35BA649B3AEEDA6F584F2BDC2"
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_F8BB2B17BD0245438CCF66930ACCB07A"
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
@@ -411,74 +194,12 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_07CE23B1EEB7D12F4035D72A505418A7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D362B1C31FA4B3793E1FC457F5BFBC1"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CustomMessageBox, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_07CE23B1EEB7D12F4035D72A505418A7"
-                    {
-                    "Name" = "8:CustomMessageBox.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:CustomMessageBox.exe"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\..\\Dependecies\\x86\\SetACL.exe"
+            "TargetName" = "8:SetACL.exe"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0B85BBDC57BCD8CE040989771983205F"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_0B85BBDC57BCD8CE040989771983205F"
-                    {
-                    "Name" = "8:Utils.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Utils.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_12DC173787E44A6CBF8058347F121428"
-            {
-            "SourcePath" = "8:..\\WindowsFormServer\\server.ico"
-            "TargetName" = "8:server.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -493,23 +214,23 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1A9129C48D03C798C94C17FDC26A57D2"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1E1E3B0026586A9D4007B664E6AA79EB"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WeifenLuo.WinFormsUI.Docking, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:WcfServiceLibrary1, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_1A9129C48D03C798C94C17FDC26A57D2"
+                    "_1E1E3B0026586A9D4007B664E6AA79EB"
                     {
-                    "Name" = "8:WeifenLuo.WinFormsUI.Docking.dll"
+                    "Name" = "8:WcfServiceLibrary1.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:WeifenLuo.WinFormsUI.Docking.dll"
+            "SourcePath" = "8:WcfServiceLibrary1.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -524,23 +245,23 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4A3F5A626587A676D453E36D074787FE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_29DC443C299F3CE0BE8B6DD82D1B5591"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:VncMarshall, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Database, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_4A3F5A626587A676D453E36D074787FE"
+                    "_29DC443C299F3CE0BE8B6DD82D1B5591"
                     {
-                    "Name" = "8:VncMarshall.dll"
+                    "Name" = "8:Database.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:VncMarshall.dll"
+            "SourcePath" = "8:Database.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -555,23 +276,23 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4F53485CE323463A204937A30C8E740B"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_52E4A1FD2878A60A77EFAD459CABC803"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CustomWinForm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_4F53485CE323463A204937A30C8E740B"
+                    "_52E4A1FD2878A60A77EFAD459CABC803"
                     {
-                    "Name" = "8:CustomWinForm.dll"
+                    "Name" = "8:System.Data.SQLite.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:CustomWinForm.dll"
+            "SourcePath" = "8:System.Data.SQLite.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -586,23 +307,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A52A9D38E4661F34F28F4C2C9F0DEFDC"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74BE5253727F4EC8BD8F89DC3F08256E"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Windows, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_A52A9D38E4661F34F28F4C2C9F0DEFDC"
-                    {
-                    "Name" = "8:Windows.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Windows.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\..\\Dependecies\\x86\\SQLite.Interop.dll"
+            "TargetName" = "8:SQLite.Interop.dll"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -614,26 +324,26 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C232167D6BE3593A37AB22A9FC181C16"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9219A91C124C47D88D80F5D08D9896A3"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:LicenseChecker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:InstallUtil, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_C232167D6BE3593A37AB22A9FC181C16"
+                    "_9219A91C124C47D88D80F5D08D9896A3"
                     {
-                    "Name" = "8:LicenseChecker.dll"
+                    "Name" = "8:InstallUtil.exe"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:LicenseChecker.dll"
+            "SourcePath" = "8:..\\..\\Dependecies\\x86\\InstallUtil.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -645,26 +355,15 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C3FF81CFFB7CB494E32C1B5E5955555C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B58FBD26C69F4C86B91BD9BA609962B8"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:RGBEasy.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_C3FF81CFFB7CB494E32C1B5E5955555C"
-                    {
-                    "Name" = "8:RGBEasy.Net.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:RGBEasy.Net.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\..\\Dependecies\\install.bat"
+            "TargetName" = "8:install.bat"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_0D6C71E2C2E34746A99A45C8D5F862FD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -676,26 +375,15 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E10C3E2E6AF42C4A7AA2E89B8F5A4976"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D9B7079F17BB40C1B6FB22C880DA4EB8"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BasicClientServerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E10C3E2E6AF42C4A7AA2E89B8F5A4976"
-                    {
-                    "Name" = "8:BasicClientServerLib.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:BasicClientServerLib.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\bin\\Release\\WcfServiceLibrary1.dll.config"
+            "TargetName" = "8:WcfServiceLibrary1.dll.config"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -707,26 +395,15 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E195EA8423538BB901939D3018F3DB26"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E39B9AD1A151464F90EFFF4710E8866C"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SocketServerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E195EA8423538BB901939D3018F3DB26"
-                    {
-                    "Name" = "8:SocketServerLib.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:SocketServerLib.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\..\\Dependecies\\uninstall.bat"
+            "TargetName" = "8:uninstall.bat"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_0D6C71E2C2E34746A99A45C8D5F862FD"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -738,38 +415,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E5F40BE3D2D737C52E67CF4231AC8871"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Session, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E5F40BE3D2D737C52E67CF4231AC8871"
-                    {
-                    "Name" = "8:Session.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Session.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
         }
@@ -778,62 +424,7 @@
         }
         "Folder"
         {
-            "{1525181F-901A-416C-8A58-119130FE478E}:_3C3E97725AA24195B8CF0B6FE1EA5C00"
-            {
-            "Name" = "8:#1919"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:ProgramMenuFolder"
-                "Folders"
-                {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_BAB8F24633CF4F3483215D3D657CE10F"
-                    {
-                    "Name" = "8:Vistrol Server"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_DB63FEA433F24ED9BAE363B4C61C890D"
-                        "Folders"
-                        {
-                        }
-                    }
-                }
-            }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_755C65AB92114E1A98A30ED42F94F8BE"
-            {
-            "Name" = "8:#1916"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:DesktopFolder"
-                "Folders"
-                {
-                }
-            }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_B83ED220385142E29D93EA68A3BFFC80"
-            {
-            "Name" = "8:#1912"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:ProgramFilesFolder"
-                "Folders"
-                {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_D8427739DD114F4B81A4C1436D0F3B85"
-                    {
-                    "Name" = "8:Vistrol Server"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_E5611D87188B4EE996EC89E0310F6C81"
-                        "Folders"
-                        {
-                        }
-                    }
-                }
-            }
-            "{3C67513D-01DD-4637-8A68-80971EB9504F}:_D360780AD58641C3944BF3CCE2FB086D"
+            "{3C67513D-01DD-4637-8A68-80971EB9504F}:_0FCAE966518249A29604A2A37DD0E72C"
             {
             "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
@@ -843,6 +434,50 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_1DA40F1E06584709AF04ADCAE3B74E82"
+            {
+            "Name" = "8:#1919"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:ProgramMenuFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_0D6C71E2C2E34746A99A45C8D5F862FD"
+                    {
+                    "Name" = "8:Vistrol Window Service"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_AA00856F24074775873A4C4A68C2C4C7"
+                        "Folders"
+                        {
+                        }
+                    }
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_32D41254E3BB4F638BC8ADFDFF8C0E58"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_6D4BB2CFDD764262BE65842974F37B0D"
+                    {
+                    "Name" = "8:Vistrol Window Service"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_3C61D9117A1E4639B4FB99701A6FA3D4"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
         }
@@ -860,20 +495,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:VistrolServer"
-        "ProductCode" = "8:{61494C45-3657-4884-BF6A-09CA68363193}"
-        "PackageCode" = "8:{3BA36753-2179-419B-991B-271B118B46A3}"
-        "UpgradeCode" = "8:{A413E825-6F80-44E4-AEC6-32CA836572D8}"
+        "ProductName" = "8:VistrolWindowService"
+        "ProductCode" = "8:{82214ACC-9790-4735-B1AA-B48DFB897E69}"
+        "PackageCode" = "8:{5E63A2A1-4CC8-4CDF-9CBE-8A11F8CAF650}"
+        "UpgradeCode" = "8:{9D24C2AD-C8CE-4299-8AE2-5766D3BE3FC4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.1"
+        "InstallAllUsers" = "11:FALSE"
+        "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:Vistrol Pte Ltd"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Vistrol Server"
+        "Title" = "8:Vistrol Window Service"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Vistrol Pte Ltd"
         "Keywords" = "8:"
@@ -894,7 +529,7 @@
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_6943D0B59EE740A5BA7EEEADC07DCC88"
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_CE97F8EEA3D1426787A801DD5C9065B9"
                     {
                     "Name" = "8:Software"
                     "Condition" = "8:"
@@ -903,11 +538,11 @@
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_E5A64C24E31F4DB695294173944287D0"
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_B978C23EA2064E95A1FA1A86E08AD9E6"
                             {
-                            "Name" = "8:TightVNC"
+                            "Name" = "8:[Manufacturer]"
                             "Condition" = "8:"
-                            "AlwaysCreate" = "11:TRUE"
+                            "AlwaysCreate" = "11:FALSE"
                             "DeleteAtUninstall" = "11:FALSE"
                             "Transitive" = "11:FALSE"
                                 "Keys"
@@ -928,7 +563,7 @@
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_8BD6136BFDB149648EE650978D7C8D9B"
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_A223304AF5584E1D82CC70AFA24F2E85"
                     {
                     "Name" = "8:Software"
                     "Condition" = "8:"
@@ -937,6 +572,20 @@
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_FDE1FB41CDA149BBA5D4B4CC13C44754"
+                            {
+                            "Name" = "8:[Manufacturer]"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                }
+                                "Values"
+                                {
+                                }
+                            }
                         }
                         "Values"
                         {
@@ -968,89 +617,17 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_798FDA748E7C49F1AEB695337BADD494"
-            {
-            "Name" = "8:Vistrol Server"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-            "Folder" = "8:_755C65AB92114E1A98A30ED42F94F8BE"
-            "WorkingFolder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
-            "Icon" = "8:_12DC173787E44A6CBF8058347F121428"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_BC9FDEA1DD854200BC37EDB60100FA1E"
-            {
-            "Name" = "8:Vistrol Server"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_D9632560FFF544D9ABAC9E59F3A4F59D"
-            "Folder" = "8:_BAB8F24633CF4F3483215D3D657CE10F"
-            "WorkingFolder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
-            "Icon" = "8:_12DC173787E44A6CBF8058347F121428"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {
-            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_1676479667494AD28E55A3C1EAAA01F7"
-            {
-            "Name" = "8:#1901"
-            "Sequence" = "3:2"
-            "Attributes" = "3:2"
-                "Dialogs"
-                {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_FABDA1C2D9CB47A79F9CE3407F80B378"
-                    {
-                    "Sequence" = "3:100"
-                    "DisplayName" = "8:Progress"
-                    "UseDynamicProperties" = "11:TRUE"
-                    "IsDependency" = "11:FALSE"
-                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminProgressDlg.wid"
-                        "Properties"
-                        {
-                            "BannerBitmap"
-                            {
-                            "Name" = "8:BannerBitmap"
-                            "DisplayName" = "8:#1001"
-                            "Description" = "8:#1101"
-                            "Type" = "3:8"
-                            "ContextData" = "8:Bitmap"
-                            "Attributes" = "3:4"
-                            "Setting" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "ShowProgress"
-                            {
-                            "Name" = "8:ShowProgress"
-                            "DisplayName" = "8:#1009"
-                            "Description" = "8:#1109"
-                            "Type" = "3:5"
-                            "ContextData" = "8:1;True=1;False=0"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:0"
-                            "Value" = "3:1"
-                            "DefaultValue" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                        }
-                    }
-                }
-            }
-            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_32FA22D7ED314A4E814251440E0C2D0B"
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_5118FE17B428418F9707879449FF4698"
             {
             "Name" = "8:#1901"
             "Sequence" = "3:1"
             "Attributes" = "3:2"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_FAD783F1C15E4EAD86225733CC6AAD0C"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_2A129E1992E74F8583712E7B98F2AAF3"
                     {
                     "Sequence" = "3:100"
                     "DisplayName" = "8:Progress"
@@ -1087,14 +664,26 @@
                     }
                 }
             }
-            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_3E35F11D293043CCABFAD11C3D9C0EF3"
+            "{2479F3F5-0309-486D-8047-8187E2CE5BA0}:_5CE60139537B4379BBCC0E43582A048C"
+            {
+            "UseDynamicProperties" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "SourcePath" = "8:<VsdDialogDir>\\VsdBasicDialogs.wim"
+            }
+            "{2479F3F5-0309-486D-8047-8187E2CE5BA0}:_5FB05C4C73DE4250A4FF8EE3F0FDD8C8"
+            {
+            "UseDynamicProperties" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "SourcePath" = "8:<VsdDialogDir>\\VsdUserInterface.wim"
+            }
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_86CF7E50459A49BF8101EBC5F48269F4"
             {
             "Name" = "8:#1902"
             "Sequence" = "3:2"
             "Attributes" = "3:3"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_1946039DEBF64260A921E20F7A9E3EF8"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_F9FAF82FB517485486F2713AEEF94B09"
                     {
                     "Sequence" = "3:100"
                     "DisplayName" = "8:Finished"
@@ -1118,20 +707,102 @@
                     }
                 }
             }
-            "{2479F3F5-0309-486D-8047-8187E2CE5BA0}:_5050E428A578427ABD45A244FA8E287C"
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_DAF48CA525FD476A8F6D83116BCC32CA"
             {
-            "UseDynamicProperties" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "SourcePath" = "8:<VsdDialogDir>\\VsdUserInterface.wim"
+            "Name" = "8:#1901"
+            "Sequence" = "3:2"
+            "Attributes" = "3:2"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_5421E4744F9745D6BF5D7CFD78667FA0"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Progress"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminProgressDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "ShowProgress"
+                            {
+                            "Name" = "8:ShowProgress"
+                            "DisplayName" = "8:#1009"
+                            "Description" = "8:#1109"
+                            "Type" = "3:5"
+                            "ContextData" = "8:1;True=1;False=0"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:0"
+                            "Value" = "3:1"
+                            "DefaultValue" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
             }
-            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_65B07F583B524983BB5AB75ED4EFF555"
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_DDE467DF459A44ABBAF40CA5C2E499ED"
+            {
+            "Name" = "8:#1902"
+            "Sequence" = "3:1"
+            "Attributes" = "3:3"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_5B801754A6F348E68A6BF045EA979414"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Finished"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdFinishedDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "UpdateText"
+                            {
+                            "Name" = "8:UpdateText"
+                            "DisplayName" = "8:#1058"
+                            "Description" = "8:#1158"
+                            "Type" = "3:15"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:#1258"
+                            "DefaultValue" = "8:#1258"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
+            }
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_EAD30E33362A4E57A5649C4E8E5D499D"
             {
             "Name" = "8:#1900"
             "Sequence" = "3:1"
             "Attributes" = "3:1"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_45ED876C36304CB799D64887F762C28D"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_2A4CA0D2F8D344B79C8019A27283AD6C"
                     {
                     "Sequence" = "3:200"
                     "DisplayName" = "8:Installation Folder"
@@ -1166,29 +837,7 @@
                             }
                         }
                     }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_BA4DBEA80EAB46768BCEB945C53F4361"
-                    {
-                    "Sequence" = "3:300"
-                    "DisplayName" = "8:Confirm Installation"
-                    "UseDynamicProperties" = "11:TRUE"
-                    "IsDependency" = "11:FALSE"
-                    "SourcePath" = "8:<VsdDialogDir>\\VsdConfirmDlg.wid"
-                        "Properties"
-                        {
-                            "BannerBitmap"
-                            {
-                            "Name" = "8:BannerBitmap"
-                            "DisplayName" = "8:#1001"
-                            "Description" = "8:#1101"
-                            "Type" = "3:8"
-                            "ContextData" = "8:Bitmap"
-                            "Attributes" = "3:4"
-                            "Setting" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                        }
-                    }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_F02FE6AB53B94C5EA765C83E730FBDC3"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_2FF185E415A440439EDC729D5AA518CB"
                     {
                     "Sequence" = "3:100"
                     "DisplayName" = "8:Welcome"
@@ -1236,28 +885,13 @@
                             }
                         }
                     }
-                }
-            }
-            "{2479F3F5-0309-486D-8047-8187E2CE5BA0}:_9A87C20FB8F147468701B1282305138F"
-            {
-            "UseDynamicProperties" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "SourcePath" = "8:<VsdDialogDir>\\VsdBasicDialogs.wim"
-            }
-            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_C8D34F93BBDA4FCBA6312EE7C7983406"
-            {
-            "Name" = "8:#1902"
-            "Sequence" = "3:1"
-            "Attributes" = "3:3"
-                "Dialogs"
-                {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_9E0866D3346B4B6C98F753C85A9F95CD"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_976A356EA649444384D01F568276CEE4"
                     {
-                    "Sequence" = "3:100"
-                    "DisplayName" = "8:Finished"
+                    "Sequence" = "3:300"
+                    "DisplayName" = "8:Confirm Installation"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
-                    "SourcePath" = "8:<VsdDialogDir>\\VsdFinishedDlg.wid"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdConfirmDlg.wid"
                         "Properties"
                         {
                             "BannerBitmap"
@@ -1271,53 +905,18 @@
                             "Setting" = "3:1"
                             "UsePlugInResources" = "11:TRUE"
                             }
-                            "UpdateText"
-                            {
-                            "Name" = "8:UpdateText"
-                            "DisplayName" = "8:#1058"
-                            "Description" = "8:#1158"
-                            "Type" = "3:15"
-                            "ContextData" = "8:"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1258"
-                            "DefaultValue" = "8:#1258"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
                         }
                     }
                 }
             }
-            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_CC5C262A99034115BB8D8EBDC65C76F6"
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_F9FF617D5B0E4EA9A0A79DF7F45DF92C"
             {
             "Name" = "8:#1900"
             "Sequence" = "3:2"
             "Attributes" = "3:1"
                 "Dialogs"
                 {
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_43F57C215196475C9D6335E7529A39AC"
-                    {
-                    "Sequence" = "3:200"
-                    "DisplayName" = "8:Installation Folder"
-                    "UseDynamicProperties" = "11:TRUE"
-                    "IsDependency" = "11:FALSE"
-                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFolderDlg.wid"
-                        "Properties"
-                        {
-                            "BannerBitmap"
-                            {
-                            "Name" = "8:BannerBitmap"
-                            "DisplayName" = "8:#1001"
-                            "Description" = "8:#1101"
-                            "Type" = "3:8"
-                            "ContextData" = "8:Bitmap"
-                            "Attributes" = "3:4"
-                            "Setting" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                        }
-                    }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_D4CD4F5ADFFB40F7B9E989F53A46F639"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_24D7FCCB5941492F9A35CCC85F228F50"
                     {
                     "Sequence" = "3:300"
                     "DisplayName" = "8:Confirm Installation"
@@ -1339,7 +938,29 @@
                             }
                         }
                     }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_DB5455A320114B6993305C20734A903C"
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_71D79B739EF8429E918E8DE06F87A500"
+                    {
+                    "Sequence" = "3:200"
+                    "DisplayName" = "8:Installation Folder"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFolderDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_BD229177E8D443AC8B48FFF2B43B6BD0"
                     {
                     "Sequence" = "3:100"
                     "DisplayName" = "8:Welcome"
@@ -1395,12 +1016,12 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_082B7996937E481C9A9F8D6607FF874A"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B34F35C2695A4D858A8CF15CA011582F"
             {
-            "SourcePath" = "8:..\\CustomMessageBox\\obj\\Release\\CustomMessageBox.exe"
+            "SourcePath" = "8:..\\WindowsService1\\obj\\Release\\WindowsService1.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1417,35 +1038,7 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{8F71AF73-2A13-4A8F-8992-4D33AA67B496}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D9632560FFF544D9ABAC9E59F3A4F59D"
-            {
-            "SourcePath" = "8:..\\WindowsFormServer\\obj\\Release\\WindowsFormServer.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D8427739DD114F4B81A4C1436D0F3B85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{9E745BEF-0857-48F3-B987-A77516F1D422}"
+            "OutputProjectGuid" = "8:{88E5C082-DC7B-4E86-9710-F41961604A81}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

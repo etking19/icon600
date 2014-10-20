@@ -27,7 +27,7 @@ namespace WindowsFormClient.Server
             return sInstance;
         }
 
-        public bool Initialize(IServiceCallback callbackHandler)
+        public bool Initialize(IService1Callback callbackHandler)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace WindowsFormClient.Server
             return wcfService.RemoveUser(userId);
         }
 
-        public List<UserData> GetAllUsers()
+        public UserData[] GetAllUsers()
         {
             return wcfService.GetAllUsers();
         }
@@ -108,12 +108,12 @@ namespace WindowsFormClient.Server
         #region group
         public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> allowApps)
         {
-            return wcfService.AddGroup(groupName, shareDesktop, allowMaintenace, monitorId, allowApps);
+            return wcfService.AddGroup(groupName, shareDesktop, allowMaintenace, monitorId, allowApps.ToArray());
         }
 
         public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> appIds)
         {
-            return wcfService.EditGroup(groupId, groupName, shareDesktop, allowMaintenace, monitorId, appIds);
+            return wcfService.EditGroup(groupId, groupName, shareDesktop, allowMaintenace, monitorId, appIds.ToArray());
         }
 
         public bool RemoveGroup(int groupId)
@@ -131,7 +131,7 @@ namespace WindowsFormClient.Server
             return wcfService.GetGroupByUserId(userId);
         }
 
-        public List<UserData> GetUsersInGroup(int groupId)
+        public UserData[] GetUsersInGroup(int groupId)
         {
             return wcfService.GetUsersInGroup(groupId);
         }
@@ -160,12 +160,12 @@ namespace WindowsFormClient.Server
             return wcfService.GetAllApplications();
         }
 
-        public List<ApplicationData> GetAppsWithGroupId(int groupId)
+        public ApplicationData[] GetAppsWithGroupId(int groupId)
         {
             return wcfService.GetAppsWithGroupId(groupId);
         }
 
-        public List<ApplicationData> GetAppsWithUserId(int userId)
+        public ApplicationData[] GetAppsWithUserId(int userId)
         {
             return wcfService.GetAppsWithUserId(userId);
         }
@@ -193,7 +193,7 @@ namespace WindowsFormClient.Server
 
         public void EditPreset(int presetId, string presetName, int userId, List<int> appIds, List<int> vncIds, List<int> inputIds)
         {
-            wcfService.EditPreset(presetId, presetName, userId, appIds, vncIds, inputIds);
+            wcfService.EditPreset(presetId, presetName, userId, appIds.ToArray(), vncIds.ToArray(), inputIds.ToArray());
         }
 
         public IList<PresetData> GetPresetByUserId(int userId)
@@ -233,9 +233,9 @@ namespace WindowsFormClient.Server
         #endregion
 
         #region Monitor
-        
 
-        public List<MonitorData> GetMonitorsList()
+
+        public MonitorData[] GetMonitorsList()
         {
             return wcfService.GetMonitorsList();
         }
@@ -267,7 +267,7 @@ namespace WindowsFormClient.Server
 
         #endregion
 
-        public List<RemoteVncData> GetRemoteVncList()
+        public RemoteVncData[] GetRemoteVncList()
         {
             return wcfService.GetRemoteVncList();
         }
@@ -293,7 +293,7 @@ namespace WindowsFormClient.Server
         /// string: osd
         /// </summary>
         /// <returns></returns>
-        public List<VisionData> GetAllVisionInputs()
+        public VisionData[] GetAllVisionInputs()
         {
             return wcfService.GetAllVisionInputs();
         }

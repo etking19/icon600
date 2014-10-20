@@ -154,7 +154,7 @@ namespace WindowsFormClient.Server
             List<Tuple<int, Window, Input, OnScreenDisplay>> result = new List<Tuple<int, Window, Input, OnScreenDisplay>>();
             
             // get data from database
-            List<VisionData> visionList = ServerDbHelper.GetInstance().GetAllVisionInputs();
+            List<VisionData> visionList = new List<VisionData>(ServerDbHelper.GetInstance().GetAllVisionInputs());
             foreach (VisionData data in visionList)
             {
                 System.Xml.Serialization.XmlSerializer wndSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Window));

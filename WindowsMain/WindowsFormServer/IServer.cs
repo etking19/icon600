@@ -42,7 +42,7 @@ namespace WindowsFormClient
 
         void AddMessageBox(string message, Font font, Color color, Color backgroundColor, int duration, int left, int top, int width, int height, bool animation);
 
-        void OnGridDataUpdateRequest(ServerCommandType command, DBTypeEnum dbType);
+        void OnGridDataUpdateRequest(ServerCommandType command, DBType dbType);
         
     }
 }

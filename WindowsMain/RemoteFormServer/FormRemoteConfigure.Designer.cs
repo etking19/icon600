@@ -231,7 +231,7 @@ namespace RemoteFormServer
             this.dataGridViewGroup.Location = new System.Drawing.Point(4, 44);
             this.dataGridViewGroup.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewGroup.Name = "dataGridViewGroup";
-            this.dataGridViewGroup.Size = new System.Drawing.Size(664, 477);
+            this.dataGridViewGroup.Size = new System.Drawing.Size(659, 477);
             this.dataGridViewGroup.TabIndex = 0;
             // 
             // tabPageUser
@@ -419,7 +419,7 @@ namespace RemoteFormServer
             this.dataGridViewApp.Location = new System.Drawing.Point(4, 51);
             this.dataGridViewApp.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewApp.Name = "dataGridViewApp";
-            this.dataGridViewApp.Size = new System.Drawing.Size(720, 604);
+            this.dataGridViewApp.Size = new System.Drawing.Size(663, 499);
             this.dataGridViewApp.TabIndex = 8;
             // 
             // tabMonitors
@@ -507,7 +507,7 @@ namespace RemoteFormServer
             this.dataGridViewMonitors.Location = new System.Drawing.Point(4, 51);
             this.dataGridViewMonitors.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewMonitors.Name = "dataGridViewMonitors";
-            this.dataGridViewMonitors.Size = new System.Drawing.Size(720, 604);
+            this.dataGridViewMonitors.Size = new System.Drawing.Size(663, 499);
             this.dataGridViewMonitors.TabIndex = 12;
             // 
             // tabVnc
@@ -594,7 +594,7 @@ namespace RemoteFormServer
             this.dataGridViewRemote.Location = new System.Drawing.Point(4, 51);
             this.dataGridViewRemote.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewRemote.Name = "dataGridViewRemote";
-            this.dataGridViewRemote.Size = new System.Drawing.Size(720, 604);
+            this.dataGridViewRemote.Size = new System.Drawing.Size(663, 499);
             this.dataGridViewRemote.TabIndex = 18;
             // 
             // tabDrivers
@@ -682,7 +682,7 @@ namespace RemoteFormServer
             this.dataGridVisionInput.Location = new System.Drawing.Point(4, 51);
             this.dataGridVisionInput.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridVisionInput.Name = "dataGridVisionInput";
-            this.dataGridVisionInput.Size = new System.Drawing.Size(720, 604);
+            this.dataGridVisionInput.Size = new System.Drawing.Size(663, 499);
             this.dataGridVisionInput.TabIndex = 23;
             // 
             // FormRemoteConfigure
