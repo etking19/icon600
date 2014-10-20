@@ -99,19 +99,17 @@ namespace CustomMessageBox
             labelMessageFollow.Text = "";
             if (animationEnabled)
             {
-                workerFlying = new BackgroundWorker();
-                workerFlying.DoWork += workerFlying_DoWork;
-                workerFlying.WorkerSupportsCancellation = true;
-                workerFlying.RunWorkerAsync();
-            }
-            else
-            {
                 // following message
                 labelMessageFollow.Text = message;
                 labelMessageFollow.Font = messageFont;
                 labelMessageFollow.ForeColor = messageColor;
                 labelMessageFollow.BackColor = Color.Transparent;
                 labelMessageFollow.Location = new Point(labelMessage.Location.X + labelMessage.Size.Width + 5, labelMessage.Location.Y);
+
+                workerFlying = new BackgroundWorker();
+                workerFlying.DoWork += workerFlying_DoWork;
+                workerFlying.WorkerSupportsCancellation = true;
+                workerFlying.RunWorkerAsync();
             }
         }
 

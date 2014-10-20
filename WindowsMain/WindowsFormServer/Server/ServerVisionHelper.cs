@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using WcfServiceLibrary1;
 using WindowsFormClient.RgbInput;
 
@@ -286,8 +287,7 @@ namespace WindowsFormClient.Server
                 // Call WaitForExit and then the using statement will close.
                 using (Process exeProcess = Process.Start(startInfo))
                 {
-                    exeProcess.WaitForInputIdle(1000);
-                    returnValue = exeProcess.MainWindowHandle.ToInt32();
+                    returnValue = exeProcess.Id;
                 }
             }
             catch
@@ -351,8 +351,7 @@ namespace WindowsFormClient.Server
                 // Call WaitForExit and then the using statement will close.
                 using (Process exeProcess = Process.Start(startInfo))
                 {
-                    exeProcess.WaitForInputIdle(1000);
-                    returnValue = exeProcess.MainWindowHandle.ToInt32();
+                    returnValue = exeProcess.Id;
                 }
             }
             catch

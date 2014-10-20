@@ -21,31 +21,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_1E1E3B0026586A9D4007B664E6AA79EB"
+        "MsmKey" = "8:_12573E7BE2CECAA97259949D54FDE44E"
         "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
-        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
+        "MsmKey" = "8:_6CFEBA65F16EB6600970EE930595D28C"
+        "OwnerKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
-        "OwnerKey" = "8:_1E1E3B0026586A9D4007B664E6AA79EB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_52E4A1FD2878A60A77EFAD459CABC803"
-        "OwnerKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_52E4A1FD2878A60A77EFAD459CABC803"
+        "MsmKey" = "8:_6CFEBA65F16EB6600970EE930595D28C"
         "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -75,6 +63,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
+        "OwnerKey" = "8:_12573E7BE2CECAA97259949D54FDE44E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D9B7079F17BB40C1B6FB22C880DA4EB8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -88,7 +88,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_52E4A1FD2878A60A77EFAD459CABC803"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -100,19 +100,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
+        "OwnerKey" = "8:_12573E7BE2CECAA97259949D54FDE44E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1E1E3B0026586A9D4007B664E6AA79EB"
+        "OwnerKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_29DC443C299F3CE0BE8B6DD82D1B5591"
+        "OwnerKey" = "8:_6CFEBA65F16EB6600970EE930595D28C"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -133,6 +133,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -214,14 +222,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1E1E3B0026586A9D4007B664E6AA79EB"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_12573E7BE2CECAA97259949D54FDE44E"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:WcfServiceLibrary1, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_1E1E3B0026586A9D4007B664E6AA79EB"
+                    "_12573E7BE2CECAA97259949D54FDE44E"
                     {
                     "Name" = "8:WcfServiceLibrary1.dll"
                     "Attributes" = "3:512"
@@ -245,45 +253,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_29DC443C299F3CE0BE8B6DD82D1B5591"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Database, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_29DC443C299F3CE0BE8B6DD82D1B5591"
-                    {
-                    "Name" = "8:Database.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Database.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_52E4A1FD2878A60A77EFAD459CABC803"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6CFEBA65F16EB6600970EE930595D28C"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_52E4A1FD2878A60A77EFAD459CABC803"
+                    "_6CFEBA65F16EB6600970EE930595D28C"
                     {
                     "Name" = "8:System.Data.SQLite.dll"
                     "Attributes" = "3:512"
@@ -376,6 +353,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B792E0EC947D1C19BD758EBD01269E1B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Database, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_B792E0EC947D1C19BD758EBD01269E1B"
+                    {
+                    "Name" = "8:Database.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Database.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D9B7079F17BB40C1B6FB22C880DA4EB8"
@@ -496,15 +504,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VistrolWindowService"
-        "ProductCode" = "8:{82214ACC-9790-4735-B1AA-B48DFB897E69}"
-        "PackageCode" = "8:{5E63A2A1-4CC8-4CDF-9CBE-8A11F8CAF650}"
+        "ProductCode" = "8:{E01714CD-F1E4-479F-BC2C-339E235F8486}"
+        "PackageCode" = "8:{D3BE1B6D-7AA2-4DC7-BAF6-AE96D5AB7866}"
         "UpgradeCode" = "8:{9D24C2AD-C8CE-4299-8AE2-5766D3BE3FC4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "InstallAllUsers" = "11:TRUE"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:Vistrol Pte Ltd"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

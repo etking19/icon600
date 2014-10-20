@@ -28,6 +28,7 @@ namespace WindowsFormClient
         private ConnectionManager connectionMgr;
         private VncMarshall.Client vncClient;
 
+        private string vncServerPath;
         private int desktopRow = 1;
         private int desktopColumn = 1;
 
@@ -81,7 +82,7 @@ namespace WindowsFormClient
             }
             else
             {
-                mainPresenter.VncPath = vncClientPath;
+                vncServerPath = vncClientPath;
             }
 
             FormLogin formLogin = new FormLogin(USERNAME, PASSWORD);
@@ -165,7 +166,7 @@ namespace WindowsFormClient
             }
 
             // initialize vnc client
-            vncClient = new VncMarshall.Client(mainPresenter.VncPath);
+            vncClient = new VncMarshall.Client(vncServerPath);
 
             // save the matrix setting
             desktopRow = Convert.ToInt32(numericUpDownRow.Value);
@@ -191,6 +192,7 @@ namespace WindowsFormClient
             mainPresenter.PortMax = portMax;
             mainPresenter.ScreenColumn = desktopColumn;
             mainPresenter.ScreenRow = desktopRow;
+            mainPresenter.VncPath = vncServerPath;
         }
 
         private void btnGeneralStop_Click(object sender, EventArgs e)

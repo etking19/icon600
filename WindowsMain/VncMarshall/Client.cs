@@ -26,29 +26,17 @@ namespace VncMarshall
                 process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
                 using(Process clientProcess = Process.Start(process))
                 {
-                    //int tryMax = 1000;
-                    //while ((clientProcess.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(clientProcess.MainWindowHandle))
-                    //{
-                    //    System.Threading.Thread.Sleep(10);
-                    //    clientProcess.Refresh();
-                    //    if (tryMax-- <= 0)
-                    //    {
-                    //        break;
-                    //    }
-                    //}
-                    clientProcess.WaitForInputIdle(1000);
-                    // test code
-                    string arg = string.Format("\"{0}, {1}, {2}\" \"Arial, 12pt\" \"windowtext\" \"window\" -1 0 0 0 0 False",
-                        clientProcess.MainWindowHandle.ToInt32(),
-                        clientProcess.Id,
-                        clientProcess.MainModule);
-                    ProcessStartInfo info = new ProcessStartInfo()
+                    int tryMax = 1000;
+                    while ((clientProcess.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(clientProcess.MainWindowHandle))
                     {
-                        FileName = "CustomMessageBox.exe",
-                        Arguments = arg
-                    };
-                    Process.Start(info);
-
+                        System.Threading.Thread.Sleep(10);
+                        clientProcess.Refresh();
+                        if (tryMax-- <= 0)
+                        {
+                            break;
+                        }
+                    }
+                    clientProcess.WaitForInputIdle(1000);
                     return clientProcess.MainWindowHandle.ToInt32();
                 }
             }
