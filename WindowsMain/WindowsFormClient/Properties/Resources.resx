@@ -148,4 +148,22 @@
   <data name="vistrol_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\vistrol-logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="_1_bringtofront" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1-bringtofront.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_2_minimize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\2-minimize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_3_maximize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\3-maximize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_4_restore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\4-restore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_5_close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\5-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_6_closeall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\6-closeall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

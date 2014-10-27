@@ -118,6 +118,7 @@
             this.imageList1.Images.SetKeyName(2, "app_management.png");
             this.imageList1.Images.SetKeyName(3, "monitor.png");
             this.imageList1.Images.SetKeyName(4, "driver.png");
+            this.imageList1.Images.SetKeyName(5, "remote.png");
             // 
             // notifyIconServer
             // 
@@ -749,7 +750,7 @@
             this.tabVnc.Controls.Add(this.buttonRemoteEdit);
             this.tabVnc.Controls.Add(this.buttonRemoteAdd);
             this.tabVnc.Controls.Add(this.dataGridViewRemote);
-            this.tabVnc.ImageIndex = 4;
+            this.tabVnc.ImageIndex = 5;
             this.tabVnc.Location = new System.Drawing.Point(104, 4);
             this.tabVnc.Name = "tabVnc";
             this.tabVnc.Size = new System.Drawing.Size(726, 664);

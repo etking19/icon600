@@ -293,6 +293,7 @@
     <None Include="Resources\server.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\remote.png" />
     <Content Include="server.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
