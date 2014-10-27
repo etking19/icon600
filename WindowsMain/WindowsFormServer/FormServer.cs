@@ -83,13 +83,6 @@ namespace WindowsFormClient
                 vncServerPath = vncClientPath;
             }
 
-            FormLogin formLogin = new FormLogin(USERNAME, PASSWORD);
-            System.Windows.Forms.DialogResult result = formLogin.ShowDialog(this);
-            while (result != System.Windows.Forms.DialogResult.OK)
-            {
-                result = formLogin.ShowDialog(this);
-            }
-
             notifyIconServer.Text = "Vistrol server is offline";
             notifyIconServer.BalloonTipTitle = "Vistrol Server";
             notifyIconServer.BalloonTipIcon = ToolTipIcon.Info;
@@ -118,6 +111,25 @@ namespace WindowsFormClient
             numericUpDownCol.Value = mainPresenter.ScreenColumn == 0 ? 1 : mainPresenter.ScreenColumn;
 
             refreshGeneralPanel();
+
+            // customization
+            if (mainPresenter.PortMin != 0 &&
+                mainPresenter.PortMax != 0)
+            {
+                // start the server automatically
+                btnGeneralStart_Click(this, new EventArgs());
+
+                this.WindowState = FormWindowState.Minimized;
+            }
+            else
+            {
+                FormLogin formLogin = new FormLogin(USERNAME, PASSWORD);
+                System.Windows.Forms.DialogResult result = formLogin.ShowDialog(this);
+                while (result != System.Windows.Forms.DialogResult.OK)
+                {
+                    result = formLogin.ShowDialog(this);
+                }
+            }
         }
 
         void FormServer_Resize(object sender, EventArgs e)
