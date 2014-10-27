@@ -70,6 +70,11 @@ namespace WindowsFormClient
                     MessageBox.Show(msg, "Dependencies Loading", MessageBoxButtons.OK);
                     return;
                 }
+                else
+                {
+                     // initialize the Vision driver
+                     ServerVisionHelper.getInstance().InitializeVisionDB();
+                }
             }
             catch (Exception)
             {
@@ -77,17 +82,6 @@ namespace WindowsFormClient
                 MessageBox.Show(msg, "Dependencies Loading", MessageBoxButtons.OK);
             }
 
-            try
-            {
-                // initialize the Vision driver
-                ServerVisionHelper.getInstance().InitializeVisionDB();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Load Capture Card Data Failed", "Dependencies Loading", MessageBoxButtons.OK);
-            }
-
-            
             licenceChecker.StartCheck();
             Application.Run(formServer);
 
