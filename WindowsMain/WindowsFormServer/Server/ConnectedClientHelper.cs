@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using WindowsFormClient.Server.Model;
@@ -81,6 +82,7 @@ namespace WindowsFormClient.Server
             connectedClientList.TryGetValue(identifier, out model);
             if(model == null)
             {
+                Trace.WriteLine("no such user identifier");
                 return;
             }
 

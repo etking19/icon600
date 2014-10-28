@@ -65,7 +65,7 @@ namespace WcfServiceLibrary1
         List<ApplicationData> GetAppsWithUserId(int userId);
 
         [OperationContract]
-        void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds);
+        void AddPreset(string presetName, int userId, List<KeyValuePair<int, WindowsRect>> appIds, List<KeyValuePair<int, WindowsRect>> vncIds, List<KeyValuePair<int, WindowsRect>> inputIds);
 
         [OperationContract(IsOneWay=true)]
         void RemovePreset(int presetId);

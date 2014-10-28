@@ -11,6 +11,7 @@ namespace WindowsFormClient.Server
         private static ServerDbHelper sInstance = null;
         private DuplexChannelFactory<IService1> dupFactory;
         private IService1 wcfService;
+        private IService1Callback callbackHandler;
 
         private ServerDbHelper()
         {
@@ -31,6 +32,7 @@ namespace WindowsFormClient.Server
         {
             try
             {
+                this.callbackHandler = callbackHandler;
                 InstanceContext instanceContext = new InstanceContext(callbackHandler);
                 EndpointAddress address = new EndpointAddress(new Uri(Properties.Settings.Default.RemoteIP));
                 
@@ -181,9 +183,9 @@ namespace WindowsFormClient.Server
         /// <param name="userId"></param>
         /// <param name="appIds"></param>
         /// <returns>number of data added</returns>
-        public void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds)
+        public void AddPreset(string presetName, int userId, List<KeyValuePair<int, WindowsRect>> appIds, List<KeyValuePair<int, WindowsRect>> vncIds, List<KeyValuePair<int, WindowsRect>> inputIds)
         {
-            wcfService.AddPreset(presetName, userId, appIds, vncIds, inputIds);
+            wcfService.AddPreset(presetName, userId, appIds.ToArray(), vncIds.ToArray(), inputIds.ToArray());
         }
 
         public void RemovePreset(int presetId)

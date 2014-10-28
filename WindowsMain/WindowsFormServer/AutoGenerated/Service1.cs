@@ -899,131 +899,260 @@ public interface IService1
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/RegisterCallback")]
     void RegisterCallback();
     
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/RegisterCallback")]
+    System.Threading.Tasks.Task RegisterCallbackAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddUser", ReplyAction="http://tempuri.org/IService1/AddUserResponse")]
     int AddUser(string name, string userName, string password, int groupId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddUser", ReplyAction="http://tempuri.org/IService1/AddUserResponse")]
+    System.Threading.Tasks.Task<int> AddUserAsync(string name, string userName, string password, int groupId);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditUser", ReplyAction="http://tempuri.org/IService1/EditUserResponse")]
     bool EditUser(int userId, string name, string userName, string password, int groupId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditUser", ReplyAction="http://tempuri.org/IService1/EditUserResponse")]
+    System.Threading.Tasks.Task<bool> EditUserAsync(int userId, string name, string userName, string password, int groupId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveUser", ReplyAction="http://tempuri.org/IService1/RemoveUserResponse")]
     bool RemoveUser(int userId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveUser", ReplyAction="http://tempuri.org/IService1/RemoveUserResponse")]
+    System.Threading.Tasks.Task<bool> RemoveUserAsync(int userId);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllUsers", ReplyAction="http://tempuri.org/IService1/GetAllUsersResponse")]
     WcfServiceLibrary1.UserData[] GetAllUsers();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllUsers", ReplyAction="http://tempuri.org/IService1/GetAllUsersResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.UserData[]> GetAllUsersAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUser", ReplyAction="http://tempuri.org/IService1/GetUserResponse")]
     WcfServiceLibrary1.UserData GetUser(int userId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUser", ReplyAction="http://tempuri.org/IService1/GetUserResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.UserData> GetUserAsync(int userId);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddGroup", ReplyAction="http://tempuri.org/IService1/AddGroupResponse")]
     int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddGroup", ReplyAction="http://tempuri.org/IService1/AddGroupResponse")]
+    System.Threading.Tasks.Task<int> AddGroupAsync(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditGroup", ReplyAction="http://tempuri.org/IService1/EditGroupResponse")]
     bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditGroup", ReplyAction="http://tempuri.org/IService1/EditGroupResponse")]
+    System.Threading.Tasks.Task<bool> EditGroupAsync(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveGroup", ReplyAction="http://tempuri.org/IService1/RemoveGroupResponse")]
     bool RemoveGroup(int groupId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveGroup", ReplyAction="http://tempuri.org/IService1/RemoveGroupResponse")]
+    System.Threading.Tasks.Task<bool> RemoveGroupAsync(int groupId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllGroups", ReplyAction="http://tempuri.org/IService1/GetAllGroupsResponse")]
     WcfServiceLibrary1.GroupData[] GetAllGroups();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllGroups", ReplyAction="http://tempuri.org/IService1/GetAllGroupsResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.GroupData[]> GetAllGroupsAsync();
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetGroupByUserId", ReplyAction="http://tempuri.org/IService1/GetGroupByUserIdResponse")]
     WcfServiceLibrary1.GroupData GetGroupByUserId(int userId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetGroupByUserId", ReplyAction="http://tempuri.org/IService1/GetGroupByUserIdResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.GroupData> GetGroupByUserIdAsync(int userId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUsersInGroup", ReplyAction="http://tempuri.org/IService1/GetUsersInGroupResponse")]
     WcfServiceLibrary1.UserData[] GetUsersInGroup(int groupId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUsersInGroup", ReplyAction="http://tempuri.org/IService1/GetUsersInGroupResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.UserData[]> GetUsersInGroupAsync(int groupId);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddApplication", ReplyAction="http://tempuri.org/IService1/AddApplicationResponse")]
     int AddApplication(string appName, string extraArguments, string exePath, int left, int top, int right, int bottom);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddApplication", ReplyAction="http://tempuri.org/IService1/AddApplicationResponse")]
+    System.Threading.Tasks.Task<int> AddApplicationAsync(string appName, string extraArguments, string exePath, int left, int top, int right, int bottom);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditApplication", ReplyAction="http://tempuri.org/IService1/EditApplicationResponse")]
     bool EditApplication(int appId, string appName, string exePath, string extraArguments, int left, int top, int right, int bottom);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditApplication", ReplyAction="http://tempuri.org/IService1/EditApplicationResponse")]
+    System.Threading.Tasks.Task<bool> EditApplicationAsync(int appId, string appName, string exePath, string extraArguments, int left, int top, int right, int bottom);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveApplication", ReplyAction="http://tempuri.org/IService1/RemoveApplicationResponse")]
     bool RemoveApplication(int appId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveApplication", ReplyAction="http://tempuri.org/IService1/RemoveApplicationResponse")]
+    System.Threading.Tasks.Task<bool> RemoveApplicationAsync(int appId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllApplications", ReplyAction="http://tempuri.org/IService1/GetAllApplicationsResponse")]
     WcfServiceLibrary1.ApplicationData[] GetAllApplications();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllApplications", ReplyAction="http://tempuri.org/IService1/GetAllApplicationsResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.ApplicationData[]> GetAllApplicationsAsync();
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAppsWithGroupId", ReplyAction="http://tempuri.org/IService1/GetAppsWithGroupIdResponse")]
     WcfServiceLibrary1.ApplicationData[] GetAppsWithGroupId(int groupId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAppsWithGroupId", ReplyAction="http://tempuri.org/IService1/GetAppsWithGroupIdResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.ApplicationData[]> GetAppsWithGroupIdAsync(int groupId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAppsWithUserId", ReplyAction="http://tempuri.org/IService1/GetAppsWithUserIdResponse")]
     WcfServiceLibrary1.ApplicationData[] GetAppsWithUserId(int userId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAppsWithUserId", ReplyAction="http://tempuri.org/IService1/GetAppsWithUserIdResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.ApplicationData[]> GetAppsWithUserIdAsync(int userId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddPreset", ReplyAction="http://tempuri.org/IService1/AddPresetResponse")]
-    void AddPreset(string presetName, int userId, System.Collections.Generic.Dictionary<int, WcfServiceLibrary1.WindowsRect> appIds, System.Collections.Generic.Dictionary<int, WcfServiceLibrary1.WindowsRect> vncIds, System.Collections.Generic.Dictionary<int, WcfServiceLibrary1.WindowsRect> inputIds);
+    void AddPreset(string presetName, int userId, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] appIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] vncIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] inputIds);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddPreset", ReplyAction="http://tempuri.org/IService1/AddPresetResponse")]
+    System.Threading.Tasks.Task AddPresetAsync(string presetName, int userId, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] appIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] vncIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] inputIds);
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/RemovePreset")]
     void RemovePreset(int presetId);
     
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/RemovePreset")]
+    System.Threading.Tasks.Task RemovePresetAsync(int presetId);
+    
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/EditPreset")]
     void EditPreset(int presetId, string presetName, int userId, int[] appIds, int[] vncIds, int[] inputIds);
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/EditPreset")]
+    System.Threading.Tasks.Task EditPresetAsync(int presetId, string presetName, int userId, int[] appIds, int[] vncIds, int[] inputIds);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPresetByUserId", ReplyAction="http://tempuri.org/IService1/GetPresetByUserIdResponse")]
     WcfServiceLibrary1.PresetData[] GetPresetByUserId(int userId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPresetByUserId", ReplyAction="http://tempuri.org/IService1/GetPresetByUserIdResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.PresetData[]> GetPresetByUserIdAsync(int userId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPresetIdByPresetNameUserId", ReplyAction="http://tempuri.org/IService1/GetPresetIdByPresetNameUserIdResponse")]
     int GetPresetIdByPresetNameUserId(string presetName, int userId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPresetIdByPresetNameUserId", ReplyAction="http://tempuri.org/IService1/GetPresetIdByPresetNameUserIdResponse")]
+    System.Threading.Tasks.Task<int> GetPresetIdByPresetNameUserIdAsync(string presetName, int userId);
     
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/AddOrEditSetting")]
     void AddOrEditSetting(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath);
     
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/AddOrEditSetting")]
+    System.Threading.Tasks.Task AddOrEditSettingAsync(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath);
+    
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/RemoveSetting")]
     void RemoveSetting();
+    
+    [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/RemoveSetting")]
+    System.Threading.Tasks.Task RemoveSettingAsync();
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/IsSettingAdded", ReplyAction="http://tempuri.org/IService1/IsSettingAddedResponse")]
     bool IsSettingAdded();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/IsSettingAdded", ReplyAction="http://tempuri.org/IService1/IsSettingAddedResponse")]
+    System.Threading.Tasks.Task<bool> IsSettingAddedAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetSetting", ReplyAction="http://tempuri.org/IService1/GetSettingResponse")]
     WcfServiceLibrary1.SettingData GetSetting();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetSetting", ReplyAction="http://tempuri.org/IService1/GetSettingResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.SettingData> GetSettingAsync();
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMonitorsList", ReplyAction="http://tempuri.org/IService1/GetMonitorsListResponse")]
     WcfServiceLibrary1.MonitorData[] GetMonitorsList();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMonitorsList", ReplyAction="http://tempuri.org/IService1/GetMonitorsListResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.MonitorData[]> GetMonitorsListAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddMonitor", ReplyAction="http://tempuri.org/IService1/AddMonitorResponse")]
     bool AddMonitor(string name, int left, int top, int right, int bottom);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddMonitor", ReplyAction="http://tempuri.org/IService1/AddMonitorResponse")]
+    System.Threading.Tasks.Task<bool> AddMonitorAsync(string name, int left, int top, int right, int bottom);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveMonitor", ReplyAction="http://tempuri.org/IService1/RemoveMonitorResponse")]
     bool RemoveMonitor(int monitorId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveMonitor", ReplyAction="http://tempuri.org/IService1/RemoveMonitorResponse")]
+    System.Threading.Tasks.Task<bool> RemoveMonitorAsync(int monitorId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditMonitor", ReplyAction="http://tempuri.org/IService1/EditMonitorResponse")]
     bool EditMonitor(int monitorId, string name, int left, int top, int right, int bottom);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditMonitor", ReplyAction="http://tempuri.org/IService1/EditMonitorResponse")]
+    System.Threading.Tasks.Task<bool> EditMonitorAsync(int monitorId, string name, int left, int top, int right, int bottom);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMonitorByGroupId", ReplyAction="http://tempuri.org/IService1/GetMonitorByGroupIdResponse")]
     WcfServiceLibrary1.MonitorData GetMonitorByGroupId(int groupId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMonitorByGroupId", ReplyAction="http://tempuri.org/IService1/GetMonitorByGroupIdResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.MonitorData> GetMonitorByGroupIdAsync(int groupId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMonitorDataByUserId", ReplyAction="http://tempuri.org/IService1/GetMonitorDataByUserIdResponse")]
     WcfServiceLibrary1.MonitorData GetMonitorDataByUserId(int userId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMonitorDataByUserId", ReplyAction="http://tempuri.org/IService1/GetMonitorDataByUserIdResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.MonitorData> GetMonitorDataByUserIdAsync(int userId);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetRemoteVncList", ReplyAction="http://tempuri.org/IService1/GetRemoteVncListResponse")]
     WcfServiceLibrary1.RemoteVncData[] GetRemoteVncList();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetRemoteVncList", ReplyAction="http://tempuri.org/IService1/GetRemoteVncListResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.RemoteVncData[]> GetRemoteVncListAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddRemoteVnc", ReplyAction="http://tempuri.org/IService1/AddRemoteVncResponse")]
     bool AddRemoteVnc(string name, string ipAdd, int port);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddRemoteVnc", ReplyAction="http://tempuri.org/IService1/AddRemoteVncResponse")]
+    System.Threading.Tasks.Task<bool> AddRemoteVncAsync(string name, string ipAdd, int port);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveRemoteVnc", ReplyAction="http://tempuri.org/IService1/RemoveRemoteVncResponse")]
     bool RemoveRemoteVnc(int dataId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveRemoteVnc", ReplyAction="http://tempuri.org/IService1/RemoveRemoteVncResponse")]
+    System.Threading.Tasks.Task<bool> RemoveRemoteVncAsync(int dataId);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditRemoteVnc", ReplyAction="http://tempuri.org/IService1/EditRemoteVncResponse")]
     bool EditRemoteVnc(int dataId, string name, string ipAdd, int port);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditRemoteVnc", ReplyAction="http://tempuri.org/IService1/EditRemoteVncResponse")]
+    System.Threading.Tasks.Task<bool> EditRemoteVncAsync(int dataId, string name, string ipAdd, int port);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllVisionInputs", ReplyAction="http://tempuri.org/IService1/GetAllVisionInputsResponse")]
     WcfServiceLibrary1.VisionData[] GetAllVisionInputs();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllVisionInputs", ReplyAction="http://tempuri.org/IService1/GetAllVisionInputsResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.VisionData[]> GetAllVisionInputsAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddVisionInput", ReplyAction="http://tempuri.org/IService1/AddVisionInputResponse")]
     bool AddVisionInput(string windowObj, string inputObj, string osdObj);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddVisionInput", ReplyAction="http://tempuri.org/IService1/AddVisionInputResponse")]
+    System.Threading.Tasks.Task<bool> AddVisionInputAsync(string windowObj, string inputObj, string osdObj);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveVisionInput", ReplyAction="http://tempuri.org/IService1/RemoveVisionInputResponse")]
     bool RemoveVisionInput(int id);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveVisionInput", ReplyAction="http://tempuri.org/IService1/RemoveVisionInputResponse")]
+    System.Threading.Tasks.Task<bool> RemoveVisionInputAsync(int id);
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditVisionData", ReplyAction="http://tempuri.org/IService1/EditVisionDataResponse")]
     bool EditVisionData(int id, string windowObj, string inputObj, string osdObj);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditVisionData", ReplyAction="http://tempuri.org/IService1/EditVisionDataResponse")]
+    System.Threading.Tasks.Task<bool> EditVisionDataAsync(int id, string windowObj, string inputObj, string osdObj);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetSystemSettingsInputCount", ReplyAction="http://tempuri.org/IService1/GetSystemSettingsInputCountResponse")]
     int GetSystemSettingsInputCount();
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetSystemSettingsInputCount", ReplyAction="http://tempuri.org/IService1/GetSystemSettingsInputCountResponse")]
+    System.Threading.Tasks.Task<int> GetSystemSettingsInputCountAsync();
+    
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SetSystemSettingsInputCount", ReplyAction="http://tempuri.org/IService1/SetSystemSettingsInputCountResponse")]
     bool SetSystemSettingsInputCount(int count);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SetSystemSettingsInputCount", ReplyAction="http://tempuri.org/IService1/SetSystemSettingsInputCountResponse")]
+    System.Threading.Tasks.Task<bool> SetSystemSettingsInputCountAsync(int count);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1086,9 +1215,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         base.Channel.RegisterCallback();
     }
     
+    public System.Threading.Tasks.Task RegisterCallbackAsync()
+    {
+        return base.Channel.RegisterCallbackAsync();
+    }
+    
     public int AddUser(string name, string userName, string password, int groupId)
     {
         return base.Channel.AddUser(name, userName, password, groupId);
+    }
+    
+    public System.Threading.Tasks.Task<int> AddUserAsync(string name, string userName, string password, int groupId)
+    {
+        return base.Channel.AddUserAsync(name, userName, password, groupId);
     }
     
     public bool EditUser(int userId, string name, string userName, string password, int groupId)
@@ -1096,9 +1235,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.EditUser(userId, name, userName, password, groupId);
     }
     
+    public System.Threading.Tasks.Task<bool> EditUserAsync(int userId, string name, string userName, string password, int groupId)
+    {
+        return base.Channel.EditUserAsync(userId, name, userName, password, groupId);
+    }
+    
     public bool RemoveUser(int userId)
     {
         return base.Channel.RemoveUser(userId);
+    }
+    
+    public System.Threading.Tasks.Task<bool> RemoveUserAsync(int userId)
+    {
+        return base.Channel.RemoveUserAsync(userId);
     }
     
     public WcfServiceLibrary1.UserData[] GetAllUsers()
@@ -1106,9 +1255,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetAllUsers();
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.UserData[]> GetAllUsersAsync()
+    {
+        return base.Channel.GetAllUsersAsync();
+    }
+    
     public WcfServiceLibrary1.UserData GetUser(int userId)
     {
         return base.Channel.GetUser(userId);
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.UserData> GetUserAsync(int userId)
+    {
+        return base.Channel.GetUserAsync(userId);
     }
     
     public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps)
@@ -1116,9 +1275,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.AddGroup(groupName, shareDesktop, allowMaintenace, monitorId, allowApps);
     }
     
+    public System.Threading.Tasks.Task<int> AddGroupAsync(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps)
+    {
+        return base.Channel.AddGroupAsync(groupName, shareDesktop, allowMaintenace, monitorId, allowApps);
+    }
+    
     public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds)
     {
         return base.Channel.EditGroup(groupId, groupName, shareDesktop, allowMaintenace, monitorId, appIds);
+    }
+    
+    public System.Threading.Tasks.Task<bool> EditGroupAsync(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds)
+    {
+        return base.Channel.EditGroupAsync(groupId, groupName, shareDesktop, allowMaintenace, monitorId, appIds);
     }
     
     public bool RemoveGroup(int groupId)
@@ -1126,9 +1295,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.RemoveGroup(groupId);
     }
     
+    public System.Threading.Tasks.Task<bool> RemoveGroupAsync(int groupId)
+    {
+        return base.Channel.RemoveGroupAsync(groupId);
+    }
+    
     public WcfServiceLibrary1.GroupData[] GetAllGroups()
     {
         return base.Channel.GetAllGroups();
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.GroupData[]> GetAllGroupsAsync()
+    {
+        return base.Channel.GetAllGroupsAsync();
     }
     
     public WcfServiceLibrary1.GroupData GetGroupByUserId(int userId)
@@ -1136,9 +1315,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetGroupByUserId(userId);
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.GroupData> GetGroupByUserIdAsync(int userId)
+    {
+        return base.Channel.GetGroupByUserIdAsync(userId);
+    }
+    
     public WcfServiceLibrary1.UserData[] GetUsersInGroup(int groupId)
     {
         return base.Channel.GetUsersInGroup(groupId);
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.UserData[]> GetUsersInGroupAsync(int groupId)
+    {
+        return base.Channel.GetUsersInGroupAsync(groupId);
     }
     
     public int AddApplication(string appName, string extraArguments, string exePath, int left, int top, int right, int bottom)
@@ -1146,9 +1335,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.AddApplication(appName, extraArguments, exePath, left, top, right, bottom);
     }
     
+    public System.Threading.Tasks.Task<int> AddApplicationAsync(string appName, string extraArguments, string exePath, int left, int top, int right, int bottom)
+    {
+        return base.Channel.AddApplicationAsync(appName, extraArguments, exePath, left, top, right, bottom);
+    }
+    
     public bool EditApplication(int appId, string appName, string exePath, string extraArguments, int left, int top, int right, int bottom)
     {
         return base.Channel.EditApplication(appId, appName, exePath, extraArguments, left, top, right, bottom);
+    }
+    
+    public System.Threading.Tasks.Task<bool> EditApplicationAsync(int appId, string appName, string exePath, string extraArguments, int left, int top, int right, int bottom)
+    {
+        return base.Channel.EditApplicationAsync(appId, appName, exePath, extraArguments, left, top, right, bottom);
     }
     
     public bool RemoveApplication(int appId)
@@ -1156,9 +1355,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.RemoveApplication(appId);
     }
     
+    public System.Threading.Tasks.Task<bool> RemoveApplicationAsync(int appId)
+    {
+        return base.Channel.RemoveApplicationAsync(appId);
+    }
+    
     public WcfServiceLibrary1.ApplicationData[] GetAllApplications()
     {
         return base.Channel.GetAllApplications();
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.ApplicationData[]> GetAllApplicationsAsync()
+    {
+        return base.Channel.GetAllApplicationsAsync();
     }
     
     public WcfServiceLibrary1.ApplicationData[] GetAppsWithGroupId(int groupId)
@@ -1166,14 +1375,29 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetAppsWithGroupId(groupId);
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.ApplicationData[]> GetAppsWithGroupIdAsync(int groupId)
+    {
+        return base.Channel.GetAppsWithGroupIdAsync(groupId);
+    }
+    
     public WcfServiceLibrary1.ApplicationData[] GetAppsWithUserId(int userId)
     {
         return base.Channel.GetAppsWithUserId(userId);
     }
     
-    public void AddPreset(string presetName, int userId, System.Collections.Generic.Dictionary<int, WcfServiceLibrary1.WindowsRect> appIds, System.Collections.Generic.Dictionary<int, WcfServiceLibrary1.WindowsRect> vncIds, System.Collections.Generic.Dictionary<int, WcfServiceLibrary1.WindowsRect> inputIds)
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.ApplicationData[]> GetAppsWithUserIdAsync(int userId)
+    {
+        return base.Channel.GetAppsWithUserIdAsync(userId);
+    }
+    
+    public void AddPreset(string presetName, int userId, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] appIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] vncIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] inputIds)
     {
         base.Channel.AddPreset(presetName, userId, appIds, vncIds, inputIds);
+    }
+    
+    public System.Threading.Tasks.Task AddPresetAsync(string presetName, int userId, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] appIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] vncIds, System.Collections.Generic.KeyValuePair<int, WcfServiceLibrary1.WindowsRect>[] inputIds)
+    {
+        return base.Channel.AddPresetAsync(presetName, userId, appIds, vncIds, inputIds);
     }
     
     public void RemovePreset(int presetId)
@@ -1181,9 +1405,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         base.Channel.RemovePreset(presetId);
     }
     
+    public System.Threading.Tasks.Task RemovePresetAsync(int presetId)
+    {
+        return base.Channel.RemovePresetAsync(presetId);
+    }
+    
     public void EditPreset(int presetId, string presetName, int userId, int[] appIds, int[] vncIds, int[] inputIds)
     {
         base.Channel.EditPreset(presetId, presetName, userId, appIds, vncIds, inputIds);
+    }
+    
+    public System.Threading.Tasks.Task EditPresetAsync(int presetId, string presetName, int userId, int[] appIds, int[] vncIds, int[] inputIds)
+    {
+        return base.Channel.EditPresetAsync(presetId, presetName, userId, appIds, vncIds, inputIds);
     }
     
     public WcfServiceLibrary1.PresetData[] GetPresetByUserId(int userId)
@@ -1191,9 +1425,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetPresetByUserId(userId);
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.PresetData[]> GetPresetByUserIdAsync(int userId)
+    {
+        return base.Channel.GetPresetByUserIdAsync(userId);
+    }
+    
     public int GetPresetIdByPresetNameUserId(string presetName, int userId)
     {
         return base.Channel.GetPresetIdByPresetNameUserId(presetName, userId);
+    }
+    
+    public System.Threading.Tasks.Task<int> GetPresetIdByPresetNameUserIdAsync(string presetName, int userId)
+    {
+        return base.Channel.GetPresetIdByPresetNameUserIdAsync(presetName, userId);
     }
     
     public void AddOrEditSetting(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath)
@@ -1201,9 +1445,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         base.Channel.AddOrEditSetting(portStart, portEnd, matrixCol, matrixRow, vncPath);
     }
     
+    public System.Threading.Tasks.Task AddOrEditSettingAsync(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath)
+    {
+        return base.Channel.AddOrEditSettingAsync(portStart, portEnd, matrixCol, matrixRow, vncPath);
+    }
+    
     public void RemoveSetting()
     {
         base.Channel.RemoveSetting();
+    }
+    
+    public System.Threading.Tasks.Task RemoveSettingAsync()
+    {
+        return base.Channel.RemoveSettingAsync();
     }
     
     public bool IsSettingAdded()
@@ -1211,9 +1465,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.IsSettingAdded();
     }
     
+    public System.Threading.Tasks.Task<bool> IsSettingAddedAsync()
+    {
+        return base.Channel.IsSettingAddedAsync();
+    }
+    
     public WcfServiceLibrary1.SettingData GetSetting()
     {
         return base.Channel.GetSetting();
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.SettingData> GetSettingAsync()
+    {
+        return base.Channel.GetSettingAsync();
     }
     
     public WcfServiceLibrary1.MonitorData[] GetMonitorsList()
@@ -1221,9 +1485,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetMonitorsList();
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.MonitorData[]> GetMonitorsListAsync()
+    {
+        return base.Channel.GetMonitorsListAsync();
+    }
+    
     public bool AddMonitor(string name, int left, int top, int right, int bottom)
     {
         return base.Channel.AddMonitor(name, left, top, right, bottom);
+    }
+    
+    public System.Threading.Tasks.Task<bool> AddMonitorAsync(string name, int left, int top, int right, int bottom)
+    {
+        return base.Channel.AddMonitorAsync(name, left, top, right, bottom);
     }
     
     public bool RemoveMonitor(int monitorId)
@@ -1231,9 +1505,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.RemoveMonitor(monitorId);
     }
     
+    public System.Threading.Tasks.Task<bool> RemoveMonitorAsync(int monitorId)
+    {
+        return base.Channel.RemoveMonitorAsync(monitorId);
+    }
+    
     public bool EditMonitor(int monitorId, string name, int left, int top, int right, int bottom)
     {
         return base.Channel.EditMonitor(monitorId, name, left, top, right, bottom);
+    }
+    
+    public System.Threading.Tasks.Task<bool> EditMonitorAsync(int monitorId, string name, int left, int top, int right, int bottom)
+    {
+        return base.Channel.EditMonitorAsync(monitorId, name, left, top, right, bottom);
     }
     
     public WcfServiceLibrary1.MonitorData GetMonitorByGroupId(int groupId)
@@ -1241,9 +1525,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetMonitorByGroupId(groupId);
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.MonitorData> GetMonitorByGroupIdAsync(int groupId)
+    {
+        return base.Channel.GetMonitorByGroupIdAsync(groupId);
+    }
+    
     public WcfServiceLibrary1.MonitorData GetMonitorDataByUserId(int userId)
     {
         return base.Channel.GetMonitorDataByUserId(userId);
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.MonitorData> GetMonitorDataByUserIdAsync(int userId)
+    {
+        return base.Channel.GetMonitorDataByUserIdAsync(userId);
     }
     
     public WcfServiceLibrary1.RemoteVncData[] GetRemoteVncList()
@@ -1251,9 +1545,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetRemoteVncList();
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.RemoteVncData[]> GetRemoteVncListAsync()
+    {
+        return base.Channel.GetRemoteVncListAsync();
+    }
+    
     public bool AddRemoteVnc(string name, string ipAdd, int port)
     {
         return base.Channel.AddRemoteVnc(name, ipAdd, port);
+    }
+    
+    public System.Threading.Tasks.Task<bool> AddRemoteVncAsync(string name, string ipAdd, int port)
+    {
+        return base.Channel.AddRemoteVncAsync(name, ipAdd, port);
     }
     
     public bool RemoveRemoteVnc(int dataId)
@@ -1261,9 +1565,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.RemoveRemoteVnc(dataId);
     }
     
+    public System.Threading.Tasks.Task<bool> RemoveRemoteVncAsync(int dataId)
+    {
+        return base.Channel.RemoveRemoteVncAsync(dataId);
+    }
+    
     public bool EditRemoteVnc(int dataId, string name, string ipAdd, int port)
     {
         return base.Channel.EditRemoteVnc(dataId, name, ipAdd, port);
+    }
+    
+    public System.Threading.Tasks.Task<bool> EditRemoteVncAsync(int dataId, string name, string ipAdd, int port)
+    {
+        return base.Channel.EditRemoteVncAsync(dataId, name, ipAdd, port);
     }
     
     public WcfServiceLibrary1.VisionData[] GetAllVisionInputs()
@@ -1271,9 +1585,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetAllVisionInputs();
     }
     
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.VisionData[]> GetAllVisionInputsAsync()
+    {
+        return base.Channel.GetAllVisionInputsAsync();
+    }
+    
     public bool AddVisionInput(string windowObj, string inputObj, string osdObj)
     {
         return base.Channel.AddVisionInput(windowObj, inputObj, osdObj);
+    }
+    
+    public System.Threading.Tasks.Task<bool> AddVisionInputAsync(string windowObj, string inputObj, string osdObj)
+    {
+        return base.Channel.AddVisionInputAsync(windowObj, inputObj, osdObj);
     }
     
     public bool RemoveVisionInput(int id)
@@ -1281,9 +1605,19 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.RemoveVisionInput(id);
     }
     
+    public System.Threading.Tasks.Task<bool> RemoveVisionInputAsync(int id)
+    {
+        return base.Channel.RemoveVisionInputAsync(id);
+    }
+    
     public bool EditVisionData(int id, string windowObj, string inputObj, string osdObj)
     {
         return base.Channel.EditVisionData(id, windowObj, inputObj, osdObj);
+    }
+    
+    public System.Threading.Tasks.Task<bool> EditVisionDataAsync(int id, string windowObj, string inputObj, string osdObj)
+    {
+        return base.Channel.EditVisionDataAsync(id, windowObj, inputObj, osdObj);
     }
     
     public int GetSystemSettingsInputCount()
@@ -1291,8 +1625,18 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetSystemSettingsInputCount();
     }
     
+    public System.Threading.Tasks.Task<int> GetSystemSettingsInputCountAsync()
+    {
+        return base.Channel.GetSystemSettingsInputCountAsync();
+    }
+    
     public bool SetSystemSettingsInputCount(int count)
     {
         return base.Channel.SetSystemSettingsInputCount(count);
+    }
+    
+    public System.Threading.Tasks.Task<bool> SetSystemSettingsInputCountAsync(int count)
+    {
+        return base.Channel.SetSystemSettingsInputCountAsync(count);
     }
 }
