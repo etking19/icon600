@@ -16,9 +16,9 @@ namespace WindowsFormClient.RgbInput
 
         public enum EStyle
         {
-            BorderAndTitle = 0,
+            NoBorderAndTitle = 0,
+            BorderAndTitle,
             Border,
-            NoBorderAndTitle,
         }
 
         public enum ECursor

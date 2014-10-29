@@ -55,6 +55,7 @@
     <Compile Include="Data\ClientMessageBoxCmd.cs" />
     <Compile Include="Data\ClientMouseCmd.cs" />
     <Compile Include="Data\ClientPresetsCmd.cs" />
+    <Compile Include="Data\ClientUserSettingCmd.cs" />
     <Compile Include="Data\ClientVncCmd.cs" />
     <Compile Include="Data\ClientWndCmd.cs" />
     <Compile Include="Data\ICommand.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Data\ServerLoginReply.cs" />
     <Compile Include="Data\ServerMaintenanceStatus.cs" />
     <Compile Include="Data\ServerPresetsStatus.cs" />
+    <Compile Include="Data\ServerUserSetting.cs" />
     <Compile Include="Data\ServerViewingAreaStatus.cs" />
     <Compile Include="Data\ServerVncStatus.cs" />
     <Compile Include="Data\SubData\ApplicationEntry.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Data\ServerScreenInfo.cs" />
     <Compile Include="Data\ServerWindowsPos.cs" />
     <Compile Include="Data\SubData\PresetsEntry.cs" />
+    <Compile Include="Data\SubData\UserSetting.cs" />
     <Compile Include="Data\SubData\VncEntry.cs" />
     <Compile Include="Data\SubData\WndPos.cs" />
     <Compile Include="Session\ClientSession.cs" />

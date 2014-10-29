@@ -45,6 +45,7 @@ namespace WcfServiceLibrary1
                 Database.DbHelper.GetInstance().CreateTable(new RemoteVnc());
                 Database.DbHelper.GetInstance().CreateTable(new VisionInput());
                 Database.DbHelper.GetInstance().CreateTable(new SystemSettings());
+                Database.DbHelper.GetInstance().CreateTable(new Database.Data.UserSetting());
             }
         }
 
@@ -174,6 +175,9 @@ namespace WcfServiceLibrary1
                     }
                 }
             }
+
+            UserSetting dbUserSetting = new UserSetting() { userId = userId };
+            DbHelper.GetInstance().AddData(dbUserSetting);
 
             NotifyUserAdded(DBTypeEnum.User, userId);
             return userId;
@@ -1289,6 +1293,40 @@ namespace WcfServiceLibrary1
                     {
                         InputCount = count,
                     });
+        }
+
+        public UserSettingData GetUserSetting(int userId)
+        {
+            UserSettingData userSetting = new UserSettingData();
+            Database.Data.UserSetting dbUserSetting = new Database.Data.UserSetting()
+            {
+                userId = userId
+            };
+
+            DataTable dataTableUserSetting = DbHelper.GetInstance().ReadData(dbUserSetting);
+            foreach (DataRow userSettingDataRow in dataTableUserSetting.Rows)
+            {
+                userSetting.id = int.Parse(userSettingDataRow[Database.Data.UserSetting.USER_SETTING_ID].ToString());
+                userSetting.gridX = int.Parse(userSettingDataRow[Database.Data.UserSetting.GRID_X].ToString());
+                userSetting.gridY = int.Parse(userSettingDataRow[Database.Data.UserSetting.GRID_Y].ToString());
+                userSetting.userId = int.Parse(userSettingDataRow[Database.Data.UserSetting.USER_ID].ToString());
+                userSetting.isSnap = int.Parse(userSettingDataRow[Database.Data.UserSetting.APPLY_SNAP].ToString()) == 0? false:true;
+            }
+
+            return userSetting;
+        }
+
+        public bool EditUserSetting(int userId, int gridX, int gridY, bool isSnap)
+        {
+            Database.Data.UserSetting dbUserSetting = new Database.Data.UserSetting()
+            {
+                userId = userId,
+                gridX = gridX,
+                gridY = gridY,
+                isSnap = isSnap,
+            };
+
+            return DbHelper.GetInstance().UpdateData(dbUserSetting);
         }
     }
 }

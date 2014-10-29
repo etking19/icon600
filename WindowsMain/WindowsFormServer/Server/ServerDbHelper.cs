@@ -37,6 +37,10 @@ namespace WindowsFormClient.Server
                 EndpointAddress address = new EndpointAddress(new Uri(Properties.Settings.Default.RemoteIP));
                 
                 NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None);
+                OptionalReliableSession reliableSession = new OptionalReliableSession();
+                reliableSession.InactivityTimeout = new TimeSpan(24, 20, 31, 23);
+                reliableSession.Ordered = true;
+                tcpBinding.ReliableSession = reliableSession;
                 tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 23);
 
                 dupFactory = new DuplexChannelFactory<IService1>(instanceContext, tcpBinding, address);
@@ -323,6 +327,16 @@ namespace WindowsFormClient.Server
         public int GetSystemInputCount()
         {
             return wcfService.GetSystemSettingsInputCount();
+        }
+
+        public UserSettingData GetUserSetting(int userId)
+        {
+            return wcfService.GetUserSetting(userId);
+        }
+
+        public bool EditUserSetting(int userid, int gridX, int gridY, bool isSnap)
+        {
+            return wcfService.EditUserSetting(userid, gridX, gridY, isSnap);
         }
     }
 }

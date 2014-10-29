@@ -22,5 +22,7 @@ namespace Session.Data
         public ServerApplicationStatus UserApplications { get; set; }
 
         public ServerVncStatus VncStatus { get; set; }
+
+        public ServerUserSetting UserSetting { get; set; }
     }
 }

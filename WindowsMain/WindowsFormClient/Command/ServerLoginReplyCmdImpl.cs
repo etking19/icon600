@@ -83,6 +83,9 @@ namespace WindowsFormClient.Command
             // update the gui
             client.RefreshLayout(userInfo, layoutInfo, viewingArea);
 
+            ServerUserSettingCmdImpl userSettingImpl = new ServerUserSettingCmdImpl(client);
+            userSettingImpl.ExecuteCommand(userId, loginData.UserSetting.getCommandString());
+
             // update the application priviledge
             ServerAppStatusCmdImpl appCmdImpl = new ServerAppStatusCmdImpl(client);
             appCmdImpl.ExecuteCommand(userId, loginData.UserApplications.getCommandString());

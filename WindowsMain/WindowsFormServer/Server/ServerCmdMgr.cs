@@ -63,6 +63,9 @@ namespace WindowsFormClient.Server
                 case (int)CommandConst.SubCommandClient.VisionInput:
                     implementor = new Command.ClientVisionInputCmdImpl();
                     break;
+                case (int)CommandConst.SubCommandClient.UserSetting:
+                    implementor = new Command.ClientUserSettingCmdImpl(server, server.GetClientInfo(userId).DbUserId);
+                    break; 
                 default:
                     Trace.WriteLine("No command implementor found with sub id: " + subId);
                     break;

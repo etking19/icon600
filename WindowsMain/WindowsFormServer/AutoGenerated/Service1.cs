@@ -862,6 +862,102 @@ namespace WcfServiceLibrary1
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserSettingData", Namespace="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1")]
+    public partial class UserSettingData : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private int gridXField;
+        
+        private int gridYField;
+        
+        private int idField;
+        
+        private bool isSnapField;
+        
+        private int userIdField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int gridX
+        {
+            get
+            {
+                return this.gridXField;
+            }
+            set
+            {
+                this.gridXField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int gridY
+        {
+            get
+            {
+                return this.gridYField;
+            }
+            set
+            {
+                this.gridYField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int id
+        {
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool isSnap
+        {
+            get
+            {
+                return this.isSnapField;
+            }
+            set
+            {
+                this.isSnapField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int userId
+        {
+            get
+            {
+                return this.userIdField;
+            }
+            set
+            {
+                this.userIdField = value;
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DBType", Namespace="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1")]
     public enum DBType : int
@@ -1153,6 +1249,18 @@ public interface IService1
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SetSystemSettingsInputCount", ReplyAction="http://tempuri.org/IService1/SetSystemSettingsInputCountResponse")]
     System.Threading.Tasks.Task<bool> SetSystemSettingsInputCountAsync(int count);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserSetting", ReplyAction="http://tempuri.org/IService1/GetUserSettingResponse")]
+    WcfServiceLibrary1.UserSettingData GetUserSetting(int userId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserSetting", ReplyAction="http://tempuri.org/IService1/GetUserSettingResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.UserSettingData> GetUserSettingAsync(int userId);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditUserSetting", ReplyAction="http://tempuri.org/IService1/EditUserSettingResponse")]
+    bool EditUserSetting(int userId, int gridX, int gridY, bool isSnap);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditUserSetting", ReplyAction="http://tempuri.org/IService1/EditUserSettingResponse")]
+    System.Threading.Tasks.Task<bool> EditUserSettingAsync(int userId, int gridX, int gridY, bool isSnap);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1638,5 +1746,25 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
     public System.Threading.Tasks.Task<bool> SetSystemSettingsInputCountAsync(int count)
     {
         return base.Channel.SetSystemSettingsInputCountAsync(count);
+    }
+    
+    public WcfServiceLibrary1.UserSettingData GetUserSetting(int userId)
+    {
+        return base.Channel.GetUserSetting(userId);
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.UserSettingData> GetUserSettingAsync(int userId)
+    {
+        return base.Channel.GetUserSettingAsync(userId);
+    }
+    
+    public bool EditUserSetting(int userId, int gridX, int gridY, bool isSnap)
+    {
+        return base.Channel.EditUserSetting(userId, gridX, gridY, isSnap);
+    }
+    
+    public System.Threading.Tasks.Task<bool> EditUserSettingAsync(int userId, int gridX, int gridY, bool isSnap)
+    {
+        return base.Channel.EditUserSettingAsync(userId, gridX, gridY, isSnap);
     }
 }

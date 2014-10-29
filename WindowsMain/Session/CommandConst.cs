@@ -31,6 +31,7 @@ namespace Session
             ApplicationList = 201,
             Maintenance = 202,
             ViewingArea = 203,
+            UserSetting = 204,
             
             // User Presents
             PresetList = 300,
@@ -52,6 +53,7 @@ namespace Session
         {
             // LoginInfo
             Credential = 1,
+            UserSetting = 2,
 
             // ControlInfo
             WindowsAttributes = 100,

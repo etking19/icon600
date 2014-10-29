@@ -54,6 +54,9 @@ namespace WindowsFormClient.Client
                 case (int)CommandConst.SubCommandServer.VisionInput:
                     implementor = new Command.ServerVisionInputCmdImpl(client);
                     break;
+                case (int)CommandConst.SubCommandServer.UserSetting:
+                    implementor = new Command.ServerUserSettingCmdImpl(client);
+                    break;
                 default:
                     break;
             }

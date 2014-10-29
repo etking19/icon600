@@ -69,6 +69,7 @@
     <Compile Include="Command\ServerLoginReplyCmdImpl.cs" />
     <Compile Include="Command\ServerMaintenanceCmdImpl.cs" />
     <Compile Include="Command\ServerPresetCmdImpl.cs" />
+    <Compile Include="Command\ServerUserSettingCmdImpl.cs" />
     <Compile Include="Command\ServerViewingAreaCmdImpl.cs" />
     <Compile Include="Command\ServerVisionInputCmdImpl.cs" />
     <Compile Include="Command\ServerVncStatusCmdImpl.cs" />

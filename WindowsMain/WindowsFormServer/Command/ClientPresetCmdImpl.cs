@@ -102,6 +102,7 @@ namespace WindowsFormClient.Command
                     });
                 }
 
+                // TODO: should get all connected client with same login
                 server.GetConnectionMgr().SendData(
                     (int)CommandConst.MainCommandServer.UserPriviledge,
                     (int)CommandConst.SubCommandServer.PresetList,

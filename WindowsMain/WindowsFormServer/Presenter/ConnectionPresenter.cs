@@ -192,6 +192,17 @@ namespace WindowsFormClient.Presenter
                 });
             }
 
+            // send user data to client
+            UserSettingData settingData = Server.ServerDbHelper.GetInstance().GetUserSetting(model.DbUserId);
+            Session.Data.ServerUserSetting userSetting = new ServerUserSetting()
+            {
+                UserSetting = new UserSetting()
+                {
+                    gridX = settingData.gridX,
+                    gridY = settingData.gridY,
+                    isSnap = settingData.isSnap,
+                }
+            };
 
             // get user's application list
             ServerApplicationStatus serverAppStatus = new ServerApplicationStatus();
@@ -318,6 +329,9 @@ namespace WindowsFormClient.Presenter
 
                 // Current vnc list
                 VncStatus = vncStatus,
+
+                // user settings
+                UserSetting = userSetting,
             };
 
             connectionMgr.SendData(

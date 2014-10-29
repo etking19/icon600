@@ -60,5 +60,11 @@ namespace WindowsFormClient
         void RefreshVisionInputStatus(List<InputAttributes> inputAttrList);
 
         void CloseApplication();
+
+        /// <summary>
+        /// user's screen grid regardless of master screen grid
+        /// </summary>
+        /// <param name="setting"></param>
+        void RefreshUserGridLayout(UserSetting setting);
     }
 }

@@ -61,6 +61,7 @@
     <Compile Include="Command\ClientMessageBoxImpl.cs" />
     <Compile Include="Command\ClientMouseCmdImpl.cs" />
     <Compile Include="Command\ClientPresetCmdImpl.cs" />
+    <Compile Include="Command\ClientUserSettingCmdImpl.cs" />
     <Compile Include="Command\ClientVisionInputCmdImpl.cs" />
     <Compile Include="Command\ClientVncCmdImpl.cs" />
     <Compile Include="Command\ClientWndAttrCmdImpl.cs" />
