@@ -10,7 +10,7 @@ namespace Database.Data
         public const string TABLE_NAME = "user_settings";
 
         public const string USER_SETTING_ID = "user_settings_id";
-        public const string USER_ID = "user_id";
+        public const string USER_ID = "user_table_id";
         public const string GRID_X = "grid_x";
         public const string GRID_Y = "grid_y";
         public const string APPLY_SNAP = "is_snap";
@@ -23,7 +23,7 @@ namespace Database.Data
 
         public string GetCreateCommand()
         {
-            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY({2}) REFERENCES {3}({4}) ON DELETE CASCADE, {5} INTEGER NOT NULL DEFAULT 1, {6} INTEGER NOT NULL DEFAULT 1, {7} INTEGER NOT NULL DEFAULT 0)";
+            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY AUTOINCREMENT, {5} INTEGER NOT NULL DEFAULT 0, {6} INTEGER NOT NULL DEFAULT 0, {7} INTEGER NOT NULL DEFAULT 0, {2} INTEGER, FOREIGN KEY({2}) REFERENCES {3}({4}) ON DELETE CASCADE)";
             return String.Format(query, TABLE_NAME, USER_SETTING_ID, USER_ID, User.TABLE_NAME, User.USER_ID, GRID_X, GRID_Y, APPLY_SNAP);
         }
 
@@ -59,7 +59,7 @@ namespace Database.Data
                 GRID_X, gridX,
                 GRID_Y, gridY,
                 APPLY_SNAP, isSnap ? 1 : 0,
-                USER_ID, id);
+                USER_ID, userId);
         }
     }
 }

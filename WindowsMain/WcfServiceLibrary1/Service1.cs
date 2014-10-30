@@ -1295,12 +1295,12 @@ namespace WcfServiceLibrary1
                     });
         }
 
-        public UserSettingData GetUserSetting(int userId)
+        public UserSettingData GetUserSetting(int dbUserId)
         {
             UserSettingData userSetting = new UserSettingData();
             Database.Data.UserSetting dbUserSetting = new Database.Data.UserSetting()
             {
-                userId = userId
+                userId = dbUserId
             };
 
             DataTable dataTableUserSetting = DbHelper.GetInstance().ReadData(dbUserSetting);

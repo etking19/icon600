@@ -145,6 +145,12 @@
     <Compile Include="FormServerMaintenance.Designer.cs">
       <DependentUpon>FormServerMaintenance.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormUserSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUserSetting.Designer.cs">
+      <DependentUpon>FormUserSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormVnc.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormServerMaintenance.resx">
       <DependentUpon>FormServerMaintenance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUserSetting.resx">
+      <DependentUpon>FormUserSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormVnc.resx">
       <DependentUpon>FormVnc.cs</DependentUpon>

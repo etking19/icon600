@@ -45,12 +45,14 @@ namespace WindowsFormClient
                 {
                     licenceChecker = new LicenseChecker.LicenseChecker(filePath);
                     licenceChecker.EvtLicenseCheckStatus += licenceChecker_EvtLicenseCheckStatus;
+                    break;
                 }
             }
 
             if (licenceChecker == null)
             {
                 MessageBox.Show("No license found. Please plug in dongle and retry.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+
                 return;
             }
 

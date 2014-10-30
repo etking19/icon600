@@ -53,7 +53,13 @@
             this.buttonMessage = new System.Windows.Forms.Button();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.notifyIconClient = new System.Windows.Forms.NotifyIcon(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.settingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.userSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxControls.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxControls
@@ -67,7 +73,7 @@
             this.groupBoxControls.Controls.Add(this.buttonMaintenance);
             this.groupBoxControls.Controls.Add(this.buttonMessage);
             this.groupBoxControls.ForeColor = System.Drawing.Color.White;
-            this.groupBoxControls.Location = new System.Drawing.Point(0, 0);
+            this.groupBoxControls.Location = new System.Drawing.Point(0, 24);
             this.groupBoxControls.Margin = new System.Windows.Forms.Padding(0);
             this.groupBoxControls.Name = "groupBoxControls";
             this.groupBoxControls.Padding = new System.Windows.Forms.Padding(0);
@@ -160,9 +166,9 @@
             this.dockPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(214)))), ((int)(((byte)(233)))));
             this.dockPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.dockPanel.DockBackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.dockPanel.Location = new System.Drawing.Point(0, 68);
+            this.dockPanel.Location = new System.Drawing.Point(0, 92);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(854, 494);
+            this.dockPanel.Size = new System.Drawing.Size(854, 470);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -216,6 +222,48 @@
             this.notifyIconClient.Text = "Vistrol Client";
             this.notifyIconClient.Visible = true;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(854, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // settingToolStripMenuItem
+            // 
+            this.settingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.userSettingsToolStripMenuItem});
+            this.settingToolStripMenuItem.Name = "settingToolStripMenuItem";
+            this.settingToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingToolStripMenuItem.Text = "Settings";
+            this.settingToolStripMenuItem.Click += new System.EventHandler(this.settingToolStripMenuItem_Click);
+            // 
+            // userSettingsToolStripMenuItem
+            // 
+            this.userSettingsToolStripMenuItem.Name = "userSettingsToolStripMenuItem";
+            this.userSettingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.userSettingsToolStripMenuItem.Text = "User Settings";
+            this.userSettingsToolStripMenuItem.Click += new System.EventHandler(this.userSettingsToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem1});
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.aboutToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem1
+            // 
+            this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem1.Text = "About";
+            this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
+            // 
             // FormClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -224,8 +272,10 @@
             this.ClientSize = new System.Drawing.Size(854, 562);
             this.Controls.Add(this.dockPanel);
             this.Controls.Add(this.groupBoxControls);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
+            this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(870, 600);
             this.Name = "FormClient";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -234,7 +284,10 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormClient_Closed);
             this.Load += new System.EventHandler(this.FormClient_Load);
             this.groupBoxControls.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -248,5 +301,10 @@
         private System.Windows.Forms.NotifyIcon notifyIconClient;
         private System.Windows.Forms.CheckBox checkBoxMouse;
         private System.Windows.Forms.CheckBox checkBoxKeyboard;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem settingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem userSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem1;
     }
 }

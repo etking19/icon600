@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient.Command
 {
@@ -22,6 +23,10 @@ namespace WindowsFormClient.Command
             {
                 return;
             }
+
+            UserSettings.GetInstance().GridX = settingData.UserSetting.gridX;
+            UserSettings.GetInstance().GridY = settingData.UserSetting.gridY;
+            UserSettings.GetInstance().ApplySnap = settingData.UserSetting.isSnap;
 
             client.RefreshUserGridLayout(settingData.UserSetting);
         }

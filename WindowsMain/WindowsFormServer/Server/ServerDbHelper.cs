@@ -38,10 +38,9 @@ namespace WindowsFormClient.Server
                 
                 NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None);
                 OptionalReliableSession reliableSession = new OptionalReliableSession();
-                reliableSession.InactivityTimeout = new TimeSpan(24, 20, 31, 23);
-                reliableSession.Ordered = true;
+                reliableSession.InactivityTimeout = new TimeSpan(24, 20, 31, 0);
                 tcpBinding.ReliableSession = reliableSession;
-                tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 23);
+                tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 0);
 
                 dupFactory = new DuplexChannelFactory<IService1>(instanceContext, tcpBinding, address);
                 dupFactory.Open();

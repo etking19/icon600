@@ -330,5 +330,23 @@ namespace WindowsFormClient.Presenter
                 (int)CommandConst.SubCommandClient.VisionInput,
                 visionCmd);
         }
+
+        public void EditUserSettings(int newGridX, int newGridY, bool newSnap)
+        {
+            ClientUserSettingCmd clientUserSettingCmd = new ClientUserSettingCmd()
+            {
+                UserSetting = new UserSetting()
+                {
+                    gridX = newGridX,
+                    gridY = newGridY,
+                    isSnap = newSnap,
+                }
+            };
+
+            connectionMgr.BroadcastMessage(
+                (int)CommandConst.MainCommandClient.LoginInfo,
+                (int)CommandConst.SubCommandClient.UserSetting,
+                clientUserSettingCmd);
+        }
     }
 }

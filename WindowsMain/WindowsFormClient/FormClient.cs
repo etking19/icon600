@@ -13,6 +13,7 @@ using Utils.Windows;
 using WeifenLuo.WinFormsUI.Docking;
 using WindowsFormClient.Client.Model;
 using WindowsFormClient.Comparer;
+using WindowsFormClient.Settings;
 
 namespace WindowsFormClient
 {
@@ -865,7 +866,39 @@ namespace WindowsFormClient
 
         public void RefreshUserGridLayout(UserSetting setting)
         {
-            throw new NotImplementedException();
+            if (setting.isSnap)
+            {
+                formMimic.ClientRow = setting.gridX;
+                formMimic.ClientColumn = setting.gridY;
+            }
+            else
+            {
+                formMimic.ClientRow = 0;
+                formMimic.ClientColumn = 0;
+            }
+            formMimic.RefreshUserMatrixLayout();
+        }
+
+        private void settingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void userSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormUserSetting formUserSetting = new FormUserSetting();
+            formUserSetting.GridX = UserSettings.GetInstance().GridX;
+            formUserSetting.GridY = UserSettings.GetInstance().GridY;
+            formUserSetting.ApplySnap = UserSettings.GetInstance().ApplySnap;
+            if (formUserSetting.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+            {
+                clientPresenter.EditUserSettings(formUserSetting.GridX, formUserSetting.GridY, formUserSetting.ApplySnap);
+            }
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
