@@ -61,6 +61,7 @@
     <Compile Include="Command\ClientMessageBoxImpl.cs" />
     <Compile Include="Command\ClientMouseCmdImpl.cs" />
     <Compile Include="Command\ClientPresetCmdImpl.cs" />
+    <Compile Include="Command\ClientUserSettingCmdImpl.cs" />
     <Compile Include="Command\ClientVisionInputCmdImpl.cs" />
     <Compile Include="Command\ClientVncCmdImpl.cs" />
     <Compile Include="Command\ClientWndAttrCmdImpl.cs" />
@@ -293,6 +294,7 @@
     <None Include="Resources\server.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\remote.png" />
     <Content Include="server.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

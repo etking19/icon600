@@ -45,6 +45,7 @@ namespace WcfServiceLibrary1
                 Database.DbHelper.GetInstance().CreateTable(new RemoteVnc());
                 Database.DbHelper.GetInstance().CreateTable(new VisionInput());
                 Database.DbHelper.GetInstance().CreateTable(new SystemSettings());
+                Database.DbHelper.GetInstance().CreateTable(new Database.Data.UserSetting());
             }
         }
 
@@ -174,6 +175,9 @@ namespace WcfServiceLibrary1
                     }
                 }
             }
+
+            UserSetting dbUserSetting = new UserSetting() { userId = userId };
+            DbHelper.GetInstance().AddData(dbUserSetting);
 
             NotifyUserAdded(DBTypeEnum.User, userId);
             return userId;
@@ -518,7 +522,7 @@ namespace WcfServiceLibrary1
         }
 
 
-        public void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds)
+        public void AddPreset(string presetName, int userId, List<KeyValuePair<int, WindowsRect>> appIds, List<KeyValuePair<int, WindowsRect>> vncIds, List<KeyValuePair<int, WindowsRect>> inputIds)
         {
             PresetName dbPreset = new PresetName()
             {
@@ -679,7 +683,113 @@ namespace WcfServiceLibrary1
             DataTable dataTablePresetName = DbHelper.GetInstance().ReadData(dbPresetName);
             foreach (DataRow presetNameDataRow in dataTablePresetName.Rows)
             {
-                // fill the preset name
+                PresetData presetData = new PresetData()
+                {
+                    Id = int.Parse(presetNameDataRow[PresetName.PRESET_ID].ToString()),
+                    Name = presetNameDataRow[PresetName.PRESET_NAME].ToString(),
+                };
+
+                presetList.Add(presetData);
+            }
+
+
+            // get the application list, vnc list and sources list
+            IList<ApplicationData> allAppList = GetAllApplications();
+            IList<RemoteVncData> allVncList = GetRemoteVncList();
+            IList<VisionData> allVisionDataList = GetAllVisionInputs();
+            foreach (PresetData data in presetList)
+            {
+                // get application list
+                List<ApplicationData> appDataList = new List<ApplicationData>();
+                PresetApplications dbPresetApp = new PresetApplications() { preset_name_id = data.Id};
+                DataTable dataTablePresetApp = DbHelper.GetInstance().ReadData(dbPresetApp);
+                foreach (DataRow presetAppDataRow in dataTablePresetApp.Rows)
+                {
+                    int relativeAppDBId = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_ID].ToString());
+                    ApplicationData defaultAppData = allAppList.First(ApplicationData => ApplicationData.id == relativeAppDBId);
+                    ApplicationData latestAppData = new ApplicationData()
+                    {
+                        id = defaultAppData.id,
+                        name = defaultAppData.name,
+                        arguments = defaultAppData.arguments,
+                        applicationPath = defaultAppData.applicationPath,
+                        rect = new WindowsRect()
+                        {
+                            Left = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_LEFT].ToString()),
+                            Top = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_TOP].ToString()),
+                            Right = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_RIGHT].ToString()),
+                            Bottom = int.Parse(presetAppDataRow[PresetApplications.APPLICATION_LATEST_BOTTOM].ToString())
+                        },
+                    };
+
+                    appDataList.Add(latestAppData);
+                }
+
+                // get vnc list
+                List<RemoteVncData> vncDataList = new List<RemoteVncData>();
+                PresetVnc dbPresetVnc = new PresetVnc() { preset_name_id = data.Id };
+                DataTable dataTablePresetVnc = DbHelper.GetInstance().ReadData(dbPresetVnc);
+                foreach (DataRow presetVncDataRow in dataTablePresetVnc.Rows)
+                {
+                    int relativeVncDBId = int.Parse(presetVncDataRow[PresetVnc.VNC_ID].ToString());
+                    RemoteVncData defaultVncData = allVncList.First(RemoteVncData => RemoteVncData.id == relativeVncDBId);
+                    RemoteVncData latestVncData = new RemoteVncData()
+                    {
+                        id = defaultVncData.id,
+                        name = defaultVncData.name,
+                        remoteIp = defaultVncData.remoteIp,
+                        remotePort = defaultVncData.remotePort,
+                        rect = new WindowsRect()
+                        {
+                            Left = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_LEFT].ToString()),
+                            Top = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_TOP].ToString()),
+                            Right = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_RIGHT].ToString()),
+                            Bottom = int.Parse(presetVncDataRow[PresetVnc.VNC_LATEST_BOTTOM].ToString())
+                        },
+                    };
+
+                    vncDataList.Add(latestVncData);
+                }
+
+                // get the source list
+                List<VisionData> visionDataList = new List<VisionData>();
+                PresetVisionInput dbPresetVision = new PresetVisionInput() { preset_name_id = data.Id };
+                DataTable dataTablePresetVision = DbHelper.GetInstance().ReadData(dbPresetVision);
+                foreach (DataRow presetVisionDataRow in dataTablePresetVision.Rows)
+                {
+                    int relativeVisionDBId = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_ID].ToString());
+                    VisionData defaultVisionData = allVisionDataList.First(VisionData => VisionData.id == relativeVisionDBId);
+                    VisionData latestVisionData = new VisionData()
+                    {
+                        id = defaultVisionData.id,
+                        inputStr = defaultVisionData.inputStr,
+                        osdStr = defaultVisionData.osdStr,
+                        windowStr = defaultVisionData.windowStr,
+                        rect = new WindowsRect()
+                        {
+                            Left = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_LEFT].ToString()),
+                            Top = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_TOP].ToString()),
+                            Right = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_RIGHT].ToString()),
+                            Bottom = int.Parse(presetVisionDataRow[PresetVisionInput.VISION_LATEST_BOTTOM].ToString())
+                        },
+                    };
+
+                    visionDataList.Add(latestVisionData);
+                }
+
+
+                // update the list
+                data.AppDataList = appDataList;
+                data.VncDataList = vncDataList;
+                data.InputDataList = visionDataList;
+            }
+
+
+
+
+
+            /*
+               // fill the preset name
                 PresetData presetData = new PresetData();
                 presetData.Name = presetNameDataRow[PresetName.PRESET_NAME].ToString();
 
@@ -786,7 +896,27 @@ namespace WcfServiceLibrary1
                 presetData.VncDataList = presetVncList;
                 presetData.InputDataList = presetInputList;
                 presetList.Add(presetData);
-            }
+             */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             //// get the allowed list by a user
@@ -1163,6 +1293,40 @@ namespace WcfServiceLibrary1
                     {
                         InputCount = count,
                     });
+        }
+
+        public UserSettingData GetUserSetting(int userId)
+        {
+            UserSettingData userSetting = new UserSettingData();
+            Database.Data.UserSetting dbUserSetting = new Database.Data.UserSetting()
+            {
+                userId = userId
+            };
+
+            DataTable dataTableUserSetting = DbHelper.GetInstance().ReadData(dbUserSetting);
+            foreach (DataRow userSettingDataRow in dataTableUserSetting.Rows)
+            {
+                userSetting.id = int.Parse(userSettingDataRow[Database.Data.UserSetting.USER_SETTING_ID].ToString());
+                userSetting.gridX = int.Parse(userSettingDataRow[Database.Data.UserSetting.GRID_X].ToString());
+                userSetting.gridY = int.Parse(userSettingDataRow[Database.Data.UserSetting.GRID_Y].ToString());
+                userSetting.userId = int.Parse(userSettingDataRow[Database.Data.UserSetting.USER_ID].ToString());
+                userSetting.isSnap = int.Parse(userSettingDataRow[Database.Data.UserSetting.APPLY_SNAP].ToString()) == 0? false:true;
+            }
+
+            return userSetting;
+        }
+
+        public bool EditUserSetting(int userId, int gridX, int gridY, bool isSnap)
+        {
+            Database.Data.UserSetting dbUserSetting = new Database.Data.UserSetting()
+            {
+                userId = userId,
+                gridX = gridX,
+                gridY = gridY,
+                isSnap = isSnap,
+            };
+
+            return DbHelper.GetInstance().UpdateData(dbUserSetting);
         }
     }
 }

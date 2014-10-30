@@ -62,10 +62,11 @@
             this.closeToolStripMenuItem,
             this.closeAllApplicationsToolStripMenuItem});
             this.contextMenuStripRunningApp.Name = "contextMenuStripRunningApp";
-            this.contextMenuStripRunningApp.Size = new System.Drawing.Size(190, 158);
+            this.contextMenuStripRunningApp.Size = new System.Drawing.Size(190, 136);
             // 
             // bringToFrontToolStripMenuItem
             // 
+            this.bringToFrontToolStripMenuItem.Image = global::WindowsFormClient.Properties.Resources._1_bringtofront;
             this.bringToFrontToolStripMenuItem.Name = "bringToFrontToolStripMenuItem";
             this.bringToFrontToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.bringToFrontToolStripMenuItem.Text = "Bring To Front";
@@ -73,6 +74,7 @@
             // 
             // minimizeToolStripMenuItem
             // 
+            this.minimizeToolStripMenuItem.Image = global::WindowsFormClient.Properties.Resources._2_minimize;
             this.minimizeToolStripMenuItem.Name = "minimizeToolStripMenuItem";
             this.minimizeToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.minimizeToolStripMenuItem.Text = "Minimize";
@@ -80,6 +82,7 @@
             // 
             // maximizeToolStripMenuItem
             // 
+            this.maximizeToolStripMenuItem.Image = global::WindowsFormClient.Properties.Resources._3_maximize;
             this.maximizeToolStripMenuItem.Name = "maximizeToolStripMenuItem";
             this.maximizeToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.maximizeToolStripMenuItem.Text = "Maximize";
@@ -87,6 +90,7 @@
             // 
             // restoreToolStripMenuItem
             // 
+            this.restoreToolStripMenuItem.Image = global::WindowsFormClient.Properties.Resources._4_restore;
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
             this.restoreToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.restoreToolStripMenuItem.Text = "Restore";
@@ -94,6 +98,7 @@
             // 
             // closeToolStripMenuItem
             // 
+            this.closeToolStripMenuItem.Image = global::WindowsFormClient.Properties.Resources._5_close;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.closeToolStripMenuItem.Text = "Close";
@@ -101,6 +106,7 @@
             // 
             // closeAllApplicationsToolStripMenuItem
             // 
+            this.closeAllApplicationsToolStripMenuItem.Image = global::WindowsFormClient.Properties.Resources._6_closeall;
             this.closeAllApplicationsToolStripMenuItem.Name = "closeAllApplicationsToolStripMenuItem";
             this.closeAllApplicationsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.closeAllApplicationsToolStripMenuItem.Text = "Close All Applications";

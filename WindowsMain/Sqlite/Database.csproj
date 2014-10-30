@@ -57,6 +57,7 @@
     <Compile Include="Data\RemoteVnc.cs" />
     <Compile Include="Data\Setting.cs" />
     <Compile Include="Data\SystemSettings.cs" />
+    <Compile Include="Data\UserSetting.cs" />
     <Compile Include="Data\VisionInput.cs" />
     <Compile Include="DbHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

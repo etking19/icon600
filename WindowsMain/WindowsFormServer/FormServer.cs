@@ -58,17 +58,17 @@ namespace WindowsFormClient
             string vncClientPath = mainPresenter.VncPath;
             if (vncClientPath == String.Empty)
             {
-                DriveInfo[] allDrives = DriveInfo.GetDrives();
-                foreach (DriveInfo d in allDrives)
+                foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "tvnviewer.exe"))
                 {
-                    foreach (String vncPath in Utils.Files.DirSearch(d.RootDirectory.FullName + "Program Files", "tvnviewer.exe"))
-                    {
-                        vncClientPath = vncPath;
-                        break;
-                    }
+                    vncClientPath = matchPath;
+                    break;
+                }
 
-                    if (vncClientPath != String.Empty)
+                if (vncClientPath == String.Empty)
+                {
+                    foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "tvnviewer.exe"))
                     {
+                        vncClientPath = matchPath;
                         break;
                     }
                 }
@@ -77,19 +77,10 @@ namespace WindowsFormClient
             if (vncClientPath == String.Empty)
             {
                 MessageBox.Show("Tight VNC executable path not found." + Environment.NewLine + "Please install Tight VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-                return;
             }
             else
             {
                 vncServerPath = vncClientPath;
-            }
-
-            FormLogin formLogin = new FormLogin(USERNAME, PASSWORD);
-            System.Windows.Forms.DialogResult result = formLogin.ShowDialog(this);
-            while (result != System.Windows.Forms.DialogResult.OK)
-            {
-                result = formLogin.ShowDialog(this);
             }
 
             notifyIconServer.Text = "Vistrol server is offline";
@@ -120,6 +111,25 @@ namespace WindowsFormClient
             numericUpDownCol.Value = mainPresenter.ScreenColumn == 0 ? 1 : mainPresenter.ScreenColumn;
 
             refreshGeneralPanel();
+
+            // customization
+            if (mainPresenter.PortMin != 0 &&
+                mainPresenter.PortMax != 0)
+            {
+                // start the server automatically
+                btnGeneralStart_Click(this, new EventArgs());
+
+                this.WindowState = FormWindowState.Minimized;
+            }
+            else
+            {
+                FormLogin formLogin = new FormLogin(USERNAME, PASSWORD);
+                System.Windows.Forms.DialogResult result = formLogin.ShowDialog(this);
+                while (result != System.Windows.Forms.DialogResult.OK)
+                {
+                    result = formLogin.ShowDialog(this);
+                }
+            }
         }
 
         void FormServer_Resize(object sender, EventArgs e)

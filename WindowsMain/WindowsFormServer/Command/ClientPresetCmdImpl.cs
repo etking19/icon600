@@ -102,6 +102,7 @@ namespace WindowsFormClient.Command
                     });
                 }
 
+                // TODO: should get all connected client with same login
                 server.GetConnectionMgr().SendData(
                     (int)CommandConst.MainCommandServer.UserPriviledge,
                     (int)CommandConst.SubCommandServer.PresetList,
@@ -123,7 +124,7 @@ namespace WindowsFormClient.Command
             }
 
             // get the application triggered by uer
-            Dictionary<int, WindowsRect> appDic = new Dictionary<int, WindowsRect>();
+            List<KeyValuePair<int, WindowsRect>> appDic = new List<KeyValuePair<int, WindowsRect>>();
             Dictionary<int, int> currentApps = new Dictionary<int,int>(userData.LaunchedAppList);
             for(int i = 0; i < currentApps.Count(); i++)
             {
@@ -134,13 +135,16 @@ namespace WindowsFormClient.Command
                 {
                     var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
 
-                    appDic.Add(dbIndex, new WindowsRect()
+                    WindowsRect rect = new WindowsRect()
                     {
                         Left = latestInfo.posX,
                         Top = latestInfo.posY,
                         Right = latestInfo.posX + latestInfo.width,
                         Bottom = latestInfo.posY + latestInfo.height,
-                    });
+                    };
+                    appDic.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
+
+                    Trace.WriteLine(string.Format("add preset app: {0},{1},{2},{3}", rect.Left, rect.Top, rect.Right, rect.Bottom));
                 }
                 catch (Exception e)
                 {
@@ -149,7 +153,7 @@ namespace WindowsFormClient.Command
             }
 
             // get the vnc triggered by user
-            Dictionary<int, WindowsRect> vncDic = new Dictionary<int, WindowsRect>();
+            List<KeyValuePair<int, WindowsRect>> vncDic = new List<KeyValuePair<int, WindowsRect>>();
             Dictionary<int, int> currentVncs = new Dictionary<int,int>(userData.LaunchedVncList);
             for (int i = 0; i < currentVncs.Count(); i++)
             {
@@ -160,13 +164,13 @@ namespace WindowsFormClient.Command
                 {
                     var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
 
-                    vncDic.Add(dbIndex, new WindowsRect()
+                    vncDic.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
                     {
                         Left = latestInfo.posX,
                         Top = latestInfo.posY,
                         Right = latestInfo.posX + latestInfo.width,
                         Bottom = latestInfo.posY + latestInfo.height,
-                    });
+                    }));
                 }
                 catch (Exception e)
                 {
@@ -177,7 +181,7 @@ namespace WindowsFormClient.Command
 
             // TODO: get latest position of sources
             // get source input triggerred by user
-            Dictionary<int, WindowsRect> inputDic = new Dictionary<int, WindowsRect>();
+            List<KeyValuePair<int, WindowsRect>> inputDic = new List<KeyValuePair<int, WindowsRect>>();
             Dictionary<uint, int> currentSources = new Dictionary<uint,int>(userData.LaunchedSourceList);
             for (int i = 0; i < currentSources.Count(); i++ )
             {
@@ -188,13 +192,13 @@ namespace WindowsFormClient.Command
                 {
                     //var latestInfo = appInfoList.First(t => t.processId == processId);
 
-                    inputDic.Add(dbIndex, new WindowsRect()
+                    inputDic.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
                     {
                        // Left = latestInfo.posX,
                        // Top = latestInfo.posY,
                        // Right = latestInfo.posX + latestInfo.width,
                        // Bottom = latestInfo.posY + latestInfo.height,
-                    });
+                    }));
                 }
                 catch (Exception e)
                 {
@@ -245,6 +249,7 @@ namespace WindowsFormClient.Command
 
         private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
         {
+            
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
             {
@@ -290,6 +295,7 @@ namespace WindowsFormClient.Command
                             appData.rect.Bottom - appData.rect.Top,
                             true);
 
+                    Trace.WriteLine(string.Format("launching app: {0},{1},{2},{3}", appData.rect.Left, appData.rect.Top, appData.rect.Right, appData.rect.Bottom));
                     // add to the connected client info
                     ConnectedClientHelper.GetInstance().AddLaunchedApp(clientId, process.MainWindowHandle.ToInt32(), appData.id);
                 }

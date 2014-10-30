@@ -11,6 +11,7 @@ namespace WindowsFormClient.Server
         private static ServerDbHelper sInstance = null;
         private DuplexChannelFactory<IService1> dupFactory;
         private IService1 wcfService;
+        private IService1Callback callbackHandler;
 
         private ServerDbHelper()
         {
@@ -31,10 +32,15 @@ namespace WindowsFormClient.Server
         {
             try
             {
+                this.callbackHandler = callbackHandler;
                 InstanceContext instanceContext = new InstanceContext(callbackHandler);
                 EndpointAddress address = new EndpointAddress(new Uri(Properties.Settings.Default.RemoteIP));
                 
                 NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None);
+                OptionalReliableSession reliableSession = new OptionalReliableSession();
+                reliableSession.InactivityTimeout = new TimeSpan(24, 20, 31, 23);
+                reliableSession.Ordered = true;
+                tcpBinding.ReliableSession = reliableSession;
                 tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 23);
 
                 dupFactory = new DuplexChannelFactory<IService1>(instanceContext, tcpBinding, address);
@@ -181,9 +187,9 @@ namespace WindowsFormClient.Server
         /// <param name="userId"></param>
         /// <param name="appIds"></param>
         /// <returns>number of data added</returns>
-        public void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds)
+        public void AddPreset(string presetName, int userId, List<KeyValuePair<int, WindowsRect>> appIds, List<KeyValuePair<int, WindowsRect>> vncIds, List<KeyValuePair<int, WindowsRect>> inputIds)
         {
-            wcfService.AddPreset(presetName, userId, appIds, vncIds, inputIds);
+            wcfService.AddPreset(presetName, userId, appIds.ToArray(), vncIds.ToArray(), inputIds.ToArray());
         }
 
         public void RemovePreset(int presetId)
@@ -321,6 +327,16 @@ namespace WindowsFormClient.Server
         public int GetSystemInputCount()
         {
             return wcfService.GetSystemSettingsInputCount();
+        }
+
+        public UserSettingData GetUserSetting(int userId)
+        {
+            return wcfService.GetUserSetting(userId);
+        }
+
+        public bool EditUserSetting(int userid, int gridX, int gridY, bool isSnap)
+        {
+            return wcfService.EditUserSetting(userid, gridX, gridY, isSnap);
         }
     }
 }

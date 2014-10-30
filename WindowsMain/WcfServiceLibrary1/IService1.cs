@@ -65,7 +65,7 @@ namespace WcfServiceLibrary1
         List<ApplicationData> GetAppsWithUserId(int userId);
 
         [OperationContract]
-        void AddPreset(string presetName, int userId, Dictionary<int, WindowsRect> appIds, Dictionary<int, WindowsRect> vncIds, Dictionary<int, WindowsRect> inputIds);
+        void AddPreset(string presetName, int userId, List<KeyValuePair<int, WindowsRect>> appIds, List<KeyValuePair<int, WindowsRect>> vncIds, List<KeyValuePair<int, WindowsRect>> inputIds);
 
         [OperationContract(IsOneWay=true)]
         void RemovePreset(int presetId);
@@ -145,6 +145,12 @@ namespace WcfServiceLibrary1
 
         [OperationContract]
         bool SetSystemSettingsInputCount(int count);
+
+        [OperationContract]
+        UserSettingData GetUserSetting(int userId);
+
+        [OperationContract]
+        bool EditUserSetting(int userId, int gridX, int gridY, bool isSnap);
     }
 
     [DataContract]
@@ -202,6 +208,24 @@ namespace WcfServiceLibrary1
 
         [DataMember]
         public int group { get; set; }
+    }
+
+    public class UserSettingData
+    {
+        [DataMember]
+        public int id { get; set; }
+
+        [DataMember]
+        public int userId { get; set; }
+
+        [DataMember]
+        public int gridX { get; set; }
+
+        [DataMember]
+        public int gridY { get; set; }
+
+        [DataMember]
+        public bool isSnap { get; set; }
     }
 
     [DataContract]

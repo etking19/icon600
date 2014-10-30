@@ -64,30 +64,15 @@ namespace WindowsFormClient
             try
             {
                 error = RGB.Load(out hRGBDLL);
-                if (error != RGBERROR.NO_ERROR)
+                if (error == RGBERROR.NO_ERROR)
                 {
-                    string msg = "Load RGB Driver Failed: 0x" + error.ToString("X");
-                    MessageBox.Show(msg, "Dependencies Loading", MessageBoxButtons.OK);
-                    return;
+                    ServerVisionHelper.getInstance().InitializeVisionDB();
                 }
             }
             catch (Exception)
             {
-                string msg = "Load Failed: 0x" + error.ToString("X");
-                MessageBox.Show(msg, "Dependencies Loading", MessageBoxButtons.OK);
             }
 
-            try
-            {
-                // initialize the Vision driver
-                ServerVisionHelper.getInstance().InitializeVisionDB();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Load Capture Card Data Failed", "Dependencies Loading", MessageBoxButtons.OK);
-            }
-
-            
             licenceChecker.StartCheck();
             Application.Run(formServer);
 

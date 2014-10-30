@@ -861,5 +861,11 @@ namespace WindowsFormClient
 
             formInput.SetVisionInputList(inputAttrList);
         }
+
+
+        public void RefreshUserGridLayout(UserSetting setting)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
