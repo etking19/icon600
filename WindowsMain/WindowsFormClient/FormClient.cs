@@ -74,6 +74,8 @@ namespace WindowsFormClient
 
         private delegate void DelegateMouseHookEvt(Object sender, MouseHook.MouseHookEventArgs arg);
 
+
+
         public FormClient(ConnectionManager mgr, string username, string password)
         {
             InitializeComponent();

@@ -163,6 +163,7 @@
     <Compile Include="GraphicalOverlay.designer.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="Presenter\ClientPresenter.cs" />
+    <Compile Include="Presenter\PresetHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ApplicationSettings.cs" />

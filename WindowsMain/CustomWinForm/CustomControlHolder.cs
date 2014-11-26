@@ -110,6 +110,36 @@ namespace CustomWinForm
             return new Point(actualX, actualY);
         }
 
+        public ControlAttributes GetControl(int controlId)
+        {
+            ControlAttributes attr = new ControlAttributes();
+
+            foreach (Control control in this.Controls)
+            {
+                CustomWinForm winForm = control as CustomWinForm;
+                if (winForm != null &&
+                    winForm.Id == controlId)
+                {
+                    Trace.WriteLine("found matched control with id: " + controlId);
+                    attr.Id = winForm.Id;
+
+                    Point actualPt = getActualPoint(winForm.Location.X, winForm.Location.Y);
+                    attr.Xpos = actualPt.X;
+                    attr.Ypos = actualPt.Y;
+
+                    Size actualSize = new Size((int)Math.Round((float)winForm.Size.Width / mScaleX), (int)Math.Round((float)winForm.Size.Height / mScaleY));
+                    attr.Width = actualSize.Width;
+                    attr.Height = actualSize.Height;
+
+                    attr.Style = winForm.Style;
+
+                    break;
+                }
+            }
+
+            return attr;
+        }
+
         public void AddControl(ControlAttributes controlAttr)
         {
             CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style);
