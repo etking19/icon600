@@ -303,6 +303,13 @@ namespace CustomWinForm
              {
                  if (control.ActualPos.Equals(newPos))
                  {
+                     control.DelegatePos.Clear();
+                     return;
+                 }
+
+                 if (control.DelegatePos.Contains(newPos))
+                 {
+                     Trace.WriteLine("Clear previous list");
                      return;
                  }
 

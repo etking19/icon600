@@ -30,6 +30,20 @@ namespace CustomWinForm
         public Size ActualSize { get; set; }
         public Point ActualPos { get; set; }
 
+        /// <summary>
+        /// keep the previous position before sent to server
+        /// set when wanted to send command to server about changed pos
+        /// reset when server notify position does not match this pos or actual pos
+        /// </summary>
+        public List<Point> DelegatePos 
+        { 
+            get
+            {
+                return delegatePosList;
+            }
+        }
+        private List<Point> delegatePosList = new List<Point>();
+
         private Int32 style;
         public Int32 Style 
         { 
@@ -85,6 +99,7 @@ namespace CustomWinForm
         {
             if (onDelegatePosChangedEvt != null)
             {
+                DelegatePos.Add(ActualPos);
                 onDelegatePosChangedEvt(this, this.Location.X, this.Location.Y);
             }
         }
