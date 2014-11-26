@@ -216,8 +216,6 @@ namespace CustomWinForm
                 // set back to initial point
                 Trace.WriteLine("in minimize state, ignore position change");
                 winForm.ActualPos = new Point(-int.MaxValue, -int.MaxValue);
-                // Point initialPt = getRelativePoint(xPos, yPos);
-                //winForm.SetWindowLocation(initialPt.X, initialPt.Y);
                 return;
             }
 

@@ -76,7 +76,7 @@ namespace WindowsFormClient
 
             if (vncClientPath == String.Empty)
             {
-                MessageBox.Show("Tight VNC executable path not found." + Environment.NewLine + "Please install Tight VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("VNC executable path not found." + Environment.NewLine + "Please install VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {

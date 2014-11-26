@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Sqlite\Database.csproj", "{8972A841-D69B-4F4C-BADA-30E671F3DF50}"
 EndProject
@@ -27,7 +27,6 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerServer", "Installe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormServer", "WindowsFormServer\WindowsFormServer.csproj", "{9E745BEF-0857-48F3-B987-A77516F1D422}"
 	ProjectSection(ProjectDependencies) = postProject
-		{88E5C082-DC7B-4E86-9710-F41961604A81} = {88E5C082-DC7B-4E86-9710-F41961604A81}
 		{3E43CBDE-B04F-4232-9F91-B701E2A9B624} = {3E43CBDE-B04F-4232-9F91-B701E2A9B624}
 	EndProjectSection
 EndProject

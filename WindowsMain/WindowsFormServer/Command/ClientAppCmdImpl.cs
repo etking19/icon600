@@ -42,23 +42,29 @@ namespace WindowsFormClient.Command
 
             using (Process process = Process.Start(info))
             {
-                int tryMax = 1000;
-                while ((process.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(process.MainWindowHandle))
+                if (appData.rect.Left != 0 &&
+                        appData.rect.Top != 0 &&
+                        appData.rect.Right != 0 &&
+                        appData.rect.Bottom != 0)
                 {
-                    System.Threading.Thread.Sleep(10);
-                    process.Refresh();
-                    if (tryMax-- <= 0)
+                    int tryMax = 1000;
+                    while ((process.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(process.MainWindowHandle))
                     {
-                        break;
+                        System.Threading.Thread.Sleep(10);
+                        process.Refresh();
+                        if (tryMax-- <= 0)
+                        {
+                            break;
+                        }
                     }
+                    process.WaitForInputIdle(1000);
+                    NativeMethods.MoveWindow(process.MainWindowHandle,
+                            appData.rect.Left,
+                            appData.rect.Top,
+                            appData.rect.Right - appData.rect.Left,
+                            appData.rect.Bottom - appData.rect.Top,
+                            true);
                 }
-                process.WaitForInputIdle(1000);
-                NativeMethods.MoveWindow(process.MainWindowHandle,
-                        appData.rect.Left,
-                        appData.rect.Top,
-                        appData.rect.Right - appData.rect.Left,
-                        appData.rect.Bottom - appData.rect.Top,
-                        true);
 
                 // save to user list
                 Trace.WriteLine(string.Format("application identifier: {0}", process.MainWindowHandle.ToInt32()));

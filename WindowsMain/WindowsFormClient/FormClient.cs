@@ -45,6 +45,11 @@ namespace WindowsFormClient
         private CustomControlHolder holder;
 
         /// <summary>
+        /// flag to control the minimize state of the control so that it wont affect the callback
+        /// </summary>
+        private bool isMinimized = false;
+
+        /// <summary>
         /// dock UI related
         /// </summary>
         private DeserializeDockContent deserializeDockContent;
@@ -80,11 +85,11 @@ namespace WindowsFormClient
 
         private void FormClient_Load(object sender, EventArgs e)
         {
-            notifyIconClient.BalloonTipTitle = "Vistrol Client";
-            notifyIconClient.BalloonTipIcon = ToolTipIcon.Info;
-            notifyIconClient.Icon = Properties.Resources.client;
-            notifyIconClient.Visible = true;
-            notifyIconClient.DoubleClick += notifyIconClient_DoubleClick;
+            //notifyIconClient.BalloonTipTitle = "Vistrol Client";
+            //notifyIconClient.BalloonTipIcon = ToolTipIcon.Info;
+            //notifyIconClient.Icon = Properties.Resources.client;
+            //notifyIconClient.Visible = true;
+            //notifyIconClient.DoubleClick += notifyIconClient_DoubleClick;
 
             this.IsMdiContainer = false;
             dockPanel.DocumentStyle = DocumentStyle.DockingSdi;
@@ -177,6 +182,12 @@ namespace WindowsFormClient
 
         void holder_onDelegateSizeChangedEvt(int id, Size newSize)
         {
+            if (isMinimized)
+            {
+                return;
+            }
+
+            Trace.WriteLine("app size change delegate");
             clientPresenter.SetApplicationSize(id, newSize);
         }
 
@@ -187,11 +198,18 @@ namespace WindowsFormClient
 
         void holder_onDelegatePosChangedEvt(int id, int xPos, int yPos)
         {
+            if (isMinimized)
+            {
+                return;
+            }
+
+            Trace.WriteLine("app pos change delegate");
             clientPresenter.SetApplicationPos(id, xPos, yPos);
         }
 
         void holder_onDelegateMinimizedEvt(int id)
         {
+            Trace.WriteLine("app minimized delegate");
             clientPresenter.SetApplicationMinimize(id);
         }
 
@@ -795,6 +813,7 @@ namespace WindowsFormClient
             this.Close();
         }
 
+       // private Point previousPos;
         
         protected override void WndProc(ref Message m)
         {
@@ -810,8 +829,9 @@ namespace WindowsFormClient
                         }
                     case Constant.SC_MINIMIZE:
                         {
-                            this.Visible = false;
-                            return;
+                            Trace.WriteLine("SC_minimize fired");
+                            isMinimized = true;
+                            break;
                         }
                     default:
                         break;
@@ -819,6 +839,24 @@ namespace WindowsFormClient
             }
 
             base.WndProc(ref m);
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            if(this.WindowState != FormWindowState.Minimized)
+            {
+                Trace.WriteLine("isMinimized reset");
+                isMinimized = false;
+
+                // refresh the window state
+                foreach(WindowsModel model in applicationList)
+                {
+                    ChangeWindowPos(model);
+                    ChangeWindowStyle(model);
+                }
+            }
         }
 
         private void checkBoxMouse_CheckedChanged(object sender, EventArgs e)

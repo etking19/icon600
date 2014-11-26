@@ -277,25 +277,34 @@ namespace WindowsFormClient.Command
                 };
                 using(Process process = Process.Start(info))
                 {
-                    int tryMax = 1000;
-                    while ((process.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(process.MainWindowHandle))
+                    if (appData.rect.Left != 0 &&
+                        appData.rect.Top != 0 &&
+                        appData.rect.Right != 0 &&
+                        appData.rect.Bottom != 0)
                     {
-                        System.Threading.Thread.Sleep(10);
-                        process.Refresh();
-                        if (tryMax-- <= 0)
+                        // move the window only if not default value
+                        int tryMax = 1000;
+                        while ((process.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(process.MainWindowHandle))
                         {
-                            break;
+                            System.Threading.Thread.Sleep(10);
+                            process.Refresh();
+                            if (tryMax-- <= 0)
+                            {
+                                break;
+                            }
                         }
-                    }
-                    process.WaitForInputIdle(1000);
-                    NativeMethods.MoveWindow(process.MainWindowHandle,
-                            appData.rect.Left,
-                            appData.rect.Top,
-                            appData.rect.Right - appData.rect.Left,
-                            appData.rect.Bottom - appData.rect.Top,
-                            true);
 
-                    Trace.WriteLine(string.Format("launching app: {0},{1},{2},{3}", appData.rect.Left, appData.rect.Top, appData.rect.Right, appData.rect.Bottom));
+                        process.WaitForInputIdle(1000);
+                        NativeMethods.MoveWindow(process.MainWindowHandle,
+                                appData.rect.Left,
+                                appData.rect.Top,
+                                appData.rect.Right - appData.rect.Left,
+                                appData.rect.Bottom - appData.rect.Top,
+                                true);
+
+                        Trace.WriteLine(string.Format("launching app: {0},{1},{2},{3}", appData.rect.Left, appData.rect.Top, appData.rect.Right, appData.rect.Bottom));
+                    }
+                    
                     // add to the connected client info
                     ConnectedClientHelper.GetInstance().AddLaunchedApp(clientId, process.MainWindowHandle.ToInt32(), appData.id);
                 }
