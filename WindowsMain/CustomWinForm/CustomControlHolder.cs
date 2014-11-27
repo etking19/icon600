@@ -7,6 +7,19 @@ using Utils.Windows;
 
 namespace CustomWinForm
 {
+    public class ControlAttributes
+    {
+        public int Id { get; set; }
+        public string WindowName { get; set; }
+        public int Xpos { get; set; }
+        public int Ypos { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int Style { get; set; }
+        public Size MinimumSize { get; set; }
+        public int ZOrder { get; set; }
+    }
+
     public partial class CustomControlHolder: UserControl
     {
 
@@ -52,19 +65,6 @@ namespace CustomWinForm
         /// </summary>
         public int ReferenceXPos { get; set; }
         public int ReferenceYPos { get; set; }
-        
-        public struct ControlAttributes
-        {
-            public int Id { get; set; }
-            public string WindowName { get; set; }
-            public int Xpos { get; set; }
-            public int Ypos { get; set; }
-            public int Width { get; set; }
-            public int Height { get; set; }
-            public int Style { get; set; }
-            public Size MinimumSize { get; set; }
-            public int ZOrder { get; set; }
-        }
 
         private Size mVirtualSize;
 
@@ -134,6 +134,40 @@ namespace CustomWinForm
                     attr.Style = winForm.Style;
 
                     break;
+                }
+            }
+
+            return attr;
+        }
+
+        public ControlAttributes GetTopMostControl()
+        {
+            ControlAttributes attr = new ControlAttributes();
+
+            int largestIndex = 0;
+            foreach (Control control in this.Controls)
+            {
+                CustomWinForm winForm = control as CustomWinForm;
+                if (winForm != null)
+                {
+                    int index = this.Controls.IndexOf(control);
+                    if (index >= largestIndex)
+                    {
+                        largestIndex = index;
+
+                        // update the attr
+                        attr.Id = winForm.Id;
+
+                        Point actualPt = getActualPoint(winForm.Location.X, winForm.Location.Y);
+                        attr.Xpos = actualPt.X;
+                        attr.Ypos = actualPt.Y;
+
+                        Size actualSize = new Size((int)Math.Round((float)winForm.Size.Width / mScaleX), (int)Math.Round((float)winForm.Size.Height / mScaleY));
+                        attr.Width = actualSize.Width;
+                        attr.Height = actualSize.Height;
+
+                        attr.Style = winForm.Style;
+                    }
                 }
             }
 

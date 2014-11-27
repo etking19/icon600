@@ -76,13 +76,28 @@ namespace WindowsFormClient.Server
             return connectedClientList.Values.ToList().AsReadOnly();
         }
 
+        public void ClearLaunchedData(object identifier)
+        {
+            ClientInfoModel model = null;
+            connectedClientList.TryGetValue(identifier, out model);
+            if (model == null)
+            {
+                Trace.WriteLine("ClearLaunchedData: no such user identifier");
+                return;
+            }
+
+            model.LaunchedAppList.Clear();
+            model.LaunchedSourceList.Clear();
+            model.LaunchedVncList.Clear();
+        }
+
         public void AddLaunchedApp(object identifier, int mainWinId, int dbAppIndex)
         {
             ClientInfoModel model = null;
             connectedClientList.TryGetValue(identifier, out model);
             if(model == null)
             {
-                Trace.WriteLine("no such user identifier");
+                Trace.WriteLine("AddLaunchedApp: no such user identifier");
                 return;
             }
 
@@ -183,7 +198,6 @@ namespace WindowsFormClient.Server
                     model.LaunchedSourceList.Remove(processId);
                 }
             }
-            
         }
     }
 }

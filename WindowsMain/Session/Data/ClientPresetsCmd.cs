@@ -18,6 +18,6 @@ namespace Session.Data
 
         public EControlType ControlType { get; set; }
 
-        public PresetsEntry PresetEntry { get; set; }
+        public PresetDataEntry PresetDataEntry { get; set; }
     }
 }

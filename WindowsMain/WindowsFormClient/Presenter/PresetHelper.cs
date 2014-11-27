@@ -2,19 +2,36 @@
 using Session.Data.SubData;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using WindowsFormClient.Client.Model;
 
 namespace WindowsFormClient.Presenter
 {
     class PresetHelper
     {
+        public Dictionary<ControlAttributes, Client.Model.ApplicationModel> TriggeredAppList
+        {
+            get { return triggeredAppList; }
+        }
+
+        public Dictionary<ControlAttributes, Client.Model.VncModel> TriggeredVncList
+        {
+            get { return triggeredVncList; }
+        }
+
+        public Dictionary<ControlAttributes, InputAttributes> TriggeredVisionList
+        {
+            get { return triggeredInputList; }
+        }
+
         private CustomControlHolder mimicWndHolder;
 
-        private Dictionary<Client.Model.ApplicationModel, CustomWinForm.CustomControlHolder.ControlAttributes> triggeredAppList = new Dictionary<ApplicationModel, CustomWinForm.CustomControlHolder.ControlAttributes>();
-        private Dictionary<Client.Model.VncModel, CustomWinForm.CustomControlHolder.ControlAttributes> triggeredVncList = new Dictionary<VncModel, CustomWinForm.CustomControlHolder.ControlAttributes>();
-        private Dictionary<InputAttributes, CustomWinForm.CustomControlHolder.ControlAttributes> triggeredInputList = new Dictionary<InputAttributes, CustomWinForm.CustomControlHolder.ControlAttributes>();
+        private Dictionary<ControlAttributes, Client.Model.ApplicationModel> triggeredAppList = new Dictionary<ControlAttributes, ApplicationModel>();
+        private Dictionary<ControlAttributes, Client.Model.VncModel> triggeredVncList = new Dictionary<ControlAttributes, VncModel>();
+        private Dictionary<ControlAttributes, InputAttributes> triggeredInputList = new Dictionary<ControlAttributes, InputAttributes>();
 
         private List<Client.Model.ApplicationModel> pendingAppList = new List<ApplicationModel>();
         private List<Client.Model.VncModel> pendingVncList = new List<VncModel>();
@@ -28,53 +45,156 @@ namespace WindowsFormClient.Presenter
         public void AddTriggeredApplication(Client.Model.ApplicationModel appModel)
         {
             pendingAppList.Add(appModel);
+
+            ThreadPool.QueueUserWorkItem(s =>
+            {
+                Thread.Sleep(1500);
+                // not a safe way if user trigger 2 similar application within 1.5 second
+                if (pendingAppList.Remove(appModel))
+                {
+                    triggeredAppList.Add(mimicWndHolder.GetTopMostControl(), appModel);
+                }
+                
+            });
         }
 
         public void AddTriggeredVNC(Client.Model.VncModel vncModel)
         {
             pendingVncList.Add(vncModel);
+
+            ThreadPool.QueueUserWorkItem(s =>
+            {
+                Thread.Sleep(1500);
+
+                // not a safe way if user trigger 2 similar application within 1.5 second
+                if (pendingVncList.Remove(vncModel))
+                {
+                    triggeredVncList.Add(mimicWndHolder.GetTopMostControl(), vncModel);
+                }
+            });
         }
 
         public void AddTriggeredVisionInput(InputAttributes visionInput)
         {
             pendingVisionList.Add(visionInput);
+
+            ThreadPool.QueueUserWorkItem(s =>
+            {
+                Thread.Sleep(1500);
+                pendingVisionList.Remove(visionInput);        // not a safe way if user trigger 2 similar application within 1.5 second
+            });
         }
 
         public void AddWindow(int windowId)
         {
-            if (pendingAppList.Count > 0)
+            try
             {
-                triggeredAppList.Add(pendingAppList.ElementAt(0), new CustomWinForm.CustomControlHolder.ControlAttributes() { Id = windowId });
-                pendingAppList.RemoveAt(0);
-                return;
-            }
+                if (pendingAppList.Count > 0)
+                {
+                    triggeredAppList.Add(new ControlAttributes() { Id = windowId }, pendingAppList.ElementAt(0));
+                    pendingAppList.RemoveAt(0);
+                    return;
+                }
 
-            if (pendingVncList.Count > 0)
-            {
-                triggeredVncList.Add(pendingVncList.ElementAt(0), new CustomWinForm.CustomControlHolder.ControlAttributes() { Id = windowId });
-                pendingVncList.RemoveAt(0);
-                return;
-            }
+                if (pendingVncList.Count > 0)
+                {
+                    triggeredVncList.Add(new ControlAttributes() { Id = windowId }, pendingVncList.ElementAt(0));
+                    pendingVncList.RemoveAt(0);
+                    return;
+                }
 
-            if (pendingVisionList.Count > 0)
-            {
-                triggeredInputList.Add(pendingVisionList.ElementAt(0), new CustomWinForm.CustomControlHolder.ControlAttributes() { Id = windowId });
-                pendingVisionList.RemoveAt(0);
-                return;
+                if (pendingVisionList.Count > 0)
+                {
+                    triggeredInputList.Add(new ControlAttributes() { Id = windowId }, pendingVisionList.ElementAt(0));
+                    pendingVisionList.RemoveAt(0);
+                    return;
+                }
             }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+            }
+            
         }
 
         public void RemoveWindow(int windowId)
         {
-            // TODO: find and remove first occurance of the window id
-            var controlAttr = triggeredAppList.Values.First(x => x.Id == windowId);
+            // find and remove occurance of the window id
+            try
+            {
+                var dicAppItem = triggeredAppList.Where(x => x.Key.Id == windowId);
+                foreach(KeyValuePair<ControlAttributes, Client.Model.ApplicationModel> pair in dicAppItem)
+                {
+                    triggeredAppList.Remove(pair.Key);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
+                var dicVncItem = triggeredVncList.Where(x => x.Key.Id == windowId);
+                foreach (KeyValuePair<ControlAttributes, Client.Model.VncModel> pair in dicVncItem)
+                {
+                    triggeredVncList.Remove(pair.Key);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
+                var dicVisionItem = triggeredInputList.Where(x => x.Key.Id == windowId);
+                foreach (KeyValuePair<ControlAttributes, InputAttributes> pair in dicVisionItem)
+                {
+                    triggeredInputList.Remove(pair.Key);
+                }
+            }
+            catch (Exception)
+            {
+            }
             
         }
 
         public void UpdateListContents()
         {
-            // TODO: get all position form mimic holder
-            
+            // get all position form mimic holder
+            Dictionary<ControlAttributes, Client.Model.ApplicationModel> tempAppDic = new Dictionary<ControlAttributes, ApplicationModel>();
+            for (int count = 0; count < triggeredAppList.Count; count++ )
+            {
+                KeyValuePair<ControlAttributes, Client.Model.ApplicationModel> content = triggeredAppList.ElementAt(count);
+                ControlAttributes latestAttr = mimicWndHolder.GetControl(content.Key.Id);
+                tempAppDic.Add(latestAttr, content.Value);
+
+                Trace.WriteLine(String.Format("Application: {0}, pos: {1},{2}, width:{3}, height:{4}", latestAttr.WindowName, latestAttr.Xpos, latestAttr.Ypos, latestAttr.Width, latestAttr.Height));
+            }
+            triggeredAppList = tempAppDic;
+
+
+            Dictionary<ControlAttributes, Client.Model.VncModel> tempVncList = new Dictionary<ControlAttributes, VncModel>();
+            for (int count = 0; count < triggeredVncList.Count; count++)
+            {
+                KeyValuePair<ControlAttributes, Client.Model.VncModel> content = triggeredVncList.ElementAt(count);
+                ControlAttributes latestAttr = mimicWndHolder.GetControl(content.Key.Id);
+                tempVncList.Add(latestAttr, content.Value);
+
+                Trace.WriteLine(String.Format("VNC: {0}, pos: {1},{2}, width:{3}, height:{4}", latestAttr.WindowName, latestAttr.Xpos, latestAttr.Ypos, latestAttr.Width, latestAttr.Height));
+            }
+            triggeredVncList = tempVncList;
+
+
+            Dictionary<ControlAttributes, InputAttributes> tempInputList = new Dictionary<ControlAttributes, InputAttributes>();
+            for (int count = 0; count < triggeredInputList.Count; count++)
+            {
+                KeyValuePair<ControlAttributes, InputAttributes> content = triggeredInputList.ElementAt(count);
+                ControlAttributes latestAttr = mimicWndHolder.GetControl(content.Key.Id);
+                tempInputList.Add(latestAttr, content.Value);
+
+                Trace.WriteLine(String.Format("Input source: {0}, pos: {1},{2}, width:{3}, height:{4}", latestAttr.WindowName, latestAttr.Xpos, latestAttr.Ypos, latestAttr.Width, latestAttr.Height));
+            }
+            triggeredInputList = tempInputList;
         }
     }
 }

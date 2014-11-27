@@ -113,6 +113,144 @@ namespace WindowsFormClient.Command
 
         private void AddPreset(string socketId, int dbUserId, ClientPresetsCmd presetData)
         {
+            List<KeyValuePair<int, WindowsRect>> appList = new List<KeyValuePair<int, WindowsRect>>();
+            Dictionary<ApplicationEntry, WndPos> appDictionary = presetData.PresetDataEntry.PresetAppList;
+            foreach (KeyValuePair<ApplicationEntry, WndPos> pair in appDictionary)
+            {
+                appList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.Identifier, new WindowsRect() 
+                {
+                    Left = pair.Value.posX,
+                    Top = pair.Value.posY,
+                    Right = pair.Value.posX + pair.Value.width,
+                    Bottom = pair.Value.posY + pair.Value.height,
+                }));
+            }
+
+            List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
+            Dictionary<VncEntry, WndPos> vncDictionary = presetData.PresetDataEntry.PresetVncList;
+            foreach (KeyValuePair<VncEntry, WndPos> pair in vncDictionary)
+            {
+                vncList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.Identifier, new WindowsRect()
+                {
+                    Left = pair.Value.posX,
+                    Top = pair.Value.posY,
+                    Right = pair.Value.posX + pair.Value.width,
+                    Bottom = pair.Value.posY + pair.Value.height,
+                }));
+            }
+
+            List<KeyValuePair<int, WindowsRect>> visionList = new List<KeyValuePair<int, WindowsRect>>();
+            Dictionary<InputAttributes, WndPos> visionDictionary = presetData.PresetDataEntry.PresetVisionInputList;
+            foreach (KeyValuePair<InputAttributes, WndPos> pair in visionDictionary)
+            {
+                visionList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.InputId, new WindowsRect()
+                {
+                    Left = pair.Value.posX,
+                    Top = pair.Value.posY,
+                    Right = pair.Value.posX + pair.Value.width,
+                    Bottom = pair.Value.posY + pair.Value.height,
+                }));
+            }
+
+            // cater for previously launched preset
+
+            // Get the current latest position of all running apps
+            IList<WindowsHelper.ApplicationInfo> appInfoList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
+
+            // get the user data associate with this user
+            var userData = Server.ConnectedClientHelper.GetInstance().GetAllUsers().First(t => t.SocketUserId.CompareTo(socketId) == 0);
+            if (userData == null)
+            {
+                return;
+            }
+
+            Dictionary<int, int> currentApps = new Dictionary<int, int>(userData.LaunchedAppList);
+            for (int i = 0; i < currentApps.Count(); i++)
+            {
+                int wndIdentifier = currentApps.ElementAt(i).Key;
+                int dbIndex = currentApps.ElementAt(i).Value;
+
+                try
+                {
+                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
+
+                    WindowsRect rect = new WindowsRect()
+                    {
+                        Left = latestInfo.posX,
+                        Top = latestInfo.posY,
+                        Right = latestInfo.posX + latestInfo.width,
+                        Bottom = latestInfo.posY + latestInfo.height,
+                    };
+                    appList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.Message);
+                }
+            }
+
+            Dictionary<int, int> currentVncs = new Dictionary<int, int>(userData.LaunchedVncList);
+            for (int i = 0; i < currentVncs.Count(); i++)
+            {
+                int wndIdentifier = currentVncs.ElementAt(i).Key;
+                int dbIndex = currentVncs.ElementAt(i).Value;
+
+                try
+                {
+                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
+
+                    vncList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
+                    {
+                        Left = latestInfo.posX,
+                        Top = latestInfo.posY,
+                        Right = latestInfo.posX + latestInfo.width,
+                        Bottom = latestInfo.posY + latestInfo.height,
+                    }));
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.Message);
+                }
+
+            }
+
+            Dictionary<uint, int> currentSources = new Dictionary<uint, int>(userData.LaunchedSourceList);
+            for (int i = 0; i < currentSources.Count(); i++)
+            {
+                uint processId = currentSources.ElementAt(i).Key;
+                int dbIndex = currentSources.ElementAt(i).Value;
+
+                try
+                {
+                    visionList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
+                    {
+                        // Left = latestInfo.posX,
+                        // Top = latestInfo.posY,
+                        // Right = latestInfo.posX + latestInfo.width,
+                        // Bottom = latestInfo.posY + latestInfo.height,
+                    }));
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e.Message);
+                }
+
+            }
+
+            Server.ServerDbHelper.GetInstance().AddPreset(
+                presetData.PresetDataEntry.Name,
+                dbUserId,
+                appList,
+                vncList,
+                visionList);
+
+
+
+
+            /* ---------------------------------
+             * OLD IMPLEMENTATION WHERE SERVER KEEP REFERENCE TO APP TRIGGER
+             * ---------------------------------
+             * 
             // Get the current latest position of all running apps
             IList<WindowsHelper.ApplicationInfo> appInfoList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
 
@@ -208,48 +346,27 @@ namespace WindowsFormClient.Command
             }
 
             Server.ServerDbHelper.GetInstance().AddPreset(
-                presetData.PresetEntry.Name,
+                presetData.PresetDataEntry.Name,
                 dbUserId,
                 appDic,
                 vncDic,
                 inputDic);
+             */
         }
 
         private void RemovePreset(ClientPresetsCmd presetData)
         {
             // remove preset from database
-            Server.ServerDbHelper.GetInstance().RemovePreset(presetData.PresetEntry.Identifier);
+            Server.ServerDbHelper.GetInstance().RemovePreset(presetData.PresetDataEntry.Identifier);
         }
 
         private void ModifyPreset(int userId, ClientPresetsCmd presetData)
         {
-            /*
-            List<int> applicationIds = new List<int>();
-            foreach (ApplicationEntry entry in presetData.PresetEntry.ApplicationList)
-            {
-                applicationIds.Add(entry.Identifier);
-            }
-
-            List<int> vncIds = new List<int>();
-            foreach (VncEntry vnc in presetData.PresetEntry.VncList)
-            {
-                vncIds.Add(vnc.Identifier);
-            }
-
-            List<int> inputIds = new List<int>();
-            foreach (InputAttributes input in presetData.PresetEntry.InputList)
-            {
-                inputIds.Add(input.InputId);
-            }
-
-
-            Server.ServerDbHelper.GetInstance().EditPreset(presetData.PresetEntry.Identifier, presetData.PresetEntry.Name, userId, applicationIds, vncIds, inputIds);
-             * */
+            // no implementation yet
         }
 
         private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
         {
-            
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
             {
@@ -265,9 +382,12 @@ namespace WindowsFormClient.Command
                 }
             }
 
+            // reset the launched list
+            ConnectedClientHelper.GetInstance().ClearLaunchedData(clientId);
+
             // 2. trigger the apps in the preset by giving preset's id
             // get the rect from the preset table
-            PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(dbUserId).First(PresetData => PresetData.Id == presetData.PresetEntry.Identifier);
+            PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(dbUserId).First(PresetData => PresetData.Id == presetData.PresetDataEntry.Identifier);
             foreach (ApplicationData appData in preset.AppDataList)
             {
                 ProcessStartInfo info = new ProcessStartInfo()

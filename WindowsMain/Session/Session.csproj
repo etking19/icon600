@@ -74,6 +74,7 @@
     <Compile Include="Data\SubData\MonitorInfo.cs" />
     <Compile Include="Data\ServerScreenInfo.cs" />
     <Compile Include="Data\ServerWindowsPos.cs" />
+    <Compile Include="Data\SubData\PresetDataEntry.cs" />
     <Compile Include="Data\SubData\PresetsEntry.cs" />
     <Compile Include="Data\SubData\UserSetting.cs" />
     <Compile Include="Data\SubData\VncEntry.cs" />

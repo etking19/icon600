@@ -68,7 +68,7 @@ namespace WindowsFormClient.Command
 
                 // save to user list
                 Trace.WriteLine(string.Format("application identifier: {0}", process.MainWindowHandle.ToInt32()));
-                Server.ConnectedClientHelper.GetInstance().AddLaunchedApp(userId, process.MainWindowHandle.ToInt32(), appData.id);
+                //Server.ConnectedClientHelper.GetInstance().AddLaunchedApp(userId, process.MainWindowHandle.ToInt32(), appData.id);
             }
         }
     }

@@ -13,6 +13,7 @@ using Utils.Windows;
 using WeifenLuo.WinFormsUI.Docking;
 using WindowsFormClient.Client.Model;
 using WindowsFormClient.Comparer;
+using WindowsFormClient.Presenter;
 using WindowsFormClient.Settings;
 
 namespace WindowsFormClient
@@ -74,7 +75,7 @@ namespace WindowsFormClient
 
         private delegate void DelegateMouseHookEvt(Object sender, MouseHook.MouseHookEventArgs arg);
 
-
+        private PresetHelper presetHelper;
 
         public FormClient(ConnectionManager mgr, string username, string password)
         {
@@ -127,6 +128,9 @@ namespace WindowsFormClient
             mouseHook.HookInvoked += mouseHook_HookInvoked;
             keyboardHook = new KeyboardHook();
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
+
+            // preset helper class
+            presetHelper = new PresetHelper(holder);
         }
 
         void notifyIconClient_DoubleClick(object sender, EventArgs e)
@@ -312,7 +316,11 @@ namespace WindowsFormClient
 
             if (addPreset.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                clientPresenter.AddPreset(addPreset.PresetName);
+                presetHelper.UpdateListContents();
+                clientPresenter.AddPreset(addPreset.PresetName, 
+                    presetHelper.TriggeredAppList, 
+                    presetHelper.TriggeredVncList, 
+                    presetHelper.TriggeredVisionList);
             }
         }
 
@@ -336,6 +344,7 @@ namespace WindowsFormClient
                 Client.Model.VncModel vncData = null;
                 if ((vncData = (Client.Model.VncModel)e.Data.GetData(typeof(Client.Model.VncModel))) != null)
                 {
+                    presetHelper.AddTriggeredVNC(vncData);
                     clientPresenter.TriggerVnc(vncData);
                 }
             }
@@ -360,6 +369,7 @@ namespace WindowsFormClient
                 Client.Model.ApplicationModel applicationData = null;
                 if ((applicationData = (Client.Model.ApplicationModel)e.Data.GetData(typeof(Client.Model.ApplicationModel))) != null)
                 {
+                    presetHelper.AddTriggeredApplication(applicationData);
                     clientPresenter.TriggerApplication(applicationData);
                 }
             }
@@ -368,6 +378,7 @@ namespace WindowsFormClient
                 InputAttributes attributeData = null;
                 if ((attributeData = (InputAttributes)e.Data.GetData(typeof(InputAttributes))) != null)
                 {
+                    presetHelper.AddTriggeredVisionInput(attributeData);
                     clientPresenter.TriggerVisionInput(attributeData);
                 }
             }
@@ -649,12 +660,18 @@ namespace WindowsFormClient
 
                 refreshAppList |= true;
                 AddWindow(windows);
+
+                // preset
+                presetHelper.AddWindow(windows.WindowsId);
             }
 
             foreach (Client.Model.WindowsModel windows in removedQuery)
             {
                 refreshAppList |= true;
                 RemoveWindow(windows);
+
+                // preset
+                presetHelper.RemoveWindow(windows.WindowsId);
             }
 
             foreach (Client.Model.WindowsModel windows in modifiedNameQuery)
@@ -697,7 +714,7 @@ namespace WindowsFormClient
 
         private void AddWindow(Client.Model.WindowsModel wndPos)
         {
-            holder.AddControl(new CustomWinForm.CustomControlHolder.ControlAttributes
+            holder.AddControl(new ControlAttributes
             {
                 Id = wndPos.WindowsId,
                 WindowName = wndPos.DisplayName,

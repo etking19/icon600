@@ -1,4 +1,5 @@
-﻿using Session;
+﻿using CustomWinForm;
+using Session;
 using Session.Connection;
 using Session.Data;
 using Session.Data.SubData;
@@ -142,17 +143,77 @@ namespace WindowsFormClient.Presenter
                 keyboardCmd);
         }
 
-        public void AddPreset(string name)
+        public void AddPreset(string name, 
+            Dictionary<ControlAttributes, Client.Model.ApplicationModel> appDic, 
+            Dictionary<ControlAttributes, Client.Model.VncModel> vncDic,
+            Dictionary<ControlAttributes, InputAttributes> visionDic)
         {
-            PresetsEntry presetEntry = new PresetsEntry()
+            PresetDataEntry dataEntry = new PresetDataEntry();
+            dataEntry.Name = name;
+            dataEntry.PresetAppList = new Dictionary<ApplicationEntry, WndPos>();
+            dataEntry.PresetVisionInputList = new Dictionary<InputAttributes, WndPos>();
+            dataEntry.PresetVncList = new Dictionary<VncEntry, WndPos>();
+
+            foreach(KeyValuePair<ControlAttributes, Client.Model.ApplicationModel> pair in appDic)
             {
-                Name = name,
-            };
+                ApplicationEntry appEntry = new ApplicationEntry()
+                {
+                    Identifier = pair.Value.AppliationId,
+                    Name = pair.Value.ApplicationName,
+                };
+
+                WndPos wndPos = new WndPos()
+                {
+                    posX = pair.Key.Xpos,
+                    posY = pair.Key.Ypos,
+                    width = pair.Key.Width,
+                    height = pair.Key.Height,
+                    style = pair.Key.Style,
+                };
+
+                dataEntry.PresetAppList.Add(appEntry, wndPos);
+            }
+
+            foreach (KeyValuePair<ControlAttributes, Client.Model.VncModel> pair in vncDic)
+            {
+                VncEntry vncEntry = new VncEntry()
+                {
+                    Identifier = pair.Value.Identifier,
+                    DisplayName = pair.Value.DisplayName,
+                    IpAddress = pair.Value.VncServerIp,
+                    Port = pair.Value.VncServerPort,
+                };
+
+                WndPos wndPos = new WndPos()
+                {
+                    posX = pair.Key.Xpos,
+                    posY = pair.Key.Ypos,
+                    width = pair.Key.Width,
+                    height = pair.Key.Height,
+                    style = pair.Key.Style,
+                };
+
+                dataEntry.PresetVncList.Add(vncEntry, wndPos);
+            }
+
+            foreach (KeyValuePair<ControlAttributes, InputAttributes> pair in visionDic)
+            {
+                WndPos wndPos = new WndPos()
+                {
+                    posX = pair.Key.Xpos,
+                    posY = pair.Key.Ypos,
+                    width = pair.Key.Width,
+                    height = pair.Key.Height,
+                    style = pair.Key.Style,
+                };
+
+                dataEntry.PresetVisionInputList.Add(pair.Value, wndPos);
+            }
 
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {
                 ControlType = ClientPresetsCmd.EControlType.Add,
-                PresetEntry = presetEntry,
+                PresetDataEntry = dataEntry,
             };
 
             connectionMgr.BroadcastMessage(
@@ -166,7 +227,7 @@ namespace WindowsFormClient.Presenter
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {
                 ControlType = ClientPresetsCmd.EControlType.Delete,
-                PresetEntry = new PresetsEntry { Identifier = presetModel.PresetId }
+                PresetDataEntry = new PresetDataEntry { Identifier = presetModel.PresetId }
             };
 
             connectionMgr.BroadcastMessage(
@@ -180,7 +241,7 @@ namespace WindowsFormClient.Presenter
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {
                 ControlType = ClientPresetsCmd.EControlType.Launch,
-                PresetEntry = new PresetsEntry()
+                PresetDataEntry = new PresetDataEntry()
                 {
                     Identifier = presetModel.PresetId,
                 }

@@ -43,7 +43,7 @@ namespace WindowsFormClient.Command
             int moduleId = vncClientImpl.StartClient(data.IpAddress, data.Port);
 
             // save to user list
-            Server.ConnectedClientHelper.GetInstance().AddLaunchedVnc(userId, moduleId, data.Identifier);
+            //Server.ConnectedClientHelper.GetInstance().AddLaunchedVnc(userId, moduleId, data.Identifier);
         }
     }
 }
