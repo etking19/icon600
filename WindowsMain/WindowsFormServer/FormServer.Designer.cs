@@ -466,10 +466,10 @@
             this.tabPageUser.Controls.Add(this.btnUsersAdd);
             this.tabPageUser.Controls.Add(this.dataGridViewUsers);
             this.tabPageUser.Controls.Add(this.dataGridUsers);
-            this.tabPageUser.Location = new System.Drawing.Point(4, 22);
+            this.tabPageUser.Location = new System.Drawing.Point(4, 25);
             this.tabPageUser.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageUser.Name = "tabPageUser";
-            this.tabPageUser.Size = new System.Drawing.Size(718, 638);
+            this.tabPageUser.Size = new System.Drawing.Size(718, 635);
             this.tabPageUser.TabIndex = 0;
             this.tabPageUser.Text = "User Management";
             this.tabPageUser.UseVisualStyleBackColor = true;
@@ -546,19 +546,20 @@
             this.dataGridViewUsers.Location = new System.Drawing.Point(4, 44);
             this.dataGridViewUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewUsers.Name = "dataGridViewUsers";
-            this.dataGridViewUsers.Size = new System.Drawing.Size(710, 590);
+            this.dataGridViewUsers.Size = new System.Drawing.Size(710, 587);
             this.dataGridViewUsers.TabIndex = 1;
             // 
             // dataGridUsers
             // 
             this.dataGridUsers.AllowUserToOrderColumns = true;
             this.dataGridUsers.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridUsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridUsers.Location = new System.Drawing.Point(0, 0);
             this.dataGridUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridUsers.Name = "dataGridUsers";
-            this.dataGridUsers.Size = new System.Drawing.Size(718, 638);
+            this.dataGridUsers.Size = new System.Drawing.Size(718, 635);
             this.dataGridUsers.TabIndex = 0;
             // 
             // tabApplications

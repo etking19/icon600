@@ -15,6 +15,7 @@ namespace WindowsFormClient
     {
         private static FormLicense formLicense;
         private static FormServer formServer;
+        private static WcfCallbackHandler wcfCallback;
 
         private delegate void DelegateUI(LicenseChecker.LicenseChecker checker, bool isValid);
 
@@ -59,7 +60,9 @@ namespace WindowsFormClient
             // initialize database
             ConnectionManager connMgr = new ConnectionManager();
             formServer = new FormServer(connMgr);
-            Server.ServerDbHelper.GetInstance().Initialize(new WcfCallbackHandler(connMgr, formServer));
+
+            wcfCallback = new WcfCallbackHandler(connMgr, formServer);
+            Server.ServerDbHelper.GetInstance().Initialize(wcfCallback);
             
             RGBERROR error = 0;
             IntPtr hRGBDLL = IntPtr.Zero;

@@ -1261,6 +1261,12 @@ public interface IService1
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditUserSetting", ReplyAction="http://tempuri.org/IService1/EditUserSettingResponse")]
     System.Threading.Tasks.Task<bool> EditUserSettingAsync(int userId, int gridX, int gridY, bool isSnap);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/KeepAlive", ReplyAction="http://tempuri.org/IService1/KeepAliveResponse")]
+    void KeepAlive();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/KeepAlive", ReplyAction="http://tempuri.org/IService1/KeepAliveResponse")]
+    System.Threading.Tasks.Task KeepAliveAsync();
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1766,5 +1772,15 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
     public System.Threading.Tasks.Task<bool> EditUserSettingAsync(int userId, int gridX, int gridY, bool isSnap)
     {
         return base.Channel.EditUserSettingAsync(userId, gridX, gridY, isSnap);
+    }
+    
+    public void KeepAlive()
+    {
+        base.Channel.KeepAlive();
+    }
+    
+    public System.Threading.Tasks.Task KeepAliveAsync()
+    {
+        return base.Channel.KeepAliveAsync();
     }
 }

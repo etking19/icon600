@@ -96,6 +96,7 @@ namespace RemoteFormServer
 
         private void FormLogin_Closed(object sender, FormClosedEventArgs e)
         {
+
         }
 
         private void buttonClose_Click(object sender, EventArgs e)

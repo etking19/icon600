@@ -1328,5 +1328,10 @@ namespace WcfServiceLibrary1
 
             return DbHelper.GetInstance().UpdateData(dbUserSetting);
         }
+
+        public void KeepAlive()
+        {
+            // do nothing
+        }
     }
 }

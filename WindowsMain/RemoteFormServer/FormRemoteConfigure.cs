@@ -26,6 +26,7 @@ namespace RemoteFormServer
         {
             InitializeComponent();
             this.Load += FormRemoteConfigure_Load;
+            this.FormClosing += FormRemoteConfigure_FormClosing;
 
             remoteVncPresenter = new RemoteVncPresenter();
             applicationPresenter = new ApplicationsPresenter();
@@ -33,6 +34,12 @@ namespace RemoteFormServer
             userPresenter = new UsersPresenter();
             visionInputPresenter = new VisionInputPresenter();
             monitorPresenter = new MonitorsPresenter();
+        }
+
+        void FormRemoteConfigure_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // initialize db helper
+            WindowsFormClient.Server.ServerDbHelper.GetInstance().Shutdown();
         }
 
         void FormRemoteConfigure_Load(object sender, EventArgs e)

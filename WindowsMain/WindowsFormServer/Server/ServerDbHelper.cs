@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.Threading;
 using WcfServiceLibrary1;
 
 namespace WindowsFormClient.Server
@@ -12,6 +14,7 @@ namespace WindowsFormClient.Server
         private DuplexChannelFactory<IService1> dupFactory;
         private IService1 wcfService;
         private IService1Callback callbackHandler;
+        private volatile bool _shouldStop = false;
 
         private ServerDbHelper()
         {
@@ -32,21 +35,32 @@ namespace WindowsFormClient.Server
         {
             try
             {
+
                 this.callbackHandler = callbackHandler;
                 InstanceContext instanceContext = new InstanceContext(callbackHandler);
                 EndpointAddress address = new EndpointAddress(new Uri(Properties.Settings.Default.RemoteIP));
                 
                 NetTcpBinding tcpBinding = new NetTcpBinding(SecurityMode.None);
-                OptionalReliableSession reliableSession = new OptionalReliableSession();
-                reliableSession.InactivityTimeout = new TimeSpan(24, 20, 31, 0);
+                ReliableSessionBindingElement reliableBe = new ReliableSessionBindingElement();
+                reliableBe.Ordered = true;
+                tcpBinding.OpenTimeout = new TimeSpan(24, 20, 31, 23);
+                tcpBinding.CloseTimeout = new TimeSpan(24, 20, 31, 23);
+                tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 23);
+                tcpBinding.SendTimeout = new TimeSpan(24, 20, 31, 23);
+
+                OptionalReliableSession reliableSession = new OptionalReliableSession(reliableBe);
                 tcpBinding.ReliableSession = reliableSession;
-                tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 0);
+                tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 23);
 
                 dupFactory = new DuplexChannelFactory<IService1>(instanceContext, tcpBinding, address);
                 dupFactory.Open();
 
                 wcfService = dupFactory.CreateChannel();
                 wcfService.RegisterCallback();
+
+                Thread workerThread = new Thread(DoWork);
+                _shouldStop = true;
+                workerThread.Start();
             }
             catch (Exception)
             {
@@ -59,12 +73,32 @@ namespace WindowsFormClient.Server
         public void Initialize(IService1 wcfService)
         {
             this.wcfService = wcfService;
+            Thread workerThread = new Thread(DoWork);
+            _shouldStop = true;
+            workerThread.Start();
+        }
+
+        private void keepAlive()
+        {
+            Thread workerThread = new Thread(DoWork);
+            _shouldStop = true;
+            workerThread.Start();
+        }
+
+        private void DoWork()
+        {
+            while (_shouldStop)
+            {
+                this.wcfService.KeepAlive();
+                Thread.Sleep(1000);
+            }
         }
 
         public void Shutdown()
         {
             try
             {
+                _shouldStop = false;
                 dupFactory.Close();
                 wcfService = null;
             }

@@ -151,6 +151,9 @@ namespace WcfServiceLibrary1
 
         [OperationContract]
         bool EditUserSetting(int userId, int gridX, int gridY, bool isSnap);
+
+        [OperationContract]
+        void KeepAlive();
     }
 
     [DataContract]
