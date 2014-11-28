@@ -70,7 +70,19 @@ namespace WindowsFormClient.RgbInput
         public bool WndMenuBar { get; set; }
         public bool WndAlwaysOnTop { get; set; }
         public ECursor WndCursorMode { get; set; }
-        public string WndCaption { get; set; }
+
+        private string defaultWndCaption = "Input Window";
+        public string WndCaption 
+        { 
+            get
+            {
+                return defaultWndCaption;
+            }
+            set
+            {
+                defaultWndCaption = value;
+            }
+        }
         public int WndInvalidInputMsgTime { get; set; }
         public ECaptureFormat WndCaptureMode { get; set; }
         public EDeinterlace WndDeinterlaceMode { get; set; }

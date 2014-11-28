@@ -27,8 +27,8 @@ namespace CustomWinForm
         public int Id { get; private set;}
 
         // used to control the actual size and relative size scaling issue
-        public Size ActualSize { get; set; }
-        public Point ActualPos { get; set; }
+        public Size LatestSize { get; set; }
+        public Point LatestPos { get; set; }
 
         /// <summary>
         /// keep the previous position before sent to server
@@ -44,6 +44,18 @@ namespace CustomWinForm
         }
         private List<Point> delegatePosList = new List<Point>();
 
+        /// <summary>
+        /// used to control server sending position update while the actual window already moved, pending send update to server
+        /// </summary>
+        public List<Point> ForwardPos
+        {
+            get
+            {
+                return forwardPosList;
+            }
+        }
+        private List<Point> forwardPosList = new List<Point>();
+
         private Int32 style;
         public Int32 Style 
         { 
@@ -51,7 +63,7 @@ namespace CustomWinForm
             set 
             { 
                 style = value;
-                UpdateStyles();
+                //UpdateStyles();
             } 
         }
 
@@ -64,18 +76,7 @@ namespace CustomWinForm
         {
             InitializeComponent();
             this.Id = id;
-            this.Style = style;
-            this.LocationChanged += CustomWinForm_LocationChanged;
-        }
-
-        void CustomWinForm_LocationChanged(object sender, EventArgs e)
-        {
-            int outLocationX;
-            int outLocationY;
-            if (performLocationSnap(this.Location.X, this.Location.Y, out outLocationX, out outLocationY))
-            {
-                this.Location = new Point(outLocationX, outLocationY);
-            }
+            this.Style = style;            
         }
 
         public void SetWindowName(string name)
@@ -97,10 +98,20 @@ namespace CustomWinForm
 
         private void onLocationChanged(object sender, EventArgs e)
         {
-            if (onDelegatePosChangedEvt != null)
+            int outLocationX;
+            int outLocationY;
+            if (performLocationSnap(this.Location.X, this.Location.Y, out outLocationX, out outLocationY))
             {
-                DelegatePos.Add(ActualPos);
-                onDelegatePosChangedEvt(this, this.Location.X, this.Location.Y);
+                Trace.WriteLine(String.Format("snap, previous: {0},{1}, snap: {2},{3}", this.Location.X, this.Location.Y, outLocationX, outLocationY));
+                this.Location = new Point(outLocationX, outLocationY);
+            }
+            else
+            {
+                if (onDelegatePosChangedEvt != null)
+                {
+                    delegatePosList.Add(LatestPos);
+                    onDelegatePosChangedEvt(this, this.Location.X, this.Location.Y);
+                }
             }
         }
 
@@ -230,7 +241,7 @@ namespace CustomWinForm
         private bool doSnap(int pos, int edge)
         {
             int delta = pos - edge;
-            return delta > 0 && delta <= 20;     // within 10 pixels
+            return delta > 0 && delta <= 15;     // within 10 pixels
         }
 
         private bool performSizeSnap(int xPos, int yPos, int width, int height, out int snapWidth, out int snapHeight)
@@ -285,7 +296,7 @@ namespace CustomWinForm
                 if (doSnap(xPos, column))
                 {
                     snap = true;
-                    snapX = xPos;
+                    snapX = column;
                     break;
                 }
             }
@@ -295,7 +306,7 @@ namespace CustomWinForm
                 if (doSnap(yPos, row))
                 {
                     snap = true;
-                    snapY = yPos;
+                    snapY = row;
                     break;
                 }
             }
