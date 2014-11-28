@@ -114,7 +114,7 @@ namespace WindowsFormClient.Command
         private void AddPreset(string socketId, int dbUserId, ClientPresetsCmd presetData)
         {
             List<KeyValuePair<int, WindowsRect>> appList = new List<KeyValuePair<int, WindowsRect>>();
-            Dictionary<ApplicationEntry, WndPos> appDictionary = presetData.PresetDataEntry.PresetAppList;
+            List<KeyValuePair<ApplicationEntry, WndPos>> appDictionary = presetData.PresetDataEntry.PresetAppList;
             foreach (KeyValuePair<ApplicationEntry, WndPos> pair in appDictionary)
             {
                 appList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.Identifier, new WindowsRect() 
@@ -127,7 +127,7 @@ namespace WindowsFormClient.Command
             }
 
             List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
-            Dictionary<VncEntry, WndPos> vncDictionary = presetData.PresetDataEntry.PresetVncList;
+            List<KeyValuePair<VncEntry, WndPos>> vncDictionary = presetData.PresetDataEntry.PresetVncList;
             foreach (KeyValuePair<VncEntry, WndPos> pair in vncDictionary)
             {
                 vncList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.Identifier, new WindowsRect()
@@ -140,7 +140,7 @@ namespace WindowsFormClient.Command
             }
 
             List<KeyValuePair<int, WindowsRect>> visionList = new List<KeyValuePair<int, WindowsRect>>();
-            Dictionary<InputAttributes, WndPos> visionDictionary = presetData.PresetDataEntry.PresetVisionInputList;
+            List<KeyValuePair<InputAttributes, WndPos>> visionDictionary = presetData.PresetDataEntry.PresetVisionInputList;
             foreach (KeyValuePair<InputAttributes, WndPos> pair in visionDictionary)
             {
                 visionList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.InputId, new WindowsRect()

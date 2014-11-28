@@ -150,9 +150,9 @@ namespace WindowsFormClient.Presenter
         {
             PresetDataEntry dataEntry = new PresetDataEntry();
             dataEntry.Name = name;
-            dataEntry.PresetAppList = new Dictionary<ApplicationEntry, WndPos>();
-            dataEntry.PresetVisionInputList = new Dictionary<InputAttributes, WndPos>();
-            dataEntry.PresetVncList = new Dictionary<VncEntry, WndPos>();
+            Dictionary<ApplicationEntry, WndPos> tempAppDic = new Dictionary<ApplicationEntry, WndPos>();
+            Dictionary<InputAttributes, WndPos> tempInputDic = new Dictionary<InputAttributes, WndPos>();
+            Dictionary<VncEntry, WndPos> tempVncDic = new Dictionary<VncEntry, WndPos>();
 
             foreach(KeyValuePair<ControlAttributes, Client.Model.ApplicationModel> pair in appDic)
             {
@@ -171,7 +171,7 @@ namespace WindowsFormClient.Presenter
                     style = pair.Key.Style,
                 };
 
-                dataEntry.PresetAppList.Add(appEntry, wndPos);
+                tempAppDic.Add(appEntry, wndPos);
             }
 
             foreach (KeyValuePair<ControlAttributes, Client.Model.VncModel> pair in vncDic)
@@ -193,7 +193,7 @@ namespace WindowsFormClient.Presenter
                     style = pair.Key.Style,
                 };
 
-                dataEntry.PresetVncList.Add(vncEntry, wndPos);
+                tempVncDic.Add(vncEntry, wndPos);
             }
 
             foreach (KeyValuePair<ControlAttributes, InputAttributes> pair in visionDic)
@@ -207,8 +207,13 @@ namespace WindowsFormClient.Presenter
                     style = pair.Key.Style,
                 };
 
-                dataEntry.PresetVisionInputList.Add(pair.Value, wndPos);
+                tempInputDic.Add(pair.Value, wndPos);
             }
+
+            // convert to list
+            dataEntry.PresetAppList = tempAppDic.ToList();
+            dataEntry.PresetVisionInputList = tempInputDic.ToList();
+            dataEntry.PresetVncList = tempVncDic.ToList();
 
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {

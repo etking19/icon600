@@ -17,8 +17,8 @@ namespace Session.Data.SubData
         /// </summary>
         public string Name { get; set; }
 
-        public Dictionary<ApplicationEntry, WndPos> PresetAppList { get; set; }
-        public Dictionary<VncEntry, WndPos> PresetVncList { get; set; }
-        public Dictionary<InputAttributes, WndPos> PresetVisionInputList { get; set; }
+        public List<KeyValuePair<ApplicationEntry, WndPos>> PresetAppList { get; set; }
+        public List<KeyValuePair<VncEntry, WndPos>> PresetVncList { get; set; }
+        public List<KeyValuePair<InputAttributes, WndPos>> PresetVisionInputList { get; set; }
     }
 }
