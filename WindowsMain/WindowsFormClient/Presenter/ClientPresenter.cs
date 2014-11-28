@@ -150,9 +150,12 @@ namespace WindowsFormClient.Presenter
         {
             PresetDataEntry dataEntry = new PresetDataEntry();
             dataEntry.Name = name;
-            Dictionary<ApplicationEntry, WndPos> tempAppDic = new Dictionary<ApplicationEntry, WndPos>();
-            Dictionary<InputAttributes, WndPos> tempInputDic = new Dictionary<InputAttributes, WndPos>();
-            Dictionary<VncEntry, WndPos> tempVncDic = new Dictionary<VncEntry, WndPos>();
+            dataEntry.PresetAppList = new List<ApplicationEntry>();
+            dataEntry.PresetAppPos = new List<WndPos>();
+            dataEntry.PresetVisionInputList = new List<InputAttributes>();
+            dataEntry.PresetVisionInputPos = new List<WndPos>();
+            dataEntry.PresetVncList = new List<VncEntry>();
+            dataEntry.PresetVncPos = new List<WndPos>();
 
             foreach(KeyValuePair<ControlAttributes, Client.Model.ApplicationModel> pair in appDic)
             {
@@ -171,7 +174,8 @@ namespace WindowsFormClient.Presenter
                     style = pair.Key.Style,
                 };
 
-                tempAppDic.Add(appEntry, wndPos);
+                dataEntry.PresetAppList.Add(appEntry);
+                dataEntry.PresetAppPos.Add(wndPos);
             }
 
             foreach (KeyValuePair<ControlAttributes, Client.Model.VncModel> pair in vncDic)
@@ -193,7 +197,8 @@ namespace WindowsFormClient.Presenter
                     style = pair.Key.Style,
                 };
 
-                tempVncDic.Add(vncEntry, wndPos);
+                dataEntry.PresetVncList.Add(vncEntry);
+                dataEntry.PresetVncPos.Add(wndPos);
             }
 
             foreach (KeyValuePair<ControlAttributes, InputAttributes> pair in visionDic)
@@ -207,13 +212,9 @@ namespace WindowsFormClient.Presenter
                     style = pair.Key.Style,
                 };
 
-                tempInputDic.Add(pair.Value, wndPos);
+                dataEntry.PresetVisionInputList.Add(pair.Value);
+                dataEntry.PresetVisionInputPos.Add(wndPos);
             }
-
-            // convert to list
-            dataEntry.PresetAppList = tempAppDic.ToList();
-            dataEntry.PresetVisionInputList = tempInputDic.ToList();
-            dataEntry.PresetVncList = tempVncDic.ToList();
 
             ClientPresetsCmd presetCmd = new ClientPresetsCmd()
             {

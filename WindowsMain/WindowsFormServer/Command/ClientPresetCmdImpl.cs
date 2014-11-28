@@ -114,41 +114,44 @@ namespace WindowsFormClient.Command
         private void AddPreset(string socketId, int dbUserId, ClientPresetsCmd presetData)
         {
             List<KeyValuePair<int, WindowsRect>> appList = new List<KeyValuePair<int, WindowsRect>>();
-            List<KeyValuePair<ApplicationEntry, WndPos>> appDictionary = presetData.PresetDataEntry.PresetAppList;
-            foreach (KeyValuePair<ApplicationEntry, WndPos> pair in appDictionary)
+            List<ApplicationEntry> appEntryList = presetData.PresetDataEntry.PresetAppList;
+            List<WndPos> appWndPosList = presetData.PresetDataEntry.PresetAppPos;
+            for (int count = 0; count < appEntryList.Count; count++ )
             {
-                appList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.Identifier, new WindowsRect() 
+                appList.Add(new KeyValuePair<int, WindowsRect>(appEntryList.ElementAt(count).Identifier, new WindowsRect()
                 {
-                    Left = pair.Value.posX,
-                    Top = pair.Value.posY,
-                    Right = pair.Value.posX + pair.Value.width,
-                    Bottom = pair.Value.posY + pair.Value.height,
+                    Left = appWndPosList.ElementAt(count).posX,
+                    Top = appWndPosList.ElementAt(count).posY,
+                    Right = appWndPosList.ElementAt(count).posX + appWndPosList.ElementAt(count).width,
+                    Bottom = appWndPosList.ElementAt(count).posY + appWndPosList.ElementAt(count).height,
                 }));
             }
 
             List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
-            List<KeyValuePair<VncEntry, WndPos>> vncDictionary = presetData.PresetDataEntry.PresetVncList;
-            foreach (KeyValuePair<VncEntry, WndPos> pair in vncDictionary)
+            List<VncEntry> vncEntryList = presetData.PresetDataEntry.PresetVncList;
+            List<WndPos> vncWndPosList = presetData.PresetDataEntry.PresetVncPos;
+            for (int count = 0; count < vncEntryList.Count; count++)
             {
-                vncList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.Identifier, new WindowsRect()
+                vncList.Add(new KeyValuePair<int, WindowsRect>(vncEntryList.ElementAt(count).Identifier, new WindowsRect()
                 {
-                    Left = pair.Value.posX,
-                    Top = pair.Value.posY,
-                    Right = pair.Value.posX + pair.Value.width,
-                    Bottom = pair.Value.posY + pair.Value.height,
+                    Left = vncWndPosList.ElementAt(count).posX,
+                    Top = vncWndPosList.ElementAt(count).posY,
+                    Right = vncWndPosList.ElementAt(count).posX + vncWndPosList.ElementAt(count).width,
+                    Bottom = vncWndPosList.ElementAt(count).posY + vncWndPosList.ElementAt(count).height,
                 }));
             }
 
             List<KeyValuePair<int, WindowsRect>> visionList = new List<KeyValuePair<int, WindowsRect>>();
-            List<KeyValuePair<InputAttributes, WndPos>> visionDictionary = presetData.PresetDataEntry.PresetVisionInputList;
-            foreach (KeyValuePair<InputAttributes, WndPos> pair in visionDictionary)
+            List<InputAttributes> visionEntryList = presetData.PresetDataEntry.PresetVisionInputList;
+            List<WndPos> visionWndPosList = presetData.PresetDataEntry.PresetVisionInputPos;
+            for (int count = 0; count < visionEntryList.Count; count++)
             {
-                visionList.Add(new KeyValuePair<int, WindowsRect>(pair.Key.InputId, new WindowsRect()
+                visionList.Add(new KeyValuePair<int, WindowsRect>(visionEntryList.ElementAt(count).InputId, new WindowsRect()
                 {
-                    Left = pair.Value.posX,
-                    Top = pair.Value.posY,
-                    Right = pair.Value.posX + pair.Value.width,
-                    Bottom = pair.Value.posY + pair.Value.height,
+                    Left = visionWndPosList.ElementAt(count).posX,
+                    Top = visionWndPosList.ElementAt(count).posY,
+                    Right = visionWndPosList.ElementAt(count).posX + visionWndPosList.ElementAt(count).width,
+                    Bottom = visionWndPosList.ElementAt(count).posY + visionWndPosList.ElementAt(count).height,
                 }));
             }
 
