@@ -21,30 +21,23 @@ namespace VncMarshall
 
         public int StartClient(string vncServerIp, int vncServerPort)
         {
+            int appIdentifier = -1;
             try
             {
                 process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
                 using(Process clientProcess = Process.Start(process))
                 {
-                    int tryMax = 1000;
-                    while ((clientProcess.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(clientProcess.MainWindowHandle))
+                    if (clientProcess.WaitForInputIdle())
                     {
-                        System.Threading.Thread.Sleep(10);
-                        clientProcess.Refresh();
-                        if (tryMax-- <= 0)
-                        {
-                            break;
-                        }
+                        appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
                     }
-                    clientProcess.WaitForInputIdle(1000);
-                    return clientProcess.MainWindowHandle.ToInt32();
                 }
             }
             catch(Exception)
             {
             }
 
-            return -1;
+            return appIdentifier;
         }
 
         public int StartClient(string vncServerIp, int vncServerPort, int left, int top, int width, int height)

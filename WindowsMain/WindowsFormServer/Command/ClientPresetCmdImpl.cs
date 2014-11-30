@@ -125,6 +125,13 @@ namespace WindowsFormClient.Command
                     Right = appWndPosList.ElementAt(count).posX + appWndPosList.ElementAt(count).width,
                     Bottom = appWndPosList.ElementAt(count).posY + appWndPosList.ElementAt(count).height,
                 }));
+
+                Trace.WriteLine(String.Format("Add preset application: {0}, pos: {1},{2},{3},{4}",
+                    appEntryList.ElementAt(count).Name,
+                    appWndPosList.ElementAt(count).posX,
+                    appWndPosList.ElementAt(count).posY,
+                    appWndPosList.ElementAt(count).width,
+                    appWndPosList.ElementAt(count).height));
             }
 
             List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
@@ -376,7 +383,11 @@ namespace WindowsFormClient.Command
                 if (info.name.Contains("Vistrol"))
                 {
                     // minimize Vistrol control application
-                    Utils.Windows.NativeMethods.ShowWindow(new IntPtr(info.id), Constant.SW_FORCEMINIMIZE);
+                    //Utils.Windows.NativeMethods.ShowWindow(new IntPtr(info.id), Constant.SW_FORCEMINIMIZE);
+                }
+                else if (info.name.Contains("WindowsMain") || info.name.Contains("Application"))
+                {
+
                 }
                 else
                 {
@@ -391,46 +402,12 @@ namespace WindowsFormClient.Command
             // 2. trigger the apps in the preset by giving preset's id
             // get the rect from the preset table
             PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(dbUserId).First(PresetData => PresetData.Id == presetData.PresetDataEntry.Identifier);
+            ClientAppCmdImpl clientImpl = new ClientAppCmdImpl();
             foreach (ApplicationData appData in preset.AppDataList)
             {
-                ProcessStartInfo info = new ProcessStartInfo()
-                {
-                    FileName = appData.applicationPath,
-                    Arguments = appData.arguments
-                };
-                using(Process process = Process.Start(info))
-                {
-                    if (appData.rect.Left != 0 &&
-                        appData.rect.Top != 0 &&
-                        appData.rect.Right != 0 &&
-                        appData.rect.Bottom != 0)
-                    {
-                        // move the window only if not default value
-                        int tryMax = 1000;
-                        while ((process.MainWindowHandle == IntPtr.Zero) || !NativeMethods.IsWindowVisible(process.MainWindowHandle))
-                        {
-                            System.Threading.Thread.Sleep(10);
-                            process.Refresh();
-                            if (tryMax-- <= 0)
-                            {
-                                break;
-                            }
-                        }
-
-                        process.WaitForInputIdle(1000);
-                        NativeMethods.MoveWindow(process.MainWindowHandle,
-                                appData.rect.Left,
-                                appData.rect.Top,
-                                appData.rect.Right - appData.rect.Left,
-                                appData.rect.Bottom - appData.rect.Top,
-                                true);
-
-                        Trace.WriteLine(string.Format("launching app: {0},{1},{2},{3}", appData.rect.Left, appData.rect.Top, appData.rect.Right, appData.rect.Bottom));
-                    }
-                    
-                    // add to the connected client info
-                    ConnectedClientHelper.GetInstance().AddLaunchedApp(clientId, process.MainWindowHandle.ToInt32(), appData.id);
-                }
+                int result = clientImpl.LaunchApplication(appData);
+                Trace.WriteLine("Launched preset application id: " + result);
+                ConnectedClientHelper.GetInstance().AddLaunchedVnc(clientId, result, appData.id);
             }
 
             // start vnc

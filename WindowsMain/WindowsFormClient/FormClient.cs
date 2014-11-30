@@ -296,8 +296,15 @@ namespace WindowsFormClient
 
         void formPreset_EvtPresetRemoved(FormPresets form, Client.Model.PresetModel item)
         {
-            // remove a preset
-            clientPresenter.RemovePreset(item);
+            if(MessageBox.Show("Are you sure want to remove selected preset?", 
+                "Warning", 
+                MessageBoxButtons.YesNo, 
+                MessageBoxIcon.Warning, 
+                MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
+            {
+                // remove a preset
+                clientPresenter.RemovePreset(item);
+            }
         }
 
         void formPreset_EvtPresetAdded(FormPresets form)

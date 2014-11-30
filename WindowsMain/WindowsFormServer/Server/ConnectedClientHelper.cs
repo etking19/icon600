@@ -125,7 +125,14 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            model.LaunchedVncList.Add(mainWinId, dbAppVnc);
+            try
+            {
+                model.LaunchedVncList.Add(mainWinId, dbAppVnc);
+            }
+            catch
+            {
+            }
+            
         }
 
         public void RemoveLaunchedVnc(object identifier, int mainWinId)
@@ -137,7 +144,14 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            model.LaunchedVncList.Remove(mainWinId);
+            try
+            {
+                model.LaunchedVncList.Remove(mainWinId);
+            }
+            catch
+            {
+            }
+            
         }
 
         /// <summary>
@@ -155,7 +169,14 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            model.LaunchedSourceList.Add(processId, dbAppSource);
+            try
+            {
+                model.LaunchedSourceList.Add(processId, dbAppSource);
+            }
+            catch
+            {
+            }
+            
         }
 
         public void RemoveLaunchedInputSource(object identifier, uint mainWinId)
