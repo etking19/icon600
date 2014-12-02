@@ -121,6 +121,12 @@
     <Compile Include="FormMimic.Designer.cs">
       <DependentUpon>FormMimic.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormMousePad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMousePad.Designer.cs">
+      <DependentUpon>FormMousePad.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPresets.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +198,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMimic.resx">
       <DependentUpon>FormMimic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMousePad.resx">
+      <DependentUpon>FormMousePad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPresets.resx">
       <DependentUpon>FormPresets.cs</DependentUpon>

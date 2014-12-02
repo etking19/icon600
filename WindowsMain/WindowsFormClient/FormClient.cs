@@ -44,6 +44,7 @@ namespace WindowsFormClient
         private FormApplications formApps;
         private FormInput formInput;
         private CustomControlHolder holder;
+        private FormMousePad formMousePad = new FormMousePad();
 
         /// <summary>
         /// dock UI related
@@ -127,8 +128,93 @@ namespace WindowsFormClient
             keyboardHook = new KeyboardHook();
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
 
+            formMousePad.MouseDown += formMousePad_MouseDown;
+            formMousePad.MouseMove += formMousePad_MouseMove;
+            formMousePad.MouseUp += formMousePad_MouseUp;
+            formMousePad.MouseClick += formMousePad_MouseClick;
+            formMousePad.MouseDoubleClick += formMousePad_MouseDoubleClick;
+            formMousePad.MouseWheel += formMousePad_MouseWheel;
+
             // preset helper class
             presetHelper = new PresetHelper(holder);
+        }
+
+        void formMousePad_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Trace.WriteLine("mouse double click");
+        }
+
+        void formMousePad_MouseClick(object sender, MouseEventArgs e)
+        {
+            Trace.WriteLine("mouse click");
+        }
+
+        void formMousePad_MouseWheel(object sender, MouseEventArgs e)
+        {
+            clientPresenter.ControlServerMouse(e.X, e.Y, (uint)e.Delta, InputConstants.MOUSEEVENTF_WHEEL);
+        }
+
+        int getRelativeX(int x)
+        {
+            // 10 pixels offset to ease the minimized taskbar
+            return (int)((x + holder.ReferenceXPos) * 65535.0f / (float)formMousePad.Width * (float)formMimic.VisibleSize.Width / (float)formMimic.FullSize.Width);
+        }
+
+        int getRelativeY(int y)
+        {
+            return (int)((y + holder.ReferenceYPos) * 65535.0f / (float)formMousePad.Height * (float)formMimic.VisibleSize.Height / (float)formMimic.FullSize.Height);
+        }
+
+        void formMousePad_MouseUp(object sender, MouseEventArgs e)
+        {
+            uint mouseBtn = InputConstants.MOUSEEVENTF_LEFTUP;
+            switch (e.Button)
+            {
+                case System.Windows.Forms.MouseButtons.Left:
+                    mouseBtn = InputConstants.MOUSEEVENTF_LEFTUP;
+                    break;
+                case System.Windows.Forms.MouseButtons.Middle:
+                    mouseBtn = InputConstants.MOUSEEVENTF_MIDDLEUP;
+                    break;
+                case System.Windows.Forms.MouseButtons.Right:
+                    mouseBtn = InputConstants.MOUSEEVENTF_RIGHTUP;
+                    break;
+                case System.Windows.Forms.MouseButtons.XButton1:
+                case System.Windows.Forms.MouseButtons.XButton2:
+                    mouseBtn = InputConstants.MOUSEEVENTF_XUP;
+                    break;
+            }
+
+            clientPresenter.ControlServerMouse(getRelativeX(e.X), getRelativeY(e.Y), (uint)e.Delta, mouseBtn);
+        }
+
+        void formMousePad_MouseMove(object sender, MouseEventArgs e)
+        {
+            clientPresenter.ControlServerMouse(getRelativeX(e.X), getRelativeY(e.Y), (uint)e.Delta, 
+                InputConstants.MOUSEEVENTF_MOVE | InputConstants.MOUSEEVENTF_ABSOLUTE | InputConstants.MOUSEEVENTF_VIRTUALDESK);
+        }
+
+        void formMousePad_MouseDown(object sender, MouseEventArgs e)
+        {
+            uint mouseBtn = InputConstants.MOUSEEVENTF_LEFTDOWN;
+            switch(e.Button)
+            {
+                case System.Windows.Forms.MouseButtons.Left:
+                    mouseBtn = InputConstants.MOUSEEVENTF_LEFTDOWN;
+                    break;
+                case System.Windows.Forms.MouseButtons.Middle:
+                    mouseBtn = InputConstants.MOUSEEVENTF_MIDDLEDOWN;
+                    break;
+                case System.Windows.Forms.MouseButtons.Right:
+                    mouseBtn = InputConstants.MOUSEEVENTF_RIGHTDOWN;
+                    break;
+                case System.Windows.Forms.MouseButtons.XButton1:
+                case System.Windows.Forms.MouseButtons.XButton2:
+                    mouseBtn = InputConstants.MOUSEEVENTF_XDOWN;
+                    break;
+            }
+
+            clientPresenter.ControlServerMouse(getRelativeX(e.X), getRelativeY(e.Y), (uint)e.Delta, mouseBtn);
         }
 
         void notifyIconClient_BalloonTipClicked(object sender, EventArgs e)
@@ -865,12 +951,14 @@ namespace WindowsFormClient
             if (button.Checked)
             {
                 button.BackColor = Color.FromArgb(20, 116, 186);
-                mouseHook.StartHook(0);
+                formMousePad.Show(this);
+                //mouseHook.StartHook(0);
             }
             else
             {
                 button.BackColor = Color.FromArgb(79, 169, 236);
-                mouseHook.StopHook();
+                formMousePad.Hide();
+                //mouseHook.StopHook();
             }
         }
 
