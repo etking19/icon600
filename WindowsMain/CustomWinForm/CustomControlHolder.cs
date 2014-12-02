@@ -120,7 +120,6 @@ namespace CustomWinForm
                 if (winForm != null &&
                     winForm.Id == controlId)
                 {
-                    Trace.WriteLine("found matched control with id: " + controlId);
                     attr.Id = winForm.Id;
 
                     Point actualPt = getActualPoint(winForm.Location.X, winForm.Location.Y);
@@ -177,8 +176,6 @@ namespace CustomWinForm
         public void AddControl(ControlAttributes controlAttr)
         {
             CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style);
-            Trace.WriteLine(String.Format("New form added: id:{5} {0} pos:{1},{2} zorder:{3} style:{4:X} size:{6},{7}",
-                controlAttr.WindowName, controlAttr.Xpos, controlAttr.Ypos, controlAttr.ZOrder, controlAttr.Style, controlAttr.Id, controlAttr.Width, controlAttr.Height));
 
             this.Controls.Add(winForm);
             this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
@@ -200,7 +197,6 @@ namespace CustomWinForm
 
             winForm.SetWindowName(controlAttr.WindowName);
             winForm.Style = (int)(controlAttr.Style);
-            Trace.WriteLine(String.Format("After change style: {0:X}", winForm.Style));
 
             /*
             if ((controlAttr.Style & Constant.WS_MINIMIZE) != 0)
@@ -250,7 +246,6 @@ namespace CustomWinForm
                     return;
                 }
 
-                Trace.WriteLine(String.Format("size change: {2}, newActualsize:{0}, previousActualSize:{1}", actualSize, winForm.LatestSize, winForm.Id));
                 winForm.LatestSize = actualSize;
                 onDelegateSizeChangedEvt(winForm.Id, actualSize);
             } 
@@ -260,7 +255,6 @@ namespace CustomWinForm
         {
             if (onDelegateRestoredEvt != null)
             {
-                Trace.WriteLine(String.Format("delegate {0} restore", winForm.Name));
                 onDelegateRestoredEvt(winForm.Id);
             }
         }
@@ -278,7 +272,6 @@ namespace CustomWinForm
             {
                 // winform location change due to the minimize behavior
                 // set back to initial point
-                Trace.WriteLine("in minimize state, ignore position change");
                 winForm.LatestPos = new Point(-int.MaxValue, -int.MaxValue);
                 return;
             }
@@ -287,7 +280,6 @@ namespace CustomWinForm
             {
                 if (winForm.ForwardPos.Contains(new Point(xPos, yPos)))
                 {
-                    Trace.WriteLine("onDelegatePosChangedEvt: blocked in forward pos list!!");
                     int index = winForm.ForwardPos.IndexOf(new Point(xPos, yPos));
                     winForm.ForwardPos.RemoveRange(0, index);
                     return;
@@ -296,11 +288,9 @@ namespace CustomWinForm
                 Point actual = getActualPoint(xPos, yPos);
                 if (actual.Equals(winForm.LatestPos))
                 {
-                    Trace.WriteLine("onDelegatePosChangedEvt: blocked in LatestPos!!");
                     return;
                 }
 
-                Trace.WriteLine(String.Format("delegate {0} pos changed: {1}", winForm.Name, actual));
                 winForm.ForwardPos.Clear();
                 winForm.LatestPos = actual;
                 onDelegatePosChangedEvt(winForm.Id, actual.X, actual.Y);
@@ -376,11 +366,9 @@ namespace CustomWinForm
 
              if (mControlsDic.TryGetValue(id, out control))
              {
-                 Trace.WriteLine(String.Format("ChangeControlPos {0} {1}", control.Name, newPos));
 
                  if (control.LatestPos.Equals(newPos))
                  {
-                     Trace.WriteLine("clear DelegatePos");
                      control.DelegatePos.Clear();
                      return;
                  }
@@ -389,7 +377,6 @@ namespace CustomWinForm
                  {
                      int index = control.DelegatePos.IndexOf(newPos);
                      control.DelegatePos.RemoveRange(0, index);
-                     Trace.WriteLine("Server update pos same as client sent update pos");
                      return;
                  }
 

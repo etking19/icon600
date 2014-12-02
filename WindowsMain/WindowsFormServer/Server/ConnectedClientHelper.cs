@@ -101,7 +101,7 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            model.LaunchedAppList.Add(mainWinId, dbAppIndex);
+            model.LaunchedAppList.Add(new KeyValuePair<int, int>(mainWinId, dbAppIndex));
         }
 
         public void RemoveLaunchedApp(object identifier, int mainWinId)
@@ -113,7 +113,11 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            model.LaunchedAppList.Remove(mainWinId);
+            var result = model.LaunchedAppList.FindAll(x => x.Key == mainWinId);
+            foreach(var valuePair in result)
+            {
+                model.LaunchedAppList.Remove(valuePair);
+            }
         }
 
         public void AddLaunchedVnc(object identifier, int mainWinId, int dbAppVnc)
@@ -125,14 +129,7 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            try
-            {
-                model.LaunchedVncList.Add(mainWinId, dbAppVnc);
-            }
-            catch
-            {
-            }
-            
+            model.LaunchedVncList.Add(new KeyValuePair<int, int>(mainWinId, dbAppVnc));            
         }
 
         public void RemoveLaunchedVnc(object identifier, int mainWinId)
@@ -144,14 +141,11 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            try
+            var result = model.LaunchedVncList.FindAll(x => x.Key == mainWinId);
+            foreach (var valuePair in result)
             {
-                model.LaunchedVncList.Remove(mainWinId);
+                model.LaunchedVncList.Remove(valuePair);
             }
-            catch
-            {
-            }
-            
         }
 
         /// <summary>
@@ -160,7 +154,7 @@ namespace WindowsFormClient.Server
         /// <param name="identifier"></param>
         /// <param name="processId"></param>
         /// <param name="dbAppSource"></param>
-        public void AddLaunchedInputSource(object identifier, uint processId, int dbAppSource)
+        public void AddLaunchedInputSource(object identifier, int processId, int dbAppSource)
         {
             ClientInfoModel model = null;
             connectedClientList.TryGetValue(identifier, out model);
@@ -169,17 +163,10 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            try
-            {
-                model.LaunchedSourceList.Add(processId, dbAppSource);
-            }
-            catch
-            {
-            }
-            
+            model.LaunchedSourceList.Add(new KeyValuePair<int, int>(processId, dbAppSource));
         }
 
-        public void RemoveLaunchedInputSource(object identifier, uint mainWinId)
+        public void RemoveLaunchedInputSource(object identifier, int mainWinId)
         {
             ClientInfoModel model = null;
             connectedClientList.TryGetValue(identifier, out model);
@@ -188,36 +175,28 @@ namespace WindowsFormClient.Server
                 return;
             }
 
-            model.LaunchedSourceList.Remove(mainWinId);
+            var result = model.LaunchedSourceList.FindAll(x => x.Key == mainWinId);
+            foreach (var valuePair in result)
+            {
+                model.LaunchedSourceList.Remove(valuePair);
+            }
         }
 
         public void UpdateLaunchedList(List<int> currentWndId)
         {
             foreach(ClientInfoModel model in connectedClientList.Values)
             {
-                List<int> removedAppList = model.LaunchedAppList.Keys.Except(currentWndId).ToList();
-                foreach (int wndId in removedAppList)
-                {
-                    model.LaunchedAppList.Remove(wndId);
-                }
+                var result = model.LaunchedAppList
+                    .Where(x => currentWndId.Contains(x.Key)).ToList();
+                model.LaunchedAppList = result;
 
-                List<int> removedVncList = model.LaunchedVncList.Keys.Except(currentWndId).ToList();
-                foreach (int wndId in removedVncList)
-                {
-                    model.LaunchedVncList.Remove(wndId);
-                }
-            }
-        }
+                var resultVnc = model.LaunchedVncList
+                    .Where(x => currentWndId.Contains(x.Key)).ToList();
+                model.LaunchedVncList = resultVnc;
 
-        public void UpdateLaunchedSourceList(List<uint> currentProcessId)
-        {
-            foreach (ClientInfoModel model in connectedClientList.Values)
-            {
-                List<uint> removedSourceList = model.LaunchedSourceList.Keys.Except(currentProcessId).ToList();
-                foreach (uint processId in removedSourceList)
-                {
-                    model.LaunchedSourceList.Remove(processId);
-                }
+                var resultSources = model.LaunchedSourceList
+                    .Where(x => currentWndId.Contains(x.Key)).ToList();
+                model.LaunchedSourceList = resultSources;
             }
         }
     }

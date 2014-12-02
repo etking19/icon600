@@ -62,9 +62,9 @@ namespace WindowsFormClient.Command
                             appData.rect.Bottom != 0)
                     {
                         // wait the process to stable
-                        if (process.WaitForInputIdle())
+                        //if (process.WaitForInputIdle())
                         {
-
+                            Thread.Sleep(800);
                             appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
                             NativeMethods.MoveWindow(new IntPtr(appIdentifier),
                                 appData.rect.Left,
@@ -100,7 +100,7 @@ namespace WindowsFormClient.Command
             }
             catch (Exception e)
             {
-                Trace.WriteLine(e);
+                Trace.WriteLine("trigger application: " + e);
             }
 
             return appIdentifier;

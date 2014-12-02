@@ -63,9 +63,9 @@ namespace WindowsFormClient.Command
                 DbUserId = userData.id,
                 SocketUserId = userId,
                 Name = userData.name,
-                LaunchedAppList = new Dictionary<int, int>(),
-                LaunchedSourceList = new Dictionary<uint, int>(),
-                LaunchedVncList = new Dictionary<int, int>(),
+                LaunchedAppList = new List<KeyValuePair<int, int>>(),
+                LaunchedSourceList = new List<KeyValuePair<int, int>>(),
+                LaunchedVncList = new List<KeyValuePair<int, int>>(),
             };
 
             server.ClientLogin(clientModel);

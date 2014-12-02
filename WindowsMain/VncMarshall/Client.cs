@@ -24,11 +24,13 @@ namespace VncMarshall
             int appIdentifier = -1;
             try
             {
+                //process.Arguments = String.Format("-connect {0}::{1} -read only -autoscaling", vncServerIp, vncServerPort);
                 process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
                 using(Process clientProcess = Process.Start(process))
                 {
-                    if (clientProcess.WaitForInputIdle())
+                   // if (clientProcess.WaitForInputIdle())
                     {
+                        Thread.Sleep(1500);
                         appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
                     }
                 }

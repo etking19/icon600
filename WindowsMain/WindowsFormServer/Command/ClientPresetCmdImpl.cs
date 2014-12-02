@@ -162,6 +162,7 @@ namespace WindowsFormClient.Command
                 }));
             }
 
+            
             // cater for previously launched preset
 
             // Get the current latest position of all running apps
@@ -174,7 +175,7 @@ namespace WindowsFormClient.Command
                 return;
             }
 
-            Dictionary<int, int> currentApps = new Dictionary<int, int>(userData.LaunchedAppList);
+            var currentApps = new List<KeyValuePair<int, int>>(userData.LaunchedAppList);
             for (int i = 0; i < currentApps.Count(); i++)
             {
                 int wndIdentifier = currentApps.ElementAt(i).Key;
@@ -199,7 +200,7 @@ namespace WindowsFormClient.Command
                 }
             }
 
-            Dictionary<int, int> currentVncs = new Dictionary<int, int>(userData.LaunchedVncList);
+            var currentVncs = new List<KeyValuePair<int, int>>(userData.LaunchedVncList);
             for (int i = 0; i < currentVncs.Count(); i++)
             {
                 int wndIdentifier = currentVncs.ElementAt(i).Key;
@@ -224,20 +225,22 @@ namespace WindowsFormClient.Command
 
             }
 
-            Dictionary<uint, int> currentSources = new Dictionary<uint, int>(userData.LaunchedSourceList);
+            var currentSources = new List<KeyValuePair<int, int>>(userData.LaunchedSourceList);
             for (int i = 0; i < currentSources.Count(); i++)
             {
-                uint processId = currentSources.ElementAt(i).Key;
+                int wndIdentifier = currentSources.ElementAt(i).Key;
                 int dbIndex = currentSources.ElementAt(i).Value;
 
                 try
                 {
+                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
+
                     visionList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
                     {
-                        // Left = latestInfo.posX,
-                        // Top = latestInfo.posY,
-                        // Right = latestInfo.posX + latestInfo.width,
-                        // Bottom = latestInfo.posY + latestInfo.height,
+                         Left = latestInfo.posX,
+                         Top = latestInfo.posY,
+                         Right = latestInfo.posX + latestInfo.width,
+                         Bottom = latestInfo.posY + latestInfo.height,
                     }));
                 }
                 catch (Exception e)
@@ -246,7 +249,7 @@ namespace WindowsFormClient.Command
                 }
 
             }
-
+            
             Server.ServerDbHelper.GetInstance().AddPreset(
                 presetData.PresetDataEntry.Name,
                 dbUserId,
@@ -377,17 +380,14 @@ namespace WindowsFormClient.Command
 
         private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
         {
+            
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
             {
                 if (info.name.Contains("Vistrol"))
                 {
                     // minimize Vistrol control application
-                    //Utils.Windows.NativeMethods.ShowWindow(new IntPtr(info.id), Constant.SW_FORCEMINIMIZE);
-                }
-                else if (info.name.Contains("WindowsMain") || info.name.Contains("Application"))
-                {
-
+                    Utils.Windows.NativeMethods.ShowWindow(new IntPtr(info.id), Constant.SW_MINIMIZE);
                 }
                 else
                 {
@@ -395,6 +395,7 @@ namespace WindowsFormClient.Command
                     Utils.Windows.NativeMethods.SendMessage(new IntPtr(info.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
             }
+            
 
             // reset the launched list
             ConnectedClientHelper.GetInstance().ClearLaunchedData(clientId);
@@ -407,12 +408,18 @@ namespace WindowsFormClient.Command
             {
                 int result = clientImpl.LaunchApplication(appData);
                 Trace.WriteLine("Launched preset application id: " + result);
-                ConnectedClientHelper.GetInstance().AddLaunchedVnc(clientId, result, appData.id);
+                ConnectedClientHelper.GetInstance().AddLaunchedApp(clientId, result, appData.id);
             }
 
             // start vnc
             foreach (RemoteVncData remoteData in preset.VncDataList)
             {
+                Trace.WriteLine(String.Format("lauched vnc: {0},{1},{2},{3}", 
+                    remoteData.rect.Left,
+                    remoteData.rect.Top,
+                    remoteData.rect.Right,
+                    remoteData.rect.Bottom));
+
                 int id = vncClient.StartClient(
                     remoteData.remoteIp, 
                     remoteData.remotePort, 
@@ -422,13 +429,14 @@ namespace WindowsFormClient.Command
                     remoteData.rect.Bottom - remoteData.rect.Top);
 
                 // add to the connected client info
+                Trace.WriteLine("Launched preset remote data id: " + id);
                 ConnectedClientHelper.GetInstance().AddLaunchedVnc(clientId, id, remoteData.id);
             }
 
             // start source input
             foreach (VisionData inputData in preset.InputDataList)
             {
-                uint result = (uint)ServerVisionHelper.getInstance().LaunchVisionWindow(
+                int result = ServerVisionHelper.getInstance().LaunchVisionWindow(
                     inputData.id, 
                     inputData.rect.Left,
                     inputData.rect.Top,
@@ -436,6 +444,7 @@ namespace WindowsFormClient.Command
                     inputData.rect.Bottom - inputData.rect.Top);
 
                 // add to the connected client info
+                Trace.WriteLine("Launched preset input source id: " + result);
                 ConnectedClientHelper.GetInstance().AddLaunchedInputSource(clientId, result, inputData.id);
             }
         }

@@ -244,13 +244,12 @@ namespace WindowsFormClient.Server
         /// <returns> window main module id matched with wnd id in client mimic screen</returns>
         public int LaunchVisionWindow(int dbId)
         {
-            int returnValue = -1;
             // get the info from db
             var result = ServerDbHelper.GetInstance().GetAllVisionInputs().First(t => t.id == dbId);
             if (result == null)
             {
                 Trace.WriteLine("unable to launch vision window with db id: " + dbId);
-                return returnValue;
+                return -1;
             }
 
             // create the lauching parameters
@@ -266,47 +265,17 @@ namespace WindowsFormClient.Server
             TextReader osdReader = new StringReader(result.osdStr);
             OnScreenDisplay osd = (OnScreenDisplay)osdSerializer.Deserialize(osdReader);
 
-            // construct the param list
-            string argumentList = string.Empty;
-            argumentList += constructWinParams(window);
-            argumentList += constructInputParams(input);
-            argumentList += constructOSDParams(osd);
-            argumentList += string.Format("-ID={0} ", getrandom.Next(1, 65535));
-
-            // Use ProcessStartInfo class
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = true;
-            startInfo.UseShellExecute = false;
-            startInfo.FileName = rgbExecutablePath;
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
-            startInfo.Arguments = argumentList;
-
-            try
-            {
-                // Start the process with the info we specified.
-                // Call WaitForExit and then the using statement will close.
-                using (Process exeProcess = Process.Start(startInfo))
-                {
-                    returnValue = exeProcess.Id;
-                }
-            }
-            catch
-            {
-                // Log error.
-            }
-
-            return returnValue;
+            return launchVisionWindow(window, input, osd);
         }
 
         public int LaunchVisionWindow(int dbId, int left, int top, int width, int height)
         {
-            int returnValue = -1;
             // get the info from db
             var result = ServerDbHelper.GetInstance().GetAllVisionInputs().First(t => t.id == dbId);
             if (result == null)
             {
-                Trace.WriteLine("unable to launch vision window with db id: " + dbId);
-                return returnValue;
+                Trace.WriteLine("unable to launch vision window with db id and rect: " + dbId);
+                return -1;
             }
 
             // create the lauching parameters
@@ -314,14 +283,13 @@ namespace WindowsFormClient.Server
             TextReader wndReader = new StringReader(result.windowStr);
             Window window = (Window)wndSerializer.Deserialize(wndReader);
             
-            /* TODO: matched the latest pos
+            // TODO: matched the latest pos
             // modify to match
             window.WndPostLeft = left;
             window.WndPosTop = top;
             window.WndPostWidth = width;
             window.WndPosHeight = height;
-            */
-
+            
             System.Xml.Serialization.XmlSerializer inputSerializer = new System.Xml.Serialization.XmlSerializer(typeof(Input));
             TextReader inputReader = new StringReader(result.inputStr);
             Input input = (Input)inputSerializer.Deserialize(inputReader);
@@ -329,6 +297,13 @@ namespace WindowsFormClient.Server
             System.Xml.Serialization.XmlSerializer osdSerializer = new System.Xml.Serialization.XmlSerializer(typeof(OnScreenDisplay));
             TextReader osdReader = new StringReader(result.osdStr);
             OnScreenDisplay osd = (OnScreenDisplay)osdSerializer.Deserialize(osdReader);
+
+            return launchVisionWindow(window, input, osd);
+        }
+
+        private int launchVisionWindow(Window window, Input input, OnScreenDisplay osd)
+        {
+            int returnValue = -1;
 
             // construct the param list
             string argumentList = string.Empty;
@@ -353,15 +328,15 @@ namespace WindowsFormClient.Server
                 {
                     if (exeProcess.WaitForInputIdle())
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(1500);
                         returnValue = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 // Log error.
-                Trace.WriteLine(e);
+                Trace.WriteLine("launchVisionWindow: " + e);
             }
 
             return returnValue;

@@ -823,6 +823,7 @@ namespace WindowsFormClient
 
         private void FormClient_Closed(object sender, FormClosedEventArgs e)
         {
+            presetHelper.Reset();
             connectionMgr.StopClient();
         }
 

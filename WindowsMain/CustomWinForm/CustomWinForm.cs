@@ -102,7 +102,6 @@ namespace CustomWinForm
             int outLocationY;
             if (performLocationSnap(this.Location.X, this.Location.Y, out outLocationX, out outLocationY))
             {
-                Trace.WriteLine(String.Format("snap, previous: {0},{1}, snap: {2},{3}", this.Location.X, this.Location.Y, outLocationX, outLocationY));
                 this.Location = new Point(outLocationX, outLocationY);
             }
             else

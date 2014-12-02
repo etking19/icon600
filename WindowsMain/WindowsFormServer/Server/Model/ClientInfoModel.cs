@@ -28,7 +28,7 @@ namespace WindowsFormClient.Server.Model
         ///  - key: db user id
         ///  - value: db index application
         /// </summary>
-        public Dictionary<int, int> LaunchedAppList { get; set; }
+        public List<KeyValuePair<int, int>> LaunchedAppList { get; set; }
 
         /// <summary>
         /// key: main window handle int32
@@ -36,7 +36,7 @@ namespace WindowsFormClient.Server.Model
         ///  - key: db user id
         ///  - value: db index Vnc
         /// </summary>
-        public Dictionary<int, int> LaunchedVncList { get; set; }
+        public List<KeyValuePair<int, int>> LaunchedVncList { get; set; }
 
         /// <summary>
         /// key: main window handle int32
@@ -44,6 +44,6 @@ namespace WindowsFormClient.Server.Model
         ///  - key: db user id
         ///  - value: db index VisionInput
         /// </summary>
-        public Dictionary<uint, int> LaunchedSourceList { get; set; }
+        public List<KeyValuePair<int, int>> LaunchedSourceList { get; set; }
     }
 }

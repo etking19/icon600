@@ -52,7 +52,14 @@ namespace WindowsFormClient.Presenter
                 // not a safe way if user trigger 2 similar application within 1.5 second
                 if (pendingAppList.Remove(appModel))
                 {
-                    triggeredAppList.Add(mimicWndHolder.GetTopMostControl(), appModel);
+                    ControlAttributes attr = mimicWndHolder.GetTopMostControl();
+                    Trace.WriteLine(String.Format("Add triggered app in queue: {0}, pos: {1},{2},{3},{4}",
+                        attr.WindowName,
+                        attr.Xpos,
+                        attr.Ypos,
+                        attr.Width,
+                        attr.Height));
+                    triggeredAppList.Add(attr, appModel);
                 }
                 
             });
@@ -65,10 +72,12 @@ namespace WindowsFormClient.Presenter
             ThreadPool.QueueUserWorkItem(s =>
             {
                 Thread.Sleep(1500);
-
+                
                 // not a safe way if user trigger 2 similar application within 1.5 second
                 if (pendingVncList.Remove(vncModel))
                 {
+                    ControlAttributes attr = mimicWndHolder.GetTopMostControl();
+                    Trace.WriteLine(String.Format("Add triggered vnc in queue: {0}", attr.WindowName));
                     triggeredVncList.Add(mimicWndHolder.GetTopMostControl(), vncModel);
                 }
             });
@@ -91,6 +100,9 @@ namespace WindowsFormClient.Presenter
             {
                 if (pendingAppList.Count > 0)
                 {
+                    Trace.WriteLine(String.Format("Add window app with window Id: {0}",
+                        windowId));
+
                     triggeredAppList.Add(new ControlAttributes() { Id = windowId }, pendingAppList.ElementAt(0));
                     pendingAppList.RemoveAt(0);
                     return;
@@ -98,6 +110,7 @@ namespace WindowsFormClient.Presenter
 
                 if (pendingVncList.Count > 0)
                 {
+                    Trace.WriteLine(String.Format("Add triggered vnc with windows Id: {0}", windowId));
                     triggeredVncList.Add(new ControlAttributes() { Id = windowId }, pendingVncList.ElementAt(0));
                     pendingVncList.RemoveAt(0);
                     return;
@@ -195,6 +208,17 @@ namespace WindowsFormClient.Presenter
                 Trace.WriteLine(String.Format("Input source: {0}, pos: {1},{2}, width:{3}, height:{4}", latestAttr.WindowName, latestAttr.Xpos, latestAttr.Ypos, latestAttr.Width, latestAttr.Height));
             }
             triggeredInputList = tempInputList;
+        }
+
+        public void Reset()
+        {
+            pendingAppList.Clear();
+            pendingVisionList.Clear();
+            pendingVncList.Clear();
+
+            triggeredAppList.Clear();
+            triggeredVncList.Clear();
+            triggeredInputList.Clear();
         }
     }
 }

@@ -56,8 +56,12 @@ namespace WindowsFormClient
         private void onFormLoad(object sender, EventArgs e)
         {
             string vncClientPath = mainPresenter.VncPath;
-            if (vncClientPath == String.Empty)
+
+            // validate if the file existed
+            if (vncClientPath == String.Empty ||
+                File.Exists(vncClientPath) == false)
             {
+                // vncviewer.exe
                 foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "tvnviewer.exe"))
                 {
                     vncClientPath = matchPath;
@@ -76,7 +80,7 @@ namespace WindowsFormClient
 
             if (vncClientPath == String.Empty)
             {
-                MessageBox.Show("VNC executable path not found." + Environment.NewLine + "Please install VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("VNC executable not found." + Environment.NewLine + "Please install VNC application to use VNC feature.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
