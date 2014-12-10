@@ -380,7 +380,6 @@ namespace WindowsFormClient.Command
 
         private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
         {
-            
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
             {
@@ -395,7 +394,6 @@ namespace WindowsFormClient.Command
                     Utils.Windows.NativeMethods.SendMessage(new IntPtr(info.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
             }
-            
 
             // reset the launched list
             ConnectedClientHelper.GetInstance().ClearLaunchedData(clientId);

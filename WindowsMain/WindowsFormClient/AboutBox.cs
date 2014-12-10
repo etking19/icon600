@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -13,13 +14,30 @@ namespace WindowsFormClient
         public AboutBox()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0}", AssemblyTitle);
-            this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
+
+            LinkLabel.Link link = new LinkLabel.Link();
+            link.LinkData = "http://www.vistrol.com";
+            linkLabel1.Links.Add(link);
+
+            LinkLabel.Link link2 = new LinkLabel.Link();
+            link2.LinkData = "mailto:support@vistrol.com";
+            linkLabel2.Links.Add(link2);
+
+
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            linkLabel2.LinkClicked += linkLabel2_LinkClicked;
         }
+
+        void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(e.Link.LinkData as string);
+        }
+
+        void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(e.Link.LinkData as string);
+        }
+
 
         #region Assembly Attribute Accessors
 

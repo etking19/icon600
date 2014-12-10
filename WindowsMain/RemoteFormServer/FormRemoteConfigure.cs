@@ -34,6 +34,21 @@ namespace RemoteFormServer
             userPresenter = new UsersPresenter();
             visionInputPresenter = new VisionInputPresenter();
             monitorPresenter = new MonitorsPresenter();
+
+            // create right click menu
+            ContextMenu menuContext = new ContextMenu();
+            this.ContextMenu = menuContext;
+
+            MenuItem mnuItemAbout = new MenuItem();
+            mnuItemAbout.Text = "About";
+            mnuItemAbout.Click += mnuItemAbout_Click;
+            menuContext.MenuItems.Add(mnuItemAbout);
+        }
+
+        void mnuItemAbout_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog(this);
         }
 
         void FormRemoteConfigure_FormClosing(object sender, FormClosingEventArgs e)

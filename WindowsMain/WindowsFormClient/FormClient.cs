@@ -1024,7 +1024,8 @@ namespace WindowsFormClient
 
         private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            AboutBox about = new AboutBox();
+            about.ShowDialog(this);
         }
     }
 }

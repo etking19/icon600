@@ -50,7 +50,22 @@ namespace WindowsFormClient
             remoteVncPresenter = new RemoteVncPresenter();
             visionInputPresenter = new VisionInputPresenter();
 
+            // create right click menu
+            ContextMenu menuContext = new ContextMenu();
+            this.ContextMenu = menuContext;
+
+            MenuItem mnuItemAbout = new MenuItem();
+            mnuItemAbout.Text = "About";
+            mnuItemAbout.Click += mnuItemAbout_Click;
+            menuContext.MenuItems.Add(mnuItemAbout);
+
            // tabControl.ImageList = new ImageList();
+        }
+
+        void mnuItemAbout_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.ShowDialog(this);
         }
 
         private void onFormLoad(object sender, EventArgs e)

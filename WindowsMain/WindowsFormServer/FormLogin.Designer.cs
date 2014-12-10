@@ -126,9 +126,9 @@
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(181, 416);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(247, 16);
+            this.label3.Size = new System.Drawing.Size(204, 16);
             this.label3.TabIndex = 6;
-            this.label3.Text = "All Right Reserved © Vistrol Pte Ltd 2014";
+            this.label3.Text = "Copyright © 2015 Vistrol Pte. Ltd.";
             // 
             // pictureBox2
             // 

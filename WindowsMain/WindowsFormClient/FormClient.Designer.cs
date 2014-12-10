@@ -245,7 +245,7 @@
             // userSettingsToolStripMenuItem
             // 
             this.userSettingsToolStripMenuItem.Name = "userSettingsToolStripMenuItem";
-            this.userSettingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.userSettingsToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.userSettingsToolStripMenuItem.Text = "User Settings";
             this.userSettingsToolStripMenuItem.Click += new System.EventHandler(this.userSettingsToolStripMenuItem_Click);
             // 
@@ -260,7 +260,7 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem1.Text = "About";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
@@ -279,7 +279,7 @@
             this.MinimumSize = new System.Drawing.Size(870, 600);
             this.Name = "FormClient";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "VISTROL Application";
+            this.Text = "VISTROL Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormClient_Closing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormClient_Closed);
             this.Load += new System.EventHandler(this.FormClient_Load);
