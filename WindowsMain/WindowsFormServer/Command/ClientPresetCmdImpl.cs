@@ -114,6 +114,10 @@ namespace WindowsFormClient.Command
         private void AddPreset(string socketId, int dbUserId, ClientPresetsCmd presetData)
         {
             List<KeyValuePair<int, WindowsRect>> appList = new List<KeyValuePair<int, WindowsRect>>();
+            List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
+            List<KeyValuePair<int, WindowsRect>> visionList = new List<KeyValuePair<int, WindowsRect>>();
+            
+            /*
             List<ApplicationEntry> appEntryList = presetData.PresetDataEntry.PresetAppList;
             List<WndPos> appWndPosList = presetData.PresetDataEntry.PresetAppPos;
             for (int count = 0; count < appEntryList.Count; count++ )
@@ -134,7 +138,7 @@ namespace WindowsFormClient.Command
                     appWndPosList.ElementAt(count).height));
             }
 
-            List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
+            
             List<VncEntry> vncEntryList = presetData.PresetDataEntry.PresetVncList;
             List<WndPos> vncWndPosList = presetData.PresetDataEntry.PresetVncPos;
             for (int count = 0; count < vncEntryList.Count; count++)
@@ -148,7 +152,7 @@ namespace WindowsFormClient.Command
                 }));
             }
 
-            List<KeyValuePair<int, WindowsRect>> visionList = new List<KeyValuePair<int, WindowsRect>>();
+            
             List<InputAttributes> visionEntryList = presetData.PresetDataEntry.PresetVisionInputList;
             List<WndPos> visionWndPosList = presetData.PresetDataEntry.PresetVisionInputPos;
             for (int count = 0; count < visionEntryList.Count; count++)
@@ -161,7 +165,7 @@ namespace WindowsFormClient.Command
                     Bottom = visionWndPosList.ElementAt(count).posY + visionWndPosList.ElementAt(count).height,
                 }));
             }
-
+            */
             
             // cater for previously launched preset
 
@@ -181,23 +185,28 @@ namespace WindowsFormClient.Command
                 int wndIdentifier = currentApps.ElementAt(i).Key;
                 int dbIndex = currentApps.ElementAt(i).Value;
 
+                WindowsRect rect = new WindowsRect();
                 try
                 {
-                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
+                    var latestInfo = appInfoList.Single(t => t.id == wndIdentifier);
 
-                    WindowsRect rect = new WindowsRect()
+                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
+                        latestInfo.posX != -32000)
                     {
-                        Left = latestInfo.posX,
-                        Top = latestInfo.posY,
-                        Right = latestInfo.posX + latestInfo.width,
-                        Bottom = latestInfo.posY + latestInfo.height,
-                    };
-                    appList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
+                        rect.Left = latestInfo.posX;
+                        rect.Top = latestInfo.posY;
+                        rect.Right = latestInfo.posX + latestInfo.width;
+                        rect.Bottom = latestInfo.posY + latestInfo.height;
+                    }
+                    
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(e.Message);
                 }
+
+                Trace.WriteLine("Save preset: " + dbIndex + String.Format(" rect: {0} {1} {2} {3}", rect.Left, rect.Top, rect.Right, rect.Bottom));
+                appList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
             }
 
             var currentVncs = new List<KeyValuePair<int, int>>(userData.LaunchedVncList);
@@ -206,23 +215,26 @@ namespace WindowsFormClient.Command
                 int wndIdentifier = currentVncs.ElementAt(i).Key;
                 int dbIndex = currentVncs.ElementAt(i).Value;
 
+                WindowsRect rect = new WindowsRect();
                 try
                 {
                     var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
 
-                    vncList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
+                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
+                        latestInfo.posX != -32000)
                     {
-                        Left = latestInfo.posX,
-                        Top = latestInfo.posY,
-                        Right = latestInfo.posX + latestInfo.width,
-                        Bottom = latestInfo.posY + latestInfo.height,
-                    }));
+                        rect.Left = latestInfo.posX;
+                        rect.Top = latestInfo.posY;
+                        rect.Right = latestInfo.posX + latestInfo.width;
+                        rect.Bottom = latestInfo.posY + latestInfo.height;
+                    }
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(e.Message);
                 }
 
+                vncList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
             }
 
             var currentSources = new List<KeyValuePair<int, int>>(userData.LaunchedSourceList);
@@ -231,25 +243,29 @@ namespace WindowsFormClient.Command
                 int wndIdentifier = currentSources.ElementAt(i).Key;
                 int dbIndex = currentSources.ElementAt(i).Value;
 
+                WindowsRect rect = new WindowsRect();
                 try
                 {
                     var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
 
-                    visionList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
+                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
+                        latestInfo.posX != -32000)
                     {
-                         Left = latestInfo.posX,
-                         Top = latestInfo.posY,
-                         Right = latestInfo.posX + latestInfo.width,
-                         Bottom = latestInfo.posY + latestInfo.height,
-                    }));
+                        rect.Left = latestInfo.posX;
+                        rect.Top = latestInfo.posY;
+                        rect.Right = latestInfo.posX + latestInfo.width;
+                        rect.Bottom = latestInfo.posY + latestInfo.height;
+                    }
+                    
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(e.Message);
                 }
 
+                visionList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
             }
-            
+
             Server.ServerDbHelper.GetInstance().AddPreset(
                 presetData.PresetDataEntry.Name,
                 dbUserId,
@@ -380,6 +396,7 @@ namespace WindowsFormClient.Command
 
         private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
         {
+            /*
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
             {
@@ -394,6 +411,7 @@ namespace WindowsFormClient.Command
                     Utils.Windows.NativeMethods.SendMessage(new IntPtr(info.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
             }
+            */
 
             // reset the launched list
             ConnectedClientHelper.GetInstance().ClearLaunchedData(clientId);

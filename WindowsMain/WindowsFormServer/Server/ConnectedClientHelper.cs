@@ -184,6 +184,7 @@ namespace WindowsFormClient.Server
 
         public void UpdateLaunchedList(List<int> currentWndId)
         {
+            /*
             foreach(ClientInfoModel model in connectedClientList.Values)
             {
                 var result = model.LaunchedAppList
@@ -198,6 +199,7 @@ namespace WindowsFormClient.Server
                     .Where(x => currentWndId.Contains(x.Key)).ToList();
                 model.LaunchedSourceList = resultSources;
             }
+             */
         }
     }
 }

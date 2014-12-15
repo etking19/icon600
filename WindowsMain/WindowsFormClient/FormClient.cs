@@ -135,8 +135,15 @@ namespace WindowsFormClient
             formMousePad.MouseDoubleClick += formMousePad_MouseDoubleClick;
             formMousePad.MouseWheel += formMousePad_MouseWheel;
 
+            formMousePad.FormClosed += formMousePad_FormClosed;
+
             // preset helper class
             presetHelper = new PresetHelper(holder);
+        }
+
+        void formMousePad_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            checkBoxMouse.Checked = false;
         }
 
         void formMousePad_MouseDoubleClick(object sender, MouseEventArgs e)

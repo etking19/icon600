@@ -134,7 +134,7 @@ namespace RemoteFormServer
 
         private void buttonVisionDelete_Click(object sender, System.EventArgs e)
         {
-            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.Yes)
             {
                 return;
             }
@@ -152,17 +152,17 @@ namespace RemoteFormServer
 
         System.Windows.Forms.DialogResult showDeleteMessageBox()
         {
-            return MessageBox.Show("Are you sure want to delete checked data?");
+            return MessageBox.Show(this, "Are you sure want to delete checked data?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
         }
 
         System.Windows.Forms.DialogResult showDeleteMessageBoxMonitor()
         {
-            return MessageBox.Show("Are you sure want to delete checked data?" + Environment.NewLine + "Groups assosiate with this monitor info will be modify to allow viewing full desktop.");
+            return MessageBox.Show(this, "Are you sure want to delete checked data?" + Environment.NewLine + "Groups assosiate with this monitor info will be modify to allow viewing full desktop.", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
         }
 
         System.Windows.Forms.DialogResult showDeleteMessageBoxGroup()
         {
-            return MessageBox.Show("Are you sure want to delete checked data?" + Environment.NewLine + "Users assosiate with this group will be deleted.");
+            return MessageBox.Show(this, "Are you sure want to delete checked data?" + Environment.NewLine + "Users assosiate with this group will be deleted.", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
         }
 
         private void buttonRemoteAdd_Click(object sender, System.EventArgs e)
@@ -214,7 +214,7 @@ namespace RemoteFormServer
 
         private void buttonRemoteDelete_Click(object sender, System.EventArgs e)
         {
-            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.Yes)
             {
                 return;
             }
@@ -290,7 +290,7 @@ namespace RemoteFormServer
 
         private void btnMonitorsDelete_Click(object sender, System.EventArgs e)
         {
-            if (showDeleteMessageBoxMonitor() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBoxMonitor() != System.Windows.Forms.DialogResult.Yes)
             {
                 return;
             }
@@ -375,7 +375,7 @@ namespace RemoteFormServer
 
         private void btnAppDelete_Click(object sender, System.EventArgs e)
         {
-            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.Yes)
             {
                 return;
             }
@@ -435,7 +435,7 @@ namespace RemoteFormServer
 
         private void btnUsersDelete_Click(object sender, System.EventArgs e)
         {
-            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBox() != System.Windows.Forms.DialogResult.Yes)
             {
                 return;
             }
@@ -515,7 +515,7 @@ namespace RemoteFormServer
 
         private void btnGroupsDelete_Click(object sender, System.EventArgs e)
         {
-            if (showDeleteMessageBoxGroup() != System.Windows.Forms.DialogResult.OK)
+            if (showDeleteMessageBoxGroup() != System.Windows.Forms.DialogResult.Yes)
             {
                 return;
             }

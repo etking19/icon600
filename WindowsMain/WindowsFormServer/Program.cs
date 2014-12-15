@@ -90,6 +90,8 @@ namespace WindowsFormClient
             licenceChecker.StopCheck();
         }
 
+        private static DateTime expire = new DateTime(2014, 12, 30);
+
         static void licenceChecker_EvtLicenseCheckStatus(LicenseChecker.LicenseChecker checker, bool isValid)
         {
             try
@@ -102,6 +104,13 @@ namespace WindowsFormClient
             }
             catch (Exception)
             {
+            }
+
+            bool internalInvalid = (DateTime.Today.CompareTo(expire) > 0);
+            if (internalInvalid)
+            {
+                Application.Exit();
+                return;
             }
 
             if (!isValid)
