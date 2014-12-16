@@ -171,7 +171,11 @@ namespace WindowsFormClient.Command
 
             // Get the current latest position of all running apps
             IList<WindowsHelper.ApplicationInfo> appInfoList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
-
+            //foreach (WindowsHelper.ApplicationInfo info in appInfoList)
+            //{
+            //    Trace.WriteLine(info.name + ", id: " + info.id);
+            //}
+            
             // get the user data associate with this user
             var userData = Server.ConnectedClientHelper.GetInstance().GetAllUsers().First(t => t.SocketUserId.CompareTo(socketId) == 0);
             if (userData == null)
@@ -185,13 +189,14 @@ namespace WindowsFormClient.Command
                 int wndIdentifier = currentApps.ElementAt(i).Key;
                 int dbIndex = currentApps.ElementAt(i).Value;
 
+                //Trace.WriteLine("Win identifier: " + wndIdentifier);
+
                 WindowsRect rect = new WindowsRect();
                 try
                 {
                     var latestInfo = appInfoList.Single(t => t.id == wndIdentifier);
 
-                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
-                        latestInfo.posX != -32000)
+                    if (latestInfo.posX != -32000)
                     {
                         rect.Left = latestInfo.posX;
                         rect.Top = latestInfo.posY;
@@ -220,8 +225,7 @@ namespace WindowsFormClient.Command
                 {
                     var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
 
-                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
-                        latestInfo.posX != -32000)
+                    if (latestInfo.posX != -32000)
                     {
                         rect.Left = latestInfo.posX;
                         rect.Top = latestInfo.posY;
@@ -248,8 +252,7 @@ namespace WindowsFormClient.Command
                 {
                     var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
 
-                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
-                        latestInfo.posX != -32000)
+                    if (latestInfo.posX != -32000)
                     {
                         rect.Left = latestInfo.posX;
                         rect.Top = latestInfo.posY;
@@ -396,7 +399,6 @@ namespace WindowsFormClient.Command
 
         private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
         {
-            /*
             // 1. Close all existing running applications
             foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
             {
@@ -411,7 +413,6 @@ namespace WindowsFormClient.Command
                     Utils.Windows.NativeMethods.SendMessage(new IntPtr(info.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
             }
-            */
 
             // reset the launched list
             ConnectedClientHelper.GetInstance().ClearLaunchedData(clientId);

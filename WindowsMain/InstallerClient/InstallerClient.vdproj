@@ -75,7 +75,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8C3FDE1BB312653EA2B8D6813DFF0199"
+        "MsmKey" = "8:_52F5558290C9891379765F3A531C493A"
         "OwnerKey" = "8:_0D5EFC58D49243DE8AFAB57D4DA5E3C9"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -118,6 +118,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_52F5558290C9891379765F3A531C493A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_F5F108A8620DDC7CA9B63810DA450B30"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -149,12 +155,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_1BB6BE48442DAA3B52C02977955247BE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8C3FDE1BB312653EA2B8D6813DFF0199"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -276,7 +276,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Utils, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_0D6029661AADCEDD39BB30BDEB8F41A7"
@@ -307,7 +307,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SocketServerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SocketServerLib, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_1BB6BE48442DAA3B52C02977955247BE"
@@ -354,14 +354,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8C3FDE1BB312653EA2B8D6813DFF0199"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_52F5558290C9891379765F3A531C493A"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:WeifenLuo.WinFormsUI.Docking, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_8C3FDE1BB312653EA2B8D6813DFF0199"
+                    "_52F5558290C9891379765F3A531C493A"
                     {
                     "Name" = "8:WeifenLuo.WinFormsUI.Docking.dll"
                     "Attributes" = "3:512"
@@ -389,7 +389,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Session, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Session, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_A00C1D8EBECA3B54F19ABC1DD989E70F"
@@ -420,7 +420,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CustomWinForm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:CustomWinForm, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_D0188E052D0F69655642FD2971313BA3"
@@ -451,7 +451,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BasicClientServerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:BasicClientServerLib, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_E47FACEA2A6E8B78036D622A00C1DFE3"
@@ -482,7 +482,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:VncMarshall, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:VncMarshall, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F5F108A8620DDC7CA9B63810DA450B30"
@@ -598,15 +598,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VistrolClient"
-        "ProductCode" = "8:{5CE13908-DC9A-4331-98BF-5FD44379D7DC}"
-        "PackageCode" = "8:{A9B44B92-2BF7-464F-AEA3-59F89324ED02}"
+        "ProductCode" = "8:{E951FF72-4DE6-4358-8ED2-4656BC955406}"
+        "PackageCode" = "8:{06FCD259-604A-4FFA-8013-0ABCC1CFB9A3}"
         "UpgradeCode" = "8:{BA26AF34-A0B4-4E16-BA26-79CB302B521E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.3"
+        "ProductVersion" = "8:1.0.4"
         "Manufacturer" = "8:Vistrol Pte. Ltd."
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:support@vistrol.com"
