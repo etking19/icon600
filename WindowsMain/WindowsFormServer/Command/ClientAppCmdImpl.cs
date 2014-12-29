@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using Utils.Windows;
 using WcfServiceLibrary1;
+using WindowsFormClient.Server;
 
 namespace WindowsFormClient.Command
 {
@@ -19,23 +20,25 @@ namespace WindowsFormClient.Command
 
         public override void ExecuteCommand(string userId, string command)
         {
-            ClientApplicationCmd presetData = deserialize.Deserialize<ClientApplicationCmd>(command);
-            if (presetData == null)
+            ClientApplicationCmd clientAppData = deserialize.Deserialize<ClientApplicationCmd>(command);
+            if (clientAppData == null)
             {
                 return;
             }
 
             ApplicationData appData = Server.ServerDbHelper.GetInstance().GetAllApplications().First(AppData 
-                => AppData.id == presetData.ApplicationEntry.Identifier);
+                => AppData.id == clientAppData.ApplicationEntry.Identifier);
 
             if (appData == null)
             {
-                Trace.WriteLine("unable to find matched application id: " + presetData.ApplicationEntry.Identifier);
+                Trace.WriteLine("unable to find matched application id: " + clientAppData.ApplicationEntry.Identifier);
                 return;
             }
 
             int result = LaunchApplication(appData);
-            Server.ConnectedClientHelper.GetInstance().AddLaunchedApp(userId, result, appData.id);
+            //Server.ConnectedClientHelper.GetInstance().AddLaunchedApp(userId, result, appData.id);
+            int userDBid = ConnectedClientHelper.GetInstance().GetClientInfo(userId).DbUserId;
+            Server.LaunchedWndHelper.GetInstance().AddLaunchedApp(userDBid, result, appData.id);
         }
 
         public int LaunchApplication(ApplicationData appData)

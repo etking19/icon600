@@ -91,16 +91,6 @@ namespace WindowsFormClient.Presenter
                 return;
             }
 
-            // pass to connection connected info to remove all removed windows
-            var wndIds = wndAttributes.Select(p => p.id);
-            ConnectedClientHelper.GetInstance().UpdateLaunchedList(wndIds.ToList());
-
-            // TODO: check closed app
-            //var processIds = wndAttributes.Select(p => p.processId);
-            //ConnectedClientHelper.GetInstance().UpdateLaunchedSourceList(processIds.ToList());
-
-            ServerWindowsPos windowsPos = new ServerWindowsPos();
-
             List<WndPos> windowList = new List<WndPos>();
             int zOrderCounter = 0;
             foreach (Windows.WindowsAppMgr.WndAttributes attribute in wndAttributes)
@@ -122,18 +112,34 @@ namespace WindowsFormClient.Presenter
 
                 zOrderCounter++;
             }
-            windowsPos.WindowsAttributes = windowList;
 
-            try
+            // TODO: filter application launched by different login id
+            Dictionary<int, List<String>> userMap = ConnectedClientHelper.GetInstance().GetConnectedUsersGroupByDB();
+            foreach(KeyValuePair<int, List<String>> userData in userMap)
             {
-                connectionMgr.SendData((int)CommandConst.MainCommandServer.WindowsInfo,
-                    (int)CommandConst.SubCommandServer.WindowsList, 
-                    windowsPos, 
-                    Server.ConnectedClientHelper.GetInstance().GetAllClientsSocketId());
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e);
+                ServerWindowsPos windowsPos = new ServerWindowsPos();
+                windowsPos.WindowsAttributes = new List<WndPos>();
+
+                // get the launched application by user based on user's db index
+                Dictionary<int, int> launchedApp = LaunchedWndHelper.GetInstance().GetLaunchedApps(userData.Key);
+                foreach (KeyValuePair<int, int> launchedData in launchedApp)
+                {
+                    var eligibleAppWnd = windowList.FindAll(t => t.id == launchedData.Key);
+                    windowsPos.WindowsAttributes.AddRange(eligibleAppWnd);
+                }
+
+                try
+                {
+                    // send to whole group of users login using same login id
+                    connectionMgr.SendData((int)CommandConst.MainCommandServer.WindowsInfo,
+                        (int)CommandConst.SubCommandServer.WindowsList,
+                        windowsPos,
+                        userData.Value);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(e);
+                }
             }
         }
 

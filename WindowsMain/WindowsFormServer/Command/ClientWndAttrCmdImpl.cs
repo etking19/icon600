@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utils.Windows;
+using WindowsFormClient.Server;
 
 namespace WindowsFormClient.Command
 {
@@ -37,6 +38,13 @@ namespace WindowsFormClient.Command
                     break;
                 case ClientWndCmd.CommandId.EClose:
                     NativeMethods.SendMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+
+                    // remove from user's trigger list
+                    int userDBid = ConnectedClientHelper.GetInstance().GetClientInfo(userId).DbUserId;
+                    Server.LaunchedWndHelper.GetInstance().RemoveLaunchedApp(userDBid, data.Id);
+                    Server.LaunchedSourcesHelper.GetInstance().RemoveLaunchedApp(userDBid, data.Id);
+                    Server.LaunchedVncHelper.GetInstance().RemoveLaunchedApp(userDBid, data.Id);
+
                     break;
                 case ClientWndCmd.CommandId.ESetForeground:
                     NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOPMOST, 0, 0, 0, 0, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_NOSIZE | Constant.SWP_SHOWWINDOW));

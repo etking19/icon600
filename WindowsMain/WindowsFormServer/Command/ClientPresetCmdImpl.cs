@@ -102,12 +102,26 @@ namespace WindowsFormClient.Command
                     });
                 }
 
-                // TODO: should get all connected client with same login
-                server.GetConnectionMgr().SendData(
+                // should get all connected client with same login
+                List<string> connectedClientSocketList;
+                if (ConnectedClientHelper.GetInstance().GetConnectedUsersGroupByDB().TryGetValue(clientId, out connectedClientSocketList))
+                {
+                    server.GetConnectionMgr().SendData(
                     (int)CommandConst.MainCommandServer.UserPriviledge,
                     (int)CommandConst.SubCommandServer.PresetList,
                     serverPresetStatus,
-                    new List<string>() { userId });
+                    connectedClientSocketList);
+                }
+                else 
+                {
+                    // Should not happen, just in case
+                    Trace.WriteLine("ERROR: cannot get connected user socket list by user db id: " + clientId);
+                    server.GetConnectionMgr().SendData(
+                        (int)CommandConst.MainCommandServer.UserPriviledge,
+                        (int)CommandConst.SubCommandServer.PresetList,
+                        serverPresetStatus,
+                        new List<string>() { userId });
+                } 
             }
         }
 
@@ -117,270 +131,110 @@ namespace WindowsFormClient.Command
             List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
             List<KeyValuePair<int, WindowsRect>> visionList = new List<KeyValuePair<int, WindowsRect>>();
             
-            /*
-            List<ApplicationEntry> appEntryList = presetData.PresetDataEntry.PresetAppList;
-            List<WndPos> appWndPosList = presetData.PresetDataEntry.PresetAppPos;
-            for (int count = 0; count < appEntryList.Count; count++ )
-            {
-                appList.Add(new KeyValuePair<int, WindowsRect>(appEntryList.ElementAt(count).Identifier, new WindowsRect()
-                {
-                    Left = appWndPosList.ElementAt(count).posX,
-                    Top = appWndPosList.ElementAt(count).posY,
-                    Right = appWndPosList.ElementAt(count).posX + appWndPosList.ElementAt(count).width,
-                    Bottom = appWndPosList.ElementAt(count).posY + appWndPosList.ElementAt(count).height,
-                }));
-
-                Trace.WriteLine(String.Format("Add preset application: {0}, pos: {1},{2},{3},{4}",
-                    appEntryList.ElementAt(count).Name,
-                    appWndPosList.ElementAt(count).posX,
-                    appWndPosList.ElementAt(count).posY,
-                    appWndPosList.ElementAt(count).width,
-                    appWndPosList.ElementAt(count).height));
-            }
-
-            
-            List<VncEntry> vncEntryList = presetData.PresetDataEntry.PresetVncList;
-            List<WndPos> vncWndPosList = presetData.PresetDataEntry.PresetVncPos;
-            for (int count = 0; count < vncEntryList.Count; count++)
-            {
-                vncList.Add(new KeyValuePair<int, WindowsRect>(vncEntryList.ElementAt(count).Identifier, new WindowsRect()
-                {
-                    Left = vncWndPosList.ElementAt(count).posX,
-                    Top = vncWndPosList.ElementAt(count).posY,
-                    Right = vncWndPosList.ElementAt(count).posX + vncWndPosList.ElementAt(count).width,
-                    Bottom = vncWndPosList.ElementAt(count).posY + vncWndPosList.ElementAt(count).height,
-                }));
-            }
-
-            
-            List<InputAttributes> visionEntryList = presetData.PresetDataEntry.PresetVisionInputList;
-            List<WndPos> visionWndPosList = presetData.PresetDataEntry.PresetVisionInputPos;
-            for (int count = 0; count < visionEntryList.Count; count++)
-            {
-                visionList.Add(new KeyValuePair<int, WindowsRect>(visionEntryList.ElementAt(count).InputId, new WindowsRect()
-                {
-                    Left = visionWndPosList.ElementAt(count).posX,
-                    Top = visionWndPosList.ElementAt(count).posY,
-                    Right = visionWndPosList.ElementAt(count).posX + visionWndPosList.ElementAt(count).width,
-                    Bottom = visionWndPosList.ElementAt(count).posY + visionWndPosList.ElementAt(count).height,
-                }));
-            }
-            */
-            
-            // cater for previously launched preset
-
             // Get the current latest position of all running apps
             IList<WindowsHelper.ApplicationInfo> appInfoList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
 
-            // get the user data associate with this user
-            var userData = Server.ConnectedClientHelper.GetInstance().GetAllUsers().First(t => t.SocketUserId.CompareTo(socketId) == 0);
-            if (userData == null)
-            {
-                return;
-            }
+            // key - window unique identifier
+            // value - application DB id
+            Dictionary<int, int> launcedAppDic = Server.LaunchedWndHelper.GetInstance().GetLaunchedApps(dbUserId);
 
-            var currentApps = new List<KeyValuePair<int, int>>(userData.LaunchedAppList);
-            for (int i = 0; i < currentApps.Count(); i++)
+            for (int i = 0; i < launcedAppDic.Count(); i++)
             {
-                int wndIdentifier = currentApps.ElementAt(i).Key;
-                int dbIndex = currentApps.ElementAt(i).Value;
+                int wndIdentifier = launcedAppDic.ElementAt(i).Key;
+                int appDBIndex = launcedAppDic.ElementAt(i).Value;
 
                 WindowsRect rect = new WindowsRect();
                 try
                 {
                     var latestInfo = appInfoList.Single(t => t.id == wndIdentifier);
 
-                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
-                        latestInfo.posX != -32000)
+                    if (latestInfo.posX != -32000)
                     {
                         rect.Left = latestInfo.posX;
                         rect.Top = latestInfo.posY;
                         rect.Right = latestInfo.posX + latestInfo.width;
                         rect.Bottom = latestInfo.posY + latestInfo.height;
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(e.Message);
                 }
 
-                Trace.WriteLine("Save preset: " + dbIndex + String.Format(" rect: {0} {1} {2} {3}", rect.Left, rect.Top, rect.Right, rect.Bottom));
-                appList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
+                appList.Add(new KeyValuePair<int, WindowsRect>(appDBIndex, rect));
             }
 
-            var currentVncs = new List<KeyValuePair<int, int>>(userData.LaunchedVncList);
-            for (int i = 0; i < currentVncs.Count(); i++)
+
+            // key - window unique identifier
+            // value - application DB id
+            Dictionary<int, int> launcedVncDic = Server.LaunchedVncHelper.GetInstance().GetLaunchedApps(dbUserId);
+
+            for (int i = 0; i < launcedVncDic.Count(); i++)
             {
-                int wndIdentifier = currentVncs.ElementAt(i).Key;
-                int dbIndex = currentVncs.ElementAt(i).Value;
+                int wndIdentifier = launcedVncDic.ElementAt(i).Key;
+                int vncDBIndex = launcedVncDic.ElementAt(i).Value;
 
                 WindowsRect rect = new WindowsRect();
                 try
                 {
-                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
+                    var latestInfo = appInfoList.Single(t => t.id == wndIdentifier);
 
-                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
-                        latestInfo.posX != -32000)
+                    if (latestInfo.posX != -32000)
                     {
                         rect.Left = latestInfo.posX;
                         rect.Top = latestInfo.posY;
                         rect.Right = latestInfo.posX + latestInfo.width;
                         rect.Bottom = latestInfo.posY + latestInfo.height;
                     }
+
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(e.Message);
                 }
 
-                vncList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
+                vncList.Add(new KeyValuePair<int, WindowsRect>(vncDBIndex, rect));
             }
 
-            var currentSources = new List<KeyValuePair<int, int>>(userData.LaunchedSourceList);
-            for (int i = 0; i < currentSources.Count(); i++)
+
+            // key - window unique identifier
+            // value - application DB id
+            Dictionary<int, int> launcedSourcesDic = Server.LaunchedSourcesHelper.GetInstance().GetLaunchedApps(dbUserId);
+
+            for (int i = 0; i < launcedSourcesDic.Count(); i++)
             {
-                int wndIdentifier = currentSources.ElementAt(i).Key;
-                int dbIndex = currentSources.ElementAt(i).Value;
+                int wndIdentifier = launcedSourcesDic.ElementAt(i).Key;
+                int sourceDBIndex = launcedSourcesDic.ElementAt(i).Value;
 
                 WindowsRect rect = new WindowsRect();
                 try
                 {
-                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
+                    var latestInfo = appInfoList.Single(t => t.id == wndIdentifier);
 
-                    if ((latestInfo.style & Constant.WS_MINIMIZE) != 0 &&
-                        latestInfo.posX != -32000)
+                    if (latestInfo.posX != -32000)
                     {
                         rect.Left = latestInfo.posX;
                         rect.Top = latestInfo.posY;
                         rect.Right = latestInfo.posX + latestInfo.width;
                         rect.Bottom = latestInfo.posY + latestInfo.height;
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(e.Message);
                 }
 
-                visionList.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
+                visionList.Add(new KeyValuePair<int, WindowsRect>(sourceDBIndex, rect));
             }
 
             Server.ServerDbHelper.GetInstance().AddPreset(
-                presetData.PresetDataEntry.Name,
-                dbUserId,
-                appList,
-                vncList,
-                visionList);
-
-
-
-
-            /* ---------------------------------
-             * OLD IMPLEMENTATION WHERE SERVER KEEP REFERENCE TO APP TRIGGER
-             * ---------------------------------
-             * 
-            // Get the current latest position of all running apps
-            IList<WindowsHelper.ApplicationInfo> appInfoList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
-
-            // get the user data associate with this user
-            var userData = Server.ConnectedClientHelper.GetInstance().GetAllUsers().First(t => t.SocketUserId.CompareTo(socketId) == 0);
-            if (userData == null)
-            {
-                return;
-            }
-
-            // get the application triggered by uer
-            List<KeyValuePair<int, WindowsRect>> appDic = new List<KeyValuePair<int, WindowsRect>>();
-            Dictionary<int, int> currentApps = new Dictionary<int,int>(userData.LaunchedAppList);
-            for(int i = 0; i < currentApps.Count(); i++)
-            {
-                int wndIdentifier = currentApps.ElementAt(i).Key;
-                int dbIndex = currentApps.ElementAt(i).Value;
-
-                try
-                {
-                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
-
-                    WindowsRect rect = new WindowsRect()
-                    {
-                        Left = latestInfo.posX,
-                        Top = latestInfo.posY,
-                        Right = latestInfo.posX + latestInfo.width,
-                        Bottom = latestInfo.posY + latestInfo.height,
-                    };
-                    appDic.Add(new KeyValuePair<int, WindowsRect>(dbIndex, rect));
-
-                    Trace.WriteLine(string.Format("add preset app: {0},{1},{2},{3}", rect.Left, rect.Top, rect.Right, rect.Bottom));
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e.Message);
-                }
-            }
-
-            // get the vnc triggered by user
-            List<KeyValuePair<int, WindowsRect>> vncDic = new List<KeyValuePair<int, WindowsRect>>();
-            Dictionary<int, int> currentVncs = new Dictionary<int,int>(userData.LaunchedVncList);
-            for (int i = 0; i < currentVncs.Count(); i++)
-            {
-                int wndIdentifier = currentVncs.ElementAt(i).Key;
-                int dbIndex = currentVncs.ElementAt(i).Value;
-
-                try
-                {
-                    var latestInfo = appInfoList.First(t => t.id == wndIdentifier);
-
-                    vncDic.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
-                    {
-                        Left = latestInfo.posX,
-                        Top = latestInfo.posY,
-                        Right = latestInfo.posX + latestInfo.width,
-                        Bottom = latestInfo.posY + latestInfo.height,
-                    }));
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e.Message);
-                }
-                
-            }
-
-            // TODO: get latest position of sources
-            // get source input triggerred by user
-            List<KeyValuePair<int, WindowsRect>> inputDic = new List<KeyValuePair<int, WindowsRect>>();
-            Dictionary<uint, int> currentSources = new Dictionary<uint,int>(userData.LaunchedSourceList);
-            for (int i = 0; i < currentSources.Count(); i++ )
-            {
-                uint processId = currentSources.ElementAt(i).Key;
-                int dbIndex = currentSources.ElementAt(i).Value;
-
-                try
-                {
-                    //var latestInfo = appInfoList.First(t => t.processId == processId);
-
-                    inputDic.Add(new KeyValuePair<int, WindowsRect>(dbIndex, new WindowsRect()
-                    {
-                       // Left = latestInfo.posX,
-                       // Top = latestInfo.posY,
-                       // Right = latestInfo.posX + latestInfo.width,
-                       // Bottom = latestInfo.posY + latestInfo.height,
-                    }));
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e.Message);
-                }
-
-            }
-
-            Server.ServerDbHelper.GetInstance().AddPreset(
-                presetData.PresetDataEntry.Name,
-                dbUserId,
-                appDic,
-                vncDic,
-                inputDic);
-             */
+               presetData.PresetDataEntry.Name,
+               dbUserId,
+               appList,
+               vncList,
+               visionList);
         }
 
         private void RemovePreset(ClientPresetsCmd presetData)
@@ -396,25 +250,33 @@ namespace WindowsFormClient.Command
 
         private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
         {
-            /*
-            // 1. Close all existing running applications
-            foreach(Utils.Windows.WindowsHelper.ApplicationInfo info in Utils.Windows.WindowsHelper.GetRunningApplicationInfo())
+            // close all lauched applications
+            var launchedApp = LaunchedWndHelper.GetInstance().GetLaunchedApps(dbUserId);
+            foreach (int wndIdentifier in launchedApp.Keys)
             {
-                if (info.name.Contains("Vistrol"))
-                {
-                    // minimize Vistrol control application
-                    Utils.Windows.NativeMethods.ShowWindow(new IntPtr(info.id), Constant.SW_MINIMIZE);
-                }
-                else
-                {
-                    // close other running application
-                    Utils.Windows.NativeMethods.SendMessage(new IntPtr(info.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-                }
+                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
             }
-            */
 
             // reset the launched list
-            ConnectedClientHelper.GetInstance().ClearLaunchedData(clientId);
+            LaunchedWndHelper.GetInstance().ClearAll();
+
+            var launchedVnc = LaunchedVncHelper.GetInstance().GetLaunchedApps(dbUserId);
+            foreach (int wndIdentifier in launchedVnc.Keys)
+            {
+                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            }
+
+            // reset the launched list
+            LaunchedVncHelper.GetInstance().ClearAll();
+
+            var launchedSources = LaunchedSourcesHelper.GetInstance().GetLaunchedApps(dbUserId);
+            foreach (int wndIdentifier in launchedSources.Keys)
+            {
+                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            }
+
+            // reset the launched list
+            LaunchedSourcesHelper.GetInstance().ClearAll();
 
             // 2. trigger the apps in the preset by giving preset's id
             // get the rect from the preset table
@@ -423,8 +285,7 @@ namespace WindowsFormClient.Command
             foreach (ApplicationData appData in preset.AppDataList)
             {
                 int result = clientImpl.LaunchApplication(appData);
-                Trace.WriteLine("Launched preset application id: " + result);
-                ConnectedClientHelper.GetInstance().AddLaunchedApp(clientId, result, appData.id);
+                LaunchedWndHelper.GetInstance().AddLaunchedApp(dbUserId, result, appData.id);
             }
 
             // start vnc
@@ -436,7 +297,7 @@ namespace WindowsFormClient.Command
                     remoteData.rect.Right,
                     remoteData.rect.Bottom));
 
-                int id = vncClient.StartClient(
+                int result = vncClient.StartClient(
                     remoteData.remoteIp, 
                     remoteData.remotePort, 
                     remoteData.rect.Left,
@@ -445,8 +306,7 @@ namespace WindowsFormClient.Command
                     remoteData.rect.Bottom - remoteData.rect.Top);
 
                 // add to the connected client info
-                Trace.WriteLine("Launched preset remote data id: " + id);
-                ConnectedClientHelper.GetInstance().AddLaunchedVnc(clientId, id, remoteData.id);
+                LaunchedVncHelper.GetInstance().AddLaunchedApp(dbUserId, result, remoteData.id);
             }
 
             // start source input
@@ -460,8 +320,7 @@ namespace WindowsFormClient.Command
                     inputData.rect.Bottom - inputData.rect.Top);
 
                 // add to the connected client info
-                Trace.WriteLine("Launched preset input source id: " + result);
-                ConnectedClientHelper.GetInstance().AddLaunchedInputSource(clientId, result, inputData.id);
+                LaunchedSourcesHelper.GetInstance().AddLaunchedApp(dbUserId, result, inputData.id);
             }
         }
     }

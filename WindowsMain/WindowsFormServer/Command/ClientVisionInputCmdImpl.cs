@@ -22,8 +22,9 @@ namespace WindowsFormClient.Command
                 return;
             }
 
-            uint processId = (uint)ServerVisionHelper.getInstance().LaunchVisionWindow(visionData.Attribute.InputId);
-            //Server.ConnectedClientHelper.GetInstance().AddLaunchedInputSource(userId, processId, visionData.Attribute.InputId);
+            int result = ServerVisionHelper.getInstance().LaunchVisionWindow(visionData.Attribute.InputId);
+            int userDBid = ConnectedClientHelper.GetInstance().GetClientInfo(userId).DbUserId;
+            Server.LaunchedSourcesHelper.GetInstance().AddLaunchedApp(userDBid, result, visionData.Attribute.InputId);
         }
     }
 }

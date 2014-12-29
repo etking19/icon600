@@ -40,10 +40,11 @@ namespace WindowsFormClient.Command
 
         private void StartVnc(string userId, VncEntry data)
         {
-            int moduleId = vncClientImpl.StartClient(data.IpAddress, data.Port);
+            int result = vncClientImpl.StartClient(data.IpAddress, data.Port);
 
             // save to user list
-            //Server.ConnectedClientHelper.GetInstance().AddLaunchedVnc(userId, moduleId, data.Identifier);
+            int userDBid = ConnectedClientHelper.GetInstance().GetClientInfo(userId).DbUserId;
+            Server.LaunchedVncHelper.GetInstance().AddLaunchedApp(userDBid, result, data.Identifier);
         }
     }
 }

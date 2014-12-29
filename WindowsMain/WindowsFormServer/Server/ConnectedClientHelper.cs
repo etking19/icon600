@@ -76,6 +76,20 @@ namespace WindowsFormClient.Server
             return connectedClientList.Values.ToList().AsReadOnly();
         }
 
+        /// <summary>
+        /// key: user's db id
+        /// value: list of user's socket id connected using same db id
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<int, List<String>> GetConnectedUsersGroupByDB()
+        {
+            var usersGroup = GetAllUsers().GroupBy(r => r.DbUserId)
+                 .ToDictionary(t => t.Key, t => t.Select(r => r.SocketUserId).ToList());
+
+            return usersGroup;
+        }
+
+        /*
         public void ClearLaunchedData(object identifier)
         {
             ClientInfoModel model = null;
@@ -184,7 +198,6 @@ namespace WindowsFormClient.Server
 
         public void UpdateLaunchedList(List<int> currentWndId)
         {
-            /*
             foreach(ClientInfoModel model in connectedClientList.Values)
             {
                 var result = model.LaunchedAppList
@@ -199,7 +212,9 @@ namespace WindowsFormClient.Server
                     .Where(x => currentWndId.Contains(x.Key)).ToList();
                 model.LaunchedSourceList = resultSources;
             }
-             */
+             
         }
+         */ 
+
     }
 }

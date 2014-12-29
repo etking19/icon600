@@ -153,6 +153,9 @@
     <Compile Include="RgbInput\OnScreenDisplay.cs" />
     <Compile Include="RgbInput\Window.cs" />
     <Compile Include="Server\ConnectedClientHelper.cs" />
+    <Compile Include="Server\LaunchedSourcesHelper.cs" />
+    <Compile Include="Server\LaunchedVncHelper.cs" />
+    <Compile Include="Server\LaunchedWndHelper.cs" />
     <Compile Include="Server\Model\ClientInfoModel.cs" />
     <Compile Include="Server\Model\VncModel.cs" />
     <Compile Include="Server\ServerCmdMgr.cs" />

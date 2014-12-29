@@ -22,6 +22,7 @@ namespace WindowsFormClient.Server.Model
         /// </summary>
         public string Name { get; set; }
 
+        /*
         /// <summary>
         /// key: main window handle int32
         /// value pair:
@@ -45,5 +46,6 @@ namespace WindowsFormClient.Server.Model
         ///  - value: db index VisionInput
         /// </summary>
         public List<KeyValuePair<int, int>> LaunchedSourceList { get; set; }
+         * */
     }
 }
