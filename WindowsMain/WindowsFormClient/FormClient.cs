@@ -44,7 +44,7 @@ namespace WindowsFormClient
         private FormApplications formApps;
         private FormInput formInput;
         private CustomControlHolder holder;
-        private FormMousePad formMousePad = new FormMousePad();
+        private FormMousePad formMousePad;
 
         /// <summary>
         /// dock UI related
@@ -127,15 +127,6 @@ namespace WindowsFormClient
             mouseHook.HookInvoked += mouseHook_HookInvoked;
             keyboardHook = new KeyboardHook();
             keyboardHook.HookInvoked += keyboardHook_HookInvoked;
-
-            formMousePad.MouseDown += formMousePad_MouseDown;
-            formMousePad.MouseMove += formMousePad_MouseMove;
-            formMousePad.MouseUp += formMousePad_MouseUp;
-            formMousePad.MouseClick += formMousePad_MouseClick;
-            formMousePad.MouseDoubleClick += formMousePad_MouseDoubleClick;
-            formMousePad.MouseWheel += formMousePad_MouseWheel;
-
-            formMousePad.FormClosed += formMousePad_FormClosed;
 
             // preset helper class
             presetHelper = new PresetHelper(holder);
@@ -957,6 +948,16 @@ namespace WindowsFormClient
             CheckBox button = sender as CheckBox;
             if (button.Checked)
             {
+                formMousePad = new FormMousePad();
+                formMousePad.MouseDown += formMousePad_MouseDown;
+                formMousePad.MouseMove += formMousePad_MouseMove;
+                formMousePad.MouseUp += formMousePad_MouseUp;
+                formMousePad.MouseClick += formMousePad_MouseClick;
+                formMousePad.MouseDoubleClick += formMousePad_MouseDoubleClick;
+                formMousePad.MouseWheel += formMousePad_MouseWheel;
+
+                formMousePad.FormClosed += formMousePad_FormClosed;
+
                 button.BackColor = Color.FromArgb(20, 116, 186);
                 formMousePad.Show(this);
                 //mouseHook.StartHook(0);
@@ -964,7 +965,7 @@ namespace WindowsFormClient
             else
             {
                 button.BackColor = Color.FromArgb(79, 169, 236);
-                formMousePad.Hide();
+                formMousePad.Close();
                 //mouseHook.StopHook();
             }
         }
