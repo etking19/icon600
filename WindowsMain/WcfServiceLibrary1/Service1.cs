@@ -45,7 +45,7 @@ namespace WcfServiceLibrary1
                 Database.DbHelper.GetInstance().CreateTable(new RemoteVnc());
                 Database.DbHelper.GetInstance().CreateTable(new VisionInput());
                 Database.DbHelper.GetInstance().CreateTable(new SystemSettings());
-                Database.DbHelper.GetInstance().CreateTable(new Database.Data.UserSetting());
+                Database.DbHelper.GetInstance().CreateTable(new UserSetting());
             }
         }
 

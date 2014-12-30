@@ -26,8 +26,13 @@ namespace Database.Data
 
         public string GetCreateCommand()
         {
-            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY AUTOINCREMENT, {2} VARCHAR(100) UNIQUE NOT NULL, {3} INTEGER NOT NULL DEFAULT 0, {4} INTEGER NOT NULL DEFAULT 0, {5} INTEGER NOT NULL DEFAULT 0)";
-            return String.Format(query, TABLE_NAME, GROUP_ID, NAME, SHARE_FULL, MAINTENANCE, REMOTE_CONTROL);
+            string query = "CREATE TABLE IF NOT EXISTS {0} ({1} INTEGER PRIMARY KEY AUTOINCREMENT, {2} VARCHAR(100) UNIQUE NOT NULL, {3} INTEGER NOT NULL DEFAULT 0, {4} INTEGER NOT NULL DEFAULT 0);";
+            string createStr = String.Format(query, TABLE_NAME, GROUP_ID, NAME, SHARE_FULL, MAINTENANCE);
+
+            string updateTable = "ALTER TABLE {0} ADD COLUMN {1} INTEGER NOT NULL DEFAULT 0";
+            string updateStr = String.Format(updateTable, TABLE_NAME, REMOTE_CONTROL);
+
+            return createStr + updateStr;
         }
 
         public string GetAddCommand()

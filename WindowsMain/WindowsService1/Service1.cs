@@ -28,7 +28,7 @@ namespace WindowsService1
                 myServiceHost.Close();
             }
 
-            string strAdrTCP = "net.tcp://localhost:45100/Service1";
+            string strAdrTCP = "net.tcp://localhost:" + Properties.Settings.Default.Database_Port + "/Service1";
 
             Uri[] adrbase = { new Uri(strAdrTCP) };
             myServiceHost = new ServiceHost(typeof(WcfServiceLibrary1.Service1), adrbase);
