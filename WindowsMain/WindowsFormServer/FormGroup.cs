@@ -17,6 +17,7 @@ namespace WindowsFormClient
         private bool wholeDesktop;
         private bool monitorArea;
         private bool allowMaintenance;
+        private bool allowRemoteControl;
         private int monitorId;
 
         public string GroupName
@@ -29,6 +30,12 @@ namespace WindowsFormClient
         {
             get { return allowMaintenance; }
             set { checkBoxMaintenance.Checked = value; }
+        }
+
+        public bool AllowRemoteControl
+        {
+            get { return allowRemoteControl; }
+            set { checkBoxRemote.Checked = value; }
         }
 
         public bool WholeDesktop 
@@ -97,8 +104,14 @@ namespace WindowsFormClient
 
             textBoxGroupName.TextChanged += textBoxGroupName_TextChanged;
             checkBoxMaintenance.CheckStateChanged += checkBoxMaintenance_CheckStateChanged;
+            checkBoxRemote.CheckStateChanged += checkBoxRemote_CheckStateChanged;
 
             this.IsDirty = false;
+        }
+
+        void checkBoxRemote_CheckStateChanged(object sender, EventArgs e)
+        {
+            this.IsDirty = true;
         }
 
         void checkedListBoxApplications_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -237,6 +250,7 @@ namespace WindowsFormClient
 
             groupName = textBoxGroupName.Text;
             allowMaintenance = checkBoxMaintenance.Checked;
+            allowRemoteControl = checkBoxRemote.Checked;
             wholeDesktop = radioButtonDesktop.Checked;
             monitorArea = radioButtonMonitor.Checked;
 

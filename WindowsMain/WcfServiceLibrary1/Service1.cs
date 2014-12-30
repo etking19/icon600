@@ -256,11 +256,11 @@ namespace WcfServiceLibrary1
         }
 
         
-        public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> allowApps)
+        public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, List<int> allowApps)
         {
             int groupId = -1;
 
-            Group dbGroup = new Group { label = groupName, share_full_desktop = shareDesktop, allow_maintenance = allowMaintenace };
+            Group dbGroup = new Group { label = groupName, share_full_desktop = shareDesktop, allow_maintenance = allowMaintenace, allow_remote = allowRemote };
             if (DbHelper.GetInstance().AddData(dbGroup))
             {
                 // get the added index number
@@ -295,12 +295,12 @@ namespace WcfServiceLibrary1
         }
 
         
-        public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> appIds)
+        public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, List<int> appIds)
         {
             NotifyUserEditing(DBTypeEnum.Group, groupId);
 
             // modify the group info
-            Group dbGroup = new Group { id = groupId, label = groupName, share_full_desktop = shareDesktop, allow_maintenance = allowMaintenace };
+            Group dbGroup = new Group { id = groupId, label = groupName, share_full_desktop = shareDesktop, allow_maintenance = allowMaintenace, allow_remote = allowRemote };
             bool result = DbHelper.GetInstance().UpdateData(dbGroup);
 
             // remove all from group-monitor
@@ -358,6 +358,7 @@ namespace WcfServiceLibrary1
                     name = dataRow[Group.NAME].ToString(),
                     share_full_desktop = int.Parse(dataRow[Group.SHARE_FULL].ToString()) == 0 ? false : true,
                     allow_maintenance = int.Parse(dataRow[Group.MAINTENANCE].ToString()) == 0 ? false : true,
+                    allow_remote = int.Parse(dataRow[Group.REMOTE_CONTROL].ToString()) == 0 ? false : true,
                 };
 
                 groupsList.Add(groupData);

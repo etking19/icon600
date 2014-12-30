@@ -12,6 +12,7 @@ namespace WindowsFormClient.Settings
         public int UserId {get;set;}
         public string DisplayName { get; set; }
         public bool AllowMaintenance { get; set; }
+        public bool AllowRemoteControl { get; set; }
 
         public int GridX { get; set; }
         public int GridY { get; set; }

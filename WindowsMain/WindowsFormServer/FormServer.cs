@@ -454,6 +454,7 @@ namespace WindowsFormClient
                     formGroup.GroupName, 
                     formGroup.WholeDesktop, 
                     formGroup.AllowMaintenance, 
+                    formGroup.AllowRemoteControl,
                     formGroup.MonitorId,
                     formGroup.GetSelectedApplicationsId());
             }
@@ -477,6 +478,7 @@ namespace WindowsFormClient
                     formGroup.GroupName = groupName;
                     formGroup.WholeDesktop = (bool)row.Cells[3].Value;
                     formGroup.AllowMaintenance = (bool)row.Cells[4].Value;
+                    formGroup.AllowRemoteControl = (bool)row.Cells[5].Value;
                     formGroup.SetSelectedApplications(groupPresenter.GetApplicationsId(groupId));
                     int currentMonitorId = groupPresenter.GetMonitorId(groupId);
                     if(currentMonitorId != -1)
@@ -494,6 +496,7 @@ namespace WindowsFormClient
                             formGroup.GroupName,
                             formGroup.WholeDesktop,
                             formGroup.AllowMaintenance,
+                            formGroup.AllowRemoteControl,
                             formGroup.MonitorId,
                             formGroup.GetSelectedApplicationsId());
                     }

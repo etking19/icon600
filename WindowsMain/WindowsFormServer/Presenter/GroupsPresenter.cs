@@ -19,20 +19,21 @@ namespace WindowsFormClient.Presenter
             table.Columns.Add("Group Name", typeof(string)).ReadOnly = true;
             table.Columns.Add("View Full Desktop", typeof(bool)).ReadOnly = true;
             table.Columns.Add("Allow Maintenance", typeof(bool)).ReadOnly = true;
+            table.Columns.Add("Allow Remote", typeof(bool)).ReadOnly = true;
             table.Columns.Add("Users Count", typeof(int)).ReadOnly = true;
 
             foreach (GroupData data in Server.ServerDbHelper.GetInstance().GetAllGroups())
             {
                 int numberOfUsers = Server.ServerDbHelper.GetInstance().GetUsersInGroup(data.id).Count();
-                table.Rows.Add(data.id, data.name, data.share_full_desktop, data.allow_maintenance, numberOfUsers);
+                table.Rows.Add(data.id, data.name, data.share_full_desktop, data.allow_maintenance, data.allow_remote, numberOfUsers);
             }
 
             return table;
         }
 
-        public void AddGroup(string groupName, bool shareDesktop, bool allowMaintenance, int monitorId, List<int> appIds)
+        public void AddGroup(string groupName, bool shareDesktop, bool allowMaintenance, bool allowRemote, int monitorId, List<int> appIds)
         {
-            Server.ServerDbHelper.GetInstance().AddGroup(groupName, shareDesktop, allowMaintenance, monitorId, appIds);
+            Server.ServerDbHelper.GetInstance().AddGroup(groupName, shareDesktop, allowMaintenance, allowRemote, monitorId, appIds);
         }
 
         public void RemoveGroup(int groupId)
@@ -84,7 +85,7 @@ namespace WindowsFormClient.Presenter
             return dicMonitors;
         }
 
-        public void EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenance, int monitorId, List<int> appIds)
+        public void EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenance, bool allowRemote, int monitorId, List<int> appIds)
         {
             // share desktop will ignore monitor id
             if (shareDesktop)
@@ -92,7 +93,7 @@ namespace WindowsFormClient.Presenter
                 monitorId = -1;
             }
 
-            Server.ServerDbHelper.GetInstance().EditGroup(groupId, groupName, shareDesktop, allowMaintenance, monitorId, appIds);
+            Server.ServerDbHelper.GetInstance().EditGroup(groupId, groupName, shareDesktop, allowMaintenance, allowRemote, monitorId, appIds);
         }   
     }
 }

@@ -8,5 +8,6 @@ namespace Session.Data
     public class ServerMaintenanceStatus : BaseCmd
     {
         public bool AllowMaintenance { get; set; }
+        public bool AllowRemoteControl { get; set; }
     }
 }

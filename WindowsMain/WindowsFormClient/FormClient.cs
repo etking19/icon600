@@ -230,63 +230,15 @@ namespace WindowsFormClient
 
         void notifyIconClient_BalloonTipClicked(object sender, EventArgs e)
         {
-            this.Visible = true;
+            this.WindowState = FormWindowState.Normal;
             notifyIconClient.Visible = false;
         }
 
         void notifyIconClient_DoubleClick(object sender, EventArgs e)
         {
-            this.Visible = true;
+            this.WindowState = FormWindowState.Normal;
             notifyIconClient.Visible = false;
         }
-
-        /*
-        /// <summary>
-        /// get the maximized size of the control by not actually maxmized the parent
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void FormClient_SizeChanged(object sender, EventArgs e)
-        {
-            if(this.WindowState == FormWindowState.Maximized)
-            {
-                holder.MaximizedSize = getMaximizedClientSize();
-                holder.SetMaximized();
-            }
-            else if(this.WindowState == FormWindowState.Normal)
-            {
-                holder.SetRestore();
-            }
-        }*/
-
-        /*
-        private Size getMaximizedClientSize()
-        {
-            var original = this.WindowState;
-            try
-            {
-                NativeMethods.SendMessage(this.Handle, (int)Constant.WM_SETREDRAW, new IntPtr(0), IntPtr.Zero);
-
-                this.WindowState = FormWindowState.Maximized;
-                return holder.ClientSize;
-
-            }
-            finally
-            {
-                this.WindowState = original;
-                NativeMethods.SendMessage(this.Handle, (int)Constant.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
-            }
-        }
-        */
-
-        /*
-        void formMimic_SizeChanged(object sender, EventArgs e)
-        {
-            if (holder != null)
-            {
-                holder.RefreshLayout();
-            }
-        }*/
 
         void holder_onDelegateSizeChangedEvt(int id, Size newSize)
         {
@@ -915,6 +867,9 @@ namespace WindowsFormClient
             }
 
             buttonMaintenance.Enabled = privilegde.AllowMaintenance;
+
+            checkBoxMouse.Enabled = privilegde.AllowRemoteControl;
+            checkBoxKeyboard.Enabled = privilegde.AllowRemoteControl;
         }
 
         private void FormClient_Closing(object sender, FormClosingEventArgs e)

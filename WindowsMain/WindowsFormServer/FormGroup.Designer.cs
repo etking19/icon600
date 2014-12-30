@@ -38,6 +38,7 @@
             this.radioButtonDesktop = new System.Windows.Forms.RadioButton();
             this.checkedListBoxApplications = new System.Windows.Forms.CheckedListBox();
             this.checkBoxMaintenance = new System.Windows.Forms.CheckBox();
+            this.checkBoxRemote = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,7 +77,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 19);
+            this.label1.Size = new System.Drawing.Size(48, 16);
             this.label1.TabIndex = 13;
             this.label1.Text = "Name:";
             // 
@@ -87,7 +88,7 @@
             this.textBoxGroupName.Location = new System.Drawing.Point(111, 15);
             this.textBoxGroupName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBoxGroupName.Name = "textBoxGroupName";
-            this.textBoxGroupName.Size = new System.Drawing.Size(260, 27);
+            this.textBoxGroupName.Size = new System.Drawing.Size(260, 23);
             this.textBoxGroupName.TabIndex = 1;
             // 
             // groupBox1
@@ -97,7 +98,7 @@
             this.groupBox1.Controls.Add(this.comboBoxMonitors);
             this.groupBox1.Controls.Add(this.radioButtonMonitor);
             this.groupBox1.Controls.Add(this.radioButtonDesktop);
-            this.groupBox1.Location = new System.Drawing.Point(20, 81);
+            this.groupBox1.Location = new System.Drawing.Point(20, 117);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -113,7 +114,7 @@
             this.comboBoxMonitors.Location = new System.Drawing.Point(91, 82);
             this.comboBoxMonitors.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.comboBoxMonitors.Name = "comboBoxMonitors";
-            this.comboBoxMonitors.Size = new System.Drawing.Size(219, 27);
+            this.comboBoxMonitors.Size = new System.Drawing.Size(219, 24);
             this.comboBoxMonitors.TabIndex = 4;
             // 
             // radioButtonMonitor
@@ -122,7 +123,7 @@
             this.radioButtonMonitor.Location = new System.Drawing.Point(8, 54);
             this.radioButtonMonitor.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonMonitor.Name = "radioButtonMonitor";
-            this.radioButtonMonitor.Size = new System.Drawing.Size(191, 23);
+            this.radioButtonMonitor.Size = new System.Drawing.Size(165, 20);
             this.radioButtonMonitor.TabIndex = 3;
             this.radioButtonMonitor.TabStop = true;
             this.radioButtonMonitor.Text = "Selected Monitor Area";
@@ -134,7 +135,7 @@
             this.radioButtonDesktop.Location = new System.Drawing.Point(8, 25);
             this.radioButtonDesktop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.radioButtonDesktop.Name = "radioButtonDesktop";
-            this.radioButtonDesktop.Size = new System.Drawing.Size(141, 23);
+            this.radioButtonDesktop.Size = new System.Drawing.Size(122, 20);
             this.radioButtonDesktop.TabIndex = 3;
             this.radioButtonDesktop.TabStop = true;
             this.radioButtonDesktop.Text = "Whole Desktop";
@@ -145,10 +146,10 @@
             this.checkedListBoxApplications.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkedListBoxApplications.FormattingEnabled = true;
-            this.checkedListBoxApplications.Location = new System.Drawing.Point(20, 210);
+            this.checkedListBoxApplications.Location = new System.Drawing.Point(20, 246);
             this.checkedListBoxApplications.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkedListBoxApplications.Name = "checkedListBoxApplications";
-            this.checkedListBoxApplications.Size = new System.Drawing.Size(413, 158);
+            this.checkedListBoxApplications.Size = new System.Drawing.Size(413, 148);
             this.checkedListBoxApplications.TabIndex = 5;
             // 
             // checkBoxMaintenance
@@ -157,16 +158,28 @@
             this.checkBoxMaintenance.Location = new System.Drawing.Point(111, 53);
             this.checkBoxMaintenance.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBoxMaintenance.Name = "checkBoxMaintenance";
-            this.checkBoxMaintenance.Size = new System.Drawing.Size(219, 23);
+            this.checkBoxMaintenance.Size = new System.Drawing.Size(190, 20);
             this.checkBoxMaintenance.TabIndex = 2;
             this.checkBoxMaintenance.Text = "Allow Server Maintenance";
             this.checkBoxMaintenance.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxRemote
+            // 
+            this.checkBoxRemote.AutoSize = true;
+            this.checkBoxRemote.Location = new System.Drawing.Point(111, 81);
+            this.checkBoxRemote.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.checkBoxRemote.Name = "checkBoxRemote";
+            this.checkBoxRemote.Size = new System.Drawing.Size(162, 20);
+            this.checkBoxRemote.TabIndex = 14;
+            this.checkBoxRemote.Text = "Allow Remote Control";
+            this.checkBoxRemote.UseVisualStyleBackColor = true;
             // 
             // FormGroup
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(215)))), ((int)(((byte)(217)))), ((int)(((byte)(219)))));
             this.ClientSize = new System.Drawing.Size(448, 450);
+            this.Controls.Add(this.checkBoxRemote);
             this.Controls.Add(this.checkBoxMaintenance);
             this.Controls.Add(this.checkedListBoxApplications);
             this.Controls.Add(this.groupBox1);
@@ -199,5 +212,6 @@
         private System.Windows.Forms.CheckedListBox checkedListBoxApplications;
         private System.Windows.Forms.ComboBox comboBoxMonitors;
         private System.Windows.Forms.CheckBox checkBoxMaintenance;
+        private System.Windows.Forms.CheckBox checkBoxRemote;
     }
 }

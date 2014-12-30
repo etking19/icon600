@@ -281,7 +281,7 @@ namespace WindowsFormClient.Server
 
             ServerMaintenanceStatus maintenanceCmd = new ServerMaintenanceStatus();
             maintenanceCmd.AllowMaintenance = latestData.allow_maintenance;
-
+            maintenanceCmd.AllowRemoteControl = latestData.allow_remote;
 
             ServerApplicationStatus appCmd = new ServerApplicationStatus();
             List<ApplicationEntry> applicationList = new List<ApplicationEntry>();

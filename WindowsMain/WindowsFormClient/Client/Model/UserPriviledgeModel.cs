@@ -8,5 +8,7 @@ namespace WindowsFormClient.Client.Model
     public class UserPriviledgeModel
     {
         public bool AllowMaintenance { get; set; }
+
+        public bool AllowRemoteControl { get; set; }
     }
 }

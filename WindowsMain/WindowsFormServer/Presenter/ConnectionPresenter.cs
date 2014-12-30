@@ -275,6 +275,7 @@ namespace WindowsFormClient.Presenter
             ServerMaintenanceStatus maintenanceStatus = new ServerMaintenanceStatus();
             GroupData groupData = Server.ServerDbHelper.GetInstance().GetGroupByUserId(model.DbUserId);
             maintenanceStatus.AllowMaintenance = groupData.allow_maintenance;
+            maintenanceStatus.AllowRemoteControl = groupData.allow_remote;
 
             MonitorInfo allowViewingArea = new MonitorInfo();
             if (groupData.share_full_desktop)

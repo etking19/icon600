@@ -60,7 +60,7 @@ namespace WindowsFormClient.Presenter
             {
                 foreach (GroupData groupData in groupDataList)
                 {
-                    Server.ServerDbHelper.GetInstance().EditGroup(groupData.id, groupData.name, true, groupData.allow_maintenance, -1, getApplicationsId(groupData.id));
+                    Server.ServerDbHelper.GetInstance().EditGroup(groupData.id, groupData.name, true, groupData.allow_maintenance, groupData.allow_remote, - 1, getApplicationsId(groupData.id));
                 }
             }
         }

@@ -29,9 +29,11 @@ namespace WindowsFormClient.Command
             UserPriviledgeModel model = new UserPriviledgeModel()
             {
                 AllowMaintenance = maintenanceData.AllowMaintenance,
+                AllowRemoteControl = maintenanceData.AllowRemoteControl,
             };
 
             UserSettings.GetInstance().AllowMaintenance = maintenanceData.AllowMaintenance;
+            UserSettings.GetInstance().AllowRemoteControl = maintenanceData.AllowRemoteControl;
 
             client.RefreshMaintenanceStatus(model);
         }

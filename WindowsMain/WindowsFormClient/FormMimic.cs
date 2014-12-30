@@ -161,7 +161,6 @@ namespace WindowsFormClient
             
         }
 
-
         public void RefreshMatrixLayout()
         {
             if (VisibleSize.Width == 0 ||

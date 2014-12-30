@@ -145,14 +145,14 @@ namespace WindowsFormClient.Server
         #endregion
 
         #region group
-        public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> allowApps)
+        public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, List<int> allowApps)
         {
-            return wcfService.AddGroup(groupName, shareDesktop, allowMaintenace, monitorId, allowApps.ToArray());
+            return wcfService.AddGroup(groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, allowApps.ToArray());
         }
 
-        public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> appIds)
+        public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, List<int> appIds)
         {
-            return wcfService.EditGroup(groupId, groupName, shareDesktop, allowMaintenace, monitorId, appIds.ToArray());
+            return wcfService.EditGroup(groupId, groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, appIds.ToArray());
         }
 
         public bool RemoveGroup(int groupId)

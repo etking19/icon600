@@ -118,12 +118,15 @@ namespace WcfServiceLibrary1
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool allow_maintenanceField;
+
+        private bool allow_remoteField;
         
         private int idField;
         
         private string nameField;
         
         private bool share_full_desktopField;
+
         
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData
         {
@@ -147,6 +150,19 @@ namespace WcfServiceLibrary1
             set
             {
                 this.allow_maintenanceField = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool allow_remote
+        {
+            get
+            {
+                return this.allow_remoteField;
+            }
+            set
+            {
+                this.allow_remoteField = value;
             }
         }
         
@@ -1029,16 +1045,16 @@ public interface IService1
     System.Threading.Tasks.Task<WcfServiceLibrary1.UserData> GetUserAsync(int userId);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddGroup", ReplyAction="http://tempuri.org/IService1/AddGroupResponse")]
-    int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps);
+    int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] allowApps);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/AddGroup", ReplyAction="http://tempuri.org/IService1/AddGroupResponse")]
-    System.Threading.Tasks.Task<int> AddGroupAsync(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps);
+    System.Threading.Tasks.Task<int> AddGroupAsync(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] allowApps);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditGroup", ReplyAction="http://tempuri.org/IService1/EditGroupResponse")]
-    bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds);
+    bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] appIds);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/EditGroup", ReplyAction="http://tempuri.org/IService1/EditGroupResponse")]
-    System.Threading.Tasks.Task<bool> EditGroupAsync(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds);
+    System.Threading.Tasks.Task<bool> EditGroupAsync(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] appIds);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RemoveGroup", ReplyAction="http://tempuri.org/IService1/RemoveGroupResponse")]
     bool RemoveGroup(int groupId);
@@ -1384,24 +1400,24 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
         return base.Channel.GetUserAsync(userId);
     }
     
-    public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps)
+    public int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] allowApps)
     {
-        return base.Channel.AddGroup(groupName, shareDesktop, allowMaintenace, monitorId, allowApps);
+        return base.Channel.AddGroup(groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, allowApps);
+    }
+
+    public System.Threading.Tasks.Task<int> AddGroupAsync(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] allowApps)
+    {
+        return base.Channel.AddGroupAsync(groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, allowApps);
     }
     
-    public System.Threading.Tasks.Task<int> AddGroupAsync(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] allowApps)
+    public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] appIds)
     {
-        return base.Channel.AddGroupAsync(groupName, shareDesktop, allowMaintenace, monitorId, allowApps);
+        return base.Channel.EditGroup(groupId, groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, appIds);
     }
     
-    public bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds)
+    public System.Threading.Tasks.Task<bool> EditGroupAsync(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] appIds)
     {
-        return base.Channel.EditGroup(groupId, groupName, shareDesktop, allowMaintenace, monitorId, appIds);
-    }
-    
-    public System.Threading.Tasks.Task<bool> EditGroupAsync(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, int[] appIds)
-    {
-        return base.Channel.EditGroupAsync(groupId, groupName, shareDesktop, allowMaintenace, monitorId, appIds);
+        return base.Channel.EditGroupAsync(groupId, groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, appIds);
     }
     
     public bool RemoveGroup(int groupId)

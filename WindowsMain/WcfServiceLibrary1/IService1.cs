@@ -29,10 +29,10 @@ namespace WcfServiceLibrary1
         UserData GetUser(int userId);
 
         [OperationContract]
-        int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> allowApps);
+        int AddGroup(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, List<int> allowApps);
 
         [OperationContract]
-        bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, int monitorId, List<int> appIds);
+        bool EditGroup(int groupId, string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, List<int> appIds);
 
         [OperationContract]
         bool RemoveGroup(int groupId);
@@ -245,6 +245,9 @@ namespace WcfServiceLibrary1
 
         [DataMember]
         public bool allow_maintenance { get; set; }
+
+        [DataMember]
+        public bool allow_remote { get; set; }
     }
 
     [DataContract]
