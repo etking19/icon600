@@ -1,6 +1,7 @@
 ﻿using CustomUI;
 using Session.Connection;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -393,6 +394,7 @@ namespace WindowsFormClient
         private void btnUsersEdit_Click(object sender, EventArgs e)
         {
             // get current selected item
+            Dictionary<int, FormUser> updatedList = new Dictionary<int, FormUser>();
             foreach (DataGridViewRow row in dataGridViewUsers.Rows)
             {
                 if(row.Cells[0].Value != null &&
@@ -413,9 +415,14 @@ namespace WindowsFormClient
                         formUser.IsDirty)
                     {
                         // add to database
-                        userPresenter.EditUser(userId, formUser.DisplayName, formUser.UserName, formUser.Password, formUser.SelectedGroupId);
+                        updatedList.Add(userId, formUser);
                     }
-                }                
+                }
+            }
+
+            foreach (KeyValuePair<int, FormUser> data in updatedList)
+            {
+                userPresenter.EditUser(data.Key, data.Value.DisplayName, data.Value.UserName, data.Value.Password, data.Value.SelectedGroupId);
             }
         }
 
@@ -462,6 +469,7 @@ namespace WindowsFormClient
 
         private void btnGroupsEdit_Click(object sender, EventArgs e)
         {
+            Dictionary<int, FormGroup> updatedList = new Dictionary<int, FormGroup>();
             foreach (DataGridViewRow row in dataGridViewGroup.Rows)
             {
                 if (row.Cells[0].Value != null &&
@@ -490,17 +498,22 @@ namespace WindowsFormClient
                     if (formGroup.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
                         formGroup.IsDirty)
                     {
-                        // add to database
-                        groupPresenter.EditGroup(
-                            groupId,
-                            formGroup.GroupName,
-                            formGroup.WholeDesktop,
-                            formGroup.AllowMaintenance,
-                            formGroup.AllowRemoteControl,
-                            formGroup.MonitorId,
-                            formGroup.GetSelectedApplicationsId());
+                        updatedList.Add(groupId, formGroup);
                     }
                 }
+            }
+
+            foreach (KeyValuePair<int, FormGroup> data in updatedList)
+            {
+                // add to database
+                groupPresenter.EditGroup(
+                    data.Key,
+                    data.Value.GroupName,
+                    data.Value.WholeDesktop,
+                    data.Value.AllowMaintenance,
+                    data.Value.AllowRemoteControl,
+                    data.Value.MonitorId,
+                    data.Value.GetSelectedApplicationsId());
             }
         }
 
@@ -546,6 +559,7 @@ namespace WindowsFormClient
 
         private void btnAppEdit_Click(object sender, EventArgs e)
         {
+            Dictionary<int, FormApplication> updatedList = new Dictionary<int, FormApplication>();
             foreach (DataGridViewRow row in dataGridViewApp.Rows)
             {
                 if (row.Cells[0].Value != null &&
@@ -575,18 +589,23 @@ namespace WindowsFormClient
                     if (formApp.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
                         formApp.IsDirty)
                     {
-                        // add to database
-                        applicationPresenter.EditApplication(
-                            appId,
-                            formApp.DisplayName,
-                            formApp.ExecutablePath,
-                            formApp.Arguments,
-                            formApp.PositionLeft,
-                            formApp.PositionTop,
-                            formApp.PositionLeft + formApp.Width,
-                            formApp.PositionTop + formApp.Height);
+                        updatedList.Add(appId, formApp);
                     }
                 }
+            }
+
+            foreach (KeyValuePair<int, FormApplication> data in updatedList)
+            {
+                // add to database
+                applicationPresenter.EditApplication(
+                    data.Key,
+                    data.Value.DisplayName,
+                    data.Value.ExecutablePath,
+                    data.Value.Arguments,
+                    data.Value.PositionLeft,
+                    data.Value.PositionTop,
+                    data.Value.PositionLeft + data.Value.Width,
+                    data.Value.PositionTop + data.Value.Height);
             }
         }
 
@@ -629,6 +648,7 @@ namespace WindowsFormClient
 
         private void btnMonitorsEdit_Click(object sender, EventArgs e)
         {
+            Dictionary<int, FormMonitor> updatedList = new Dictionary<int, FormMonitor>();
             foreach (DataGridViewRow row in dataGridViewMonitors.Rows)
             {
                 if (row.Cells[0].Value != null &&
@@ -656,16 +676,21 @@ namespace WindowsFormClient
                     if (formMonitor.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
                         formMonitor.IsDirty)
                     {
-                        // add to database
-                        monitorPresenter.EditMonitor(
-                            monitorId,
-                            formMonitor.DisplayName,
-                            formMonitor.LocationX,
-                            formMonitor.LocationY,
-                            formMonitor.LocationX + formMonitor.Width,
-                            formMonitor.LocationY + formMonitor.Height);
+                        updatedList.Add(monitorId, formMonitor);
                     }
                 }
+            }
+
+            foreach (KeyValuePair<int, FormMonitor> data in updatedList)
+            {
+                // add to database
+                monitorPresenter.EditMonitor(
+                    data.Key,
+                    data.Value.DisplayName,
+                    data.Value.LocationX,
+                    data.Value.LocationY,
+                    data.Value.LocationX + data.Value.Width,
+                    data.Value.LocationY + data.Value.Height);
             }
         }
 
@@ -788,6 +813,7 @@ namespace WindowsFormClient
 
         private void buttonRemoteEdit_Click(object sender, EventArgs e)
         {
+            Dictionary<int, FormRemoteVnc> updatedList = new Dictionary<int, FormRemoteVnc>();
             foreach (DataGridViewRow row in dataGridViewRemote.Rows)
             {
                 if (row.Cells[0].Value != null &&
@@ -808,14 +834,19 @@ namespace WindowsFormClient
                     if (formVnc.ShowDialog(this) == System.Windows.Forms.DialogResult.OK &&
                         formVnc.IsDirty)
                     {
-                        // add to database
-                        remoteVncPresenter.EditVnc(
-                            vncDataId,
-                            formVnc.DisplayName,
-                            formVnc.RemoteIp,
-                            formVnc.RemotePort);
+                        updatedList.Add(vncDataId, formVnc);
                     }
                 }
+            }
+
+            foreach (KeyValuePair<int, FormRemoteVnc> data in updatedList)
+            {
+                // add to database
+                remoteVncPresenter.EditVnc(
+                    data.Key,
+                    data.Value.DisplayName,
+                    data.Value.RemoteIp,
+                    data.Value.RemotePort);
             }
         }
 
@@ -860,6 +891,7 @@ namespace WindowsFormClient
 
         private void buttonVisionEdit_Click(object sender, EventArgs e)
         {
+            Dictionary<uint, FormVision> updatedList = new Dictionary<uint, FormVision>();
             foreach (DataGridViewRow row in dataGridVisionInput.Rows)
             {
                 if (row.Cells[0].Value != null &&
@@ -879,13 +911,18 @@ namespace WindowsFormClient
 
                     if (formVision.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                     {
-                        visionInputPresenter.EditVisionInput(
-                            visionDataId,
-                            formVision.WindowObj,
-                            formVision.InputObj,
-                            formVision.OnScreenDisplayObj);
+                        updatedList.Add(visionDataId, formVision);
                     }
                 }
+            }
+
+            foreach (KeyValuePair<uint, FormVision> data in updatedList)
+            {
+                visionInputPresenter.EditVisionInput(
+                            data.Key,
+                            data.Value.WindowObj,
+                            data.Value.InputObj,
+                            data.Value.OnScreenDisplayObj);
             }
         }
 
