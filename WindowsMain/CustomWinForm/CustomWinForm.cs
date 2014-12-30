@@ -63,7 +63,7 @@ namespace CustomWinForm
             set 
             { 
                 style = value;
-                //UpdateStyles();
+                UpdateStyles();
             } 
         }
 

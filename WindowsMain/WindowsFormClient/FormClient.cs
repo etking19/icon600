@@ -130,6 +130,19 @@ namespace WindowsFormClient
 
             // preset helper class
             presetHelper = new PresetHelper(holder);
+
+            // for events
+            this.Resize += FormClient_Resize;
+        }
+
+        void FormClient_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState != FormWindowState.Minimized &&
+                formMimic != null &&
+                holder != null)
+            {
+                holder.Parent = formMimic;
+            }
         }
 
         void formMousePad_FormClosed(object sender, FormClosedEventArgs e)
@@ -930,10 +943,10 @@ namespace WindowsFormClient
                         }
                     case Constant.SC_MINIMIZE:
                         {
-                            this.Hide();
+                            holder.Parent = null;
                             notifyIconClient.Visible = true;
                             notifyIconClient.ShowBalloonTip(5000);
-                            return;
+                            break;
                         }
                     default:
                         break;
