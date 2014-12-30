@@ -19,6 +19,7 @@ namespace WindowsFormClient
         /// </summary>
         public int ClientRow { get; set; }
         public int ClientColumn { get; set; }
+        public bool ApplySnap { get; set; }
 
         /// <summary>
         /// Server total screen size
@@ -141,14 +142,23 @@ namespace WindowsFormClient
                 userColumnGridList.Add(xLinePos);
             }
 
-            List<int> combinedColGridList = new List<int>(userColumnGridList);
-            combinedColGridList.AddRange(columnGridList);
+            if(ApplySnap)
+            {
+                List<int> combinedColGridList = new List<int>(userColumnGridList);
+                combinedColGridList.AddRange(columnGridList);
 
-            List<int> combinedRowGridList = new List<int>(userRowGridList);
-            combinedRowGridList.AddRange(rowGridList);
+                List<int> combinedRowGridList = new List<int>(userRowGridList);
+                combinedRowGridList.AddRange(rowGridList);
 
-            mHolder.SendToBack();
-            mHolder.SetSnapGrid(combinedColGridList, combinedRowGridList);
+                mHolder.SendToBack();
+                mHolder.SetSnapGrid(combinedColGridList, combinedRowGridList);
+            }
+            else
+            {
+                mHolder.SendToBack();
+                mHolder.SetSnapGrid(columnGridList, rowGridList);
+            }
+            
         }
 
 

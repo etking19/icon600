@@ -298,9 +298,51 @@ namespace WindowsFormClient
             clientPresenter.SetApplicationRestore(id);
         }
 
-        void holder_onDelegatePosChangedEvt(int id, int xPos, int yPos)
+        void holder_onDelegatePosChangedEvt(int id, int xPos, int yPos, int width, int height)
         {
-            clientPresenter.SetApplicationPos(id, xPos, yPos);
+            int leftBoundary = formMimic.ReferenceLeft;
+            int topBoundary = formMimic.ReferenceTop;
+            int rightBoundary = leftBoundary + formMimic.VisibleSize.Width;
+            int bottomBoundary = topBoundary + formMimic.VisibleSize.Height;
+
+            int updatedX = xPos;
+            int updatedY = yPos;
+            int updatedWidth = width;
+            int updatedHeight = height;
+
+            // check if the top border exit the allowed area
+            if (xPos < leftBoundary)
+            {
+                updatedX = leftBoundary;
+                updatedWidth -= (leftBoundary - xPos);
+            }
+
+            // check if the left border exit the allowed area
+            if (yPos < topBoundary)
+            {
+                updatedY = topBoundary;
+                updatedHeight -= (topBoundary - yPos);
+            }
+
+            // check if the right border exit the allowed area
+            if ((xPos + updatedWidth) > rightBoundary)
+            {
+                updatedWidth = rightBoundary - xPos;
+            }
+
+            // check if the bottom border exit the allowed area
+            if ((yPos + updatedHeight) > bottomBoundary)
+            {
+                updatedHeight = bottomBoundary - yPos;
+            }
+
+            clientPresenter.SetApplicationPos(id, updatedX, updatedY);
+
+            if (updatedWidth != width ||
+                updatedHeight != height)
+            {
+                clientPresenter.SetApplicationSize(id, new Size(updatedWidth, updatedHeight));
+            }
         }
 
         void holder_onDelegateMinimizedEvt(int id)
@@ -310,18 +352,7 @@ namespace WindowsFormClient
 
         void holder_onDelegateMaximizedEvt(int id)
         {
-            // check if the client view the whole desktop
-            // else just maximize to window its belong (set pos and width/height)
-            if(formMimic.VisibleSize.Equals(formMimic.FullSize))
-            {
-                clientPresenter.SetApplicationMaximize(id);
-            }
-            else
-            {
-                // just fill the visible area
-                clientPresenter.SetApplicationPos(id, formMimic.ReferenceLeft, formMimic.ReferenceTop);
-                clientPresenter.SetApplicationSize(id, formMimic.VisibleSize);
-            }       
+            setWndMaximize(id);
         }
 
         void holder_onDelegateClosedEvt(int id)
@@ -378,7 +409,7 @@ namespace WindowsFormClient
 
         void formRunningApps_EvtAppMaximize(FormRunningApps form, WindowsModel model)
         {
-            clientPresenter.SetApplicationMaximize(model.WindowsId);
+            setWndMaximize(model.WindowsId);
         }
 
         void formRunningApps_EvtAppClose(FormRunningApps form, WindowsModel model)
@@ -1013,16 +1044,12 @@ namespace WindowsFormClient
 
         public void RefreshUserGridLayout(UserSetting setting)
         {
-            if (setting.isSnap)
-            {
-                formMimic.ClientRow = setting.gridX;
-                formMimic.ClientColumn = setting.gridY;
-            }
-            else
-            {
-                formMimic.ClientRow = 0;
-                formMimic.ClientColumn = 0;
-            }
+            // must apply snap feature first
+            formMimic.ApplySnap = setting.isSnap;
+
+            // apply the GUI
+            formMimic.ClientRow = setting.gridX;
+            formMimic.ClientColumn = setting.gridY;
             formMimic.RefreshUserMatrixLayout();
         }
 
@@ -1047,6 +1074,26 @@ namespace WindowsFormClient
         {
             AboutBox about = new AboutBox();
             about.ShowDialog(this);
+        }
+
+        /// <summary>
+        /// used to handle maximize in visible area only
+        /// </summary>
+        /// <param name="wndId"></param>
+        private void setWndMaximize(int wndId)
+        {
+            // check if the client view the whole desktop
+            // else just maximize to window its belong (set pos and width/height)
+            if (formMimic.VisibleSize.Equals(formMimic.FullSize))
+            {
+                clientPresenter.SetApplicationMaximize(wndId);
+            }
+            else
+            {
+                // just fill the visible area
+                clientPresenter.SetApplicationPos(wndId, formMimic.ReferenceLeft, formMimic.ReferenceTop);
+                clientPresenter.SetApplicationSize(wndId, formMimic.VisibleSize);
+            }     
         }
     }
 }

@@ -30,32 +30,6 @@ namespace CustomWinForm
         public Size LatestSize { get; set; }
         public Point LatestPos { get; set; }
 
-        /// <summary>
-        /// keep the previous position before sent to server
-        /// set when wanted to send command to server about changed pos
-        /// reset when server notify position does not match this pos or actual pos
-        /// </summary>
-        public List<Point> DelegatePos 
-        { 
-            get
-            {
-                return delegatePosList;
-            }
-        }
-        private List<Point> delegatePosList = new List<Point>();
-
-        /// <summary>
-        /// used to control server sending position update while the actual window already moved, pending send update to server
-        /// </summary>
-        public List<Point> ForwardPos
-        {
-            get
-            {
-                return forwardPosList;
-            }
-        }
-        private List<Point> forwardPosList = new List<Point>();
-
         private Int32 style;
         public Int32 Style 
         { 
@@ -72,11 +46,66 @@ namespace CustomWinForm
         private IList<int> columnSnapGrid = null;
         private IList<int> rowSnapGrid = null;
 
+        /// <summary>
+        /// timer to keep track user activity for resizing
+        /// </summary>
+        private Timer _resizingTimer = null;
+
         public CustomWinForm(int id, Int32 style)
         {
             InitializeComponent();
             this.Id = id;
-            this.Style = style;            
+            this.Style = style;
+        }
+
+        private void CustomWinForm_Load(object sender, EventArgs e)
+        {
+            // handle grid capturing
+            this.LocationChanged += CustomWinForm_LocationChanged;
+            this.Resize += CustomWinForm_Resize;
+
+            // timer to cater resizing event where fire size changed event after certain time idle
+            _resizingTimer = new Timer();
+            _resizingTimer.Interval = 500;
+            _resizingTimer.Tick += (senderTimer, evt) => ResizeFinished();
+        }
+
+        void CustomWinForm_LocationChanged(object sender, EventArgs e)
+        {
+            int outLocationX;
+            int outLocationY;
+            if (performLocationSnap(this.Location.X, this.Location.Y, out outLocationX, out outLocationY))
+            {
+                this.Location = new Point(outLocationX, outLocationY);
+            }
+        }
+
+        void CustomWinForm_Resize(object sender, EventArgs e)
+        {
+            // check if the size snap
+            int snapWidth;
+            int snapHeight;
+            if (performSizeSnap(this.Location.X, this.Location.Y, this.Width, this.Height, out snapWidth, out snapHeight))
+            {
+                this.Width = snapWidth;
+                this.Height = snapHeight;
+            }
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            if (_resizingTimer != null)
+            {
+                _resizingTimer.Start();
+            }
+        }
+
+        private void ResizeFinished()
+        {
+            _resizingTimer.Stop();
+
+            onDelegateSizeChangedEvt(this, Size);
         }
 
         public void SetWindowName(string name)
@@ -94,24 +123,6 @@ namespace CustomWinForm
         public void SetWindowLocation(int x, int y)
         {
             NativeMethods.SetWindowPos(this.Handle, 0, x, y, 0, 0, (Int32)(Constant.SWP_NOSIZE));
-        }
-
-        private void onLocationChanged(object sender, EventArgs e)
-        {
-            int outLocationX;
-            int outLocationY;
-            if (performLocationSnap(this.Location.X, this.Location.Y, out outLocationX, out outLocationY))
-            {
-                this.Location = new Point(outLocationX, outLocationY);
-            }
-            else
-            {
-                if (onDelegatePosChangedEvt != null)
-                {
-                    delegatePosList.Add(LatestPos);
-                    onDelegatePosChangedEvt(this, this.Location.X, this.Location.Y);
-                }
-            }
         }
 
         protected override CreateParams CreateParams
@@ -164,68 +175,25 @@ namespace CustomWinForm
             }
             else if (m.Msg == Constant.WM_NCHITTEST)
             {
-                // to allow move by clicking the window's body
                 base.WndProc(ref m);
-                //m.Result = new IntPtr(-1);        // past wndproc to parent
 
-                if (m.Result.ToInt32() == (int)Constant.HitTest.Border)
+                if (m.Result.ToInt32() == (int)Constant.HitTest.Client)
                 {
-                    //m.Result = new IntPtr((int)Constant.HitTest.Caption);
-                    currentSize = this.Size;
-                }
-
-                if (currentSize != this.Size)
-                {
-                    onDelegateSizeChangedEvt(this, this.Size);
+                    // allow to move by clicking client area
+                    m.Result = new IntPtr((int)Constant.HitTest.Caption);
                 }
 
                 return;
             }
+            else if (m.Msg == Constant.WM_EXITSIZEMOVE)
+            {
+                // notify when user finished move the position
+                onDelegatePosChangedEvt(this, Location.X, Location.Y);
+            }
 
-            //Trace.WriteLine(String.Format("message: {0}", (UInt32)m.Msg));
             base.WndProc(ref m);
         }
 
-        private void CustomWinForm_Load(object sender, EventArgs e)
-        {
-            this.Resize += CustomWinForm_Resize;
-            this.MouseDown += CustomWinForm_MouseDown;
-            this.MouseUp += CustomWinForm_MouseUp;
-        }
-
-        void CustomWinForm_MouseUp(object sender, MouseEventArgs e)
-        {
-            if(currentSize != this.Size)
-            {
-                onDelegateSizeChangedEvt(this, this.Size);
-            }
-        }
-
-        void CustomWinForm_MouseDown(object sender, MouseEventArgs e)
-        {
-            if(this.Cursor != DefaultCursor)
-            {
-                currentSize = this.Size;
-            }
-            else if (e.Button == MouseButtons.Left)
-            {
-                Utils.Windows.NativeMethods.ReleaseCapture();
-                Utils.Windows.NativeMethods.SendMessage(this.Handle, Constant.WM_NCLBUTTONDOWN, new IntPtr((int)Constant.HitTest.Caption), IntPtr.Zero);
-            }
-        }
-
-
-        void CustomWinForm_Resize(object sender, EventArgs e)
-        {
-            // check if the size snap
-            int snapWidth;
-            int snapHeight;
-            if (performSizeSnap(this.Location.X, this.Location.Y, this.Width, this.Height, out snapWidth, out snapHeight))
-            {
-                this.Width = snapWidth;
-                this.Height = snapHeight;
-            }
-        }
 
         public void SetColumnSnapGrid(IList<int> columnGrid)
         {
