@@ -27,6 +27,7 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerServer", "Installe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormServer", "WindowsFormServer\WindowsFormServer.csproj", "{9E745BEF-0857-48F3-B987-A77516F1D422}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002} = {9C43041F-64DC-472C-8735-AEB4FD3B6002}
 		{3E43CBDE-B04F-4232-9F91-B701E2A9B624} = {3E43CBDE-B04F-4232-9F91-B701E2A9B624}
 	EndProjectSection
 EndProject
@@ -51,6 +52,8 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerRemoteServer", "InstallerRemoteServer\InstallerRemoteServer.vdproj", "{6277CB49-E329-4C47-BCFB-989028CE1934}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstallerWindowService", "InstallerWindowService\InstallerWindowService.vdproj", "{965F6840-257B-4BCC-A704-60F0FD9BA870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketCommand", "SocketCommand\SocketCommand.csproj", "{9C43041F-64DC-472C-8735-AEB4FD3B6002}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -630,6 +633,30 @@ Global
 		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Server|Any CPU.ActiveCfg = Release
 		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Server|x64.ActiveCfg = Release
 		{965F6840-257B-4BCC-A704-60F0FD9BA870}.Release-Server|x86.ActiveCfg = Release
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Client|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Client|Any CPU.Build.0 = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Client|x64.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Client|x86.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Server|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Server|Any CPU.Build.0 = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Server|x64.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Debug-Server|x86.ActiveCfg = Debug|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release|x64.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Client|Any CPU.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Client|Any CPU.Build.0 = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Client|x64.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Client|x86.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Server|Any CPU.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Server|Any CPU.Build.0 = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Server|x64.ActiveCfg = Release|Any CPU
+		{9C43041F-64DC-472C-8735-AEB4FD3B6002}.Release-Server|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

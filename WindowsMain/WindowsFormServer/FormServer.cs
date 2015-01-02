@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using WcfServiceLibrary1;
 using WindowsFormClient.Presenter;
 using WindowsFormClient.Server;
+using WindowsFormClient.Telnet;
+using WindowsFormClient.Telnet.Service;
 
 namespace WindowsFormClient
 {
@@ -150,7 +152,17 @@ namespace WindowsFormClient
                     result = formLogin.ShowDialog(this);
                 }
             }
+
+            // TODO: open the telnet command listening
+           // _commandParser = new CommandParser();
+            //Provider = new TelnetServiceProvider(_commandParser);
+            //Servidor = new SocketCommand.TcpServer(Provider, 15555);
+           // Servidor.Start();
         }
+
+        //private CommandParser _commandParser;
+        //private SocketCommand.TcpServer Servidor;
+       // private TelnetServiceProvider Provider;
 
         void FormServer_Resize(object sender, EventArgs e)
         {
@@ -789,6 +801,7 @@ namespace WindowsFormClient
             connectionPresenter.Dispose();
 
             Server.ServerDbHelper.GetInstance().Shutdown();
+            Servidor.Stop();
         }
 
 

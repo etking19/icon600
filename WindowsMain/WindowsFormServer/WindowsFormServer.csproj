@@ -163,6 +163,12 @@
     <Compile Include="Server\ServerVisionHelper.cs" />
     <Compile Include="Server\ThreadClientLogin.cs" />
     <Compile Include="Server\WcfCallbackHandler.cs" />
+    <Compile Include="Telnet\CommandParser.cs" />
+    <Compile Include="Telnet\Command\GetAppList.cs" />
+    <Compile Include="Telnet\Command\LaunchPreset.cs" />
+    <Compile Include="Telnet\Command\GetPresetList.cs" />
+    <Compile Include="Telnet\Command\TelnetCommand.cs" />
+    <Compile Include="Telnet\Service\TelnetServiceProvider.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -242,6 +248,10 @@
     <ProjectReference Include="..\Session\Session.csproj">
       <Project>{581e484c-e477-4201-8fdd-a5461be0eec9}</Project>
       <Name>Session</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocketCommand\SocketCommand.csproj">
+      <Project>{9c43041f-64dc-472c-8735-aeb4fd3b6002}</Project>
+      <Name>SocketCommand</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{6fd8ccde-eaa0-4295-922b-e59d4b62b659}</Project>

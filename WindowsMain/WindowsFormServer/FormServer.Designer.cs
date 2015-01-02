@@ -666,7 +666,7 @@
             this.tabMonitors.Name = "tabMonitors";
             this.tabMonitors.Size = new System.Drawing.Size(726, 664);
             this.tabMonitors.TabIndex = 3;
-            this.tabMonitors.Text = "Monitors";
+            this.tabMonitors.Text = "Screens";
             this.tabMonitors.UseVisualStyleBackColor = true;
             // 
             // label5
@@ -678,9 +678,9 @@
             this.label5.Location = new System.Drawing.Point(4, 18);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(169, 19);
+            this.label5.Size = new System.Drawing.Size(165, 19);
             this.label5.TabIndex = 17;
-            this.label5.Text = "Monitor Management";
+            this.label5.Text = "Screen Management";
             // 
             // btnMonitorsDelete
             // 
@@ -859,9 +859,9 @@
             this.label9.Location = new System.Drawing.Point(3, 17);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(213, 19);
+            this.label9.Size = new System.Drawing.Size(191, 19);
             this.label9.TabIndex = 27;
-            this.label9.Text = "Capture Card Management";
+            this.label9.Text = "Input Card Management";
             // 
             // buttonVisionDelete
             // 
