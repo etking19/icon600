@@ -41,8 +41,6 @@ namespace CustomWinForm
             } 
         }
 
-        private Size currentSize { get; set; }
-
         private IList<int> columnSnapGrid = null;
         private IList<int> rowSnapGrid = null;
 
@@ -95,6 +93,12 @@ namespace CustomWinForm
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
+            if(this.Size.Width == 0 ||
+                this.Size.Height == 0)
+            {
+                return;
+            }
+
             if (_resizingTimer != null)
             {
                 _resizingTimer.Start();
@@ -116,7 +120,7 @@ namespace CustomWinForm
 
         public void SetWindowSize(Size newSize)
         {
-            currentSize = newSize;
+            Trace.WriteLine("new size: " + newSize.Width + "," + newSize.Height);
             NativeMethods.SetWindowPos(this.Handle, 0, 0, 0, newSize.Width, newSize.Height, (Int32)(Constant.SWP_NOMOVE));
         }
 

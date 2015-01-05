@@ -52,7 +52,7 @@ namespace WindowsFormClient.Telnet
 
         public string parseCommand(string command)
         {
-            string[] cmdList = command.Split(' ');
+            string[] cmdList = command.Split(',');
 
             string reply = "Invalid command.";
             if(cmdList.Length != 0)

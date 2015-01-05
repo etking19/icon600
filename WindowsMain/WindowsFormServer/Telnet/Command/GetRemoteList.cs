@@ -13,7 +13,9 @@ namespace WindowsFormClient.Telnet.Command
         /// <summary>
         /// get the remote vnc list
         /// </summary>
-        /// <param name="command">command[0] = "command pattern"</param>
+        /// <param name="command">
+        /// command[0] = "command pattern"
+        /// </param>
         /// <returns></returns>
         public override string executeCommand(string[] command)
         {

@@ -10,6 +10,13 @@ namespace WindowsFormClient.Telnet.Command
     {
         public const string COMMAND = "GetWindowList";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="command">
+        /// command[0] = "command pattern"
+        /// </param>
+        /// <returns></returns>
         public override string executeCommand(string[] command)
         {
             ApplicationData[] appDataList = Server.ServerDbHelper.GetInstance().GetAllApplications().ToArray();
