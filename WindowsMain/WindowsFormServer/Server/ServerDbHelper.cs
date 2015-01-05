@@ -235,6 +235,11 @@ namespace WindowsFormClient.Server
             wcfService.EditPreset(presetId, presetName, userId, appIds.ToArray(), vncIds.ToArray(), inputIds.ToArray());
         }
 
+        public IList<PresetData> GetAllPreset()
+        {
+            return wcfService.GetAllPreset();
+        }
+
         public IList<PresetData> GetPresetByUserId(int userId)
         {
             return wcfService.GetPresetByUserId(userId);

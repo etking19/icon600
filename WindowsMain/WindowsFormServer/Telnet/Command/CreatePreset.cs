@@ -7,18 +7,18 @@ using WindowsFormClient.Command;
 
 namespace WindowsFormClient.Telnet.Command
 {
-    class LaunchPreset : TelnetCommand
+    class CreatePreset : TelnetCommand
     {
-        public const string COMMAND = "LaunchPreset";
+        public const string COMMAND = "CreatePreset";
 
         /// <summary>
-        /// launched preset 
+        /// Create preset based on user's login
         /// </summary>
         /// <param name="command">
         /// command[0] = "command pattern"
-        /// command[1] = "db index"
-        /// command[2] = "username"
-        /// command[3] = "password"
+        /// command[1] = "username"
+        /// command[2] = "password"
+        /// command[3] = "preset name with no space"
         /// </param>
         /// <returns></returns>
         public override string executeCommand(string[] command)
@@ -28,31 +28,28 @@ namespace WindowsFormClient.Telnet.Command
                 throw new Exception();
             }
 
+
             List<UserData> userDataList = new List<UserData>(Server.ServerDbHelper.GetInstance().GetAllUsers());
             UserData userData = userDataList.Find(user
                 =>
-                (user.username.CompareTo(command[2]) == 0 &&
-                user.password.CompareTo(command[3]) == 0));
+                (user.username.CompareTo(command[1]) == 0 &&
+                user.password.CompareTo(command[2]) == 0));
             if (userData == null)
             {
                 // no matched 
                 return "Credential verification failed. Please check login info.";
             }
 
-            int dbIndex = 0;
-            if (int.TryParse(command[1], out dbIndex) == false)
-            {
-                throw new Exception();
-            }
+            // add preset code from ClientPresetCmdImpl
+            int dbUserId = userData.id;
+            new ClientPresetCmdImpl().AddPresetExternal(dbUserId, command[3]);
 
-            new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
-
-            return "Preset launched successfully";
+            return "Add preset successfully.";
         }
 
         public override string getCommandPattern()
         {
-            return "LaunchPreset [preset db id] [username] [password]";
+            return "CreatePreset [username] [password] [preset name with no space in between]";
         }
     }
 }

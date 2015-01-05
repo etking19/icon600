@@ -118,7 +118,7 @@ namespace WcfServiceLibrary1
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         private bool allow_maintenanceField;
-
+        
         private bool allow_remoteField;
         
         private int idField;
@@ -126,7 +126,6 @@ namespace WcfServiceLibrary1
         private string nameField;
         
         private bool share_full_desktopField;
-
         
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData
         {
@@ -152,7 +151,7 @@ namespace WcfServiceLibrary1
                 this.allow_maintenanceField = value;
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool allow_remote
         {
@@ -1146,6 +1145,12 @@ public interface IService1
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetPresetIdByPresetNameUserId", ReplyAction="http://tempuri.org/IService1/GetPresetIdByPresetNameUserIdResponse")]
     System.Threading.Tasks.Task<int> GetPresetIdByPresetNameUserIdAsync(string presetName, int userId);
     
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllPreset", ReplyAction="http://tempuri.org/IService1/GetAllPresetResponse")]
+    WcfServiceLibrary1.PresetData[] GetAllPreset();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllPreset", ReplyAction="http://tempuri.org/IService1/GetAllPresetResponse")]
+    System.Threading.Tasks.Task<WcfServiceLibrary1.PresetData[]> GetAllPresetAsync();
+    
     [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService1/AddOrEditSetting")]
     void AddOrEditSetting(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath);
     
@@ -1404,7 +1409,7 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
     {
         return base.Channel.AddGroup(groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, allowApps);
     }
-
+    
     public System.Threading.Tasks.Task<int> AddGroupAsync(string groupName, bool shareDesktop, bool allowMaintenace, bool allowRemote, int monitorId, int[] allowApps)
     {
         return base.Channel.AddGroupAsync(groupName, shareDesktop, allowMaintenace, allowRemote, monitorId, allowApps);
@@ -1568,6 +1573,16 @@ public partial class Service1Client : System.ServiceModel.DuplexClientBase<IServ
     public System.Threading.Tasks.Task<int> GetPresetIdByPresetNameUserIdAsync(string presetName, int userId)
     {
         return base.Channel.GetPresetIdByPresetNameUserIdAsync(presetName, userId);
+    }
+    
+    public WcfServiceLibrary1.PresetData[] GetAllPreset()
+    {
+        return base.Channel.GetAllPreset();
+    }
+    
+    public System.Threading.Tasks.Task<WcfServiceLibrary1.PresetData[]> GetAllPresetAsync()
+    {
+        return base.Channel.GetAllPresetAsync();
     }
     
     public void AddOrEditSetting(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath)

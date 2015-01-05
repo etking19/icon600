@@ -9,16 +9,14 @@ namespace WindowsFormClient.Telnet.Service
     public class TelnetServiceProvider : TcpServiceProvider
     {
         private string _receivedStr;
-        private CommandParser _parser;
 
-        public TelnetServiceProvider(CommandParser parser)
+        public TelnetServiceProvider()
         {
-            _parser = parser;
         }
 
         public override object Clone()
         {
-            return new TelnetServiceProvider(new CommandParser());
+            return new TelnetServiceProvider();
         }
 
         public override void OnAcceptConnection(ConnectionState state)
@@ -43,7 +41,7 @@ namespace WindowsFormClient.Telnet.Service
                     _receivedStr += Encoding.UTF8.GetString(buffer, 0, readBytes);
                     if (_receivedStr.IndexOf("\r\n") >= 0)
                     {
-                        string reply = _parser.parseCommand(_receivedStr.Replace("\r\n", ""));
+                        string reply = CommandParser.GetInstance().parseCommand(_receivedStr.Replace("\r\n", ""));
                         state.Write(Encoding.UTF8.GetBytes(reply), 0, reply.Length);
                         
                         _receivedStr = "";

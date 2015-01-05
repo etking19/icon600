@@ -78,6 +78,9 @@ namespace WcfServiceLibrary1
 
         [OperationContract]
         int GetPresetIdByPresetNameUserId(string presetName, int userId);
+
+        [OperationContract]
+        IList<PresetData> GetAllPreset();
         
         [OperationContract(IsOneWay = true)]
         void AddOrEditSetting(int portStart, int portEnd, int matrixCol, int matrixRow, string vncPath);

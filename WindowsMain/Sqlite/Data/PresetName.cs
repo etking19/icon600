@@ -47,8 +47,8 @@ namespace Database.Data
 
         public string GetQueryCommand()
         {
-            string query = "SELECT * FROM {0} where {1}={2}";
-            return String.Format(query, TABLE_NAME, USER_ID, user_id);
+            string query = "SELECT * FROM {0}";
+            return String.Format(query, TABLE_NAME);
         }
 
         /// <summary>

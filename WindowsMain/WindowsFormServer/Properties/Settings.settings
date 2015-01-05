@@ -8,5 +8,8 @@
     <Setting Name="VisionPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="TelnetPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15555</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

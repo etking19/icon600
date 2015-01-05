@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WcfServiceLibrary1;
-using WindowsFormClient.Command;
+using WindowsFormClient.Server;
 
 namespace WindowsFormClient.Telnet.Command
 {
-    class LaunchPreset : TelnetCommand
+    class LaunchInputSource : TelnetCommand
     {
-        public const string COMMAND = "LaunchPreset";
+        public const string COMMAND = "LaunchInputSource";
 
         /// <summary>
-        /// launched preset 
+        /// launch input source base in db index
         /// </summary>
         /// <param name="command">
         /// command[0] = "command pattern"
@@ -45,14 +45,15 @@ namespace WindowsFormClient.Telnet.Command
                 throw new Exception();
             }
 
-            new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
+            int result = ServerVisionHelper.getInstance().LaunchVisionWindow(dbIndex);
+            Server.LaunchedSourcesHelper.GetInstance().AddLaunchedApp(userData.id, result, dbIndex);
 
-            return "Preset launched successfully";
+            return "Input source launched successfully";
         }
 
         public override string getCommandPattern()
         {
-            return "LaunchPreset [preset db id] [username] [password]";
+            return "LaunchInputSource [input source id] [username] [password]";
         }
     }
 }

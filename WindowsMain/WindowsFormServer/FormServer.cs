@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using WcfServiceLibrary1;
 using WindowsFormClient.Presenter;
@@ -34,6 +35,10 @@ namespace WindowsFormClient
         private string vncServerPath;
         private int desktopRow = 1;
         private int desktopColumn = 1;
+
+        // for telnet
+        private SocketCommand.TcpServer Servidor;
+        private TelnetServiceProvider Provider;
 
         private delegate void updateDataDelegate(DBType dbType);
 
@@ -152,17 +157,7 @@ namespace WindowsFormClient
                     result = formLogin.ShowDialog(this);
                 }
             }
-
-            // TODO: open the telnet command listening
-           // _commandParser = new CommandParser();
-            //Provider = new TelnetServiceProvider(_commandParser);
-            //Servidor = new SocketCommand.TcpServer(Provider, 15555);
-           // Servidor.Start();
         }
-
-        //private CommandParser _commandParser;
-        //private SocketCommand.TcpServer Servidor;
-       // private TelnetServiceProvider Provider;
 
         void FormServer_Resize(object sender, EventArgs e)
         {
@@ -235,6 +230,12 @@ namespace WindowsFormClient
             mainPresenter.ScreenColumn = desktopColumn;
             mainPresenter.ScreenRow = desktopRow;
             mainPresenter.VncPath = vncServerPath;
+
+            // open the telnet command listening
+            CommandParser.GetInstance().Initialize(vncClient);
+            Provider = new TelnetServiceProvider();
+            Servidor = new SocketCommand.TcpServer(Provider, Properties.Settings.Default.TelnetPort);
+            Servidor.Start();
         }
 
         private void btnGeneralStop_Click(object sender, EventArgs e)
@@ -801,7 +802,16 @@ namespace WindowsFormClient
             connectionPresenter.Dispose();
 
             Server.ServerDbHelper.GetInstance().Shutdown();
-            Servidor.Stop();
+
+            try
+            {
+                Servidor.Stop();
+            }
+            catch (Exception)
+            {
+                // might not start
+            }
+            
         }
 
 

@@ -70,9 +70,9 @@ namespace WindowsFormClient.Server
             return new Dictionary<int, int>(launchedAppMap);
         }
 
-        public void ClearAll()
+        public void ClearAll(int userDbId)
         {
-            mLaunchedAppMap.Clear();
+            mLaunchedAppMap.Remove(userDbId);
         }
     }
 }

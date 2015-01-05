@@ -71,9 +71,9 @@ namespace WindowsFormClient.Server
             return new Dictionary<int, int>(launchedAppMap);
         }
 
-        public void ClearAll()
+        public void ClearAll(int userDBid)
         {
-            mLaunchedAppMap.Clear();
+            mLaunchedAppMap.Remove(userDBid);
         }
     }
 }

@@ -46,5 +46,17 @@ namespace WindowsFormClient.Properties {
                 this["VisionPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15555")]
+        public int TelnetPort {
+            get {
+                return ((int)(this["TelnetPort"]));
+            }
+            set {
+                this["TelnetPort"] = value;
+            }
+        }
     }
 }

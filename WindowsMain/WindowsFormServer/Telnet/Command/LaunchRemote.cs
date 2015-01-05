@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WcfServiceLibrary1;
-using WindowsFormClient.Command;
 
 namespace WindowsFormClient.Telnet.Command
 {
-    class LaunchPreset : TelnetCommand
+    class LaunchRemote : TelnetCommand
     {
-        public const string COMMAND = "LaunchPreset";
+        public const string COMMAND = "LaunchRemote";
+
+        private VncMarshall.Client _vncClient;
+
+        public LaunchRemote(VncMarshall.Client vncClient)
+        {
+            this._vncClient = vncClient;
+        }
 
         /// <summary>
-        /// launched preset 
+        /// launch remote stored base in db index
         /// </summary>
         /// <param name="command">
         /// command[0] = "command pattern"
@@ -45,14 +51,25 @@ namespace WindowsFormClient.Telnet.Command
                 throw new Exception();
             }
 
-            new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
+            // get the info from database
+            RemoteVncData vncInfo = Server.ServerDbHelper.GetInstance().GetRemoteVncList().ToList().Find(
+                vncData => vncData.id == dbIndex);
+            if (vncInfo == null)
+            {
+                // no matched 
+                return "No matched id found.";
+            }
 
-            return "Preset launched successfully";
+            // launch and save the data
+            int result = _vncClient.StartClient(vncInfo.remoteIp, vncInfo.remotePort);
+            Server.LaunchedVncHelper.GetInstance().AddLaunchedApp(userData.id, result, dbIndex);
+
+            return "Remote launched successfully";
         }
 
         public override string getCommandPattern()
         {
-            return "LaunchPreset [preset db id] [username] [password]";
+            return "LaunchRemote [remote db index] [username] [password]";
         }
     }
 }

@@ -680,10 +680,15 @@ namespace WcfServiceLibrary1
             IList<ApplicationData> applicationList = GetAllApplications();
 
             // get the preset name id list
-            PresetName dbPresetName = new PresetName() { user_id = userId };
+            PresetName dbPresetName = new PresetName();
             DataTable dataTablePresetName = DbHelper.GetInstance().ReadData(dbPresetName);
             foreach (DataRow presetNameDataRow in dataTablePresetName.Rows)
             {
+                if (int.Parse(presetNameDataRow[PresetName.USER_ID].ToString()) != userId)
+                {
+                    continue;
+                }
+
                 PresetData presetData = new PresetData()
                 {
                     Id = int.Parse(presetNameDataRow[PresetName.PRESET_ID].ToString()),
@@ -1333,6 +1338,25 @@ namespace WcfServiceLibrary1
         public void KeepAlive()
         {
             // do nothing
+        }
+
+
+        public IList<PresetData> GetAllPreset()
+        {
+            List<PresetData> presetList = new List<PresetData>();
+
+            PresetName dbPresetName = new PresetName();
+            DataTable dataTablePresetName = DbHelper.GetInstance().ReadData(dbPresetName);
+            foreach (DataRow presetNameDataRow in dataTablePresetName.Rows)
+            {
+                presetList.Add(new PresetData()
+                {
+                    Id = int.Parse(presetNameDataRow[PresetName.PRESET_ID].ToString()),
+                    Name = presetNameDataRow[PresetName.PRESET_NAME].ToString(),
+                });
+            }
+
+            return presetList;
         }
     }
 }

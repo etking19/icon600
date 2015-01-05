@@ -18,6 +18,14 @@ namespace WindowsFormClient.Command
         private IServer server;
         private VncMarshall.Client vncClient;
 
+        /// <summary>
+        /// constructor for external class used (telnet)
+        /// </summary>
+        public ClientPresetCmdImpl()
+        {
+
+        }
+
         public ClientPresetCmdImpl(IServer server, int userId, VncMarshall.Client vncClient)
         {
             this.clientId = userId;
@@ -125,12 +133,13 @@ namespace WindowsFormClient.Command
             }
         }
 
-        private void AddPreset(string socketId, int dbUserId, ClientPresetsCmd presetData)
+
+        public void AddPresetExternal(int dbUserId, string presetName)
         {
             List<KeyValuePair<int, WindowsRect>> appList = new List<KeyValuePair<int, WindowsRect>>();
             List<KeyValuePair<int, WindowsRect>> vncList = new List<KeyValuePair<int, WindowsRect>>();
             List<KeyValuePair<int, WindowsRect>> visionList = new List<KeyValuePair<int, WindowsRect>>();
-            
+
             // Get the current latest position of all running apps
             IList<WindowsHelper.ApplicationInfo> appInfoList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
 
@@ -230,11 +239,16 @@ namespace WindowsFormClient.Command
             }
 
             Server.ServerDbHelper.GetInstance().AddPreset(
-               presetData.PresetDataEntry.Name,
+               presetName,
                dbUserId,
                appList,
                vncList,
                visionList);
+        }
+
+        private void AddPreset(string socketId, int dbUserId, ClientPresetsCmd presetData)
+        {
+            AddPresetExternal(dbUserId, presetData.PresetDataEntry.Name);
         }
 
         private void RemovePreset(ClientPresetsCmd presetData)
@@ -248,39 +262,10 @@ namespace WindowsFormClient.Command
             // no implementation yet
         }
 
-        private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
+        public void LaunchPresetExternal(int dbUserId, int presetDbId)
         {
-            // close all lauched applications
-            var launchedApp = LaunchedWndHelper.GetInstance().GetLaunchedApps(dbUserId);
-            foreach (int wndIdentifier in launchedApp.Keys)
-            {
-                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-            }
-
-            // reset the launched list
-            LaunchedWndHelper.GetInstance().ClearAll();
-
-            var launchedVnc = LaunchedVncHelper.GetInstance().GetLaunchedApps(dbUserId);
-            foreach (int wndIdentifier in launchedVnc.Keys)
-            {
-                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-            }
-
-            // reset the launched list
-            LaunchedVncHelper.GetInstance().ClearAll();
-
-            var launchedSources = LaunchedSourcesHelper.GetInstance().GetLaunchedApps(dbUserId);
-            foreach (int wndIdentifier in launchedSources.Keys)
-            {
-                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-            }
-
-            // reset the launched list
-            LaunchedSourcesHelper.GetInstance().ClearAll();
-
-            // 2. trigger the apps in the preset by giving preset's id
             // get the rect from the preset table
-            PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(dbUserId).First(PresetData => PresetData.Id == presetData.PresetDataEntry.Identifier);
+            PresetData preset = Server.ServerDbHelper.GetInstance().GetPresetByUserId(dbUserId).First(PresetData => PresetData.Id == presetDbId);
             ClientAppCmdImpl clientImpl = new ClientAppCmdImpl();
             foreach (ApplicationData appData in preset.AppDataList)
             {
@@ -291,15 +276,9 @@ namespace WindowsFormClient.Command
             // start vnc
             foreach (RemoteVncData remoteData in preset.VncDataList)
             {
-                Trace.WriteLine(String.Format("lauched vnc: {0},{1},{2},{3}", 
-                    remoteData.rect.Left,
-                    remoteData.rect.Top,
-                    remoteData.rect.Right,
-                    remoteData.rect.Bottom));
-
                 int result = vncClient.StartClient(
-                    remoteData.remoteIp, 
-                    remoteData.remotePort, 
+                    remoteData.remoteIp,
+                    remoteData.remotePort,
                     remoteData.rect.Left,
                     remoteData.rect.Top,
                     remoteData.rect.Right - remoteData.rect.Left,
@@ -313,7 +292,7 @@ namespace WindowsFormClient.Command
             foreach (VisionData inputData in preset.InputDataList)
             {
                 int result = ServerVisionHelper.getInstance().LaunchVisionWindow(
-                    inputData.id, 
+                    inputData.id,
                     inputData.rect.Left,
                     inputData.rect.Top,
                     inputData.rect.Right - inputData.rect.Left,
@@ -322,6 +301,45 @@ namespace WindowsFormClient.Command
                 // add to the connected client info
                 LaunchedSourcesHelper.GetInstance().AddLaunchedApp(dbUserId, result, inputData.id);
             }
+        }
+
+        public void ClearWall(int dbUserId)
+        {
+            // close all lauched applications
+            var launchedApp = LaunchedWndHelper.GetInstance().GetLaunchedApps(dbUserId);
+            foreach (int wndIdentifier in launchedApp.Keys)
+            {
+                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            }
+
+            // reset the launched list
+            LaunchedWndHelper.GetInstance().ClearAll(dbUserId);
+
+            var launchedVnc = LaunchedVncHelper.GetInstance().GetLaunchedApps(dbUserId);
+            foreach (int wndIdentifier in launchedVnc.Keys)
+            {
+                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            }
+
+            // reset the launched list
+            LaunchedVncHelper.GetInstance().ClearAll(dbUserId);
+
+            var launchedSources = LaunchedSourcesHelper.GetInstance().GetLaunchedApps(dbUserId);
+            foreach (int wndIdentifier in launchedSources.Keys)
+            {
+                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            }
+
+            // reset the launched list
+            LaunchedSourcesHelper.GetInstance().ClearAll(dbUserId);
+        }
+
+        private void LaunchPreset(string clientId, int dbUserId, ClientPresetsCmd presetData)
+        {
+            ClearWall(dbUserId);
+
+            // 2. trigger the apps in the preset by giving preset's id
+            LaunchPresetExternal(dbUserId, presetData.PresetDataEntry.Identifier);
         }
     }
 }

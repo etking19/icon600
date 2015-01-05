@@ -4,26 +4,26 @@ using System.Linq;
 using System.Text;
 using WcfServiceLibrary1;
 using WindowsFormClient.Command;
+using WindowsFormClient.Server;
 
 namespace WindowsFormClient.Telnet.Command
 {
-    class LaunchPreset : TelnetCommand
+    class ClearWall : TelnetCommand
     {
-        public const string COMMAND = "LaunchPreset";
+        public const string COMMAND = "ClearWall";
 
         /// <summary>
-        /// launched preset 
+        /// clear the wall base on user's login
         /// </summary>
         /// <param name="command">
         /// command[0] = "command pattern"
-        /// command[1] = "db index"
-        /// command[2] = "username"
-        /// command[3] = "password"
+        /// command[1] = "username"
+        /// command[2] = "password"
         /// </param>
-        /// <returns></returns>
+        /// <returns>Invalid string if wrong login info</returns>
         public override string executeCommand(string[] command)
         {
-            if (command.Count() != 4)
+            if (command.Count() != 3)
             {
                 throw new Exception();
             }
@@ -31,28 +31,24 @@ namespace WindowsFormClient.Telnet.Command
             List<UserData> userDataList = new List<UserData>(Server.ServerDbHelper.GetInstance().GetAllUsers());
             UserData userData = userDataList.Find(user
                 =>
-                (user.username.CompareTo(command[2]) == 0 &&
-                user.password.CompareTo(command[3]) == 0));
+                (user.username.CompareTo(command[1]) == 0 &&
+                user.password.CompareTo(command[2]) == 0));
             if (userData == null)
             {
                 // no matched 
                 return "Credential verification failed. Please check login info.";
             }
 
-            int dbIndex = 0;
-            if (int.TryParse(command[1], out dbIndex) == false)
-            {
-                throw new Exception();
-            }
+            // clean the wall based on user login id
+            // close all lauched applications
+            new ClientPresetCmdImpl().ClearWall(userData.id);
 
-            new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
-
-            return "Preset launched successfully";
+            return "Clean wall successfully.";
         }
 
         public override string getCommandPattern()
         {
-            return "LaunchPreset [preset db id] [username] [password]";
+            return "ClearWall [username] [password]";
         }
     }
 }
