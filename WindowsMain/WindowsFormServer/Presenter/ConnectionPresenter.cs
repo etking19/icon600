@@ -113,7 +113,7 @@ namespace WindowsFormClient.Presenter
                 zOrderCounter++;
             }
 
-            // TODO: filter application launched by different login id
+            // filter application launched by different login id
             Dictionary<int, List<String>> userMap = ConnectedClientHelper.GetInstance().GetConnectedUsersGroupByDB();
             foreach(KeyValuePair<int, List<String>> userData in userMap)
             {
@@ -126,6 +126,20 @@ namespace WindowsFormClient.Presenter
                 {
                     var eligibleAppWnd = windowList.FindAll(t => t.id == launchedData.Key);
                     windowsPos.WindowsAttributes.AddRange(eligibleAppWnd);
+                }
+
+                Dictionary<int, int> launchedSources = LaunchedSourcesHelper.GetInstance().GetLaunchedApps(userData.Key);
+                foreach (KeyValuePair<int, int> launchedData in launchedSources)
+                {
+                    var eligibleSourceWnd = windowList.FindAll(t => t.id == launchedData.Key);
+                    windowsPos.WindowsAttributes.AddRange(eligibleSourceWnd);
+                }
+
+                Dictionary<int, int> launchedVnc = LaunchedVncHelper.GetInstance().GetLaunchedApps(userData.Key);
+                foreach (KeyValuePair<int, int> launchedData in launchedVnc)
+                {
+                    var eligibleVncWnd = windowList.FindAll(t => t.id == launchedData.Key);
+                    windowsPos.WindowsAttributes.AddRange(eligibleVncWnd);
                 }
 
                 try
