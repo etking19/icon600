@@ -326,11 +326,8 @@ namespace WindowsFormClient.Server
                 // Call WaitForExit and then the using statement will close.
                 using (Process exeProcess = Process.Start(startInfo))
                 {
-                    if (exeProcess.WaitForInputIdle())
-                    {
-                        Thread.Sleep(1500);
-                        returnValue = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
-                    }
+                    Thread.Sleep(1000);
+                    returnValue = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
                 }
             }
             catch (Exception e)

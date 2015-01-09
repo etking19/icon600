@@ -112,11 +112,19 @@ namespace WindowsFormClient
 
         private void closeAllApplicationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (object item in listBoxApps.Items)
+            if( MessageBox.Show(this,
+                "This will close all running applications on server." + Environment.NewLine + "Are you sure want to continue?",
+                "Warning",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.Yes)
             {
-                if (EvtAppClose != null)
+                foreach (object item in listBoxApps.Items)
                 {
-                    EvtAppClose.BeginInvoke(this, (Client.Model.WindowsModel)item, null, null);
+                    if (EvtAppClose != null)
+                    {
+                        EvtAppClose.BeginInvoke(this, (Client.Model.WindowsModel)item, null, null);
+                    }
                 }
             }
         }

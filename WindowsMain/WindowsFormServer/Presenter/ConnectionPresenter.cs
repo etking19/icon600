@@ -113,6 +113,23 @@ namespace WindowsFormClient.Presenter
                 zOrderCounter++;
             }
 
+            try
+            {
+                ServerWindowsPos windowsPos = new ServerWindowsPos();
+                windowsPos.WindowsAttributes = windowList;
+
+                // send to whole group of users login using same login id
+                connectionMgr.SendData((int)CommandConst.MainCommandServer.WindowsInfo,
+                    (int)CommandConst.SubCommandServer.WindowsList,
+                    windowsPos,
+                    ConnectedClientHelper.GetInstance().GetAllClientsSocketId());
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e);
+            }
+
+            /*
             // filter application launched by different login id
             Dictionary<int, List<String>> userMap = ConnectedClientHelper.GetInstance().GetConnectedUsersGroupByDB();
             foreach(KeyValuePair<int, List<String>> userData in userMap)
@@ -155,6 +172,7 @@ namespace WindowsFormClient.Presenter
                     Trace.WriteLine(e);
                 }
             }
+             * */
         }
 
         public void ClientCredentialReceived(Server.Model.ClientInfoModel model, int desktopRow, int desktopCol)
