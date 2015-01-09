@@ -168,12 +168,16 @@ namespace WindowsFormClient
         int getRelativeX(int x)
         {
             // 10 pixels offset to ease the minimized taskbar
-            return (int)((x + holder.ReferenceXPos) * 65535.0f / (float)formMousePad.ClientSize.Width * (float)formMimic.VisibleSize.Width / (float)formMimic.FullSize.Width);
+            int movedPos = (x * formMimic.VisibleSize.Width / formMousePad.ClientSize.Width);
+            int actual = (int)((float)(holder.ReferenceXPos + movedPos)* 65535.0f / (float)formMimic.FullSize.Width);
+            return actual;
         }
 
         int getRelativeY(int y)
         {
-            return (int)((y + holder.ReferenceYPos) * 65535.0f / (float)formMousePad.ClientSize.Height * (float)formMimic.VisibleSize.Height / (float)formMimic.FullSize.Height);
+            int movedPos = (y * formMimic.VisibleSize.Height / formMousePad.ClientSize.Height);
+            int actual = (int)((float)(holder.ReferenceYPos + movedPos) * 65535.0f / (float)formMimic.FullSize.Height);
+            return actual;
         }
 
         void formMousePad_MouseUp(object sender, MouseEventArgs e)
