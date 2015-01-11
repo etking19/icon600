@@ -701,6 +701,12 @@ namespace WindowsFormClient
                 return;
             }
 
+            // do not handle if in minimized mode
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                return;
+            }
+
             // find difference with current list and updated list
 
             List<Client.Model.WindowsModel> tempList = new List<Client.Model.WindowsModel>(wndsList);

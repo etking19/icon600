@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using WcfServiceLibrary1;
@@ -61,8 +62,16 @@ namespace WindowsFormClient.Telnet.Command
             }
 
             // launch and save the data
-            int result = _vncClient.StartClient(vncInfo.remoteIp, vncInfo.remotePort);
-            Server.LaunchedVncHelper.GetInstance().AddLaunchedApp(userData.id, result, dbIndex);
+            try
+            {
+                int result = _vncClient.StartClient(vncInfo.remoteIp, vncInfo.remotePort);
+                Server.LaunchedVncHelper.GetInstance().AddLaunchedApp(userData.id, result, dbIndex);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
+            
 
             return "Remote launched successfully";
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using WcfServiceLibrary1;
@@ -45,7 +46,15 @@ namespace WindowsFormClient.Telnet.Command
                 throw new Exception();
             }
 
-            new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
+            try
+            {
+                new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
+            
 
             return "Preset launched successfully";
         }

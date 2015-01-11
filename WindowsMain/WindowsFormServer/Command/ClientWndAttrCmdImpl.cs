@@ -28,10 +28,10 @@ namespace WindowsFormClient.Command
                     NativeMethods.SetForegroundWindow(new IntPtr(data.Id));
                     break;
                 case ClientWndCmd.CommandId.ERelocation:
-                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, data.PositionX, data.PositionY, 0, 0, (Int32)(Constant.SWP_NOSIZE));
+                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, data.PositionX, data.PositionY, 0, 0, (Int32)(Constant.SWP_NOSIZE | Constant.SWP_ASYNCWINDOWPOS));
                     break;
                 case ClientWndCmd.CommandId.EResize:
-                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, data.Width, data.Height, (Int32)Constant.SWP_NOMOVE);
+                    NativeMethods.SetWindowPos(new IntPtr(data.Id), Constant.HWND_TOP, 0, 0, data.Width, data.Height, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_ASYNCWINDOWPOS));
                     break;
                 case ClientWndCmd.CommandId.ERestore:
                     NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWNORMAL);

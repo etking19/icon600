@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using WcfServiceLibrary1;
@@ -45,8 +46,16 @@ namespace WindowsFormClient.Telnet.Command
                 throw new Exception();
             }
 
-            int result = ServerVisionHelper.getInstance().LaunchVisionWindow(dbIndex);
-            Server.LaunchedSourcesHelper.GetInstance().AddLaunchedApp(userData.id, result, dbIndex);
+            try
+            {
+                int result = ServerVisionHelper.getInstance().LaunchVisionWindow(dbIndex);
+                Server.LaunchedSourcesHelper.GetInstance().AddLaunchedApp(userData.id, result, dbIndex);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
+            
 
             return "Input source launched successfully";
         }
