@@ -212,7 +212,7 @@ namespace CustomWinForm
         private bool doSnap(int pos, int edge)
         {
             int delta = pos - edge;
-            return delta > 0 && delta <= 15;     // within 10 pixels
+            return delta >= -15 && delta <= 15;     // within 10 pixels
         }
 
         private bool performSizeSnap(int xPos, int yPos, int width, int height, out int snapWidth, out int snapHeight)
@@ -233,6 +233,7 @@ namespace CustomWinForm
                 {
                     snap = true;
                     snapWidth = column - xPos;
+                    Trace.WriteLine("snapWidth " + snapWidth);
                     break;
                 }
             }
@@ -243,6 +244,7 @@ namespace CustomWinForm
                 {
                     snap = true;
                     snapHeight = row - yPos;
+                    Trace.WriteLine("snapHeight " + snapHeight);
                     break;
                 }
             }

@@ -765,6 +765,7 @@ namespace WindowsFormClient
 
             foreach (Client.Model.WindowsModel windows in modifiedNameQuery)
             {
+                refreshAppList |= true;
                 ChangeWindowName(windows);
             }
 
@@ -775,7 +776,6 @@ namespace WindowsFormClient
 
             foreach (Client.Model.WindowsModel windows in modifiedStyleQuery)
             {
-                refreshAppList |= true;
                 ChangeWindowStyle(windows);
             }
 
