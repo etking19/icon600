@@ -94,8 +94,8 @@ namespace CustomWinForm
 
         Point getActualPoint(int x, int y)
         {
-            int actualX = (int)Math.Round((float)x / mScaleX) + ReferenceXPos;
-            int actualY = (int)Math.Round((float)y / mScaleY) + ReferenceYPos;
+            int actualX = (int)Math.Ceiling((float)x / mScaleX) + ReferenceXPos;
+            int actualY = (int)Math.Ceiling((float)y / mScaleY) + ReferenceYPos;
 
             return new Point(actualX, actualY);
         }
@@ -104,8 +104,8 @@ namespace CustomWinForm
         {
             double referenceX = x - ReferenceXPos;
             double referenceY = y - ReferenceYPos;
-            int actualX = (int)Math.Round(referenceX * mScaleX);
-            int actualY = (int)Math.Round(referenceY * mScaleY);
+            int actualX = (int)Math.Ceiling(referenceX * mScaleX);
+            int actualY = (int)Math.Ceiling(referenceY * mScaleY);
 
             return new Point(actualX, actualY);
         }
@@ -272,77 +272,127 @@ namespace CustomWinForm
 
         public void RemoveControl(int id)
         {
-            CustomWinForm control;
-            if(mControlsDic.TryGetValue(id, out control))
+            try
             {
-                this.Controls.Remove(control);
-                mControlsDic.Remove(id);
+                CustomWinForm control;
+                if (mControlsDic.TryGetValue(id, out control))
+                {
+                    this.Controls.Remove(control);
+                    mControlsDic.Remove(id);
+                }
             }
+            catch (Exception)
+            {
+            }
+            
         }
 
         public void RemoveAllControls()
         {
-            foreach (KeyValuePair<int, CustomWinForm> keyValuePair in mControlsDic)
+            try
             {
-                this.Controls.Remove(keyValuePair.Value);
-            }
+                foreach (KeyValuePair<int, CustomWinForm> keyValuePair in mControlsDic)
+                {
+                    this.Controls.Remove(keyValuePair.Value);
+                }
 
-            mControlsDic.Clear();
+                mControlsDic.Clear();
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         public void ChangeControlSize(int id, Size newSize)
         {
-            CustomWinForm control;
-            if (mControlsDic.TryGetValue(id, out control))
+            try
             {
-                Size ratioSize = new Size((int)Math.Round((float)newSize.Width * mScaleX),
-                    (int)Math.Round((float)newSize.Height * mScaleY));
+                CustomWinForm control;
+                if (mControlsDic.TryGetValue(id, out control))
+                {
+                    Size ratioSize = new Size((int)Math.Ceiling((float)newSize.Width * mScaleX),
+                        (int)Math.Ceiling((float)newSize.Height * mScaleY));
 
-                control.LatestSize = newSize;
-                control.SetWindowSize(ratioSize);
+                    control.LatestSize = newSize;
+                    control.SetWindowSize(ratioSize);
+                }
             }
+            catch (Exception)
+            {
+            }
+            
         }
 
         public void ChangeControlPos(int id, Point newPos)
         {
-             CustomWinForm control;
+            try
+            {
+                CustomWinForm control;
 
-             if (mControlsDic.TryGetValue(id, out control))
-             {
-                 Point ratioPoint = new Point((int)Math.Round((float)(newPos.X - ReferenceXPos) * mScaleX),
-                    (int)Math.Round((float)(newPos.Y - ReferenceYPos) * mScaleY));
+                if (mControlsDic.TryGetValue(id, out control))
+                {
+                    Point ratioPoint = new Point((int)Math.Round((float)(newPos.X - ReferenceXPos) * mScaleX),
+                       (int)Math.Round((float)(newPos.Y - ReferenceYPos) * mScaleY));
 
-                 control.LatestPos = newPos;
-                 control.Location = ratioPoint;
-             }
+                    control.LatestPos = newPos;
+                    control.Location = ratioPoint;
+                }
+            }
+            catch (Exception)
+            {
+            }
+             
         }
 
         public void ChangeControlName(int id, String name)
         {
-            CustomWinForm control;
-            if (mControlsDic.TryGetValue(id, out control))
+            try
             {
-                windowToolTip.SetToolTip(control, name);
-                control.SetWindowName(name);
+                CustomWinForm control;
+                if (mControlsDic.TryGetValue(id, out control))
+                {
+                    windowToolTip.SetToolTip(control, name);
+                    control.SetWindowName(name);
+                }
             }
+            catch (Exception)
+            {
+
+            }
+            
         }
 
         public void ChangeControlStyle(int id, int Style)
         {
-            CustomWinForm control;
-            if (mControlsDic.TryGetValue(id, out control))
+            try
             {
-                control.Style = Style;
+                CustomWinForm control;
+                if (mControlsDic.TryGetValue(id, out control))
+                {
+                    control.Style = Style;
+                }
             }
+            catch (Exception)
+            {
+            }
+            
         }
 
         public void ChangeControlZOrder(int id, int newZOrder)
         {
-            CustomWinForm control;
-            if (mControlsDic.TryGetValue(id, out control))
+            try
             {
-                this.Controls.SetChildIndex(control, newZOrder);
+                CustomWinForm control;
+                if (mControlsDic.TryGetValue(id, out control))
+                {
+                    this.Controls.SetChildIndex(control, newZOrder);
+                }
             }
+            catch (Exception)
+            {
+            }
+            
         }
 
         
