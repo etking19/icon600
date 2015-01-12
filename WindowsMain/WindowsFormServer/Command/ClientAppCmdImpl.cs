@@ -54,7 +54,7 @@ namespace WindowsFormClient.Command
             {
                 using (Process process = Process.Start(info))
                 {
-                    Thread.Sleep(800);
+                    Thread.Sleep(1000);
                     appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
 
                     if (appData.rect.Left != 0 ||
@@ -69,6 +69,8 @@ namespace WindowsFormClient.Command
                             appData.rect.Bottom - appData.rect.Top,
                             true);
                     }
+
+                    Thread.Sleep(500);
                 }
             }
             catch (Exception e)

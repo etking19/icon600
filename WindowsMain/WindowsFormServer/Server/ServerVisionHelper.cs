@@ -328,6 +328,7 @@ namespace WindowsFormClient.Server
                 {
                     Thread.Sleep(1000);
                     returnValue = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
+                    Thread.Sleep(500);
                 }
             }
             catch (Exception e)

@@ -32,6 +32,7 @@ namespace VncMarshall
                     {
                         Thread.Sleep(1500);
                         appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
+                        Thread.Sleep(500);
                     }
                 }
             }

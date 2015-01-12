@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Utils.Windows;
 using WcfServiceLibrary1;
 using WindowsFormClient.Server;
@@ -310,6 +311,7 @@ namespace WindowsFormClient.Command
             foreach (int wndIdentifier in launchedApp.Keys)
             {
                 Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                Thread.Sleep(500);
             }
 
             // reset the launched list
@@ -319,6 +321,7 @@ namespace WindowsFormClient.Command
             foreach (int wndIdentifier in launchedVnc.Keys)
             {
                 Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                Thread.Sleep(500);
             }
 
             // reset the launched list
@@ -328,6 +331,7 @@ namespace WindowsFormClient.Command
             foreach (int wndIdentifier in launchedSources.Keys)
             {
                 Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                Thread.Sleep(500);
             }
 
             // reset the launched list
