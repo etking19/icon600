@@ -11,5 +11,8 @@
     <Setting Name="TelnetPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15555</Value>
     </Setting>
+    <Setting Name="Debug" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
