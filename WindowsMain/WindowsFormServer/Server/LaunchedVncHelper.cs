@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace WindowsFormClient.Server
 {
@@ -40,7 +41,15 @@ namespace WindowsFormClient.Server
                 mLaunchedAppMap.Add(userDBid, launchedAppMap);
             }
 
-            launchedAppMap.Add(windowUniqueId, appDBid);
+            try
+            {
+                launchedAppMap.Add(windowUniqueId, appDBid);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Unable to add this window to list: " + e.Message);
+            }
+            
         }
 
         public bool RemoveLaunchedApp(int userDBid, int windowUniqueId)

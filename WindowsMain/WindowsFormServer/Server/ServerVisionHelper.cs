@@ -270,6 +270,15 @@ namespace WindowsFormClient.Server
 
         public int LaunchVisionWindow(int dbId, int left, int top, int width, int height)
         {
+            if(left == 0 &&
+                top == 0 &&
+                width == 0 &&
+                height == 0)
+            {
+                // no window stored
+                return LaunchVisionWindow(dbId);
+            }
+
             // get the info from db
             var result = ServerDbHelper.GetInstance().GetAllVisionInputs().First(t => t.id == dbId);
             if (result == null)
@@ -283,8 +292,7 @@ namespace WindowsFormClient.Server
             TextReader wndReader = new StringReader(result.windowStr);
             Window window = (Window)wndSerializer.Deserialize(wndReader);
             
-            // TODO: matched the latest pos
-            // modify to match
+            // modify to match latest position
             window.WndPostLeft = left;
             window.WndPosTop = top;
             window.WndPostWidth = width;
@@ -314,10 +322,10 @@ namespace WindowsFormClient.Server
 
             // Use ProcessStartInfo class
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.CreateNoWindow = true;
-            startInfo.UseShellExecute = false;
+            //startInfo.CreateNoWindow = true;
+            //startInfo.UseShellExecute = false;
             startInfo.FileName = rgbExecutablePath;
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
+            //startInfo.WindowStyle = ProcessWindowStyle.Normal;
             startInfo.Arguments = argumentList;
 
             try

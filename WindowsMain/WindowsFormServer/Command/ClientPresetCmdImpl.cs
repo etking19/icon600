@@ -146,12 +146,12 @@ namespace WindowsFormClient.Command
 
             // key - window unique identifier
             // value - application DB id
-            Dictionary<int, int> launcedAppDic = Server.LaunchedWndHelper.GetInstance().GetLaunchedApps(dbUserId);
+            Dictionary<int, List<int>> launcedAppDic = Server.LaunchedWndHelper.GetInstance().GetLaunchedApps(dbUserId);
 
             for (int i = 0; i < launcedAppDic.Count(); i++)
             {
                 int wndIdentifier = launcedAppDic.ElementAt(i).Key;
-                int appDBIndex = launcedAppDic.ElementAt(i).Value;
+                List<int> appDBIndexes = launcedAppDic.ElementAt(i).Value;
 
                 WindowsRect rect = new WindowsRect();
                 try
@@ -165,14 +165,17 @@ namespace WindowsFormClient.Command
                         rect.Right = latestInfo.posX + latestInfo.width;
                         rect.Bottom = latestInfo.posY + latestInfo.height;
                     }
-
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(e.Message);
                 }
 
-                appList.Add(new KeyValuePair<int, WindowsRect>(appDBIndex, rect));
+                foreach (int appDBIndex in appDBIndexes)
+                {
+                    appList.Add(new KeyValuePair<int, WindowsRect>(appDBIndex, rect));
+                }
+
             }
 
 
