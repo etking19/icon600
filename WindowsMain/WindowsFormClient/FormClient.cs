@@ -742,58 +742,69 @@ namespace WindowsFormClient
 
             // Trace.WriteLine(String.Format("add:{0}, remove:{1}, modified:{2}, totalNow:{3}", addedQuery.Count.ToString(), removedQuery.Count.ToString(), modifiedQuery.Count.ToString(), applicationList.Count.ToString()));
 
-            bool refreshAppList = false;
-            foreach (Client.Model.WindowsModel windows in addedQuery)
+            try
             {
-                Trace.WriteLine("Added window processId: " + windows.ProcessId + ":" + windows.DisplayName);
+                bool refreshAppList = false;
+                foreach (Client.Model.WindowsModel windows in addedQuery)
+                {
+                    Trace.WriteLine("Added window processId: " + windows.ProcessId + ":" + windows.DisplayName);
 
-                refreshAppList |= true;
-                AddWindow(windows);
+                    refreshAppList |= true;
+                    AddWindow(windows);
 
-                // preset
-                presetHelper.AddWindow(windows.WindowsId);
+                    // preset
+                    presetHelper.AddWindow(windows.WindowsId);
+                }
+
+                foreach (Client.Model.WindowsModel windows in removedQuery)
+                {
+                    refreshAppList |= true;
+                    RemoveWindow(windows);
+
+                    // preset
+                    presetHelper.RemoveWindow(windows.WindowsId);
+                }
+
+                foreach (Client.Model.WindowsModel windows in modifiedNameQuery)
+                {
+                    refreshAppList |= true;
+                    ChangeWindowName(windows);
+                }
+
+                foreach (Client.Model.WindowsModel windows in modifiedPosQuery)
+                {
+                    ChangeWindowPos(windows);
+                }
+
+                foreach (Client.Model.WindowsModel windows in modifiedStyleQuery)
+                {
+                    ChangeWindowStyle(windows);
+                }
+
+                foreach (Client.Model.WindowsModel windows in modifiedSizeQuery)
+                {
+                    ChangeWindowSize(windows);
+                }
+
+                // update entire list z-order
+                foreach (Client.Model.WindowsModel windows in applicationList)
+                {
+                    ChangeWindowZOrder(windows);
+                }
+
+                if (refreshAppList)
+                {
+                    refreshAppListing();
+                }
             }
-
-            foreach (Client.Model.WindowsModel windows in removedQuery)
+            catch (Exception e)
             {
-                refreshAppList |= true;
-                RemoveWindow(windows);
-
-                // preset
-                presetHelper.RemoveWindow(windows.WindowsId);
+                if(Properties.Settings.Default.Debug)
+                {
+                    MessageBox.Show(e.Message);
+                }
             }
-
-            foreach (Client.Model.WindowsModel windows in modifiedNameQuery)
-            {
-                refreshAppList |= true;
-                ChangeWindowName(windows);
-            }
-
-            foreach (Client.Model.WindowsModel windows in modifiedPosQuery)
-            {
-                ChangeWindowPos(windows);
-            }
-
-            foreach (Client.Model.WindowsModel windows in modifiedStyleQuery)
-            {
-                ChangeWindowStyle(windows);
-            }
-
-            foreach (Client.Model.WindowsModel windows in modifiedSizeQuery)
-            {
-                ChangeWindowSize(windows);
-            }
-
-            // update entire list z-order
-            foreach (Client.Model.WindowsModel windows in applicationList)
-            {
-                ChangeWindowZOrder(windows);
-            }
-
-            if (refreshAppList)
-            {
-                refreshAppListing();
-            }
+           
         }
 
         private void refreshAppListing()
