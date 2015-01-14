@@ -32,7 +32,7 @@ namespace WindowsFormClient.Server
             return sInstance;
         }
 
-        public void AddLaunchedApp(int userDBid, int windowUniqueId, int appDBid)
+        public bool AddLaunchedApp(int userDBid, int windowUniqueId, int appDBid)
         {
             Dictionary<int, int> launchedAppMap;
             if (false == mLaunchedAppMap.TryGetValue(userDBid, out launchedAppMap))
@@ -47,8 +47,15 @@ namespace WindowsFormClient.Server
             }
             catch (Exception e)
             {
-                MessageBox.Show("Unable to add this window to list: " + e.Message);
+                if(Properties.Settings.Default.Debug)
+                {
+                    MessageBox.Show("Unable to add vnc window to list: " + e.Message);
+                }
+
+                return false;
             }
+
+            return true;
             
         }
 

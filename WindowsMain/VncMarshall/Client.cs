@@ -21,7 +21,7 @@ namespace VncMarshall
 
         public int StartClient(string vncServerIp, int vncServerPort)
         {
-            int appIdentifier = -1;
+            int appIdentifier = 0;
             try
             {
                 //process.Arguments = String.Format("-connect {0}::{1} -read only -autoscaling", vncServerIp, vncServerPort);
@@ -32,7 +32,6 @@ namespace VncMarshall
                     {
                         Thread.Sleep(1500);
                         appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
-                        Thread.Sleep(500);
                     }
                 }
             }

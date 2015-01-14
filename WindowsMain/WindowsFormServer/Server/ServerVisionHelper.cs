@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Utils.Windows;
 using WcfServiceLibrary1;
 using WindowsFormClient.RgbInput;
 
@@ -284,7 +285,7 @@ namespace WindowsFormClient.Server
             if (result == null)
             {
                 Trace.WriteLine("unable to launch vision window with db id and rect: " + dbId);
-                return -1;
+                return 0;
             }
 
             // create the lauching parameters
@@ -311,7 +312,7 @@ namespace WindowsFormClient.Server
 
         private int launchVisionWindow(Window window, Input input, OnScreenDisplay osd)
         {
-            int returnValue = -1;
+            int returnValue = 0;
 
             // construct the param list
             string argumentList = string.Empty;
@@ -322,11 +323,12 @@ namespace WindowsFormClient.Server
 
             // Use ProcessStartInfo class
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            //startInfo.CreateNoWindow = true;
-            //startInfo.UseShellExecute = false;
             startInfo.FileName = rgbExecutablePath;
-            //startInfo.WindowStyle = ProcessWindowStyle.Normal;
             startInfo.Arguments = argumentList;
+            startInfo.CreateNoWindow = false;
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.ErrorDialog = false;
+            startInfo.UseShellExecute = false;
 
             try
             {
@@ -334,9 +336,28 @@ namespace WindowsFormClient.Server
                 // Call WaitForExit and then the using statement will close.
                 using (Process exeProcess = Process.Start(startInfo))
                 {
-                    Thread.Sleep(1000);
-                    returnValue = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
-                    Thread.Sleep(500);
+                    int retry = 3;
+                    while(true)
+                    {
+                        if(retry == 0)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(1000);
+
+                        try
+                        {
+                            var result = Utils.Windows.WindowsHelper.GetRunningApplicationInfo().First(t => t.name == window.WndCaption && t.posX == window.WndPostLeft);
+                            returnValue = result.id;
+                            break;
+                        }
+                        catch (Exception)
+                        {
+                            retry--;
+                        }
+
+                    }
+                    
                 }
             }
             catch (Exception e)
@@ -483,7 +504,7 @@ namespace WindowsFormClient.Server
                     break;
             }
 
-            argumentList += string.Format("-Caption={0} ", window.WndCaption);
+            argumentList += string.Format("-Caption=\"{0}\" ", window.WndCaption);
             argumentList += string.Format("-Window={0},{1},{2},{3} ", window.WndPosTop, window.WndPostLeft, window.WndPostWidth, window.WndPosHeight);
             
             switch (window.WndStyle)

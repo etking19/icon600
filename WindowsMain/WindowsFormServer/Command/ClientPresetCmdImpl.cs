@@ -274,27 +274,13 @@ namespace WindowsFormClient.Command
             ClientAppCmdImpl clientImpl = new ClientAppCmdImpl();
             foreach (ApplicationData appData in preset.AppDataList)
             {
-                if (Properties.Settings.Default.Debug)
-                {
-                    MessageBox.Show("before launch window: " + appData.applicationPath + " " + appData.arguments);
-                }
                 int result = clientImpl.LaunchApplication(appData);
-
-                if (Properties.Settings.Default.Debug)
-                {
-                    MessageBox.Show("after launch window: " + appData.applicationPath + " " + appData.arguments);
-                }
                 LaunchedWndHelper.GetInstance().AddLaunchedApp(dbUserId, result, appData.id);
             }
 
             // start vnc
             foreach (RemoteVncData remoteData in preset.VncDataList)
             {
-                if (Properties.Settings.Default.Debug)
-                {
-                    MessageBox.Show("before launch vnc: " + remoteData.remoteIp);
-                }
-
                 int result = vncClient.StartClient(
                     remoteData.remoteIp,
                     remoteData.remotePort,
@@ -303,11 +289,6 @@ namespace WindowsFormClient.Command
                     remoteData.rect.Right - remoteData.rect.Left,
                     remoteData.rect.Bottom - remoteData.rect.Top);
 
-                if (Properties.Settings.Default.Debug)
-                {
-                    MessageBox.Show("after launch vnc: " + remoteData.remoteIp);
-                }
-
                 // add to the connected client info
                 LaunchedVncHelper.GetInstance().AddLaunchedApp(dbUserId, result, remoteData.id);
             }
@@ -315,22 +296,12 @@ namespace WindowsFormClient.Command
             // start source input
             foreach (VisionData inputData in preset.InputDataList)
             {
-                if (Properties.Settings.Default.Debug)
-                {
-                    MessageBox.Show("before launch source: " + inputData.id);
-                }
-
                 int result = ServerVisionHelper.getInstance().LaunchVisionWindow(
                     inputData.id,
                     inputData.rect.Left,
                     inputData.rect.Top,
                     inputData.rect.Right - inputData.rect.Left,
                     inputData.rect.Bottom - inputData.rect.Top);
-
-                if (Properties.Settings.Default.Debug)
-                {
-                    MessageBox.Show("after launch source: " + inputData.id);
-                }
 
                 // add to the connected client info
                 LaunchedSourcesHelper.GetInstance().AddLaunchedApp(dbUserId, result, inputData.id);
@@ -348,7 +319,6 @@ namespace WindowsFormClient.Command
                     MessageBox.Show("before clear window identifier: " + wndIdentifier);
                 }
                 Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-                Thread.Sleep(500);
             }
 
             // reset the launched list
@@ -362,7 +332,6 @@ namespace WindowsFormClient.Command
                     MessageBox.Show("before clear vnc identifier: " + wndIdentifier);
                 }
                 Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-                Thread.Sleep(500);
             }
 
             // reset the launched list
@@ -376,7 +345,6 @@ namespace WindowsFormClient.Command
                     MessageBox.Show("before clear source identifier: " + wndIdentifier);
                 }
                 Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-                Thread.Sleep(500);
             }
 
             // reset the launched list

@@ -84,6 +84,9 @@ namespace Utils.Windows
         public static extern IntPtr GetForegroundWindow();
 
         [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern IntPtr GetDesktopWindow();
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern IntPtr GetAncestor(IntPtr hwnd, UInt32 flags);
 
         [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]

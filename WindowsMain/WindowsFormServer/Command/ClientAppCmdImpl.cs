@@ -8,6 +8,7 @@ using System.Threading;
 using Utils.Windows;
 using WcfServiceLibrary1;
 using WindowsFormClient.Server;
+using System.Management;
 
 namespace WindowsFormClient.Command
 {
@@ -43,34 +44,47 @@ namespace WindowsFormClient.Command
 
         public int LaunchApplication(ApplicationData appData)
         {
-            int appIdentifier = -1;
+            int appIdentifier = 0;
             ProcessStartInfo info = new ProcessStartInfo()
             {
                 FileName = appData.applicationPath,
-                Arguments = appData.arguments
+                Arguments = appData.arguments,
+                CreateNoWindow = false,
+                WindowStyle = ProcessWindowStyle.Normal,
+                ErrorDialog = false,
+                UseShellExecute = false,
             };
 
             try
             {
                 using (Process process = Process.Start(info))
                 {
+                    process.WaitForExit(1000);
                     Thread.Sleep(1000);
-                    appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
+                    
+                    IList<Utils.Windows.WindowsHelper.ApplicationInfo> appList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
+                    foreach (Utils.Windows.WindowsHelper.ApplicationInfo internalInfo in appList)
+                    {
+                        if(internalInfo.processId != Process.GetCurrentProcess().Id)
+                        {
+                            appIdentifier = internalInfo.id;
+                            break;
+                        }
+                    }
 
                     if (appData.rect.Left != 0 ||
                             appData.rect.Top != 0 ||
                             appData.rect.Right != 0 ||
                             appData.rect.Bottom != 0)
                     {
-                        NativeMethods.MoveWindow(new IntPtr(appIdentifier),
-                            appData.rect.Left,
-                            appData.rect.Top,
-                            appData.rect.Right - appData.rect.Left,
+                        NativeMethods.SetWindowPos(new IntPtr(appIdentifier), 
+                            Constant.HWND_TOP,
+                            appData.rect.Left, 
+                            appData.rect.Top, 
+                            appData.rect.Right - appData.rect.Left, 
                             appData.rect.Bottom - appData.rect.Top,
-                            true);
+                            0);
                     }
-
-                    Thread.Sleep(500);
                 }
             }
             catch (Exception e)
