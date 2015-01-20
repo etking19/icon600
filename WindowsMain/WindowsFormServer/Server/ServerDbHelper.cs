@@ -47,6 +47,8 @@ namespace WindowsFormClient.Server
                 tcpBinding.CloseTimeout = new TimeSpan(24, 20, 31, 23);
                 tcpBinding.ReceiveTimeout = new TimeSpan(24, 20, 31, 23);
                 tcpBinding.SendTimeout = new TimeSpan(24, 20, 31, 23);
+                tcpBinding.MaxBufferSize = 2147483647;
+                tcpBinding.MaxReceivedMessageSize = 2147483647;
 
                 OptionalReliableSession reliableSession = new OptionalReliableSession(reliableBe);
                 tcpBinding.ReliableSession = reliableSession;
