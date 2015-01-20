@@ -21,24 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_12573E7BE2CECAA97259949D54FDE44E"
-        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6CFEBA65F16EB6600970EE930595D28C"
-        "OwnerKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6CFEBA65F16EB6600970EE930595D28C"
-        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_74BE5253727F4EC8BD8F89DC3F08256E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -47,6 +29,24 @@
         {
         "MsmKey" = "8:_9219A91C124C47D88D80F5D08D9896A3"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_991C10C7564511410EC091F58875EBF1"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_991C10C7564511410EC091F58875EBF1"
+        "OwnerKey" = "8:_A37814EC5D397D2172E7BE939F1C5F2D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A37814EC5D397D2172E7BE939F1C5F2D"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -63,20 +63,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
-        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
-        "OwnerKey" = "8:_12573E7BE2CECAA97259949D54FDE44E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D4F0F1188CB94D77A645C934C0F7986D"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D5CB4E1743D5734E84C09A3F833750FF"
+        "OwnerKey" = "8:_991C10C7564511410EC091F58875EBF1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D5CB4E1743D5734E84C09A3F833750FF"
+        "OwnerKey" = "8:_B34F35C2695A4D858A8CF15CA011582F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,19 +106,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_12573E7BE2CECAA97259949D54FDE44E"
+        "OwnerKey" = "8:_A37814EC5D397D2172E7BE939F1C5F2D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B792E0EC947D1C19BD758EBD01269E1B"
+        "OwnerKey" = "8:_991C10C7564511410EC091F58875EBF1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6CFEBA65F16EB6600970EE930595D28C"
+        "OwnerKey" = "8:_D5CB4E1743D5734E84C09A3F833750FF"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -236,68 +236,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_12573E7BE2CECAA97259949D54FDE44E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WcfServiceLibrary1, Version=1.0.0.6, Culture=neutral, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_12573E7BE2CECAA97259949D54FDE44E"
-                    {
-                    "Name" = "8:WcfServiceLibrary1.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:WcfServiceLibrary1.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6CFEBA65F16EB6600970EE930595D28C"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_6CFEBA65F16EB6600970EE930595D28C"
-                    {
-                    "Name" = "8:System.Data.SQLite.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Data.SQLite.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74BE5253727F4EC8BD8F89DC3F08256E"
             {
             "SourcePath" = "8:..\\..\\Dependecies\\x86\\SQLite.Interop.dll"
@@ -349,34 +287,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B58FBD26C69F4C86B91BD9BA609962B8"
-            {
-            "SourcePath" = "8:..\\..\\Dependecies\\install.bat"
-            "TargetName" = "8:install.bat"
-            "Tag" = "8:"
-            "Folder" = "8:_0D6C71E2C2E34746A99A45C8D5F862FD"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B792E0EC947D1C19BD758EBD01269E1B"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_991C10C7564511410EC091F58875EBF1"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Database, Version=1.0.0.6, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_B792E0EC947D1C19BD758EBD01269E1B"
+                    "_991C10C7564511410EC091F58875EBF1"
                     {
                     "Name" = "8:Database.dll"
                     "Attributes" = "3:512"
@@ -400,6 +318,57 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A37814EC5D397D2172E7BE939F1C5F2D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WcfServiceLibrary1, Version=1.0.0.6, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_A37814EC5D397D2172E7BE939F1C5F2D"
+                    {
+                    "Name" = "8:WcfServiceLibrary1.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WcfServiceLibrary1.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B58FBD26C69F4C86B91BD9BA609962B8"
+            {
+            "SourcePath" = "8:..\\..\\Dependecies\\install.bat"
+            "TargetName" = "8:install.bat"
+            "Tag" = "8:"
+            "Folder" = "8:_0D6C71E2C2E34746A99A45C8D5F862FD"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D4F0F1188CB94D77A645C934C0F7986D"
             {
             "SourcePath" = "8:..\\..\\Resources\\VISTROL iSoft EULA.rtf"
@@ -418,6 +387,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D5CB4E1743D5734E84C09A3F833750FF"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.94.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D5CB4E1743D5734E84C09A3F833750FF"
+                    {
+                    "Name" = "8:System.Data.SQLite.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Data.SQLite.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6D4BB2CFDD764262BE65842974F37B0D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D9B7079F17BB40C1B6FB22C880DA4EB8"
@@ -538,15 +538,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VistrolWindowService"
-        "ProductCode" = "8:{7D64A6D0-3A27-40D7-97A1-C2AB98DD3C72}"
-        "PackageCode" = "8:{0486EC5B-6E28-42CE-8F69-9B17B3724EE7}"
+        "ProductCode" = "8:{B045693E-4B5D-4604-99A3-89BCBEB3B942}"
+        "PackageCode" = "8:{93C9D962-7682-4780-AFF8-F9DC6D7E7C3B}"
         "UpgradeCode" = "8:{9D24C2AD-C8CE-4299-8AE2-5766D3BE3FC4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.8"
+        "ProductVersion" = "8:1.0.9"
         "Manufacturer" = "8:Vistrol Pte. Ltd."
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:support@vistrol.com"
