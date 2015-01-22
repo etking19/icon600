@@ -110,6 +110,22 @@ namespace CustomWinForm
             return new Point(actualX, actualY);
         }
 
+        Size getActualSize(int width, int height)
+        {
+            double actualWidth = Math.Ceiling((float)width / mScaleX);
+            double actualHeight = Math.Ceiling((float)height / mScaleY);
+
+            return new Size((int)actualWidth, (int)actualHeight);
+        }
+
+        Size getRelativeSize(int width, int height)
+        {
+            double relativeWidth = Math.Ceiling((float)width * mScaleX);
+            double relativeHeight = Math.Ceiling((float)height * mScaleY);
+
+            return new Size((int)relativeWidth, (int)relativeHeight);
+        }
+
         public ControlAttributes GetControl(int controlId)
         {
             ControlAttributes attr = new ControlAttributes();
@@ -126,7 +142,7 @@ namespace CustomWinForm
                     attr.Xpos = actualPt.X;
                     attr.Ypos = actualPt.Y;
 
-                    Size actualSize = new Size((int)Math.Round((float)winForm.Size.Width / mScaleX), (int)Math.Round((float)winForm.Size.Height / mScaleY));
+                    Size actualSize = getActualSize(winForm.Size.Width, winForm.Size.Height); 
                     attr.Width = actualSize.Width;
                     attr.Height = actualSize.Height;
 
@@ -161,7 +177,7 @@ namespace CustomWinForm
                         attr.Xpos = actualPt.X;
                         attr.Ypos = actualPt.Y;
 
-                        Size actualSize = new Size((int)Math.Round((float)winForm.Size.Width / mScaleX), (int)Math.Round((float)winForm.Size.Height / mScaleY));
+                        Size actualSize = getActualSize(winForm.Size.Width, winForm.Size.Height);
                         attr.Width = actualSize.Width;
                         attr.Height = actualSize.Height;
 
@@ -194,12 +210,17 @@ namespace CustomWinForm
 
                 // set the win size
                 winForm.LatestSize = new Size(controlAttr.Width, controlAttr.Height);
-                winForm.SetWindowSize(new Size((int)Math.Round((float)controlAttr.Width * mScaleX), (int)Math.Round((float)controlAttr.Height * mScaleY)));
+                Size relativeSize = getRelativeSize(controlAttr.Width, controlAttr.Height);
+                winForm.LatestRelativeSize = relativeSize;
+                winForm.SetWindowSize(relativeSize);
 
                 // set the win pos
                 winForm.LatestPos = new Point(controlAttr.Xpos, controlAttr.Ypos);
                 Point relativePoint = getRelativePoint(controlAttr.Xpos, controlAttr.Ypos);
+                winForm.LatestRelativePos = relativePoint;
                 winForm.SetWindowLocation(relativePoint.X, relativePoint.Y);
+
+                Trace.WriteLine(String.Format("Add control - pos:{0},{1} size:{2},{3}", relativePoint.X, relativePoint.Y, relativeSize.Width, relativeSize.Height));
 
                 // register the event callback
                 winForm.onDelegateClosedEvt += winForm_onDelegateClosedEvt;
@@ -217,10 +238,15 @@ namespace CustomWinForm
 
         void winForm_onDelegateSizeChangedEvt(CustomWinForm winForm, Size size)
         {
+            if (winForm.LatestRelativeSize == size)
+            {
+                return;
+            }
+
             if (onDelegateSizeChangedEvt != null)
             {
-                Size actualSize = new Size((int)Math.Round((float)size.Width / mScaleX), (int)Math.Round((float)size.Height / mScaleY));
-                onDelegateSizeChangedEvt(winForm.Id, actualSize);
+                Trace.WriteLine(String.Format("delegateSizeChanged - {0},{1}", size.Width, size.Height));
+                onDelegateSizeChangedEvt(winForm.Id, getActualSize(size.Width, size.Height));
             } 
         }
 
@@ -234,14 +260,17 @@ namespace CustomWinForm
 
         void winForm_onDelegatePosChangedEvt(CustomWinForm winForm, int xPos, int yPos)
         {
+            if (winForm.LatestRelativePos.X == xPos &&
+                winForm.LatestRelativePos.Y == yPos)
+            {
+                return;
+            }
+
             if (onDelegatePosChangedEvt != null)
             {
+                Trace.WriteLine(String.Format("delegatePosChange - {0},{1}", xPos, yPos));
                 Point actual = getActualPoint(xPos, yPos);
-
-                // forward the size as well for boundary checking
-                Size actualSize = new Size((int)Math.Round((float)winForm.Size.Width / mScaleX), 
-                    (int)Math.Round((float)winForm.Size.Height / mScaleY));
-
+                Size actualSize = getActualSize(winForm.Width, winForm.Height);
                 onDelegatePosChangedEvt(winForm.Id, actual.X, actual.Y, actualSize.Width, actualSize.Height);
             }
         }
@@ -311,10 +340,10 @@ namespace CustomWinForm
                 CustomWinForm control;
                 if (mControlsDic.TryGetValue(id, out control))
                 {
-                    Size ratioSize = new Size((int)Math.Ceiling((float)newSize.Width * mScaleX),
-                        (int)Math.Ceiling((float)newSize.Height * mScaleY));
+                    Size ratioSize = getRelativeSize(newSize.Width, newSize.Height);
 
                     control.LatestSize = newSize;
+                    control.LatestRelativeSize = ratioSize;
                     control.SetWindowSize(ratioSize);
                 }
             }
@@ -332,10 +361,10 @@ namespace CustomWinForm
 
                 if (mControlsDic.TryGetValue(id, out control))
                 {
-                    Point ratioPoint = new Point((int)Math.Round((float)(newPos.X - ReferenceXPos) * mScaleX),
-                       (int)Math.Round((float)(newPos.Y - ReferenceYPos) * mScaleY));
+                    Point ratioPoint = getRelativePoint(newPos.X, newPos.Y);
 
                     control.LatestPos = newPos;
+                    control.LatestRelativePos = ratioPoint;
                     control.Location = ratioPoint;
                 }
             }
@@ -401,11 +430,11 @@ namespace CustomWinForm
             foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
             {
                 // change location
-                Point ratioPoint = new Point((int)Math.Round((float)(map.Value.LatestPos.X - ReferenceXPos) * mScaleX),
-                   (int)Math.Round((float)(map.Value.LatestPos.Y - ReferenceYPos) * mScaleY));
+                Point ratioPoint = getRelativePoint(map.Value.LatestPos.X, map.Value.LatestPos.Y);
                 map.Value.Location = ratioPoint;
 
-                map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.LatestSize.Width * mScaleX), (int)Math.Round((float)map.Value.LatestSize.Height * mScaleY)));
+                Size ratioSize = getRelativeSize(map.Value.LatestSize.Width, map.Value.LatestSize.Height);
+                map.Value.SetWindowSize(ratioSize);
             }
         }
 
@@ -436,11 +465,13 @@ namespace CustomWinForm
             foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
             {
                 // change location
-                Point ratioPoint = new Point((int)Math.Round((float)(map.Value.LatestPos.X - ReferenceXPos) * mScaleX),
-                   (int)Math.Round((float)(map.Value.LatestPos.Y - ReferenceYPos) * mScaleY));
+                Point ratioPoint = getRelativePoint(map.Value.LatestPos.X, map.Value.LatestPos.Y);
+                map.Value.LatestRelativePos = ratioPoint;
                 map.Value.Location = ratioPoint;
 
-                map.Value.SetWindowSize(new Size((int)Math.Round((float)map.Value.LatestSize.Width * mScaleX), (int)Math.Round((float)map.Value.LatestSize.Height * mScaleY)));
+                Size ratioSize = getRelativeSize(map.Value.LatestSize.Width, map.Value.LatestSize.Height);
+                map.Value.LatestRelativeSize = ratioSize;
+                map.Value.SetWindowSize(ratioSize);
             }
         }
 

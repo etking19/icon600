@@ -28,7 +28,10 @@ namespace CustomWinForm
 
         // used to control the actual size and relative size scaling issue
         public Size LatestSize { get; set; }
+        public Size LatestRelativeSize { get; set; }
+
         public Point LatestPos { get; set; }
+        public Point LatestRelativePos { get; set; }
 
         private Int32 style;
         public Int32 Style 
@@ -120,7 +123,6 @@ namespace CustomWinForm
 
         public void SetWindowSize(Size newSize)
         {
-            Trace.WriteLine("new size: " + newSize.Width + "," + newSize.Height);
             NativeMethods.SetWindowPos(this.Handle, 0, 0, 0, newSize.Width, newSize.Height, (Int32)(Constant.SWP_NOMOVE));
         }
 
@@ -212,7 +214,7 @@ namespace CustomWinForm
         private bool doSnap(int pos, int edge)
         {
             int delta = pos - edge;
-            return delta >= -15 && delta <= 15;     // within 10 pixels
+            return delta >= -10 && delta <= 10;     // within 10 pixels
         }
 
         private bool performSizeSnap(int xPos, int yPos, int width, int height, out int snapWidth, out int snapHeight)
