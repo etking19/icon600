@@ -608,12 +608,12 @@ namespace WindowsFormClient
             switch (result)
             {
                 case System.Windows.Forms.DialogResult.OK:
-                    // restart
-                    mode = Presenter.ClientPresenter.ServerMaintenanceMode.Restart;
-                    break;
-                case System.Windows.Forms.DialogResult.Retry:
                     // shutdown
                     mode = Presenter.ClientPresenter.ServerMaintenanceMode.Shutdown;
+                    break;
+                case System.Windows.Forms.DialogResult.Retry:
+                    // restart
+                    mode = Presenter.ClientPresenter.ServerMaintenanceMode.Restart;
                     break;
                 case System.Windows.Forms.DialogResult.Yes:
                     // standby
