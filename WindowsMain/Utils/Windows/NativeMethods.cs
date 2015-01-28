@@ -160,5 +160,8 @@ namespace Utils.Windows
 
         [DllImport("user32.dll")]
         public static extern bool ScreenToClient(IntPtr hWnd, ref Point lpPoint);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr GetWindow(IntPtr hWnd, int uCmd);
     }
 }

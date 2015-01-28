@@ -390,5 +390,15 @@ namespace Utils.Windows
         // WM_COMMAND
         public const int MIN_ALL = 419;
         public const int MIN_ALL_UNDO = 416;
+
+        // get window enum
+        public const int GW_HWNDFIRST = 0;
+        public const int GW_HWNDLAST = 1;
+        public const int GW_HWNDNEXT = 2;
+        public const int GW_HWNDPREV = 3;
+        public const int GW_OWNER = 4;
+        public const int GW_CHILD = 5;
+        public const int GW_ENABLEDPOPUP = 6;
+
     }
 }
