@@ -97,7 +97,7 @@ namespace WindowsFormClient.Command
                 var previous = WindowsHelper.GetRunningApplicationInfo();
                 using (Process process = Process.Start(info))
                 {
-                    process.WaitForExit(10000);
+                    process.WaitForInputIdle(3000);
 
                     // this is assuming the program created a new window
                     int max_tries = 5;

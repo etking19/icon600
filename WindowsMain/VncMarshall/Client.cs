@@ -26,13 +26,34 @@ namespace VncMarshall
             {
                 //process.Arguments = String.Format("-connect {0}::{1} -read only -autoscaling", vncServerIp, vncServerPort);
                 process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
-                using(Process clientProcess = Process.Start(process))
+                var previous = WindowsHelper.GetRunningApplicationInfo();
+                using (Process clientProcess = Process.Start(process))
                 {
-                   // if (clientProcess.WaitForInputIdle())
+                    //// if (clientProcess.WaitForInputIdle())
+                    // {
+                    //     Thread.Sleep(1500);
+                    //     appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
+                    // }
+
+                    clientProcess.WaitForInputIdle(3000);
+
+                    // this is assuming the program created a new window
+                    int max_tries = 5;
+                    var current = WindowsHelper.GetRunningApplicationInfo();
+                    var diff = current.Except(previous, new ProcessComparer());
+                    while (diff.Count() == 0)
                     {
-                        Thread.Sleep(1500);
-                        appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
+                        if (max_tries <= 0)
+                        {
+                            break;
+                        }
+                        max_tries--;
+                        Thread.Sleep(100);
+                        current = WindowsHelper.GetRunningApplicationInfo();
+                        diff = current.Except(previous, new ProcessComparer());
                     }
+
+                    appIdentifier = diff.ElementAt(0).id;
                 }
             }
             catch(Exception)
@@ -40,6 +61,19 @@ namespace VncMarshall
             }
 
             return appIdentifier;
+        }
+
+        class ProcessComparer : EqualityComparer<Utils.Windows.WindowsHelper.ApplicationInfo>
+        {
+            public override bool Equals(Utils.Windows.WindowsHelper.ApplicationInfo wnd1, Utils.Windows.WindowsHelper.ApplicationInfo wnd2)
+            {
+                return (wnd1.id == wnd2.id);
+            }
+
+            public override int GetHashCode(Utils.Windows.WindowsHelper.ApplicationInfo obj)
+            {
+                return obj.GetHashCode();
+            }
         }
 
         public int StartClient(string vncServerIp, int vncServerPort, int left, int top, int width, int height)

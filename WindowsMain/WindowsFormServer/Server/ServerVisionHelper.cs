@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using Utils.Windows;
@@ -310,6 +311,7 @@ namespace WindowsFormClient.Server
             return launchVisionWindow(window, input, osd);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private int launchVisionWindow(Window window, Input input, OnScreenDisplay osd)
         {
             int returnValue = 0;
@@ -325,39 +327,56 @@ namespace WindowsFormClient.Server
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = rgbExecutablePath;
             startInfo.Arguments = argumentList;
-            startInfo.CreateNoWindow = false;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.ErrorDialog = false;
-            startInfo.UseShellExecute = false;
 
             try
             {
                 // Start the process with the info we specified.
                 // Call WaitForExit and then the using statement will close.
-                using (Process exeProcess = Process.Start(startInfo))
+                var previous = WindowsHelper.GetRunningApplicationInfo();
+                using (Process process = Process.Start(startInfo))
                 {
-                    int retry = 3;
-                    while(true)
+                    //int retry = 3;
+                    //while(true)
+                    //{
+                    //    if(retry == 0)
+                    //    {
+                    //        break;
+                    //    }
+                    //    Thread.Sleep(500);
+
+                    //    try
+                    //    {
+                    //        var result = Utils.Windows.WindowsHelper.GetRunningApplicationInfo().First(t => t.name == window.WndCaption && t.posX == window.WndPostLeft);
+                    //        returnValue = result.id;
+                    //        break;
+                    //    }
+                    //    catch (Exception)
+                    //    {
+                    //        retry--;
+                    //    }
+
+                    //}
+
+                    process.WaitForExit(3000);
+
+                    // this is assuming the program created a new window
+                    int max_tries = 10;
+                    var current = WindowsHelper.GetRunningApplicationInfo();
+                    var diff = current.Except(previous, new ProcessComparer());
+                    while (diff.Count() == 0 ||
+                        diff.ElementAt(0).name.CompareTo(window.WndCaption) != 0)
                     {
-                        if(retry == 0)
+                        if (max_tries <= 0)
                         {
                             break;
                         }
-                        Thread.Sleep(1000);
-
-                        try
-                        {
-                            var result = Utils.Windows.WindowsHelper.GetRunningApplicationInfo().First(t => t.name == window.WndCaption && t.posX == window.WndPostLeft);
-                            returnValue = result.id;
-                            break;
-                        }
-                        catch (Exception)
-                        {
-                            retry--;
-                        }
-
+                        max_tries--;
+                        Thread.Sleep(100);
+                        current = WindowsHelper.GetRunningApplicationInfo();
+                        diff = current.Except(previous, new ProcessComparer());
                     }
                     
+                    returnValue = diff.ElementAt(0).id;
                 }
             }
             catch (Exception e)
@@ -367,6 +386,19 @@ namespace WindowsFormClient.Server
             }
 
             return returnValue;
+        }
+
+        class ProcessComparer : EqualityComparer<Utils.Windows.WindowsHelper.ApplicationInfo>
+        {
+            public override bool Equals(Utils.Windows.WindowsHelper.ApplicationInfo wnd1, Utils.Windows.WindowsHelper.ApplicationInfo wnd2)
+            {
+                return (wnd1.id == wnd2.id);
+            }
+
+            public override int GetHashCode(Utils.Windows.WindowsHelper.ApplicationInfo obj)
+            {
+                return obj.GetHashCode();
+            }
         }
 
         private string constructOSDParams(OnScreenDisplay osd)
