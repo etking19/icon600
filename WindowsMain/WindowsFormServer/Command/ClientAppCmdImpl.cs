@@ -69,7 +69,7 @@ namespace WindowsFormClient.Command
                     }
                     catch
                     {
-
+                        continue;
                     }
                 }
             }
@@ -100,7 +100,7 @@ namespace WindowsFormClient.Command
                     process.WaitForInputIdle(3000);
 
                     // this is assuming the program created a new window
-                    int max_tries = 5;
+                    int max_tries = 10;
                     var current = WindowsHelper.GetRunningApplicationInfo();
                     var diff = current.Except(previous, new ProcessComparer());
                     while (diff.Count() == 0)
@@ -141,32 +141,6 @@ namespace WindowsFormClient.Command
                             appData.rect.Bottom - appData.rect.Top,
                             0);
                     }
-
-
-
-                    //IList<Utils.Windows.WindowsHelper.ApplicationInfo> appList = Utils.Windows.WindowsHelper.GetRunningApplicationInfo();
-                    //foreach (Utils.Windows.WindowsHelper.ApplicationInfo internalInfo in appList)
-                    //{
-                    //    if(internalInfo.processId != Process.GetCurrentProcess().Id)
-                    //    {
-                    //        appIdentifier = internalInfo.id;
-                    //        break;
-                    //    }
-                    //}
-
-                    //if (appData.rect.Left != 0 ||
-                    //        appData.rect.Top != 0 ||
-                    //        appData.rect.Right != 0 ||
-                    //        appData.rect.Bottom != 0)
-                    //{
-                    //    NativeMethods.SetWindowPos(new IntPtr(appIdentifier), 
-                    //        Constant.HWND_TOP,
-                    //        appData.rect.Left, 
-                    //        appData.rect.Top, 
-                    //        appData.rect.Right - appData.rect.Left, 
-                    //        appData.rect.Bottom - appData.rect.Top,
-                    //        0);
-                    //}
                 }
             }
             catch (Exception e)

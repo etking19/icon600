@@ -318,7 +318,7 @@ namespace WindowsFormClient.Command
                 {
                     MessageBox.Show("before clear window identifier: " + wndIdentifier);
                 }
-                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                Utils.Windows.NativeMethods.PostMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
             }
 
             // reset the launched list
@@ -331,7 +331,7 @@ namespace WindowsFormClient.Command
                 {
                     MessageBox.Show("before clear vnc identifier: " + wndIdentifier);
                 }
-                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                Utils.Windows.NativeMethods.PostMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
             }
 
             // reset the launched list
@@ -344,7 +344,7 @@ namespace WindowsFormClient.Command
                 {
                     MessageBox.Show("before clear source identifier: " + wndIdentifier);
                 }
-                Utils.Windows.NativeMethods.SendMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                Utils.Windows.NativeMethods.PostMessage(new IntPtr(wndIdentifier), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
             }
 
             // reset the launched list
@@ -357,13 +357,14 @@ namespace WindowsFormClient.Command
             {
                 MessageBox.Show("before clear wall");
             }
+
+            // 1. Clean all launched applications
             ClearWall(dbUserId);
 
             if (Properties.Settings.Default.Debug)
             {
                 MessageBox.Show("after clear wall");
             }
-            
 
             // 2. trigger the apps in the preset by giving preset's id
             LaunchPresetExternal(dbUserId, presetData.PresetDataEntry.Identifier);

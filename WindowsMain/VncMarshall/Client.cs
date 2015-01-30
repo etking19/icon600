@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using Utils.Windows;
@@ -10,35 +11,31 @@ namespace VncMarshall
 {
     public class Client
     {
-        private ProcessStartInfo process;
+        private string _vncClientExePath;
 
         public Client(string vncClientExePath)
         {
             // Prepare the process to run
-            process = new ProcessStartInfo();
-            process.FileName = vncClientExePath;
+            _vncClientExePath = vncClientExePath;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public int StartClient(string vncServerIp, int vncServerPort)
         {
             int appIdentifier = 0;
             try
             {
-                //process.Arguments = String.Format("-connect {0}::{1} -read only -autoscaling", vncServerIp, vncServerPort);
-                process.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
-                var previous = WindowsHelper.GetRunningApplicationInfo();
-                using (Process clientProcess = Process.Start(process))
-                {
-                    //// if (clientProcess.WaitForInputIdle())
-                    // {
-                    //     Thread.Sleep(1500);
-                    //     appIdentifier = Utils.Windows.NativeMethods.GetForegroundWindow().ToInt32();
-                    // }
+                ProcessStartInfo processInfo = new ProcessStartInfo(_vncClientExePath);
 
+                //process.Arguments = String.Format("-connect {0}::{1} -read only -autoscaling", vncServerIp, vncServerPort);
+                processInfo.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
+                var previous = WindowsHelper.GetRunningApplicationInfo();
+                using (Process clientProcess = Process.Start(processInfo))
+                {
                     clientProcess.WaitForInputIdle(3000);
 
                     // this is assuming the program created a new window
-                    int max_tries = 5;
+                    int max_tries = 10;
                     var current = WindowsHelper.GetRunningApplicationInfo();
                     var diff = current.Except(previous, new ProcessComparer());
                     while (diff.Count() == 0)
@@ -53,11 +50,15 @@ namespace VncMarshall
                         diff = current.Except(previous, new ProcessComparer());
                     }
 
-                    appIdentifier = diff.ElementAt(0).id;
+                    if (diff.Count() > 0)
+                    {
+                        appIdentifier = diff.ElementAt(0).id;
+                    }
                 }
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                Trace.WriteLine(e.Message);
             }
 
             return appIdentifier;

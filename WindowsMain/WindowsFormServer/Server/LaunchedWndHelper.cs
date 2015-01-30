@@ -53,9 +53,11 @@ namespace WindowsFormClient.Server
             }
             catch (Exception e)
             {
-                MessageBox.Show("Unable to add this window to list: " + e.Message);
+                if (Properties.Settings.Default.Debug)
+                {
+                    MessageBox.Show("Unable to add this window to list: " + e.Message);
+                }
             }
-            
         }
 
         public bool RemoveLaunchedApp(int userDBid, int windowUniqueId)

@@ -335,28 +335,6 @@ namespace WindowsFormClient.Server
                 var previous = WindowsHelper.GetRunningApplicationInfo();
                 using (Process process = Process.Start(startInfo))
                 {
-                    //int retry = 3;
-                    //while(true)
-                    //{
-                    //    if(retry == 0)
-                    //    {
-                    //        break;
-                    //    }
-                    //    Thread.Sleep(500);
-
-                    //    try
-                    //    {
-                    //        var result = Utils.Windows.WindowsHelper.GetRunningApplicationInfo().First(t => t.name == window.WndCaption && t.posX == window.WndPostLeft);
-                    //        returnValue = result.id;
-                    //        break;
-                    //    }
-                    //    catch (Exception)
-                    //    {
-                    //        retry--;
-                    //    }
-
-                    //}
-
                     process.WaitForExit(3000);
 
                     // this is assuming the program created a new window
@@ -375,8 +353,11 @@ namespace WindowsFormClient.Server
                         current = WindowsHelper.GetRunningApplicationInfo();
                         diff = current.Except(previous, new ProcessComparer());
                     }
-                    
-                    returnValue = diff.ElementAt(0).id;
+
+                    if (diff.Count() > 0)
+                    {
+                        returnValue = diff.ElementAt(0).id;
+                    }
                 }
             }
             catch (Exception e)
