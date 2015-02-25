@@ -90,7 +90,7 @@ namespace WindowsFormClient
             licenceChecker.StopCheck();
         }
 
-        private static DateTime expire = new DateTime(2015, 2, 20);
+        private static DateTime expire = new DateTime(2015, 3, 20);
 
         static void licenceChecker_EvtLicenseCheckStatus(LicenseChecker.LicenseChecker checker, bool isValid)
         {

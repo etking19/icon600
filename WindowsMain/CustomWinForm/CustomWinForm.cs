@@ -52,11 +52,14 @@ namespace CustomWinForm
         /// </summary>
         private Timer _resizingTimer = null;
 
-        public CustomWinForm(int id, Int32 style)
+        private ICustomHolder _customHolder;
+
+        public CustomWinForm(int id, Int32 style, ICustomHolder reference)
         {
             InitializeComponent();
             this.Id = id;
             this.Style = style;
+            this._customHolder = reference;
         }
 
         private void CustomWinForm_Load(object sender, EventArgs e)
@@ -77,19 +80,32 @@ namespace CustomWinForm
             int outLocationY;
             if (performLocationSnap(this.Location.X, this.Location.Y, out outLocationX, out outLocationY))
             {
-                this.Location = new Point(outLocationX, outLocationY);
+                if (this.Location.X != outLocationX ||
+                    this.Location.Y != outLocationY)
+                {
+                    // only handle the same snap one time
+                    this.Location = new Point(outLocationX, outLocationY);
+                }
             }
         }
 
         void CustomWinForm_Resize(object sender, EventArgs e)
         {
             // check if the size snap
+            int snapX, snapY;
             int snapWidth;
             int snapHeight;
-            if (performSizeSnap(this.Location.X, this.Location.Y, this.Width, this.Height, out snapWidth, out snapHeight))
+            if (performSizeSnap(this.Location.X, this.Location.Y, this.Width, this.Height, 
+                out snapX, out snapY, out snapWidth, out snapHeight))
             {
-                this.Width = snapWidth;
-                this.Height = snapHeight;
+                // only handle width and height, locationChange event should handle the X and Y coordinate change
+                if (this.Width != snapWidth ||
+                    this.Height != snapHeight)
+                {
+                    this.Width = snapWidth;
+                    this.Height = snapHeight;
+                }
+
             }
         }
 
@@ -112,7 +128,7 @@ namespace CustomWinForm
         {
             _resizingTimer.Stop();
 
-            onDelegateSizeChangedEvt(this, Size);
+            onDelegateSizeChangedEvt(this, this.Size);
         }
 
         public void SetWindowName(string name)
@@ -200,93 +216,15 @@ namespace CustomWinForm
             base.WndProc(ref m);
         }
 
-
-        public void SetColumnSnapGrid(IList<int> columnGrid)
+        private bool performSizeSnap(int xPos, int yPos, int width, int height, 
+            out int snapX, out int snapY, out int snapWidth, out int snapHeight)
         {
-            this.columnSnapGrid = columnGrid;
-        }
-
-        public void SetRowSnapGrid(IList<int> rowGrid)
-        {
-            this.rowSnapGrid = rowGrid;
-        }
-
-        private bool doSnap(int pos, int edge)
-        {
-            int delta = pos - edge;
-            return delta >= -10 && delta <= 10;     // within 10 pixels
-        }
-
-        private bool performSizeSnap(int xPos, int yPos, int width, int height, out int snapWidth, out int snapHeight)
-        {
-            snapWidth = width;
-            snapHeight = height;
-
-            if (columnSnapGrid == null ||
-                rowSnapGrid == null)
-            {
-                return false;
-            }
-
-            bool snap = false;
-            foreach (int column in columnSnapGrid)
-            {
-                if (doSnap(xPos + width, column))
-                {
-                    snap = true;
-                    snapWidth = column - xPos;
-                    Trace.WriteLine("snapWidth " + snapWidth);
-                    break;
-                }
-            }
-
-            foreach (int row in rowSnapGrid)
-            {
-                if (doSnap(yPos + height, row))
-                {
-                    snap = true;
-                    snapHeight = row - yPos;
-                    Trace.WriteLine("snapHeight " + snapHeight);
-                    break;
-                }
-            }
-
-            return snap;
+            return _customHolder.performSizeSnapCheck(xPos, yPos, width, height, out snapX, out snapY, out snapWidth, out snapHeight);
         }
 
         private bool performLocationSnap(int xPos, int yPos, out int snapX, out int snapY)
         {
-            snapX = xPos;
-            snapY = yPos;
-
-            if (columnSnapGrid == null ||
-                rowSnapGrid == null)
-            {
-                return false;
-            }
-
-            bool snap = false;
-            foreach (int column in columnSnapGrid)
-            {
-                if (doSnap(xPos, column))
-                {
-                    snap = true;
-                    snapX = column;
-                    break;
-                }
-            }
-
-            foreach (int row in rowSnapGrid)
-            {
-                if (doSnap(yPos, row))
-                {
-                    snap = true;
-                    snapY = row;
-                    break;
-                }
-            }
-
-            return snap;
+            return _customHolder.performLocationSnapCheck(xPos, yPos, out snapX, out snapY);
         }
     }
 }

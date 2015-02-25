@@ -20,7 +20,7 @@ namespace CustomWinForm
         public int ZOrder { get; set; }
     }
 
-    public partial class CustomControlHolder: UserControl
+    public partial class CustomControlHolder : UserControl, ICustomHolder
     {
 
         public delegate void OnControlSizeChanged(int id, Size newSize);
@@ -60,6 +60,18 @@ namespace CustomWinForm
             }
         }
 
+        public Size FullSize
+        {
+            private get
+            {
+                return mFullSize;
+            }
+            set
+            {
+                mFullSize = value;
+            }
+        }
+
         /// <summary>
         /// the reference point of the origin of the control
         /// </summary>
@@ -67,6 +79,7 @@ namespace CustomWinForm
         public int ReferenceYPos { get; set; }
 
         private Size mVirtualSize;
+        private Size mFullSize;
 
         private float mScaleX = 1.0f;
         private float mScaleY = 1.0f;
@@ -77,9 +90,6 @@ namespace CustomWinForm
         /// CustomWinForm: mimic window created
         /// </summary>
         private Dictionary<int, CustomWinForm> mControlsDic;
-
-        //private Size mInvalidSize = new Size(-int.MaxValue, -int.MaxValue);
-        //private Point mInvalidPoint = new Point(-int.MaxValue, -int.MaxValue);
 
         public CustomControlHolder(Size maxSize, int relativeXpos, int relativeYPos)
         {
@@ -193,17 +203,22 @@ namespace CustomWinForm
         {
             try
             {
-                CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style);
+                CustomWinForm winForm = new CustomWinForm(controlAttr.Id, controlAttr.Style, this);
+                mControlsDic.Add(controlAttr.Id, winForm);
 
                 this.Controls.Add(winForm);
                 this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
+                
+                // register the event callback
+                winForm.onDelegateClosedEvt += winForm_onDelegateClosedEvt;
+                winForm.onDelegateMaximizedEvt += winForm_onDelegateMaximizedEvt;
+                winForm.onDelegateMinimizedEvt += winForm_onDelegateMinimizedEvt;
+                winForm.onDelegatePosChangedEvt += winForm_onDelegatePosChangedEvt;
+                winForm.onDelegateRestoredEvt += winForm_onDelegateRestoredEvt;
+                winForm.onDelegateSizeChangedEvt += winForm_onDelegateSizeChangedEvt;
 
                 // add the tooltip control
                 windowToolTip.SetToolTip(winForm, controlAttr.WindowName);
-
-                mControlsDic.Add(controlAttr.Id, winForm);
-                winForm.SetColumnSnapGrid(this.columnGrid);
-                winForm.SetRowSnapGrid(this.rowGrid);
 
                 winForm.SetWindowName(controlAttr.WindowName);
                 winForm.Style = (int)(controlAttr.Style);
@@ -221,14 +236,6 @@ namespace CustomWinForm
                 winForm.SetWindowLocation(relativePoint.X, relativePoint.Y);
 
                 Trace.WriteLine(String.Format("Add control - pos:{0},{1} size:{2},{3}", relativePoint.X, relativePoint.Y, relativeSize.Width, relativeSize.Height));
-
-                // register the event callback
-                winForm.onDelegateClosedEvt += winForm_onDelegateClosedEvt;
-                winForm.onDelegateMaximizedEvt += winForm_onDelegateMaximizedEvt;
-                winForm.onDelegateMinimizedEvt += winForm_onDelegateMinimizedEvt;
-                winForm.onDelegatePosChangedEvt += winForm_onDelegatePosChangedEvt;
-                winForm.onDelegateRestoredEvt += winForm_onDelegateRestoredEvt;
-                winForm.onDelegateSizeChangedEvt += winForm_onDelegateSizeChangedEvt;
             }
             catch (Exception e)
             {
@@ -245,8 +252,12 @@ namespace CustomWinForm
 
             if (onDelegateSizeChangedEvt != null)
             {
-                Trace.WriteLine(String.Format("delegateSizeChanged - {0},{1}", size.Width, size.Height));
-                onDelegateSizeChangedEvt(winForm.Id, getActualSize(size.Width, size.Height));
+                // update the latest actual size passed to server, assuming the passing MUST succeed
+                Size actualSize = getActualSize(size.Width, size.Height);
+                winForm.LatestSize = actualSize;
+
+                Trace.WriteLine(String.Format("delegateSizeChanged - {0},{1} : {2},{3}", size.Width, size.Height, actualSize.Width, actualSize.Height));
+                onDelegateSizeChangedEvt(winForm.Id, actualSize);
             } 
         }
 
@@ -340,6 +351,11 @@ namespace CustomWinForm
                 CustomWinForm control;
                 if (mControlsDic.TryGetValue(id, out control))
                 {
+                    if (control.LatestSize == newSize)
+                    {
+                        return;
+                    }
+
                     Size ratioSize = getRelativeSize(newSize.Width, newSize.Height);
 
                     control.LatestSize = newSize;
@@ -494,16 +510,139 @@ namespace CustomWinForm
             HandleSizing();
         }
 
-        public void SetSnapGrid(IList<int> columnGrid, IList<int> rowGrid)
-        {
-            this.columnGrid = columnGrid;
-            this.rowGrid = rowGrid;
+        private int _userSnapX = 0;
+        private int _userSnapY = 0;
 
-            foreach (KeyValuePair<int, CustomWinForm> map in mControlsDic)
+        private int _systemSnapX = 0;
+        private int _systemSnapY = 0;
+
+        public void SetUserSnap(int column, int row)
+        {
+            _userSnapX = column;
+            _userSnapY = row;
+        }
+
+        public void SetSystemSnap(int column, int row)
+        {
+            _systemSnapX = column;
+            _systemSnapY = row;
+        }
+
+        public bool performSizeSnapCheck(int xRelativePos, int yRelativePos, int xRelativeWidth, int yRelativeHeight, 
+            out int xRelativeSnapPos, out int yRelativeSnapPos, out int relativeSnapWidth, out int relativeSnapHeight)
+        {
+            xRelativeSnapPos = xRelativePos;
+            yRelativeSnapPos = yRelativePos;
+            relativeSnapWidth = xRelativeWidth;
+            relativeSnapHeight = yRelativeHeight;
+
+            // check if user enlarge the left or top edge
+            //int snapX, snapY;
+            //if (performLocationSnapCheck(xRelativePos, yRelativePos, out snapX, out snapY))
+            //{
+            //    // need to calculate the width and height added
+            //    relativeSnapWidth = xRelativeWidth + (snapX - xRelativePos);
+            //    relativeSnapHeight = yRelativeHeight + (snapY - yRelativePos);
+
+            //    return true;
+            //}
+
+            // check if the user enlarge the right or bottom edge
+            int rightEdge;
+            int bottomEdge;
+            if (performLocationSnapCheck(xRelativePos + xRelativeWidth, yRelativePos + yRelativeHeight,
+                out rightEdge, out bottomEdge))
             {
-                map.Value.SetColumnSnapGrid(columnGrid);
-                map.Value.SetRowSnapGrid(rowGrid);
+                relativeSnapWidth = xRelativeWidth + (rightEdge - (xRelativePos + xRelativeWidth));
+                relativeSnapHeight = yRelativeHeight + (bottomEdge - (yRelativePos + yRelativeHeight));
+
+                return true;
             }
+
+            return false;
+        }
+
+        public bool performLocationSnapCheck(int xRelativePos, int yRelativePos, out int snapX, out int snapY)
+        {
+            snapX = xRelativePos;
+            snapY = yRelativePos;
+
+            bool isSnapX = false;
+            bool isSnapY = false;
+
+            // check for user's setting first
+            if(_userSnapX > 0)
+            {
+                for (int col = 0; col <= _userSnapX; col++ )
+                {
+                    int snapXPos = this.Width * col / _userSnapX;
+                    if (doSnapRelative(xRelativePos, snapXPos))
+                    {
+                        isSnapX = true;
+                        snapX = snapXPos;
+                        break;
+                    }
+                }
+            }
+
+            if (_userSnapY > 0)
+            {
+                for (int row = 0; row <= _userSnapY; row++)
+                {
+                    int snapYPos = this.Height * row / _userSnapY;
+                    if (doSnapRelative(yRelativePos, snapYPos))
+                    {
+                        isSnapY = true;
+                        snapY = snapYPos;
+                        break;
+                    }
+                }
+            }
+
+            // check for system snap
+            // convert the position back to real position
+            Point actualLocation = getActualPoint(xRelativePos, yRelativePos);
+            if (false == isSnapX)
+            {
+                for (int col = 0; col <= _systemSnapX; col++)
+                {
+                    int snapXPos = mFullSize.Width * col / _systemSnapX;
+                    if (doSnapActual(actualLocation.X, snapXPos))
+                    {
+                        isSnapX = true;
+                        snapX = getRelativePoint(snapXPos, 0).X;
+                        break;
+                    }
+                }
+            }
+
+            if (false == isSnapY)
+            {
+                for (int row = 0; row <= _systemSnapY; row++)
+                {
+                    int snapYPos = mFullSize.Height * row / _systemSnapY;
+                    if (doSnapActual(actualLocation.Y, snapYPos))
+                    {
+                        isSnapY = true;
+                        snapY = getRelativePoint(0, snapYPos).Y;
+                        break;
+                    }
+                }
+            }
+
+            return isSnapX | isSnapY;
+        }
+
+        private bool doSnapRelative(int pos, int edge)
+        {
+            int delta = pos - edge;
+            return delta >= -10 && delta <= 10;     // within 10 pixels
+        }
+
+        private bool doSnapActual(int pos, int edge)
+        {
+            int delta = pos - edge;
+            return delta >= -30 && delta <= 30;     // within 30 pixels
         }
     }
 }

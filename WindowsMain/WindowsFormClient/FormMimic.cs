@@ -1,6 +1,7 @@
 ﻿using CustomWinForm;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -24,13 +25,25 @@ namespace WindowsFormClient
         /// <summary>
         /// Server total screen size
         /// </summary>
-        public Size FullSize { get; set; }
+        public Size FullSize 
+        {
+            get
+            {
+                return mFullSize;
+            }
+            set
+            {
+                mHolder.FullSize = value;
+                mFullSize = value;
+            }
+        }
+        private Size mFullSize;
 
         /// <summary>
         /// client allowed visible size
         /// </summary>
         public Size VisibleSize { get; set; }
-
+        
         /// <summary>
         /// client allow visible left/top position
         /// </summary>
@@ -144,19 +157,23 @@ namespace WindowsFormClient
 
             if(ApplySnap)
             {
-                List<int> combinedColGridList = new List<int>(userColumnGridList);
-                combinedColGridList.AddRange(columnGridList);
+                //List<int> combinedColGridList = new List<int>(userColumnGridList);
+                //combinedColGridList.AddRange(columnGridList);
 
-                List<int> combinedRowGridList = new List<int>(userRowGridList);
-                combinedRowGridList.AddRange(rowGridList);
+                //List<int> combinedRowGridList = new List<int>(userRowGridList);
+                //combinedRowGridList.AddRange(rowGridList);
 
                 mHolder.SendToBack();
-                mHolder.SetSnapGrid(combinedColGridList, combinedRowGridList);
+                mHolder.SetUserSnap(ClientColumn, ClientRow);
+                mHolder.SetSystemSnap(Column, Row);
+                //mHolder.SetSnapGrid(combinedColGridList, combinedRowGridList);
             }
             else
             {
                 mHolder.SendToBack();
-                mHolder.SetSnapGrid(columnGridList, rowGridList);
+                mHolder.SetUserSnap(0, 0);
+                mHolder.SetSystemSnap(Column, Row);
+                //mHolder.SetSnapGrid(columnGridList, rowGridList);
             }
             
         }
@@ -185,8 +202,8 @@ namespace WindowsFormClient
             }
 
             // modify the reference layout
-            float scaleX = (float)this.Width / (float)FullSize.Width;
-            float scaleY = (float)this.Height / (float)FullSize.Height;
+            float scaleX = (float)this.Width / (float)VisibleSize.Width;
+            float scaleY = (float)this.Height / (float)VisibleSize.Height;
 
             referenceLayout.Location = new Point(-(int)((float)ReferenceLeft * scaleX), -(int)((float)ReferenceTop * scaleY));
 
@@ -200,7 +217,7 @@ namespace WindowsFormClient
             for (int i = 0; i <= Row; i++ )
             {
                 // create the panel to fake the boundary line
-                int yLinePos = i * (referenceLayout.Height-1) / Row;
+                int yLinePos = (i * (referenceLayout.Height - 1) / Row) + referenceLayout.Top;
 
                 Panel panel = new Panel();
                 panel.Name = String.Format("Row{0}", i);
@@ -216,7 +233,7 @@ namespace WindowsFormClient
 
             for (int j = 0; j <= Column; j++)
             {
-                int xLinePos = j * (referenceLayout.Width-1) / Column;
+                int xLinePos = (j * (referenceLayout.Width - 1) / Column) + referenceLayout.Left;
 
                 Panel panel = new Panel();
                 panel.Name = String.Format("Column{0}", j);
@@ -230,14 +247,15 @@ namespace WindowsFormClient
                 columnGridList.Add(xLinePos);
             }
 
-            List<int> combinedColGridList = new List<int>(columnGridList);
-            combinedColGridList.AddRange(userColumnGridList);
+            //List<int> combinedColGridList = new List<int>(columnGridList);
+            //combinedColGridList.AddRange(userColumnGridList);
 
-            List<int> combinedRowGridList = new List<int>(rowGridList);
-            combinedRowGridList.AddRange(userRowGridList);
+            //List<int> combinedRowGridList = new List<int>(rowGridList);
+            //combinedRowGridList.AddRange(userRowGridList);
 
             mHolder.SendToBack();
-            mHolder.SetSnapGrid(combinedColGridList, combinedRowGridList);
+            mHolder.SetSystemSnap(Column, Row);
+           // mHolder.SetSnapGrid(combinedColGridList, combinedRowGridList);
         }
     }
 }
