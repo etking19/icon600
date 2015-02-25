@@ -37,7 +37,7 @@ namespace WindowsFormClient.Command
                     NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWNORMAL);
                     break;
                 case ClientWndCmd.CommandId.EClose:
-                    NativeMethods.SendMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                    NativeMethods.PostMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
 
                     // remove from user's trigger list
                     int userDBid = ConnectedClientHelper.GetInstance().GetClientInfo(userId).DbUserId;

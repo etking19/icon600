@@ -100,7 +100,7 @@ namespace WindowsFormClient.Command
                     process.WaitForInputIdle(3000);
 
                     // this is assuming the program created a new window
-                    int max_tries = 5;
+                    int max_tries = 20;
                     var current = WindowsHelper.GetRunningApplicationInfo();
                     var diff = current.Except(previous, new ProcessComparer());
                     while (diff.Count() == 0)

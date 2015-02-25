@@ -208,20 +208,6 @@ namespace CustomWinForm
 
                 this.Controls.Add(winForm);
                 this.Controls.SetChildIndex(winForm, controlAttr.ZOrder);
-                
-                // register the event callback
-                winForm.onDelegateClosedEvt += winForm_onDelegateClosedEvt;
-                winForm.onDelegateMaximizedEvt += winForm_onDelegateMaximizedEvt;
-                winForm.onDelegateMinimizedEvt += winForm_onDelegateMinimizedEvt;
-                winForm.onDelegatePosChangedEvt += winForm_onDelegatePosChangedEvt;
-                winForm.onDelegateRestoredEvt += winForm_onDelegateRestoredEvt;
-                winForm.onDelegateSizeChangedEvt += winForm_onDelegateSizeChangedEvt;
-
-                // add the tooltip control
-                windowToolTip.SetToolTip(winForm, controlAttr.WindowName);
-
-                winForm.SetWindowName(controlAttr.WindowName);
-                winForm.Style = (int)(controlAttr.Style);
 
                 // set the win size
                 winForm.LatestSize = new Size(controlAttr.Width, controlAttr.Height);
@@ -235,7 +221,22 @@ namespace CustomWinForm
                 winForm.LatestRelativePos = relativePoint;
                 winForm.SetWindowLocation(relativePoint.X, relativePoint.Y);
 
-                Trace.WriteLine(String.Format("Add control - pos:{0},{1} size:{2},{3}", relativePoint.X, relativePoint.Y, relativeSize.Width, relativeSize.Height));
+                // add the tooltip control
+                windowToolTip.SetToolTip(winForm, controlAttr.WindowName);
+
+                winForm.SetWindowName(controlAttr.WindowName);
+                winForm.Style = (int)(controlAttr.Style);
+
+                // register the event callback
+                winForm.onDelegateClosedEvt += winForm_onDelegateClosedEvt;
+                winForm.onDelegateMaximizedEvt += winForm_onDelegateMaximizedEvt;
+                winForm.onDelegateMinimizedEvt += winForm_onDelegateMinimizedEvt;
+                winForm.onDelegatePosChangedEvt += winForm_onDelegatePosChangedEvt;
+                winForm.onDelegateRestoredEvt += winForm_onDelegateRestoredEvt;
+                winForm.onDelegateSizeChangedEvt += winForm_onDelegateSizeChangedEvt;
+
+                Trace.WriteLine(String.Format("Add control - pos:{0},{1} size:{2},{3} : {4},{5}",
+                    relativePoint.X, relativePoint.Y, relativeSize.Width, relativeSize.Height, controlAttr.Width, controlAttr.Height));
             }
             catch (Exception e)
             {
@@ -282,6 +283,11 @@ namespace CustomWinForm
                 Trace.WriteLine(String.Format("delegatePosChange - {0},{1}", xPos, yPos));
                 Point actual = getActualPoint(xPos, yPos);
                 Size actualSize = getActualSize(winForm.Width, winForm.Height);
+
+                // TODO: adjust again
+                winForm.LatestPos = actual;
+                winForm.LatestSize = actualSize;
+
                 onDelegatePosChangedEvt(winForm.Id, actual.X, actual.Y, actualSize.Width, actualSize.Height);
             }
         }
@@ -644,5 +650,6 @@ namespace CustomWinForm
             int delta = pos - edge;
             return delta >= -30 && delta <= 30;     // within 30 pixels
         }
+
     }
 }

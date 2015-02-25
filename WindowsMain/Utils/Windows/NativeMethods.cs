@@ -166,5 +166,8 @@ namespace Utils.Windows
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr GetWindow(IntPtr hWnd, int uCmd);
+
+        [DllImport("User32.dll")]
+        public static extern System.Boolean DestroyWindow(IntPtr hWnd);
     }
 }

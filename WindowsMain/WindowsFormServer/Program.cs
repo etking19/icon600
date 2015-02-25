@@ -106,12 +106,12 @@ namespace WindowsFormClient
             {
             }
 
-            bool internalInvalid = (DateTime.Today.CompareTo(expire) > 0);
-            if (internalInvalid)
-            {
-                Application.Exit();
-                return;
-            }
+            //bool internalInvalid = (DateTime.Today.CompareTo(expire) > 0);
+            //if (internalInvalid)
+            //{
+            //    Application.Exit();
+            //    return;
+            //}
 
             if (!isValid)
             {
