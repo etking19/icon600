@@ -100,7 +100,7 @@ namespace WindowsFormClient.Command
                     process.WaitForInputIdle(3000);
 
                     // this is assuming the program created a new window
-                    int max_tries = 30;
+                    int max_tries = 50;
                     var current = WindowsHelper.GetRunningApplicationInfo();
                     var diff = current.Except(previous, new ProcessComparer());
                     while (diff.Count() == 0)
@@ -133,13 +133,21 @@ namespace WindowsFormClient.Command
                         appData.rect.Right != 0 ||
                         appData.rect.Bottom != 0)
                     {
-                        NativeMethods.SetWindowPos(new IntPtr(appIdentifier),
-                            0,
+                        // add repaint function
+                        NativeMethods.MoveWindow(new IntPtr(appIdentifier),
                             appData.rect.Left,
                             appData.rect.Top,
                             appData.rect.Right - appData.rect.Left,
                             appData.rect.Bottom - appData.rect.Top,
-                            0);
+                            true);
+
+                        //NativeMethods.SetWindowPos(new IntPtr(appIdentifier),
+                        //    0,
+                        //    appData.rect.Left,
+                        //    appData.rect.Top,
+                        //    appData.rect.Right - appData.rect.Left,
+                        //    appData.rect.Bottom - appData.rect.Top,
+                        //    0);
                     }
                 }
             }

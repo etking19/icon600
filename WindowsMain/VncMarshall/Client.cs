@@ -86,18 +86,16 @@ namespace VncMarshall
         {
             int result = StartClient(vncServerIp, vncServerPort);
 
+            // add delay - the VNC will resize itself after receive content from peer site, this to make sure VNC resized first then we set the desire size.
             Thread.Sleep(1000);
-            //NativeMethods.SetWindowPos(new IntPtr(result), Constant.HWND_TOP, 0, 0, width, height, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_ASYNCWINDOWPOS));
 
-            NativeMethods.SetWindowPos(new IntPtr(result), Constant.HWND_TOP, left, top, width, height, (Int32)(Constant.SWP_ASYNCWINDOWPOS));
-
-            //// set to desired location
-            //NativeMethods.MoveWindow(new IntPtr(result),
-            //                left,
-            //                top,
-            //                width,
-            //                height,
-            //                true);
+            // set to desired location
+            NativeMethods.MoveWindow(new IntPtr(result),
+                            left,
+                            top,
+                            width,
+                            height,
+                            true);
 
             return result;
         }
