@@ -52,7 +52,12 @@ namespace VncMarshall
 
                     if (diff.Count() > 0)
                     {
+                        Trace.WriteLine("VNC identifier: " + diff.ElementAt(0).id);
                         appIdentifier = diff.ElementAt(0).id;
+                    }
+                    else
+                    {
+                        Trace.WriteLine("VNC identifier not found!");
                     }
                 }
             }
@@ -81,13 +86,18 @@ namespace VncMarshall
         {
             int result = StartClient(vncServerIp, vncServerPort);
 
-            // set to desired location
-            NativeMethods.MoveWindow(new IntPtr(result),
-                            left,
-                            top,
-                            width,
-                            height,
-                            true);
+            Thread.Sleep(1000);
+            //NativeMethods.SetWindowPos(new IntPtr(result), Constant.HWND_TOP, 0, 0, width, height, (Int32)(Constant.SWP_NOMOVE | Constant.SWP_ASYNCWINDOWPOS));
+
+            NativeMethods.SetWindowPos(new IntPtr(result), Constant.HWND_TOP, left, top, width, height, (Int32)(Constant.SWP_ASYNCWINDOWPOS));
+
+            //// set to desired location
+            //NativeMethods.MoveWindow(new IntPtr(result),
+            //                left,
+            //                top,
+            //                width,
+            //                height,
+            //                true);
 
             return result;
         }
