@@ -148,12 +148,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FCE410A31B40224CA059B86E682DCD49"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6E7937B97B78498DBC8253A9264F6317"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -221,6 +215,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2E6B71FC03F17EC1F4354DCBD084A552"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FCE410A31B40224CA059B86E682DCD49"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -847,7 +847,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VistrolServer"
         "ProductCode" = "8:{2F12CF40-6186-47C0-BF4D-199B9A7E4BB8}"
-        "PackageCode" = "8:{5C8B19E3-525C-4FA9-94B9-84B994DC58E0}"
+        "PackageCode" = "8:{6DD39DCA-18DC-433D-BB55-0D2EC55445E9}"
         "UpgradeCode" = "8:{A413E825-6F80-44E4-AEC6-32CA836572D8}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -860,10 +860,10 @@
         "ARPHELPLINK" = "8:http://www.vistrol.com"
         "Title" = "8:Vistrol Server"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Vistrol Ptd. Ltd."
+        "ARPCONTACT" = "8:Vistrol Pte. Ltd."
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
-        "ARPURLINFOABOUT" = "8:www.vistrol.com"
+        "ARPURLINFOABOUT" = "8:http://www.vistrol.com"
         "ARPPRODUCTICON" = "8:_6E7937B97B78498DBC8253A9264F6317"
         "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"

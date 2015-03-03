@@ -100,6 +100,7 @@ namespace RemoteFormServer
             this.imageList1.Images.SetKeyName(2, "main.png");
             this.imageList1.Images.SetKeyName(3, "monitor.png");
             this.imageList1.Images.SetKeyName(4, "users.png");
+            this.imageList1.Images.SetKeyName(5, "remote.png");
             // 
             // tabControl
             // 
@@ -242,10 +243,10 @@ namespace RemoteFormServer
             this.tabPageUser.Controls.Add(this.btnUsersAdd);
             this.tabPageUser.Controls.Add(this.dataGridViewUsers);
             this.tabPageUser.Controls.Add(this.dataGridUsers);
-            this.tabPageUser.Location = new System.Drawing.Point(4, 25);
+            this.tabPageUser.Location = new System.Drawing.Point(4, 22);
             this.tabPageUser.Margin = new System.Windows.Forms.Padding(4);
             this.tabPageUser.Name = "tabPageUser";
-            this.tabPageUser.Size = new System.Drawing.Size(668, 525);
+            this.tabPageUser.Size = new System.Drawing.Size(668, 528);
             this.tabPageUser.TabIndex = 0;
             this.tabPageUser.Text = "User Management";
             this.tabPageUser.UseVisualStyleBackColor = true;
@@ -319,7 +320,7 @@ namespace RemoteFormServer
             this.dataGridViewUsers.Location = new System.Drawing.Point(4, 44);
             this.dataGridViewUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewUsers.Name = "dataGridViewUsers";
-            this.dataGridViewUsers.Size = new System.Drawing.Size(660, 477);
+            this.dataGridViewUsers.Size = new System.Drawing.Size(660, 480);
             this.dataGridViewUsers.TabIndex = 1;
             // 
             // dataGridUsers
@@ -331,7 +332,7 @@ namespace RemoteFormServer
             this.dataGridUsers.Location = new System.Drawing.Point(0, 0);
             this.dataGridUsers.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridUsers.Name = "dataGridUsers";
-            this.dataGridUsers.Size = new System.Drawing.Size(668, 525);
+            this.dataGridUsers.Size = new System.Drawing.Size(668, 528);
             this.dataGridUsers.TabIndex = 0;
             // 
             // tabApplications
@@ -517,7 +518,7 @@ namespace RemoteFormServer
             this.tabVnc.Controls.Add(this.buttonRemoteEdit);
             this.tabVnc.Controls.Add(this.buttonRemoteAdd);
             this.tabVnc.Controls.Add(this.dataGridViewRemote);
-            this.tabVnc.ImageIndex = 1;
+            this.tabVnc.ImageIndex = 5;
             this.tabVnc.Location = new System.Drawing.Point(104, 4);
             this.tabVnc.Name = "tabVnc";
             this.tabVnc.Size = new System.Drawing.Size(676, 554);
