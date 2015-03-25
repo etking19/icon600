@@ -67,11 +67,6 @@ namespace CustomWinForm
             // handle grid capturing
             this.LocationChanged += CustomWinForm_LocationChanged;
             this.Resize += CustomWinForm_Resize;
-
-            // timer to cater resizing event where fire size changed event after certain time idle
-            _resizingTimer = new Timer();
-            _resizingTimer.Interval = 500;
-            _resizingTimer.Tick += (senderTimer, evt) => ResizeFinished();
         }
 
         void CustomWinForm_LocationChanged(object sender, EventArgs e)
@@ -120,7 +115,15 @@ namespace CustomWinForm
 
             if (_resizingTimer != null)
             {
+                _resizingTimer.Stop();
                 _resizingTimer.Start();
+            }
+            else
+            {
+                // timer to cater resizing event where fire size changed event after certain time idle
+                _resizingTimer = new Timer();
+                _resizingTimer.Interval = 500;
+                _resizingTimer.Tick += (senderTimer, evt) => ResizeFinished();
             }
         }
 

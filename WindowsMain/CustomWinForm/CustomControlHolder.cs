@@ -104,8 +104,8 @@ namespace CustomWinForm
 
         Point getActualPoint(int x, int y)
         {
-            int actualX = (int)Math.Ceiling((float)x / mScaleX) + ReferenceXPos;
-            int actualY = (int)Math.Ceiling((float)y / mScaleY) + ReferenceYPos;
+            int actualX = (int)Math.Floor((float)x / mScaleX) + ReferenceXPos;
+            int actualY = (int)Math.Floor((float)y / mScaleY) + ReferenceYPos;
 
             return new Point(actualX, actualY);
         }
@@ -122,8 +122,8 @@ namespace CustomWinForm
 
         Size getActualSize(int width, int height)
         {
-            double actualWidth = Math.Ceiling((float)width / mScaleX);
-            double actualHeight = Math.Ceiling((float)height / mScaleY);
+            double actualWidth = Math.Floor((float)width / mScaleX);
+            double actualHeight = Math.Floor((float)height / mScaleY);
 
             return new Size((int)actualWidth, (int)actualHeight);
         }
@@ -260,17 +260,29 @@ namespace CustomWinForm
 
                 // TODO: check the edges which might snap to boundary
                 int actualX, actualY;
-                checkActualEdges(actualPos.X + actualSize.Width, actualPos.Y + actualSize.Height, out actualX, out actualY);
+                if (checkActualEdges(actualPos.X + actualSize.Width, actualPos.Y + actualSize.Height, out actualX, out actualY))
+                {
+                    int modifiedWidth = actualX - actualPos.X;
+                    int modifiedHeight = actualY - actualPos.Y;
 
-                int modifiedWidth = actualX - actualPos.X;
-                int modifiedHeight = actualY - actualPos.Y;
+                    // modified the relative sizing
+                    Size adjustedSize = getRelativeSize(modifiedWidth, modifiedHeight);
+                    
+                    //winForm.LatestRelativeSize = adjustedSize;
+                    //winForm.SetWindowSize(adjustedSize);
 
-                Trace.WriteLine(String.Format("delegateSizeChanged - {0},{1} : {2},{3} modified: {4},{5}",
-                    size.Width, size.Height, actualSize.Width, actualSize.Height, modifiedWidth, modifiedHeight));
+                    Trace.WriteLine(String.Format("delegateSizeChanged - {0},{1} : {2},{3} modified: {4},{5}, previousRelativeSize: {6}, {7}, latestSize: {8},{9}",
+                        size.Width, size.Height, actualSize.Width, actualSize.Height, modifiedWidth, modifiedHeight, winForm.LatestRelativeSize.Width, winForm.LatestRelativeSize.Height, size.Width, size.Height));
+
+                    size = adjustedSize;
+
+                    actualSize.Width = modifiedWidth;
+                    actualSize.Height = modifiedHeight;
+                }
 
                 winForm.LatestRelativeSize = size;
-                winForm.LatestSize = new Size(modifiedWidth, modifiedHeight);
-                onDelegateSizeChangedEvt(winForm.Id, new Size(modifiedWidth, modifiedHeight));
+                winForm.LatestSize = actualSize;
+                onDelegateSizeChangedEvt(winForm.Id, new Size(actualSize.Width, actualSize.Height));
             } 
         }
 
@@ -297,10 +309,11 @@ namespace CustomWinForm
 
                 // TODO: save the size as well?
                 int adjustedX, adjustedY;
-                checkActualEdges(actual.X, actual.Y, out adjustedX, out adjustedY);
-
-                Trace.WriteLine(String.Format("delegatePosChange - {0},{1} : {2},{3}, adjusted {4},{5}",
+                if (checkActualEdges(actual.X, actual.Y, out adjustedX, out adjustedY))
+                {
+                    Trace.WriteLine(String.Format("delegatePosChange - {0},{1} : {2},{3}, adjusted {4},{5}",
                     xPos, yPos, actual.X, actual.Y, adjustedX, adjustedY));
+                }
 
                 winForm.LatestPos = new Point(adjustedX, adjustedY);
                 winForm.LatestRelativePos = new Point(xPos, yPos);
@@ -333,8 +346,15 @@ namespace CustomWinForm
             }
         }
 
+        private delegate void DelegateRemoveControl(int id);
         public void RemoveControl(int id)
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new DelegateRemoveControl(RemoveControl), id);
+                return;
+            }
+
             try
             {
                 CustomWinForm control;
@@ -404,7 +424,7 @@ namespace CustomWinForm
 
                     control.LatestPos = newPos;
                     control.LatestRelativePos = ratioPoint;
-                    control.Location = ratioPoint;
+                    control.SetWindowLocation(ratioPoint.X, ratioPoint.Y);
                 }
             }
             catch (Exception)
@@ -470,7 +490,7 @@ namespace CustomWinForm
             {
                 // change location
                 Point ratioPoint = getRelativePoint(map.Value.LatestPos.X, map.Value.LatestPos.Y);
-                map.Value.Location = ratioPoint;
+                map.Value.SetWindowLocation(ratioPoint.X, ratioPoint.Y);
 
                 Size ratioSize = getRelativeSize(map.Value.LatestSize.Width, map.Value.LatestSize.Height);
                 map.Value.SetWindowSize(ratioSize);
@@ -506,7 +526,7 @@ namespace CustomWinForm
                 // change location
                 Point ratioPoint = getRelativePoint(map.Value.LatestPos.X, map.Value.LatestPos.Y);
                 map.Value.LatestRelativePos = ratioPoint;
-                map.Value.Location = ratioPoint;
+                map.Value.SetWindowLocation(ratioPoint.X, ratioPoint.Y);
 
                 Size ratioSize = getRelativeSize(map.Value.LatestSize.Width, map.Value.LatestSize.Height);
                 map.Value.LatestRelativeSize = ratioSize;
@@ -559,26 +579,15 @@ namespace CustomWinForm
             relativeSnapWidth = xRelativeWidth;
             relativeSnapHeight = yRelativeHeight;
 
-            // check if user enlarge the left or top edge
-            //int snapX, snapY;
-            //if (performLocationSnapCheck(xRelativePos, yRelativePos, out snapX, out snapY))
-            //{
-            //    // need to calculate the width and height added
-            //    relativeSnapWidth = xRelativeWidth + (snapX - xRelativePos);
-            //    relativeSnapHeight = yRelativeHeight + (snapY - yRelativePos);
-
-            //    return true;
-            //}
-
-            // check if the user enlarge the right or bottom edge
-            int rightEdge;
-            int bottomEdge;
-            if (performLocationSnapCheck(xRelativePos + xRelativeWidth, yRelativePos + yRelativeHeight,
-                out rightEdge, out bottomEdge))
+            int adjustedWidth, adjustedHeight;
+            if (checkRelativeEdges(xRelativePos + xRelativeWidth, yRelativePos + yRelativeHeight,
+                out adjustedWidth, out adjustedHeight))
             {
-                relativeSnapWidth = xRelativeWidth + (rightEdge - (xRelativePos + xRelativeWidth));
-                relativeSnapHeight = yRelativeHeight + (bottomEdge - (yRelativePos + yRelativeHeight));
+                relativeSnapWidth = adjustedWidth - xRelativePos;
+                relativeSnapHeight = adjustedHeight - yRelativePos;
 
+                Trace.WriteLine(String.Format("performSizeSnapCheck initial: {0},{1}, modified:{2},{3} ",
+                    xRelativeWidth, yRelativeHeight, relativeSnapWidth, relativeSnapHeight));
                 return true;
             }
 
@@ -590,19 +599,51 @@ namespace CustomWinForm
             snapX = xRelativePos;
             snapY = yRelativePos;
 
+            int adjustedX, adjustedY;
+            if (checkRelativeEdges(xRelativePos, yRelativePos, out adjustedX, out adjustedY))
+            {
+                snapX = adjustedX;
+                snapY = adjustedY;
+
+                Trace.WriteLine(String.Format("performLocationSnapCheck initial: {0},{1}, modified:{2},{3} ",
+                    xRelativePos, yRelativePos, adjustedX, adjustedY));
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool doSnapActual(int pos, int edge)
+        {
+            int delta = pos - edge;
+            return (delta >= -20) && (delta <= 20) && (delta != 0);
+        }
+
+        private bool doSnapRelative(int pos, int edge)
+        {
+            int delta = pos - edge;
+            return (delta >= -10) && (delta <= 10);
+        }
+
+        private bool checkRelativeEdges(int xPos, int yPos, out int xAdjustedPos, out int yAdjustedPos)
+        {
+            xAdjustedPos = xPos;
+            yAdjustedPos = yPos;
+
             bool isSnapX = false;
             bool isSnapY = false;
 
             // check for user's setting first
-            if(_userSnapX > 0)
+            if (_userSnapX > 0)
             {
-                for (int col = 0; col <= _userSnapX; col++ )
+                for (int col = 0; col <= _userSnapX; col++)
                 {
-                    int snapXPos = this.Width * col / _userSnapX;
-                    if (doSnapRelative(xRelativePos, snapXPos))
+                    int snapXPos = this.Size.Width * col / _userSnapX;
+                    if (doSnapRelative(xPos, snapXPos))
                     {
                         isSnapX = true;
-                        snapX = snapXPos;
+                        xAdjustedPos = snapXPos;
                         break;
                     }
                 }
@@ -612,28 +653,30 @@ namespace CustomWinForm
             {
                 for (int row = 0; row <= _userSnapY; row++)
                 {
-                    int snapYPos = this.Height * row / _userSnapY;
-                    if (doSnapRelative(yRelativePos, snapYPos))
+                    int snapYPos = this.Size.Height * row / _userSnapY;
+                    if (doSnapRelative(yPos, snapYPos))
                     {
                         isSnapY = true;
-                        snapY = snapYPos;
+                        Trace.WriteLine(String.Format("check _userSnapY: {0} : {1}", yPos, snapYPos));
+                        yAdjustedPos = snapYPos;
                         break;
                     }
                 }
             }
 
             // check for system snap
-            // convert the position back to real position
-            Point actualLocation = getActualPoint(xRelativePos, yRelativePos);
             if (false == isSnapX)
             {
                 for (int col = 0; col <= _systemSnapX; col++)
                 {
                     int snapXPos = mFullSize.Width * col / _systemSnapX;
-                    if (doSnapActual(actualLocation.X, snapXPos))
+                    Point relativePt = getRelativePoint(snapXPos, 0);
+
+                    if (doSnapRelative(xPos, relativePt.X))
                     {
+                        Trace.WriteLine(String.Format("check snapX: {0}, {1}", relativePt.X, relativePt.Y));
                         isSnapX = true;
-                        snapX = getRelativePoint(snapXPos, 0).X;
+                        xAdjustedPos = relativePt.X;
                         break;
                     }
                 }
@@ -644,28 +687,19 @@ namespace CustomWinForm
                 for (int row = 0; row <= _systemSnapY; row++)
                 {
                     int snapYPos = mFullSize.Height * row / _systemSnapY;
-                    if (doSnapActual(actualLocation.Y, snapYPos))
+                    Point relativePt = getRelativePoint(0, snapYPos);
+
+                    if (doSnapRelative(yPos, relativePt.Y))
                     {
+                        Trace.WriteLine(String.Format("check snapY: {0}, {1}", relativePt.X, relativePt.Y));
                         isSnapY = true;
-                        snapY = getRelativePoint(0, snapYPos).Y;
+                        yAdjustedPos = relativePt.Y;
                         break;
                     }
                 }
             }
 
             return isSnapX | isSnapY;
-        }
-
-        private bool doSnapRelative(int pos, int edge)
-        {
-            int delta = pos - edge;
-            return delta >= -10 && delta <= 10;     // within 10 pixels
-        }
-
-        private bool doSnapActual(int pos, int edge)
-        {
-            int delta = pos - edge;
-            return delta >= -30 && delta <= 30;     // within 30 pixels
         }
 
         /// <summary>
@@ -703,7 +737,7 @@ namespace CustomWinForm
                 for (int row = 0; row <= _userSnapY; row++)
                 {
                     int snapYPos = mVirtualSize.Height * row / _userSnapY + ReferenceYPos;
-                    if (doSnapRelative(yPos, snapYPos))
+                    if (doSnapActual(yPos, snapYPos))
                     {
                         isSnapY = true;
                         yAdjustedPos = snapYPos;
