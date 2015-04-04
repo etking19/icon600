@@ -54,7 +54,7 @@ namespace Windows
                     {
                         Process process = Process.GetProcessById((int)processId);
                         string processName = process.ProcessName;
-                        if (processName.Contains("rgbxsvr"))
+                        if (processName.Contains("rgbxsvr")) //|| processName.Contains("vncviewer"))
                         {
                             // for video capture window
                             NativeMethods.Rect wndRect = new NativeMethods.Rect();

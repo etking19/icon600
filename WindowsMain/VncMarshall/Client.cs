@@ -27,7 +27,7 @@ namespace VncMarshall
             {
                 ProcessStartInfo processInfo = new ProcessStartInfo(_vncClientExePath);
 
-                //process.Arguments = String.Format("-connect {0}::{1} -read only -autoscaling", vncServerIp, vncServerPort);
+                //processInfo.Arguments = String.Format("-connect {0}::{1} -notoolbar -nostatus", vncServerIp, vncServerPort);
                 processInfo.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
                 var previous = WindowsHelper.GetRunningApplicationInfo();
                 using (Process clientProcess = Process.Start(processInfo))
@@ -54,6 +54,13 @@ namespace VncMarshall
                     {
                         Trace.WriteLine("VNC identifier: " + diff.ElementAt(0).id);
                         appIdentifier = diff.ElementAt(0).id;
+
+                        //int style = NativeMethods.GetWindowLong(new IntPtr(appIdentifier), Constant.GWL_STYLE);
+                        //style &= ~(int)(Constant.WS_BORDER | Constant.WS_CAPTION | Constant.WS_THICKFRAME);
+                        //NativeMethods.SetWindowLong(new IntPtr(appIdentifier), Constant.GWL_STYLE, style);
+                        //NativeMethods.SetWindowPos(new IntPtr(appIdentifier), 0, 
+                        //    0, 0, 0, 0, 
+                        //    (int)(Constant.SWP_NOSIZE | Constant.SWP_NOMOVE | Constant.SWP_NOZORDER | Constant.SWP_NOACTIVATE | Constant.SWP_FRAMECHANGED));
                     }
                     else
                     {

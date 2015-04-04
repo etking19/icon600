@@ -113,7 +113,7 @@ namespace Utils.Windows
         [DllImport("user32.dll")]
         public static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("User32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
         public static extern int SetWindowLong(IntPtr hWnd, Int32 nIndex, Int32 dwNewLong);
 
         [DllImport("User32.dll")]
