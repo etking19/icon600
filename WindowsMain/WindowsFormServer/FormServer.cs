@@ -82,10 +82,11 @@ namespace WindowsFormClient
 
             // validate if the file existed
             if (vncClientPath == String.Empty ||
+                vncClientPath.Contains("tvnviewer.exe") ||
                 File.Exists(vncClientPath) == false)
             {
                 // vncviewer.exe
-                foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "tvnviewer.exe")) //"vncviewer.exe"))
+                foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "vncviewer.exe"))
                 {
                     vncClientPath = matchPath;
                     break;
@@ -93,7 +94,7 @@ namespace WindowsFormClient
 
                 if (vncClientPath == String.Empty)
                 {
-                    foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "tvnviewer.exe")) //"vncviewer.exe"))
+                    foreach (String matchPath in Utils.Files.DirSearch(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "vncviewer.exe"))
                     {
                         vncClientPath = matchPath;
                         break;

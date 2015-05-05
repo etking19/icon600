@@ -27,8 +27,8 @@ namespace VncMarshall
             {
                 ProcessStartInfo processInfo = new ProcessStartInfo(_vncClientExePath);
 
-                //processInfo.Arguments = String.Format("-connect {0}::{1} -notoolbar -nostatus", vncServerIp, vncServerPort);
-                processInfo.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
+                processInfo.Arguments = String.Format("-connect {0}::{1} -notoolbar -nostatus", vncServerIp, vncServerPort);
+                //processInfo.Arguments = String.Format("-viewonly=yes -mouselocal=normal -scale=auto {0}::{1}", vncServerIp, vncServerPort);
                 var previous = WindowsHelper.GetRunningApplicationInfo();
                 using (Process clientProcess = Process.Start(processInfo))
                 {
