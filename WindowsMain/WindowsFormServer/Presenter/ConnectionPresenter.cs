@@ -19,7 +19,7 @@ namespace WindowsFormClient.Presenter
     class ConnectionPresenter : IDisposable
     {
         private IServer server;
-        private WindowsAppMgr runningWndsMgr;
+        public WindowsAppMgr runningWndsMgr;
         private ConnectionManager connectionMgr;
         private ServerCmdMgr commandManager;
 

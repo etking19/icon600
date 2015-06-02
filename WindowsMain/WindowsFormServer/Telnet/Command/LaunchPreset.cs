@@ -48,6 +48,7 @@ namespace WindowsFormClient.Telnet.Command
 
             try
             {
+                new ClientPresetCmdImpl().ClearWall(userData.id);
                 new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
             }
             catch (Exception e)
@@ -55,7 +56,6 @@ namespace WindowsFormClient.Telnet.Command
                 Trace.WriteLine(e.Message);
             }
             
-
             return "Preset launched successfully";
         }
 

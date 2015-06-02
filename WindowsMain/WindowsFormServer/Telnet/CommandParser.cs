@@ -35,9 +35,9 @@ namespace WindowsFormClient.Telnet
             return sInstance;
         }
 
-        public void Initialize(VncMarshall.Client vncClient)
+        public void Initialize(VncMarshall.Client vncClient, Windows.WindowsAppMgr wndMgr)
         {
-            _clearWall = new ClearWall();
+            _clearWall = new ClearWall(wndMgr);
             _creatPreset = new CreatePreset();
             _getInputSourceList = new GetInputSourceList();
             _getPresetList = new GetPresetList();

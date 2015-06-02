@@ -92,5 +92,10 @@ namespace WindowsFormClient.Server
         {
             mLaunchedAppMap.Remove(userDbId);
         }
+
+        public void Reset()
+        {
+            mLaunchedAppMap.Clear();
+        }
     }
 }

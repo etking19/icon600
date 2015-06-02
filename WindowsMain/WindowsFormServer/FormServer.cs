@@ -233,7 +233,7 @@ namespace WindowsFormClient
             mainPresenter.VncPath = vncServerPath;
 
             // open the telnet command listening
-            CommandParser.GetInstance().Initialize(vncClient);
+            CommandParser.GetInstance().Initialize(vncClient, connectionPresenter.runningWndsMgr);
             Provider = new TelnetServiceProvider();
             Servidor = new SocketCommand.TcpServer(Provider, Properties.Settings.Default.TelnetPort);
             Servidor.Start();

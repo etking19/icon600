@@ -11,9 +11,15 @@ namespace WindowsFormClient.Telnet.Command
     class ClearWall : TelnetCommand
     {
         public const string COMMAND = "ClearWall";
+        private Windows.WindowsAppMgr wndMgr;
+
+        public ClearWall(Windows.WindowsAppMgr wndMgr)
+        {
+            this.wndMgr = wndMgr;
+        }
 
         /// <summary>
-        /// clear the wall base on user's login
+        /// clear the entire wall
         /// </summary>
         /// <param name="command">
         /// command[0] = "command pattern"
@@ -39,11 +45,22 @@ namespace WindowsFormClient.Telnet.Command
                 return "Credential verification failed. Please check login info.";
             }
 
-            // clean the wall based on user login id
-            // close all lauched applications
-            new ClientPresetCmdImpl().ClearWall(userData.id);
+            // close all application running on screen
+            List<Windows.WindowsAppMgr.WndAttributes> activeApps = wndMgr.getAllVisibleApps();
+            foreach (Windows.WindowsAppMgr.WndAttributes wndAttr in activeApps) 
+            {
+                Utils.Windows.NativeMethods.PostMessage(new IntPtr(wndAttr.id), Utils.Windows.Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+            }
 
-            return "Clean wall successfully.";
+            // remove the records
+            LaunchedWndHelper.GetInstance().Reset();
+            LaunchedVncHelper.GetInstance().Reset();
+            LaunchedSourcesHelper.GetInstance().Reset();
+
+            // clear base on id
+            //new ClientPresetCmdImpl().ClearWall(userData.id);
+
+            return "Clear wall successfully.";
         }
 
         public override string getCommandPattern()
