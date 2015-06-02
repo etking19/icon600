@@ -35,6 +35,7 @@ namespace WindowsFormClient.Command
                     break;
                 case ClientWndCmd.CommandId.ERestore:
                     NativeMethods.ShowWindow(new IntPtr(data.Id), Constant.SW_SHOWNORMAL);
+                    NativeMethods.SendMessage(new IntPtr(data.Id), Constant.WM_USER + 1002, IntPtr.Zero, IntPtr.Zero);      // cater Ultra VNC custom restore message - from spy++
                     break;
                 case ClientWndCmd.CommandId.EClose:
                     NativeMethods.PostMessage(new IntPtr(data.Id), Constant.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
