@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace WindowsFormClient.Telnet.Service
 {
@@ -21,36 +22,51 @@ namespace WindowsFormClient.Telnet.Service
 
         public override void OnAcceptConnection(ConnectionState state)
         {
-            _receivedStr = "";
-
-            byte[] str = Encoding.UTF8.GetBytes("Welcome to Vistrol Telnet Service!\r\n");
-            if (!state.Write(str, 0, str.Length))
+            try
             {
-                state.EndConnection();
+                _receivedStr = "";
+
+                byte[] str = Encoding.UTF8.GetBytes("Welcome to Vistrol Telnet Service!\r\n");
+                if (!state.Write(str, 0, str.Length))
+                {
+                    state.EndConnection();
+                }
             }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message, "OnAcceptConnection");
+            }
+            
         }
 
         public override void OnReceiveData(ConnectionState state)
         {
-            byte[] buffer = new byte[1024];
-            while (state.AvailableData > 0)
+            try
             {
-                int readBytes = state.Read(buffer, 0, 1024);
-                if (readBytes > 0)
+                byte[] buffer = new byte[1024];
+                while (state.AvailableData > 0)
                 {
-                    _receivedStr += Encoding.UTF8.GetString(buffer, 0, readBytes);
-                    if (_receivedStr.IndexOf("\r\n") >= 0)
+                    int readBytes = state.Read(buffer, 0, 1024);
+                    if (readBytes > 0)
                     {
-                        string reply = CommandParser.GetInstance().parseCommand(_receivedStr.Replace("\r\n", ""));
-                        state.Write(Encoding.UTF8.GetBytes(reply), 0, reply.Length);
-                        
-                        _receivedStr = "";
+                        _receivedStr += Encoding.UTF8.GetString(buffer, 0, readBytes);
+                        if (_receivedStr.IndexOf("\r\n") >= 0)
+                        {
+                            string reply = CommandParser.GetInstance().parseCommand(_receivedStr.Replace("\r\n", ""));
+                            state.Write(Encoding.UTF8.GetBytes(reply), 0, reply.Length);
+
+                            _receivedStr = "";
+                        }
+                    }
+                    else
+                    {
+                        state.EndConnection();
                     }
                 }
-                else
-                {
-                    state.EndConnection();
-                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "OnReceiveData");
             }
         }
 

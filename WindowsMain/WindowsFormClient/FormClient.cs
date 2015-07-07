@@ -153,11 +153,13 @@ namespace WindowsFormClient
         void formMousePad_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Trace.WriteLine("mouse double click");
+            clientPresenter.ControlServerMouse(getRelativeX(e.X), getRelativeY(e.Y), (uint)e.Delta, InputConstants.MOUSEEVENTF_LEFTUP);
         }
 
         void formMousePad_MouseClick(object sender, MouseEventArgs e)
         {
             Trace.WriteLine("mouse click");
+            clientPresenter.ControlServerMouse(getRelativeX(e.X), getRelativeY(e.Y), (uint)e.Delta, InputConstants.MOUSEEVENTF_LEFTUP);
         }
 
         void formMousePad_MouseWheel(object sender, MouseEventArgs e)

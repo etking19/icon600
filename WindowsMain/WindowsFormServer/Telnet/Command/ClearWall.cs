@@ -19,7 +19,7 @@ namespace WindowsFormClient.Telnet.Command
         }
 
         /// <summary>
-        /// clear the entire wall
+        /// clear the wall based on user credential
         /// </summary>
         /// <param name="command">
         /// command[0] = "command pattern"
@@ -45,6 +45,7 @@ namespace WindowsFormClient.Telnet.Command
                 return "Credential verification failed. Please check login info.";
             }
 
+            /*
             // close all application running on screen
             List<Windows.WindowsAppMgr.WndAttributes> activeApps = wndMgr.getAllVisibleApps();
             foreach (Windows.WindowsAppMgr.WndAttributes wndAttr in activeApps) 
@@ -56,9 +57,10 @@ namespace WindowsFormClient.Telnet.Command
             LaunchedWndHelper.GetInstance().Reset();
             LaunchedVncHelper.GetInstance().Reset();
             LaunchedSourcesHelper.GetInstance().Reset();
+            */
 
             // clear base on id
-            //new ClientPresetCmdImpl().ClearWall(userData.id);
+            new ClientPresetCmdImpl().ClearWall(userData.id);
 
             return "Clear wall successfully.";
         }
