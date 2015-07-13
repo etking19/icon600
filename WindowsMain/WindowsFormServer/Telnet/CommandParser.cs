@@ -44,7 +44,7 @@ namespace WindowsFormClient.Telnet
             _getRemoteList = new GetRemoteList();
             _getWndList = new GetWindowList();
             _launchInputSource = new LaunchInputSource();
-            _launchPreset = new LaunchPreset();
+            _launchPreset = new LaunchPreset(vncClient);
             _launchRemote = new LaunchRemote(vncClient);
             _messageBox = new MessageBox();
             _removePreset = new RemovePreset();

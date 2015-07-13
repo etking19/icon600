@@ -12,6 +12,13 @@ namespace WindowsFormClient.Telnet.Command
     {
         public const string COMMAND = "LaunchPreset";
 
+        private VncMarshall.Client vncClient;
+
+        public LaunchPreset(VncMarshall.Client vncClient)
+        {
+            this.vncClient = vncClient;
+        }
+
         /// <summary>
         /// launched preset 
         /// </summary>
@@ -48,8 +55,8 @@ namespace WindowsFormClient.Telnet.Command
 
             try
             {
-                new ClientPresetCmdImpl().ClearWall(userData.id);
-                new ClientPresetCmdImpl().LaunchPresetExternal(userData.id, dbIndex);
+                new ClientPresetCmdImpl(vncClient).ClearWall(userData.id);
+                new ClientPresetCmdImpl(vncClient).LaunchPresetExternal(userData.id, dbIndex);
             }
             catch (Exception e)
             {

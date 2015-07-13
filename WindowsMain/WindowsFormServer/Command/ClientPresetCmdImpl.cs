@@ -20,12 +20,17 @@ namespace WindowsFormClient.Command
         private IServer server;
         private VncMarshall.Client vncClient;
 
-        /// <summary>
-        /// constructor for external class used (telnet)
-        /// </summary>
         public ClientPresetCmdImpl()
         {
 
+        }
+
+        /// <summary>
+        /// constructor for external class used (telnet)
+        /// </summary>
+        public ClientPresetCmdImpl(VncMarshall.Client vncClient)
+        {
+            this.vncClient = vncClient;
         }
 
         public ClientPresetCmdImpl(IServer server, int userId, VncMarshall.Client vncClient)

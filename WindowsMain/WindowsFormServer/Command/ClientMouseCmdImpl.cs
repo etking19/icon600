@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Utils.Windows;
 
@@ -10,8 +11,13 @@ namespace WindowsFormClient.Command
 {
     class ClientMouseCmdImpl : BaseImplementer
     {
+        static uint counter = 0;
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public override void ExecuteCommand(string userId, string command)
         {
+            Console.WriteLine("-- mouse command --" + counter++);
+
             ClientMouseCmd mouseData = deserialize.Deserialize<ClientMouseCmd>(command);
             if (mouseData == null)
             {
@@ -33,6 +39,12 @@ namespace WindowsFormClient.Command
             {
                 mi = mouseInput,
             };
+
+            Console.WriteLine("dx:" + mouseInput.dx + " dy:" + mouseInput.dy);
+            Console.WriteLine(mouseInput.mouseData);
+            Console.WriteLine(mouseInput.dwFlags);
+
+            NativeMethods.BlockInput(true);
 
             // send input to Windows
             InputConstants.INPUT[] inputArray = new InputConstants.INPUT[] { input };

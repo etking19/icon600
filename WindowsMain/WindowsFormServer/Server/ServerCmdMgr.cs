@@ -27,6 +27,8 @@ namespace WindowsFormClient.Server
             }
         }
 
+        private ICmdImplementer mouseImplementor = new Command.ClientMouseCmdImpl();
+
         private ICmdImplementer GetImplementer(string userId, int mainId, int subId)
         {
             ICmdImplementer implementor = null;
@@ -42,7 +44,7 @@ namespace WindowsFormClient.Server
                     implementor = new Command.ClientMaintenanceCmdImpl();
                     break;
                 case (int)CommandConst.SubCommandClient.Mouse:
-                    implementor = new Command.ClientMouseCmdImpl();
+                    implementor = mouseImplementor;
                     break;
                 case (int)CommandConst.SubCommandClient.Preset:
                     // get user table primary key from user id string

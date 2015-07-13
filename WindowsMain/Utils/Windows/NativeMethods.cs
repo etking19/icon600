@@ -120,6 +120,9 @@ namespace Utils.Windows
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetFocus(IntPtr hWnd);
+
         [DllImport("User32.dll")]
         public static extern UInt32 SendInput(UInt32 nInputs, Utils.Windows.InputConstants.INPUT[] pInputs, Int32 cbSize);
 
@@ -169,5 +172,15 @@ namespace Utils.Windows
 
         [DllImport("User32.dll")]
         public static extern System.Boolean DestroyWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetCapture();
+
+        [DllImport("user32.dll")]
+        public static extern bool BlockInput(bool fBlockIt);
+
     }
 }
