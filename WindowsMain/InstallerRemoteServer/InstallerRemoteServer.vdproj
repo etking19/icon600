@@ -34,13 +34,13 @@
         "Entry"
         {
         "MsmKey" = "8:_12089F8545AF29E7E6D13A115DC63DBE"
-        "OwnerKey" = "8:_24111F9DBA0D49AAA36840F0A296435B"
+        "OwnerKey" = "8:_6BEC56E8D9AF7C8ECF62B2F273F26EBF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_12089F8545AF29E7E6D13A115DC63DBE"
-        "OwnerKey" = "8:_6BEC56E8D9AF7C8ECF62B2F273F26EBF"
+        "OwnerKey" = "8:_24111F9DBA0D49AAA36840F0A296435B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -130,19 +130,7 @@
         "Entry"
         {
         "MsmKey" = "8:_DA53DAAA250CB861535043865D555B85"
-        "OwnerKey" = "8:_9D638E41513DA238912DFE0E74FD6F29"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DA53DAAA250CB861535043865D555B85"
-        "OwnerKey" = "8:_35F3E7722F2D3F327C223A5CC4B091E0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DA53DAAA250CB861535043865D555B85"
-        "OwnerKey" = "8:_5E1E7A835CD334DEF63DF0D2EE343573"
+        "OwnerKey" = "8:_6BEC56E8D9AF7C8ECF62B2F273F26EBF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,7 +142,19 @@
         "Entry"
         {
         "MsmKey" = "8:_DA53DAAA250CB861535043865D555B85"
-        "OwnerKey" = "8:_6BEC56E8D9AF7C8ECF62B2F273F26EBF"
+        "OwnerKey" = "8:_5E1E7A835CD334DEF63DF0D2EE343573"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DA53DAAA250CB861535043865D555B85"
+        "OwnerKey" = "8:_35F3E7722F2D3F327C223A5CC4B091E0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DA53DAAA250CB861535043865D555B85"
+        "OwnerKey" = "8:_9D638E41513DA238912DFE0E74FD6F29"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -190,55 +190,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9D638E41513DA238912DFE0E74FD6F29"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_35F3E7722F2D3F327C223A5CC4B091E0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5E1E7A835CD334DEF63DF0D2EE343573"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0BB8CE4EA3B8B253C0193BA85C8AB57A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6BEC56E8D9AF7C8ECF62B2F273F26EBF"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EC72BBD879407AD32419A56AF13B04A2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B1D672DCE18B18B273CCBAA181D783B5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B072980FA2ED2050F3AC19F307087D2C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DA53DAAA250CB861535043865D555B85"
+        "OwnerKey" = "8:_12089F8545AF29E7E6D13A115DC63DBE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -250,7 +202,55 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_12089F8545AF29E7E6D13A115DC63DBE"
+        "OwnerKey" = "8:_DA53DAAA250CB861535043865D555B85"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B072980FA2ED2050F3AC19F307087D2C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B1D672DCE18B18B273CCBAA181D783B5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EC72BBD879407AD32419A56AF13B04A2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6BEC56E8D9AF7C8ECF62B2F273F26EBF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0BB8CE4EA3B8B253C0193BA85C8AB57A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5E1E7A835CD334DEF63DF0D2EE343573"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_35F3E7722F2D3F327C223A5CC4B091E0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9D638E41513DA238912DFE0E74FD6F29"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -355,11 +355,6 @@
             "AssemblyAsmDisplayName" = "8:SocketCommand, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0BB8CE4EA3B8B253C0193BA85C8AB57A"
-                    {
-                    "Name" = "8:SocketCommand.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SocketCommand.dll"
             "TargetName" = "8:"
@@ -386,11 +381,6 @@
             "AssemblyAsmDisplayName" = "8:SocketServerLib, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_12089F8545AF29E7E6D13A115DC63DBE"
-                    {
-                    "Name" = "8:SocketServerLib.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SocketServerLib.dll"
             "TargetName" = "8:"
@@ -417,11 +407,6 @@
             "AssemblyAsmDisplayName" = "8:Windows, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_35F3E7722F2D3F327C223A5CC4B091E0"
-                    {
-                    "Name" = "8:Windows.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Windows.dll"
             "TargetName" = "8:"
@@ -448,11 +433,6 @@
             "AssemblyAsmDisplayName" = "8:VncMarshall, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5E1E7A835CD334DEF63DF0D2EE343573"
-                    {
-                    "Name" = "8:VncMarshall.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:VncMarshall.dll"
             "TargetName" = "8:"
@@ -479,11 +459,6 @@
             "AssemblyAsmDisplayName" = "8:Session, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_6BEC56E8D9AF7C8ECF62B2F273F26EBF"
-                    {
-                    "Name" = "8:Session.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Session.dll"
             "TargetName" = "8:"
@@ -530,11 +505,6 @@
             "AssemblyAsmDisplayName" = "8:WindowsFormServer, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_9D638E41513DA238912DFE0E74FD6F29"
-                    {
-                    "Name" = "8:WindowsFormServer.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:WindowsFormServer.exe"
             "TargetName" = "8:"
@@ -561,11 +531,6 @@
             "AssemblyAsmDisplayName" = "8:CustomWinForm, Version=1.0.0.18, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_B072980FA2ED2050F3AC19F307087D2C"
-                    {
-                    "Name" = "8:CustomWinForm.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:CustomWinForm.dll"
             "TargetName" = "8:"
@@ -592,11 +557,6 @@
             "AssemblyAsmDisplayName" = "8:LicenseChecker, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_B1D672DCE18B18B273CCBAA181D783B5"
-                    {
-                    "Name" = "8:LicenseChecker.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:LicenseChecker.dll"
             "TargetName" = "8:"
@@ -623,11 +583,6 @@
             "AssemblyAsmDisplayName" = "8:Utils, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DA53DAAA250CB861535043865D555B85"
-                    {
-                    "Name" = "8:Utils.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Utils.dll"
             "TargetName" = "8:"
@@ -654,11 +609,6 @@
             "AssemblyAsmDisplayName" = "8:BasicClientServerLib, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DE595D7F8206AFE28F2D8732C3C66560"
-                    {
-                    "Name" = "8:BasicClientServerLib.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:BasicClientServerLib.dll"
             "TargetName" = "8:"
@@ -685,11 +635,6 @@
             "AssemblyAsmDisplayName" = "8:RGBEasy.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EC72BBD879407AD32419A56AF13B04A2"
-                    {
-                    "Name" = "8:RGBEasy.Net.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:RGBEasy.Net.dll"
             "TargetName" = "8:"
@@ -765,15 +710,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VistrolRemoteServer"
-        "ProductCode" = "8:{2AFEAEB4-DFCF-470D-9D9E-E8AAC4A90808}"
-        "PackageCode" = "8:{0B365CD6-EEA6-4C33-B9E0-C7FFAD2D9CA9}"
+        "ProductCode" = "8:{0FDF1966-489D-43C5-BCC0-F31E717FC522}"
+        "PackageCode" = "8:{C1B75D08-358E-4846-A3FF-254525FC758E}"
         "UpgradeCode" = "8:{BEDC5FA0-12E3-4696-B225-3CD17B01E3F6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.19"
+        "ProductVersion" = "8:1.0.20"
         "Manufacturer" = "8:Vistrol"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.vistrol.com"
@@ -1409,7 +1354,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_24111F9DBA0D49AAA36840F0A296435B"
             {
-            "SourcePath" = "8:..\\RemoteFormServer\\obj\\Debug\\RemoteFormServer.exe"
+            "SourcePath" = "8:..\\RemoteFormServer\\obj\\Release\\RemoteFormServer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_47969EF563134DA48CCBEF77B1EE6C8A"
